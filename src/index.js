@@ -26,6 +26,7 @@ const color3 = [1, 0, 1, 1];
 const color4 = [0.7, 0.7, 0.7, 1];
 const colorOn = [0, 0.8, 0, 1];
 const colorOff = [0.4, 0.4, 0.4, 1];
+const colorBackground = [0, 0, 0, 1];
 
 
 const { Transform, Point } = Fig;

@@ -81,7 +81,7 @@ const button = (name, position, text) => ({
 function toggle(name, position, height, onDirectionRight = true)
 {
   const dir = onDirectionRight ? 1 : -1;
-  const width = height * 1.8;
+  const width = height * 1.7;
   const offset = -width / 2 + height / 2;
   return {
     name,
@@ -134,25 +134,16 @@ function toggle(name, position, height, onDirectionRight = true)
           const e = figure.get(name);
           e._circ.setPosition(-dir * offset, 0)
           e._background.setColor(colorOn);
-          e.custom.state = false;
+          e.custom.state = true;
         }
       },
       onClick: () => {
         const e = figure.get(name);
         if (e.custom.state) {
-          // e._circ.setPosition(dir * offset, 0)
-          // // e._on.hide();
-          // e._background.setColor(colorOff);
-          // e.custom.state = false;
           e.custom.off();
         } else {
-          // e._circ.setPosition(-dir * offset, 0)
-          // // e._on.show();
-          // e._background.setColor(colorOn);
-          // e.custom.state = true;
           e.custom.on();
         }
-        console.log(e.custom.state)
       },
     },
   };
