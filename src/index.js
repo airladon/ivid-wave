@@ -4,14 +4,16 @@ const figure = new Fig.Figure({
   limits: [-3, -1.5, 6, 3],
   color: [0.3, 0.3, 0.3, 1],
   font: { size: 0.1 },
+  backgroundColor: [0, 0, 0, 1],
 });
 
 // Global colors used in equations.js and slides.js
-const colorText = [0.3, 0.3, 0.3, 1];
+const colorText = [1, 1, 0.3, 1];
 const color0 = [1, 0, 0, 1];
 const color1 = [0, 0.5, 1, 1];
-const color2 = [0.3, 0.3, 0.3, 1];
+const color2 = [0.8, 0.8, 0.8, 1];
 const color3 = [1, 0, 1, 1];
+const color4 = [0.7, 0.7, 0.7, 1];
 
 
 const { Transform, Point } = Fig;
@@ -22,22 +24,22 @@ let maxTime = 0;
 let maxTimeReached = false;
 
 figure.add([
-  // button('pulseButton1', [1.7, 0.15], 'Pulse 1'),
+  button('pulseButton1', [-2.7, -1.3], 'Pulse'),
   // button('pulseButton2', [2.1, 0.15], 'Pulse 2'),
   // button('sineButton', [1.3, 0.15], 'Sine'),
-  button('resetButton', [2.7, -1.1], 'Reset'),
-  button('freezeTimeButton', [2.15, -1.1], 'Off'),
-  button('slowTimeButton', [1.35, -1.1], 'Off'),
-  // button('velocityButton1', [2, 1.9], 'Fast'),
+  button('resetButton', [2.7, -1.3], 'Reset'),
+  button('freezeTimeButton', [2.15, -1.3], 'Off'),
+  button('slowTimeButton', [1.35, -1.3], 'Off'),
+  button('velocityButton', [2.4, 1], 'Fast'),
   // button('velocityButton2', [2, 1.04], 'Fast'),
   // button('freqButton1', [-0.7, 1.9], 'Fast'),
   // button('freqButton2', [-0.7, 1.04], 'Fast'),
 ]);
 figure.add([
-  label('freezeTimeLabel', [1.8, -1.1], colorText, 'Freeze:'),
-  label('slowTimeLabel', [0.9, -1.1], colorText, ['Slow Motion:']),
+  label('freezeTimeLabel', [1.8, -1.3], color4, 'Freeze:'),
+  label('slowTimeLabel', [0.9, -1.3], color4, ['Slow Motion:']),
   // label('disturbance', [0.45, 0.15], colorText, ['Disturbance:']),
-  // label('velocity', [2, 2.1], colorText, 'Velocity'),
+  label('velocity', [2, 1], color4, 'Velocity:'),
   // label('frequency', [-0.7, 2.1], colorText, 'Sine Frequency'),
   // axisLabel('x0', [-2.1, 0.77], color0, [
   //   'x',
@@ -56,12 +58,12 @@ figure.add([
 ]);
 
 const resetButton = figure.getElement('resetButton');
-// const pulseButton1 = figure.getElement('pulseButton1');
+const pulseButton1 = figure.getElement('pulseButton1');
 // const pulseButton2 = figure.getElement('pulseButton2');
 // const sineButton = figure.getElement('sineButton');
 const freezeButton = figure.getElement('freezeTimeButton');
 const slowTimeButton = figure.getElement('slowTimeButton');
-// const velocityButton1 = figure.getElement('velocityButton1');
+const velocityButton = figure.getElement('velocityButton');
 // const velocityButton2 = figure.getElement('velocityButton2');
 // const freqButton1 = figure.getElement('freqButton1');
 // const freqButton2 = figure.getElement('freqButton2');
@@ -75,15 +77,15 @@ const unpause = () => {
   time.unpause();
 };
 
-const s1 = addString('s1', 3.7, 2, 1, [-0.9, 0], 'y', 0.03, 0.04);
-// s1.setPosition(0.1, 0);
+const m1 = addMedium('m1', 3.7, 2, 1, [-0.9, 0], 'y', 0.03, 0.04);
+// m1.setPosition(0.1, 0);
 const timePlot1 = addTimePlot(
-  'timePlot1', 1.7, 10, s1.custom.recording, 1, [-2.7, 0],
+  'timePlot1', 1.65, 10, m1.custom.recording, 1, [-2.7, 0],
 );
 
 
 const stop = () => {
-  s1.custom.stop();
+  m1.custom.stop();
   // medium2.custom.stop();
   figure.stop();
 };
@@ -91,7 +93,7 @@ const reset = () => {
   stop();
   // setInAnimation(false);
   maxTimeReached = false;
-  s1.custom.reset();
+  m1.custom.reset();
   // medium1.custom.reset();
   // medium2.custom.reset();
   time.reset();
@@ -99,7 +101,7 @@ const reset = () => {
 };
 figure.fnMap.global.add('reset', () => reset());
 figure.fnMap.global.add('softReset', () => {
-  s1.custom.reset();
+  m1.custom.reset();
   time.reset();
   pause();
 });
@@ -131,7 +133,7 @@ function update() {
     // resetButton.pulse({ scale: 1.1, duration: 10000, frequency: 1.5 });
   }
   const deltaTime = time.step();
-  if (s1.isShown) { s1.custom.update(deltaTime); }
+  if (m1.isShown) { m1.custom.update(deltaTime); }
   // if (medium1.isShown) { medium1.custom.update(deltaTime); }
   // if (medium2.isShown) { medium2.custom.update(deltaTime); }
   if (timePlot1.isShown) { timePlot1.custom.update(); }
@@ -149,6 +151,56 @@ figure.notifications.add('afterDraw', () => {
 });
 
 time.setTimeSpeed(1);
+
+
+velocityButton.onClick = () => {
+  reset();
+  if (m1.custom.c === 0.2) {
+    m1.custom.setVelocity(0.4);
+    velocityButton.setLabel('2v');
+  } else {
+    m1.custom.setVelocity(0.2);
+    velocityButton.setLabel('1v');
+  }
+};
+
+/*
+.########..####..######..########.##.....##.########..########.
+.##.....##..##..##....##....##....##.....##.##.....##.##.....##
+.##.....##..##..##..........##....##.....##.##.....##.##.....##
+.##.....##..##...######.....##....##.....##.########..########.
+.##.....##..##........##....##....##.....##.##...##...##.....##
+.##.....##..##..##....##....##....##.....##.##....##..##.....##
+.########..####..######.....##.....#######..##.....##.########.
+*/
+// Pulse disturbance - disturb the first particle with a pulse
+// Instead of using the normal animation time step (which is real time)
+// a custom animation step is used where time is taken from the TimeKeeper.
+// This means if the TimeKeeper pauses, or is sped up or slowed down, then the
+// animation will be too.
+const pulse = (med, amplitude = randSign() * rand(0.3, 0.6)) => {
+  unpause();
+  const startTime = time.now();
+  const { movePad, A } = med.custom;
+  movePad.animations.new('_noStop_disturb_')
+    .custom({
+      callback: () => {
+        if (!time.isPaused()) {
+          const t = time.now() - startTime;
+          movePad.setPosition(0, A * amplitude * Math.exp(-(((t / 2 - 0.6) * 4 - t / 2) ** 2)));
+        }
+      },
+      duration: 10000,
+    })
+    .start();
+};
+
+pulseButton1.onClick = () => {
+  pulse(m1, 0.5);
+  // reset();
+  // unpause();
+  // startDisturbances([medium1, medium2], 8, true, 'pulse', 0.6);
+};
 
 /*
 ..######..##.......####.########..########..######.
@@ -170,17 +222,38 @@ const nav = figure.addSlideNavigator({
 nav.loadSlides([
   {
     enterState: () => {
-      s1.setPosition([-1.85, 0]);
+      m1.setPosition([-1.85, 0]);
+      m1._balls.dim();
+      m1._balls.undim(['ball0'])
     },
     showCommon: [
-      's1',
+      'm1',
       'resetButton',
       'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton',
+      'velocity', 'velocityButton',
+      'pulseButton1',
+    ],
+    hide: ['m1.xAxis', 'm1.yAxis'],
+  },
+  {
+    enterState: () => {
+      m1.setPosition([-1.85, 0]);
+      m1._balls.dim();
+      m1._balls.undim(['ball0', 'ball20', 'ball40', 'ball60', 'ball80']);
+      m1._balls._ball20.setScale(1.5);
+      m1._balls._ball40.setScale(1.5);
+      m1._balls._ball60.setScale(1.5);
+      m1._balls._ball80.setScale(1.5);
+    },
+    hide: ['m1.xAxis', 'm1.yAxis'],
+    transition: [
+      { pulse: { 'm1.balls': ['ball20', 'ball40', 'ball60', 'ball80'] }, scale: 3 },
     ],
   },
   {
     transition: [
-      { scenario: 's1', target: 'default', duration: 4 },
+      { scenario: 'm1', target: 'default', duration: 4 },
+      { in: ['m1.xAxis', 'm1.yAxis'] },
       [
         { trigger: 'softReset' },
         { in: 'timePlot1' },

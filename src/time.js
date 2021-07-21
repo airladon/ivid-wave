@@ -27,7 +27,7 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
   const axis = timePlot.getElement('xAxis');
   const trace = timePlot.getElement('trace');
   timePlot.custom.update = () => {
-    const recorded = recording.getRecording(false, maxValue);
+    const recorded = recording.getRecording(false, maxValue - 0.3);
     const points = Array(recorded.time.length);
     for (let i = 0; i < points.length; i += 1) {
       points[i] = new Point(axis.valueToDraw(recorded.time[i]), recorded.data[i]);

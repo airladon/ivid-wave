@@ -3,7 +3,7 @@ globals figure, color1, color2, time, color3, color0, Recorder,
 minVelocity, maxTimeReached, unpause, Transform, range
 */
 
-function addString(
+function addMedium(
   stringName, length, maxValue, A, defaultPosition, yAxisTitle, ballSize, ballSpace,
 ) {
   // Particle creater
@@ -13,7 +13,7 @@ function addString(
     options: {
       sides,
       radius,
-      transform: new Transform().translate(x, 0),
+      transform: new Transform().scale(1, 1).translate(x, 0),
       color: color1,
       position: [x, 0],
     },
@@ -86,13 +86,13 @@ function addString(
   const xValues = range(0, length - 0.1, ballSpace);
   const balls = medium.getElement('balls');
   xValues.forEach((x, index) => {
-    balls.add(ball(x, index, ballSize));
+    balls.add(ball(x, index, ballSize * (x === 0 ? 2 : 1)));
     const b = balls.getElement(`ball${index}`);
     b.custom.x = axis.drawToValue(x);
     b.custom.drawX = x;
     if (index === 0) { b.setColor(color0); }
   });
-  balls.toFront(['ball0', 'ball40']);
+  balls.toFront(['ball0', 'ball40', 'ball20', 'ball60', 'ball80']);
   const tracker = medium.add(ball(0, 'Tracker', ballSize));
   tracker.setColor(color3);
   const movePad = medium.getElement('movePad');
