@@ -1,19 +1,31 @@
 /* globals Fig */
 
 const figure = new Fig.Figure({
-  limits: [-3, -1.5, 6, 3],
+  limits: [0, 0, 24, 12],
   color: [0.3, 0.3, 0.3, 1],
   font: { size: 0.1 },
   backgroundColor: [0, 0, 0, 1],
 });
 
+/*
+..######...##........#######..########.....###....##........######.
+.##....##..##.......##.....##.##.....##...##.##...##.......##....##
+.##........##.......##.....##.##.....##..##...##..##.......##......
+.##...####.##.......##.....##.########..##.....##.##........######.
+.##....##..##.......##.....##.##.....##.#########.##.............##
+.##....##..##.......##.....##.##.....##.##.....##.##.......##....##
+..######...########..#######..########..##.....##.########..######.
+*/
 // Global colors used in equations.js and slides.js
 const colorText = [1, 1, 0.3, 1];
 const color0 = [1, 0, 0, 1];
 const color1 = [0, 0.5, 1, 1];
-const color2 = [0.8, 0.8, 0.8, 1];
+const colorLight = [0.8, 0.8, 0.8, 1];
+const colorDark = [0.3, 0.3, 0.3, 1];
 const color3 = [1, 0, 1, 1];
 const color4 = [0.7, 0.7, 0.7, 1];
+const colorOn = [0, 0.8, 0, 1];
+const colorOff = [0.4, 0.4, 0.4, 1];
 
 
 const { Transform, Point } = Fig;
@@ -71,10 +83,12 @@ const { pulse } = getDisturbances();
 */
 const pause = () => {
   time.pause();
-  freezeButton.setLabel('On');
+  // freezeButton.setLabel('On');
+  freezeButton.custom.on();
 };
 const unpause = () => {
-  freezeButton.setLabel('Off');
+  // freezeButton.setLabel('Off');
+  freezeButton.custom.off();
   time.unpause();
 };
 
@@ -101,7 +115,7 @@ figure.fnMap.global.add('softReset', () => {
 
 const setTimeSpeed = (timeSpeed, buttonLabel) => {
   time.setTimeSpeed(timeSpeed);
-  slowTimeButton.setLabel(buttonLabel);
+  // slowTimeButton.setLabel(buttonLabel);
 };
 
 // Update function for everytime we want to update the particles
@@ -139,27 +153,39 @@ figure.notifications.add('afterDraw', () => {
 .########...#######.....##.......##.....#######..##....##..######.
 */
 resetButton.onClick = () => reset();
-freezeButton.onClick = () => {
+freezeButton.notifications.add('onClick', () => {
   if (time.isPaused()) unpause(); else pause();
-};
-slowTimeButton.onClick = () => {
+})
+// freezeButton.onClick = () => {
+//   if (time.isPaused()) unpause(); else pause();
+// };
+
+slowTimeButton.notifications.add('onClick', () => {
   if (time.getTimeSpeed() === 1) {
     setTimeSpeed(0.3, 'On');
   } else {
     setTimeSpeed(1, 'Off');
   }
-};
+});
 
-velocityButton.onClick = () => {
+// velocityButton.onClick = () => {
+//   reset();
+//   if (m1.custom.c === 0.2) {
+//     m1.custom.setVelocity(0.4);
+//     // velocityButton.setLabel('2v');
+//   } else {
+//     m1.custom.setVelocity(0.2);
+//     // velocityButton.setLabel('1v');
+//   }
+// };
+velocityButton.notifications.add('onClick', () => {
   reset();
-  if (m1.custom.c === 0.2) {
-    m1.custom.setVelocity(0.4);
-    velocityButton.setLabel('2v');
+  if (velocityButton.custom.state) {
+    m1.custom.setVelocity(2);
   } else {
-    m1.custom.setVelocity(0.2);
-    velocityButton.setLabel('1v');
+    m1.custom.setVelocity(1);
   }
-};
+});
 
 pulseButton1.onClick = () => {
   pulse(m1, 0.5);
@@ -191,7 +217,7 @@ time.setTimeSpeed(1);
 nav.loadSlides([
   {
     enterState: () => {
-      m1.setPosition([-1.85, 0]);
+      m1.setPosition([5, 6]);
       m1._balls.dim();
       m1._balls.undim(['ball0'])
     },
@@ -200,7 +226,7 @@ nav.loadSlides([
   },
   {
     enterState: () => {
-      m1.setPosition([-1.85, 0]);
+      m1.setPosition([5, 6]);
       m1._balls.dim();
       m1._balls.undim(['ball0'])
     },
@@ -215,7 +241,7 @@ nav.loadSlides([
   },
   {
     enterState: () => {
-      m1.setPosition([-1.85, 0]);
+      m1.setPosition([5, 6]);
       m1._balls.dim();
       m1._balls.undim(['ball0', 'ball20', 'ball40', 'ball60', 'ball80']);
       m1._balls._ball20.setScale(1.5);
@@ -229,6 +255,7 @@ nav.loadSlides([
     ],
   },
   {
+    scenario: 'default',
     transition: [
       { scenario: 'm1', target: 'default', duration: 0.1 },
       { in: ['m1.xAxis', 'm1.yAxis'] },

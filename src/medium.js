@@ -18,7 +18,7 @@ function addMedium(
       position: [x, 0],
     },
     mods: {
-      dimColor: color2,
+      dimColor: colorLight,
     },
   });
   figure.add({
@@ -29,12 +29,13 @@ function addMedium(
       {
         name: 'grid',
         make: 'grid',
-        bounds: [0, -1, length - 0.08, 2],
-        xStep: 0.25,
-        yStep: 0.25,
+        bounds: [0, -A, length, A*2],
+        line: { width: 0.03 },
+        xStep: 1,
+        yStep: 1,
       },
-      xAxis('xAxis', 'x', '', length, maxValue),
-      yAxis('yAxis', 'y', '', A, yAxisTitle),
+      xAxis('xAxis', 'x', '', length + 0.7, maxValue + 0.7),
+      yAxis('yAxis', 'y', '', A + 0.5, yAxisTitle),
       {
         name: 'balls',
         make: 'collection',
@@ -90,7 +91,7 @@ function addMedium(
   const medium = figure.getElement(stringName);
   const axis = medium.getElement('xAxis');
   // const ballSize = 0.02;
-  const xValues = range(0, length - 0.1, ballSpace);
+  const xValues = range(0, length, ballSpace);
   const balls = medium.getElement('balls');
   xValues.forEach((x, index) => {
     balls.add(ball(x, index, ballSize * (x === 0 ? 2 : 1)));
@@ -106,7 +107,7 @@ function addMedium(
   const wavelength = medium.getElement('wavelength');
   medium.custom = {
     f: 0.2,   // Current frequency of sine wave for medium
-    c: 0.2,     // Propagation velocity of medium
+    c: 2,     // Propagation velocity of medium
     A,        // Amplitude of pulse or sine wave for medium
     axis,     // Make some elements easily available
     balls,
