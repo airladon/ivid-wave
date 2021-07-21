@@ -4,7 +4,7 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
     make: 'collection',
     elements: [
       xAxis('xAxis', 't', '', length, maxValue),
-      yAxis('yAxis', 'y', '', A, true),
+      yAxis('yAxis', 'y', 'x=0', A, false),
       {
         name: 'trace',
         make: 'polyline',

@@ -38,10 +38,10 @@ const yAxis = (name, title, units, AValue, yAxisTitleSide) => ({
     title: {
       font: { style: 'italic', family: 'serif', size: 0.18 },
       text: {
-        text: `${title} |unitsText|`,
+        text: `${title}|unitsText|`,
       },
       modifiers: {
-        unitsText: { text: units, font: { size: 0.06 } },
+        unitsText: { text: units, font: { size: 0.09 } },
       },
       xAlign: 'left',
       rotation: 0,

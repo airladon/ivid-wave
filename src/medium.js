@@ -26,6 +26,13 @@ function addMedium(
     make: 'collection',
     transform: new Transform().scale(1, 1).translate(0, 0),
     elements: [
+      {
+        name: 'grid',
+        make: 'grid',
+        bounds: [0, -1, length - 0.08, 2],
+        xStep: 0.25,
+        yStep: 0.25,
+      },
       xAxis('xAxis', 'x', '', length, maxValue),
       yAxis('yAxis', 'y', '', A, yAxisTitle),
       {
