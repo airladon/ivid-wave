@@ -7,22 +7,49 @@ attribute vec2 a_position;
 attribute float a_offset;
 uniform mat3 u_matrix;
 uniform float u_time;
+varying float v_col;
+uniform float u_highlight;
 void main() {
   float x = a_position.x + a_offset;
   float y = a_position.y;
   gl_Position = vec4((u_matrix * vec3(x, y, 1)).xy, 0, 1);
+  v_col = 0.0;
+  if (u_highlight > 0.0) {
+    if (mod(a_position.x, 10.5) == 0.0) {
+      v_col = 1.0;
+    }
+  }
+  if (a_position.x < 0.25) {
+    v_col = 2.0;
+  }
 }`;
+const fragmentShader = `
+precision mediump float;
+uniform vec4 u_color;
+varying float v_col;
+void main() {
+  if (v_col > 0.0) {
+    gl_FragColor = vec4(0, 0.5, 1, 1);
+  }
+  if (v_col > 1.0) {
+    gl_FragColor = vec4(1, 0, 0, 1);
+  }
+  if (v_col == 0.0) {
+    gl_FragColor = u_color;
+    gl_FragColor.rgb *= gl_FragColor.a;
+  }
+}`
 
   const points = [];
   const sides = 10;
   const step = Math.PI * 2 / (sides);
-  const r = particleSize;
   const offsets = [];
   const xLocations = [];
   for (let x = 0; x <= length; x += gridStep) {
+    const r = x === 0 ? particleSize * 1.6 : particleSize;
     for (let y = -height / 2; y <= height / 2; y += gridStep) {
-      // const x1 = x + Fig.tools.math.rand(-gridStep / 30, gridStep / 30);
-      // const y1 = y + Fig.tools.math.rand(-gridStep / 30, gridStep / 30);
+      // const x1 = x + Fig.tools.math.rand(-gridStep / 4, gridStep / 4);
+      // const y1 = y + Fig.tools.math.rand(-gridStep / 4, gridStep / 4);
       const x1 = x;
       const y1 = y;
       for (let j = 0; j < sides; j += 1) {
@@ -48,15 +75,19 @@ void main() {
         // matrix)
         vertexShader: {
           src: vertexShader,
-          vars: ['a_position', 'a_offset', 'u_matrix'],
+          vars: ['a_position', 'a_offset', 'u_matrix', 'u_highlight'],
         },
         // vertexShader: 'simple',
         // Build in shader with one color for all vertices
-        fragShader: 'simple',
+        // fragShader: 'simple',
+        fragShader: {
+          src: fragmentShader,
+          vars: ['u_color'],
+        },
         // Define buffers and uniforms
         vertices: { data: points },
         buffers: [{ name: 'a_offset', data: offsets, size: 1, usage: 'DYNAMIC' }],
-        // uniforms: [{ name: 'u_time' }],
+        uniforms: [{ name: 'u_highlight', length: 1, type: 'FLOAT' }],
         // Element color and mods
         color: colorLight,
         // position: [10, 5],
@@ -66,8 +97,8 @@ void main() {
         name: 'movePad',
         make: 'rectangle',
         height: height * 1.2,
-        width: 2,
-        color: [0, 0, 1, 0.5],
+        width: 4,
+        color: [0, 0, 1, 0],
         mods: {
         isMovable: true,
         move: {
@@ -81,7 +112,7 @@ void main() {
       },
     ],
     // transform: [['t', 5, 6]],
-    position: [5, 6],
+    position: [3, 6],
   });
   const movePad = medium._movePad;
   medium.custom = {
@@ -89,7 +120,7 @@ void main() {
     recording: new Recorder(10),
     update: (deltaTime) => {
       const newOffsets = Array(offsets.length);
-      const x = movePad.transform.t().x / 5;
+      const x = movePad.transform.t().x / 10;
       medium.custom.recording.record(x, deltaTime);
       for (let i = 0; i < xLocations.length; i += 1) {
         const xOffset = medium.custom.recording.getValueAtTimeAgo(xLocations[i] / medium.custom.c);
@@ -100,6 +131,7 @@ void main() {
       medium._particles.drawingObject.updateBuffer('a_offset', newOffsets);
     }
   };
+  medium._particles.drawingObject.uniforms.u_highlight.value = [1];
   movePad.notifications.add('setTransform', () => {
     // if (maxTimeReached) {
     //   return;
