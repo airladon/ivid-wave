@@ -46,7 +46,6 @@ void main() {
   const offsets = [];
   const xLocations = [];
   for (let x = 0; x <= length; x += gridStep) {
-    console.log(x)
     const r = (x === 0 || Fig.tools.math.round(x) === 10.8) ? particleSize * 1.6 : particleSize;
     for (let y = -height / 2; y <= height / 2; y += gridStep) {
       // const x1 = x + Fig.tools.math.rand(-gridStep / 4, gridStep / 4);
@@ -59,12 +58,9 @@ void main() {
         points.push(r * Math.cos(step * (j + 1)) + x1, r * Math.sin(step * (j + 1)) + y1);
         offsets.push(0, 0, 0);
         xLocations.push(x1);
-        // velocities.push(v[0], v[1], v[0], v[1], v[0], v[1]);
       }
-      // particles.push(x, y);
     }
   }
-  console.log([offsets]);
   const medium = figure.add({
     name,
     make: 'collection',
@@ -80,8 +76,6 @@ void main() {
       {
         name: 'particles',
         make: 'gl',
-        // Define the custom shader and variables (u_matrix is the element transform
-        // matrix)
         vertexShader: {
           src: vertexShader,
           vars: ['a_position', 'a_offset', 'u_matrix', 'u_highlight'],

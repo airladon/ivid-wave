@@ -44,4 +44,5 @@ function addFigureElements() {
     'timePlot1', 6.5, 10.5, m1.custom.recording, 2.5 * 13 / 10, [1, 6],
   );
   const pressurePlot = addPressureMedium('p1', 18, 2, 0.1, 0.4);
+  addOceanMedium('ocean', 24, 4, 0.07, 0.4);
 };

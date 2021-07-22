@@ -50,6 +50,7 @@ addFigureElements();
 
 const m1 = figure.get('m1');
 const p1 = figure.get('p1');
+const ocean = figure.get('ocean');
 const timePlot1 = figure.get('timePlot1');
 const resetButton = figure.get('resetButton');
 const pulseButton = figure.get('pulseButton');
@@ -135,6 +136,7 @@ function update() {
   // if (medium1.isShown) { medium1.custom.update(deltaTime); }
   // if (medium2.isShown) { medium2.custom.update(deltaTime); }
   if (timePlot1.isShown) { timePlot1.custom.update(); }
+  if (ocean.isShown) { ocean.custom.update(deltaTime); }
   // if (timePlot2.isShown) { timePlot2.custom.update(); }
 }
 
@@ -262,14 +264,21 @@ nav.loadSlides([
     ],
   },
   {
+    hide: ['m1'],
+    transition: [
+      { out: ['pulseButton', 'sineButton', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton', 'p1'] },
+      { in: ['ocean'] },
+    ],
+  },
+  {
     show: [
       'resetButton', 'freezeTimeLabel', 'freezeTimeButton',
       'slowTimeLabel', 'slowTimeButton',
     ],
     transition: [
-      { out: ['pulseButton', 'sineButton', 'p1'] },
+      { out: ['ocean'] },
       { trigger: 'softReset' },
-      { in: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'] },
+      { in: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton'] },
     ],
   },
   {    
