@@ -14,11 +14,15 @@ function addMedium(
       sides,
       radius,
       transform: new Transform().scale(1, 1).translate(x, 0),
-      color: color1,
+      color: colorLight,
       position: [x, 0],
     },
     mods: {
       dimColor: colorLight,
+      scenarios: {
+        default: { color: colorLight, scale: [1, 1] },
+        highlight: { color: color1, scale: [1.2, 1.2] },
+      }
     },
   });
   figure.add({
@@ -27,15 +31,23 @@ function addMedium(
     transform: new Transform().scale(1, 1).translate(0, 0),
     elements: [
       {
+        name: 'minorGrid',
+        make: 'grid',
+        bounds: [0, -A * length / maxValue, length, A * length / maxValue * 2],
+        line: { width: 0.01 },
+        xStep: length / 50,
+        yStep: length / 50,
+      },
+      {
         name: 'grid',
         make: 'grid',
-        bounds: [0, -A, length, A*2],
+        bounds: [0, -A * length / maxValue, length, A * length / maxValue * 2],
         line: { width: 0.03 },
-        xStep: 1,
-        yStep: 1,
+        xStep: length / 10,
+        yStep: length / 10,
       },
-      xAxis('xAxis', 'x', '', length + 0.7, maxValue + 0.7),
-      yAxis('yAxis', 'y', '', A + 0.5, yAxisTitle),
+      xAxis('xAxis', 'x', '', length, maxValue),
+      yAxis('yAxis', 'y', '', A * length / maxValue, yAxisTitle),
       {
         name: 'balls',
         make: 'collection',
@@ -45,9 +57,17 @@ function addMedium(
       },
       // movePad moves the first particle in the medium
       {
+        name: 'firstBall',
+        make: 'primitives.polygon',
+        radius: 0.2,
+        sides: 40,
+        // line: { width: 0.2 },
+        color: [1, 0, 0, 1],
+      },
+      {
         name: 'movePad',
         make: 'primitives.polygon',
-        radius: 0.4,
+        radius: 0.5,
         sides: 8,
         color: [1, 0, 0, 0],
         touch: true,
@@ -91,23 +111,29 @@ function addMedium(
   const medium = figure.getElement(stringName);
   const axis = medium.getElement('xAxis');
   // const ballSize = 0.02;
-  const xValues = range(0, length, ballSpace);
+  const xValues = range(0, maxValue, ballSpace);
+
   const balls = medium.getElement('balls');
+  // const toFront = [];
   xValues.forEach((x, index) => {
-    balls.add(ball(x, index, ballSize * (x === 0 ? 2 : 1)));
+    balls.add(ball(x, index, ballSize * (x === 0 ? 1 : 1)));
     const b = balls.getElement(`ball${index}`);
-    b.custom.x = axis.drawToValue(x);
-    b.custom.drawX = x;
-    if (index === 0) { b.setColor(color0); }
+    // b.custom.x = axis.drawToValue(x);
+    b.custom.x = x;
+    b.custom.drawX = axis.valueToDraw(x);
+    // if (index === 0) { b.scenarios.highlight = { color: [1, 0, 0, 0.5], scale: [1.3, 1.3] }; }
+    // if (index % 20 === 0) { toFront.push(index) }
   });
-  balls.toFront(['ball0', 'ball40', 'ball20', 'ball60', 'ball80']);
+  const highlights = xValues.map((x, i) => x % 2 === 0 ? i : -1).filter(i => i > -1).map(i => `ball${i}`);
+  balls.toFront(highlights);
   const tracker = medium.add(ball(0, 'Tracker', ballSize));
   tracker.setColor(color3);
   const movePad = medium.getElement('movePad');
+  const firstBall = medium.getElement('firstBall');
   const wavelength = medium.getElement('wavelength');
   medium.custom = {
     f: 0.2,   // Current frequency of sine wave for medium
-    c: 2,     // Propagation velocity of medium
+    c: 1,     // Propagation velocity of medium
     A,        // Amplitude of pulse or sine wave for medium
     axis,     // Make some elements easily available
     balls,
@@ -116,14 +142,16 @@ function addMedium(
     trackingTime: -10000,
     ball0: balls.getElement('ball0'),
     recording: new Recorder(maxValue / minVelocity),
+    highlights,
+    // xValues.filter((x, i) => (x % 1 === 0) && x > 0).map(x => `ball${x}`),
     // Update function gets the position of the movePad, then records it, and
     // updates all the particles with their current displacement.
     update: (deltaTime) => {
       // Get movePad displacement
       const y = movePad.transform.t().y;
+      firstBall.setPosition(0, y);
       // Record the displacement
       medium.custom.recording.record(y, deltaTime);
-
       // Calculate the displacement of each particle and set it
       for (let i = 0; i < xValues.length; i += 1) {
         const b = balls[`_ball${i}`];

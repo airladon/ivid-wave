@@ -13,13 +13,13 @@ const xAxis = (name, title, units, xLength, XMaxValue) => ({
   options: {
     start: 0,
     color: color4,
-    stop: XMaxValue + 0.1,
-    length: xLength,
+    stop: XMaxValue * 1.05,
+    length: xLength * 1.05,
     line: { width: 0.032, arrow: { end: 'barb' } },
     title: {
       font: { style: 'italic', family: 'serif', size: 0.18 * 4 },
       text: [title, { font: { size: 0.24 }, lineSpace: 0.24, text: units }],
-      position: [xLength - 0.12, -0.16],
+      position: [xLength * 1.05 - 0.12, -0.3],
     },
   },
 });
@@ -32,9 +32,9 @@ const yAxis = (name, title, units, AValue, yAxisTitleSide) => ({
     color: color4,
     start: -AValue,
     stop: AValue,
-    length: AValue * 2 + 0.4,
+    length: AValue * 2 + 1,
     line: { width: 0.032, arrow: 'barb' },
-    position: [0, -AValue - 0.2],
+    position: [0, -AValue - 0.5],
     title: {
       font: { style: 'italic', family: 'serif', size: 0.18 * 4 },
       text: {
@@ -45,7 +45,7 @@ const yAxis = (name, title, units, AValue, yAxisTitleSide) => ({
       },
       xAlign: 'left',
       rotation: 0,
-      offset: yAxisTitleSide ? [0, AValue - 0.24] : [0.2, AValue + 0.24],
+      offset: yAxisTitleSide ? [0, AValue - 0.24] : [0.4, AValue + 0.6],
     },
   },
 });

@@ -179,7 +179,7 @@ velocityButton.notifications.add('onClick', () => {
 });
 
 pulseButton1.onClick = () => {
-  pulse(m1, 0.5);
+  pulse(m1, 1);
 };
 
 /*
@@ -198,25 +198,26 @@ const nav = figure.addSlideNavigator({
   nextButton: null, prevButton: null, text: null,
 });
 
-
 time.setTimeSpeed(1);
-
-
 nav.loadSlides([
   {
     enterState: () => {
       m1.setPosition([5, 6]);
-      m1._balls.dim();
-      m1._balls.undim(['ball0'])
+      // m1._balls.dim();
+      // m1._balls.undim(['ball0'])
+      m1._balls.setScenarios('default');
+      m1._balls.get(m1.custom.highlights).map(e => e.setScenario('highlight'));
     },
     showCommon: 'm1',
-    hide: ['m1.xAxis', 'm1.yAxis'],
+    hide: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.minorGrid'],
   },
   {
     enterState: () => {
       m1.setPosition([5, 6]);
       m1._balls.dim();
       m1._balls.undim(['ball0'])
+      m1._balls.setScenarios('default');
+      m1._balls.get(m1.custom.highlights).map(e => e.setScenario('highlight'));
     },
     showCommon: [
       'm1',
@@ -225,17 +226,20 @@ nav.loadSlides([
       'velocity', 'velocityButton',
       'pulseButton1',
     ],
-    hide: ['m1.xAxis', 'm1.yAxis'],
+    // hide: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.minorGrid'],
   },
   {
     enterState: () => {
       m1.setPosition([5, 6]);
-      m1._balls.dim();
-      m1._balls.undim(['ball0', 'ball20', 'ball40', 'ball60', 'ball80']);
-      m1._balls._ball20.setScale(1.5);
-      m1._balls._ball40.setScale(1.5);
-      m1._balls._ball60.setScale(1.5);
-      m1._balls._ball80.setScale(1.5);
+      // m1._balls.setScenarios('highlight');
+      m1._balls.setScenarios('default');
+      m1._balls.get(m1.custom.highlights).map(e => e.setScenario('highlight'));
+      // m1._balls.dim();
+      // m1._balls.undim(['ball0', 'ball20', 'ball40', 'ball60', 'ball80']);
+      // m1._balls._ball20.setScale(1.5);
+      // m1._balls._ball40.setScale(1.5);
+      // m1._balls._ball60.setScale(1.5);
+      // m1._balls._ball80.setScale(1.5);
     },
     hide: ['m1.xAxis', 'm1.yAxis'],
     transition: [
@@ -256,5 +260,5 @@ nav.loadSlides([
 ]);
 
 
-// figure.recorder.loadAudioTrack(new Audio('http://localhost:8081/src/audio-track.mp3'));
-// figure.recorder.loadVideoTrack('http://localhost:8081/src/video-track.json');
+// // figure.recorder.loadAudioTrack(new Audio('http://localhost:8081/src/audio-track.mp3'));
+// // figure.recorder.loadVideoTrack('http://localhost:8081/src/video-track.json');
