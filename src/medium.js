@@ -30,21 +30,21 @@ function addMedium(
     make: 'collection',
     transform: new Transform().scale(1, 1).translate(0, 0),
     elements: [
-      {
-        name: 'minorGrid',
-        make: 'grid',
-        bounds: [0, -A * length / maxValue, length, A * length / maxValue * 2],
-        line: { width: 0.01 },
-        xStep: length / 50,
-        yStep: length / 50,
-      },
+      // {
+      //   name: 'minorGrid',
+      //   make: 'grid',
+      //   bounds: [0, -A * length / maxValue, length, A * length / maxValue * 2],
+      //   line: { width: 0.01 },
+      //   xStep: length / 50,
+      //   yStep: length / 50,
+      // },
       {
         name: 'grid',
         make: 'grid',
         bounds: [0, -A * length / maxValue, length, A * length / maxValue * 2],
         line: { width: 0.03 },
-        xStep: length / 10,
-        yStep: length / 10,
+        xStep: length / 20,
+        yStep: length / 20,
       },
       xAxis('xAxis', 'x', '', length, maxValue),
       yAxis('yAxis', 'y', '', A * length / maxValue, yAxisTitle),
@@ -67,17 +67,22 @@ function addMedium(
       {
         name: 'movePad',
         make: 'primitives.polygon',
-        radius: 0.5,
+        radius: 0.6,
         sides: 8,
-        color: [1, 0, 0, 0],
+        color: [1, 0, 0, 0.4],
         touch: true,
         mods: {
           isMovable: true,
           move: {
+            // bounds: {
+            //   p1: [0, -A],
+            //   p2: [0, A],
+            //   ends: 2,
+            // },
             bounds: {
-              p1: [0, -A],
-              p2: [0, A],
-              ends: 2,
+              translation: {
+                left: 0, right: 0, bottom: -A * length / maxValue, top: A * length / maxValue,
+              },
             },
           },
         },
@@ -124,7 +129,7 @@ function addMedium(
     // if (index === 0) { b.scenarios.highlight = { color: [1, 0, 0, 0.5], scale: [1.3, 1.3] }; }
     // if (index % 20 === 0) { toFront.push(index) }
   });
-  const highlights = xValues.map((x, i) => x % 2 === 0 ? i : -1).filter(i => i > -1).map(i => `ball${i}`);
+  const highlights = xValues.map((x, i) => x % 2 === 0 && x > 0 ? i : -1).filter(i => i > -1).map(i => `ball${i}`);
   balls.toFront(highlights);
   const tracker = medium.add(ball(0, 'Tracker', ballSize));
   tracker.setColor(color3);
