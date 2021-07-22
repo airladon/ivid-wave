@@ -21,7 +21,26 @@ function getDisturbances() {
       })
       .start();
   };
+
+  const sineWave = (med, delay = 0) => {
+    unpause();
+    const { movePad, A } = med.custom;
+    const startTime = time.now();
+    movePad.animations.new('_noStop_disturb_')
+      .delay(delay)
+      .custom({
+        callback: () => {
+          if (!time.isPaused()) {
+            const t = time.now() - startTime;
+            movePad.setPosition(0, A * 0.8 * Math.sin(2 * Math.PI * med.custom.f * t));
+          }
+        },
+        duration: 10000,
+      })
+      .start();
+  };
+
   return {
-    pulse,
+    pulse, sineWave
   };
 }

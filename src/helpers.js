@@ -41,7 +41,7 @@ const yAxis = (name, title, units, AValue, yAxisTitleSide) => ({
         text: `${title}|unitsText|`,
       },
       modifiers: {
-        unitsText: { text: units, font: { size: 0.09 * 4 } },
+        unitsText: { text: units, font: { size: 0.09 * 4 }, offset: [0, -0.2] },
       },
       xAlign: 'left',
       rotation: 0,
@@ -59,14 +59,14 @@ const yAxis = (name, title, units, AValue, yAxisTitleSide) => ({
 .##.....##.##.....##....##.......##....##.....##.##...###.##....##
 .########...#######.....##.......##.....#######..##....##..######.
 */
-const button = (name, position, text) => ({
+const button = (name, position, text, modifiers = {}) => ({
   name,
   make: 'collections.rectangle',
   options: {
     button: true,
     line: { width: 0.04 },
-    label: { text, font: { color: colorLight } },
-    width: 1.3,
+    label: { text, font: { color: colorLight }, modifiers },
+    width: 1.5,
     height: 0.9,
     corner: { radius: 0.2, sides: 3 },
     position,
@@ -74,7 +74,7 @@ const button = (name, position, text) => ({
   },
   mods: {
     isTouchable: true,
-    touchBorder: [0.2, 0.2, 0.2, 0.4],
+    touchBorder: [0.1, 0.2, 0.1, 0.4],
   },
 });
 

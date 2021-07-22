@@ -51,9 +51,10 @@ addFigureElements();
 const m1 = figure.get('m1');
 const timePlot1 = figure.get('timePlot1');
 const resetButton = figure.get('resetButton');
-const pulseButton1 = figure.get('pulseButton1');
+const pulseButton = figure.get('pulseButton');
 // const pulseButton2 = figure.get('pulseButton2');
-// const sineButton = figure.get('sineButton');
+const sineButton = figure.get('sineButton');
+const sine2fButton = figure.get('sine2fButton');
 const freezeButton = figure.get('freezeTimeButton');
 const slowTimeButton = figure.get('slowTimeButton');
 const velocityButton = figure.get('velocityButton');
@@ -70,7 +71,7 @@ const velocityButton = figure.get('velocityButton');
 .##.....##..##..##....##....##....##.....##.##....##..##.....##
 .########..####..######.....##.....#######..##.....##.########.
 */
-const { pulse } = getDisturbances();
+const { pulse, sineWave } = getDisturbances();
 
 
 /*
@@ -178,8 +179,19 @@ velocityButton.notifications.add('onClick', () => {
   }
 });
 
-pulseButton1.onClick = () => {
+pulseButton.onClick = () => {
   pulse(m1, 1);
+};
+
+sineButton.onClick = () => {
+  reset();
+  m1.custom.f = 0.2;
+  sineWave(m1, 0);
+};
+sine2fButton.onClick = () => {
+  reset();
+  m1.custom.f = 0.4;
+  sineWave(m1, 0);
 };
 
 /*
@@ -201,17 +213,51 @@ const nav = figure.addSlideNavigator({
 time.setTimeSpeed(1);
 nav.loadSlides([
   {
-    scenarios: 'default',
-    enterState: () => {
-      m1.setPosition([5, 6]);
-      // m1._balls.dim();
-      // m1._balls.undim(['ball0'])
-      // m1._balls.setScenarios('default');
-      // m1._balls._ball0.setScenario('highlight');
-      // m1._balls.get(m1.custom.highlights).map(e => e.setScenario('highlight'));
+    scenarioCommon: 'default',
+    show: 'p1',
+    // showCommon: 'm1',
+    // hideCommon: ['m1.xAxis', 'm1.yAxis'],
+  },
+  {
+    enterStateCommon: () => {
+      m1._balls.get(m1.custom.highlights).map(e => e.setScenario('highlight'));
     },
-    showCommon: 'm1',
-    hide: ['m1.xAxis', 'm1.yAxis', 'm1.grid'],
+    transition: [
+      { pulse: { 'm1.balls': m1.custom.highlights }, scale: 3 },
+    ],
+  },
+  {
+    transition: { in: 'resetButton' },
+  },
+  {
+    show: ['resetButton'],
+    transition: { in: ['freezeTimeButton', 'freezeTimeLabel'] },
+  },
+  {
+    show: ['resetButton', 'freezeTimeButton', 'freezeTimeLabel'],
+    transition: { in: ['slowTimeLabel', 'slowTimeButton'] },
+  },
+  {    
+    showCommon: [
+      'm1', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton',
+      'slowTimeLabel', 'slowTimeButton', 'timePlot1',
+    ],
+    hideCommon: [],
+    transition: [
+      { scenario: 'm1', target: 'right', duration: 2 },
+      [
+        { in: ['m1.xAxis', 'm1.yAxis'] },
+        { in: 'timePlot1' },
+      ],
+    ],
+  },
+  {
+    scenarioCommon: 'right',
+    transition: { in: ['velocityButton', 'velocity'] },
+  },
+  {
+    show: ['velocityButton', 'velocity'],
+    transition: { in: ['pulseButton'] },
   },
   {
     enterState: () => {
@@ -226,7 +272,7 @@ nav.loadSlides([
       'resetButton',
       'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton',
       'velocity', 'velocityButton',
-      'pulseButton1',
+      'pulseButton', 'sineButton', 'sine2fButton',
     ],
     // hide: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.minorGrid'],
   },

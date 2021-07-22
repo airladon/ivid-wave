@@ -69,7 +69,7 @@ function addMedium(
         make: 'primitives.polygon',
         radius: 0.6,
         sides: 8,
-        color: [1, 0, 0, 0.4],
+        color: [1, 0, 0, 0],
         touch: true,
         mods: {
           isMovable: true,
@@ -108,8 +108,7 @@ function addMedium(
     mods: {
       scenarios: {
         default: { position: defaultPosition, scale: 1 },
-        title: { position: [-2, 0.9], scale: 1 },
-        small: { position: [0.1, 1.5], scale: 1 },
+        right: { position: [9, 6], scale: 1 },
       },
     },
   });
