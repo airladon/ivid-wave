@@ -106,6 +106,7 @@ const reset = () => {
   // setInAnimation(false);
   maxTimeReached = false;
   m1.custom.reset();
+  p1.custom.reset();
   time.reset();
   pause();
 };
@@ -182,13 +183,24 @@ velocityButton.notifications.add('onClick', () => {
 });
 
 pulseButton.onClick = () => {
-  pulse(m1, 1);
+  if (m1.isShown) {
+    pulse(m1, 1);
+  }
+  if (p1.isShown) {
+    pulse(p1, 1);
+  }
 };
 
 sineButton.onClick = () => {
   reset();
-  m1.custom.f = 0.2;
-  sineWave(m1, 0);
+  if (m1.isShown) {
+    m1.custom.f = 0.2;
+    sineWave(m1, 0);
+  }
+  if (p1.isShown) {
+    p1.custom.f = 0.4;
+    sineWave(p1, 0);
+  }
 };
 sine2fButton.onClick = () => {
   reset();
@@ -211,14 +223,13 @@ figure.addCursor();
 const nav = figure.addSlideNavigator({
   nextButton: null, prevButton: null, text: null,
 });
-figure.addFrameRate(10, { font: { color: [1, 0, 0, 1 ]} });
+// figure.addFrameRate(10, { font: { color: [1, 0, 0, 1 ]} });
 time.setTimeSpeed(1);
 nav.loadSlides([
   {
     scenarioCommon: 'default',
-    show: ['p1', '_frameRate_'],
-    // showCommon: 'm1',
-    // hideCommon: ['m1.xAxis', 'm1.yAxis'],
+    showCommon: 'm1',
+    hideCommon: ['m1.xAxis', 'm1.yAxis'],
   },
   {
     enterStateCommon: () => {
@@ -238,6 +249,28 @@ nav.loadSlides([
   {
     show: ['resetButton', 'freezeTimeButton', 'freezeTimeLabel'],
     transition: { in: ['slowTimeLabel', 'slowTimeButton'] },
+  },
+  {
+    show: [
+      'resetButton', 'freezeTimeLabel', 'freezeTimeButton',
+      'slowTimeLabel', 'slowTimeButton',
+    ],
+    transition: [
+      { out: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'] },
+      { in: 'p1' },
+      { in: ['pulseButton', 'sineButton'] },
+    ],
+  },
+  {
+    show: [
+      'resetButton', 'freezeTimeLabel', 'freezeTimeButton',
+      'slowTimeLabel', 'slowTimeButton',
+    ],
+    transition: [
+      { out: ['pulseButton', 'sineButton', 'p1'] },
+      { trigger: 'softReset' },
+      { in: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'] },
+    ],
   },
   {    
     showCommon: [

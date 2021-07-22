@@ -15,7 +15,7 @@ void main() {
   gl_Position = vec4((u_matrix * vec3(x, y, 1)).xy, 0, 1);
   v_col = 0.0;
   if (u_highlight > 0.0) {
-    if (mod(a_position.x, 10.5) == 0.0) {
+    if (mod(a_position.x, 10.8) == 0.0) {
       v_col = 1.0;
     }
   }
@@ -29,15 +29,15 @@ uniform vec4 u_color;
 varying float v_col;
 void main() {
   if (v_col > 0.0) {
-    gl_FragColor = vec4(0, 0.5, 1, 1);
+    gl_FragColor = vec4(0, 0.5, 1, u_color.a);
   }
   if (v_col > 1.0) {
-    gl_FragColor = vec4(1, 0, 0, 1);
+    gl_FragColor = vec4(1, 0, 0, u_color.a);
   }
   if (v_col == 0.0) {
     gl_FragColor = u_color;
-    gl_FragColor.rgb *= gl_FragColor.a;
   }
+  gl_FragColor.rgb *= gl_FragColor.a;
 }`
 
   const points = [];
@@ -46,7 +46,8 @@ void main() {
   const offsets = [];
   const xLocations = [];
   for (let x = 0; x <= length; x += gridStep) {
-    const r = x === 0 ? particleSize * 1.6 : particleSize;
+    console.log(x)
+    const r = (x === 0 || Fig.tools.math.round(x) === 10.8) ? particleSize * 1.6 : particleSize;
     for (let y = -height / 2; y <= height / 2; y += gridStep) {
       // const x1 = x + Fig.tools.math.rand(-gridStep / 4, gridStep / 4);
       // const y1 = y + Fig.tools.math.rand(-gridStep / 4, gridStep / 4);
@@ -68,6 +69,14 @@ void main() {
     name,
     make: 'collection',
     elements: [
+      {
+        name: 'grid',
+        make: 'grid',
+        bounds: [0, -height * 1.5, length, height * 3],
+        line: { width: 0.03 },
+        xStep: length / 20,
+        yStep: length / 20,
+      },
       {
         name: 'particles',
         make: 'gl',
@@ -94,21 +103,29 @@ void main() {
         // mods: { state: { isChanging: true } },
       },
       {
+        name: 'diaphram',
+        make: 'rectangle',
+        height: height * 1.2,
+        width: 0.5,
+        color: [1, 0, 0, 1],
+        corner: { radius: 0.2, sides: 5 },
+      },
+      {
         name: 'movePad',
         make: 'rectangle',
         height: height * 1.2,
         width: 4,
         color: [0, 0, 1, 0],
         mods: {
-        isMovable: true,
-        move: {
-          bounds: {
-            translation: {
-              left: -1.5, right: 1.5, bottom:0, top: 0,
+          isMovable: true,
+          move: {
+            bounds: {
+              translation: {
+                left: -1.5, right: 1.5, bottom:0, top: 0,
+              },
             },
           },
         },
-      },
       },
     ],
     // transform: [['t', 5, 6]],
@@ -117,10 +134,14 @@ void main() {
   const movePad = medium._movePad;
   medium.custom = {
     c: 2,
+    A: 0.5,
+    f: 0.2,
+    movePad,
     recording: new Recorder(10),
     update: (deltaTime) => {
       const newOffsets = Array(offsets.length);
-      const x = movePad.transform.t().x / 10;
+      const x = movePad.transform.t().x;
+      medium._diaphram.setPosition(x, 0);
       medium.custom.recording.record(x, deltaTime);
       for (let i = 0; i < xLocations.length; i += 1) {
         const xOffset = medium.custom.recording.getValueAtTimeAgo(xLocations[i] / medium.custom.c);
@@ -129,7 +150,22 @@ void main() {
         newOffsets[i * 3 + 2] = xOffset;
       }
       medium._particles.drawingObject.updateBuffer('a_offset', newOffsets);
-    }
+    },
+    stop: () => {
+      medium.stop();
+      movePad.animations.cancel('_noStop_disturb_');
+    },
+    reset: () => {
+      medium.custom.stop();
+      movePad.setPosition(0, 0);
+      medium.custom.recording.reset(0);
+    },
+    setVelocity: (velocity) => {
+      medium.custom.c = velocity;
+    },
+    setFrequency: (frequency) => {
+      medium.custom.f = frequency;
+    },
   };
   medium._particles.drawingObject.uniforms.u_highlight.value = [1];
   movePad.notifications.add('setTransform', () => {

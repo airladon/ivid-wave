@@ -14,7 +14,11 @@ function getDisturbances() {
         callback: () => {
           if (!time.isPaused()) {
             const t = time.now() - startTime;
-            movePad.setPosition(0, A * amplitude * Math.exp(-(((t / 2 - 0.6) * 4 - t / 2) ** 2)));
+            if (med.name === 'p1') {
+              movePad.setPosition(1.5 * A * amplitude * Math.exp(-(((t / 2 - 0.6) * 4 - t / 2) ** 2)), 0);
+            } else {
+              movePad.setPosition(0, A * amplitude * Math.exp(-(((t / 2 - 0.6) * 4 - t / 2) ** 2)));
+            }
           }
         },
         duration: 10000,
@@ -32,7 +36,11 @@ function getDisturbances() {
         callback: () => {
           if (!time.isPaused()) {
             const t = time.now() - startTime;
-            movePad.setPosition(0, A * 0.8 * Math.sin(2 * Math.PI * med.custom.f * t));
+            if (med.name === 'p1') {
+              movePad.setPosition(A * 0.8 * Math.sin(2 * Math.PI * med.custom.f * t), 0);
+            } else {
+              movePad.setPosition(0, A * 0.8 * Math.sin(2 * Math.PI * med.custom.f * t));
+            }
           }
         },
         duration: 10000,
