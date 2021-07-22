@@ -49,6 +49,7 @@ let maxTimeReached = false;
 addFigureElements();
 
 const m1 = figure.get('m1');
+const p1 = figure.get('p1');
 const timePlot1 = figure.get('timePlot1');
 const resetButton = figure.get('resetButton');
 const pulseButton = figure.get('pulseButton');
@@ -129,6 +130,7 @@ function update() {
   }
   const deltaTime = time.step();
   if (m1.isShown) { m1.custom.update(deltaTime); }
+  if (p1.isShown) { p1.custom.update(deltaTime); }
   // if (medium1.isShown) { medium1.custom.update(deltaTime); }
   // if (medium2.isShown) { medium2.custom.update(deltaTime); }
   if (timePlot1.isShown) { timePlot1.custom.update(); }
@@ -209,12 +211,12 @@ figure.addCursor();
 const nav = figure.addSlideNavigator({
   nextButton: null, prevButton: null, text: null,
 });
-
+figure.addFrameRate(10, { font: { color: [1, 0, 0, 1 ]} });
 time.setTimeSpeed(1);
 nav.loadSlides([
   {
     scenarioCommon: 'default',
-    show: 'p1',
+    show: ['p1', '_frameRate_'],
     // showCommon: 'm1',
     // hideCommon: ['m1.xAxis', 'm1.yAxis'],
   },

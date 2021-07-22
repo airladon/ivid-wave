@@ -43,5 +43,5 @@ function addFigureElements() {
   const timePlot1 = addTimePlot(
     'timePlot1', 6.5, 10.5, m1.custom.recording, 2.5 * 13 / 10, [1, 6],
   );
-  const pressurePlot = addPressureMedium('p1', 10, 4, 0.03, 0.1);
+  const pressurePlot = addPressureMedium('p1', 14, 3, 0.08, 0.25);
 };

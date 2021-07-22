@@ -14,26 +14,30 @@ void main() {
 }`;
 
   const points = [];
-  const sides = 4;
+  const sides = 10;
   const step = Math.PI * 2 / (sides);
   const r = particleSize;
   const offsets = [];
   const xLocations = [];
   for (let x = 0; x <= length; x += gridStep) {
     for (let y = -height / 2; y <= height / 2; y += gridStep) {
+      // const x1 = x + Fig.tools.math.rand(-gridStep / 30, gridStep / 30);
+      // const y1 = y + Fig.tools.math.rand(-gridStep / 30, gridStep / 30);
+      const x1 = x;
+      const y1 = y;
       for (let j = 0; j < sides; j += 1) {
-        points.push(x, y);
-        points.push(r * Math.cos(step * j) + x, r * Math.sin(step * j) + y);
-        points.push(r * Math.cos(step * (j + 1)) + x, r * Math.sin(step * (j + 1)) + y);
+        points.push(x1, y1);
+        points.push(r * Math.cos(step * j) + x1, r * Math.sin(step * j) + y1);
+        points.push(r * Math.cos(step * (j + 1)) + x1, r * Math.sin(step * (j + 1)) + y1);
         offsets.push(0, 0, 0);
-        xLocations.push(x);
+        xLocations.push(x1);
         // velocities.push(v[0], v[1], v[0], v[1], v[0], v[1]);
       }
       // particles.push(x, y);
     }
   }
   console.log([offsets]);
-  const element = figure.add({
+  const medium = figure.add({
     name,
     make: 'collection',
     elements: [
@@ -69,7 +73,7 @@ void main() {
         move: {
           bounds: {
             translation: {
-              left: -1, right: 1, bottom:0, top: 0,
+              left: -1.5, right: 1.5, bottom:0, top: 0,
             },
           },
         },
@@ -78,6 +82,34 @@ void main() {
     ],
     // transform: [['t', 5, 6]],
     position: [5, 6],
+  });
+  const movePad = medium._movePad;
+  medium.custom = {
+    c: 2,
+    recording: new Recorder(10),
+    update: (deltaTime) => {
+      const newOffsets = Array(offsets.length);
+      const x = movePad.transform.t().x / 5;
+      medium.custom.recording.record(x, deltaTime);
+      for (let i = 0; i < xLocations.length; i += 1) {
+        const xOffset = medium.custom.recording.getValueAtTimeAgo(xLocations[i] / medium.custom.c);
+        newOffsets[i * 3] = xOffset;
+        newOffsets[i * 3 + 1] = xOffset;
+        newOffsets[i * 3 + 2] = xOffset;
+      }
+      medium._particles.drawingObject.updateBuffer('a_offset', newOffsets);
+    }
+  };
+  movePad.notifications.add('setTransform', () => {
+    // if (maxTimeReached) {
+    //   return;
+    // }
+    // // If the movePad has been manually moved, then stop current animations
+    if (movePad.state.isBeingMoved && movePad.isAnimating()) {
+      medium.custom.stop();
+    }
+    unpause();
+    // medium.custom.update();
   });
   // const element = figure.add({
   //   name,
@@ -101,5 +133,5 @@ void main() {
   //   transform: [['t', 5, 6]],
   //   // mods: { state: { isChanging: true } },
   // });
-  return element;
+  return medium;
 }
