@@ -37,7 +37,7 @@ function addFigureElements() {
     // ]),
   ]);
 
-  const m1 = addMedium('m1', 14, 14, 4, [8, 6], false, 0.12, 0.16);
+  const m1 = addMedium('m1', 14, 10, 4, [8, 6], false, 0.12, 0.16);
   // m1.setPosition(0.1, 0);
   const timePlot1 = addTimePlot(
     'timePlot1', 7, 10.5, m1.custom.recording, 4, [1, 6],

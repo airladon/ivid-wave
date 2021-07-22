@@ -114,10 +114,10 @@ figure.fnMap.global.add('softReset', () => {
   pause();
 });
 
-const setTimeSpeed = (timeSpeed, buttonLabel) => {
-  time.setTimeSpeed(timeSpeed);
-  // slowTimeButton.setLabel(buttonLabel);
-};
+// const setTimeSpeed = (timeSpeed, buttonLabel) => {
+//   time.setTimeSpeed(timeSpeed);
+//   // slowTimeButton.setLabel(buttonLabel);
+// };
 
 // Update function for everytime we want to update the particles
 function update() {
@@ -162,23 +162,13 @@ freezeButton.notifications.add('onClick', () => {
 // };
 
 slowTimeButton.notifications.add('onClick', () => {
-  if (time.getTimeSpeed() === 1) {
-    setTimeSpeed(0.3, 'On');
+  if (slowTimeButton.custom.state) {
+    time.setTimeSpeed(0.3);
   } else {
-    setTimeSpeed(1, 'Off');
+    time.setTimeSpeed(1);
   }
 });
 
-// velocityButton.onClick = () => {
-//   reset();
-//   if (m1.custom.c === 0.2) {
-//     m1.custom.setVelocity(0.4);
-//     // velocityButton.setLabel('2v');
-//   } else {
-//     m1.custom.setVelocity(0.2);
-//     // velocityButton.setLabel('1v');
-//   }
-// };
 velocityButton.notifications.add('onClick', () => {
   reset();
   if (velocityButton.custom.state) {
@@ -190,9 +180,6 @@ velocityButton.notifications.add('onClick', () => {
 
 pulseButton1.onClick = () => {
   pulse(m1, 0.5);
-  // reset();
-  // unpause();
-  // startDisturbances([medium1, medium2], 8, true, 'pulse', 0.6);
 };
 
 /*
