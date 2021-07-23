@@ -67,7 +67,6 @@ function addMedium(
         make: 'primitives.polygon',
         radius: 0.2,
         sides: 40,
-        // line: { width: 0.2 },
         color: [1, 0, 0, 1],
       },
       
@@ -81,11 +80,6 @@ function addMedium(
         mods: {
           isMovable: true,
           move: {
-            // bounds: {
-            //   p1: [0, -A],
-            //   p2: [0, A],
-            //   ends: 2,
-            // },
             bounds: {
               translation: {
                 left: 0, right: 0, bottom: -A * length / maxValue, top: A * length / maxValue,
@@ -214,6 +208,17 @@ function addMedium(
     setFrequency: (frequency) => {
       medium.custom.f = frequency;
     },
+    // drawEnvelope: () => {
+    //   envelope.stop();
+    //   envelope.animations.new()
+    //     .custom({
+    //       callback: (p) => {
+    //         envelope.pointsToDraw = Math.floor(envelope.drawingObject.numVertices / 6 * p) * 6;
+    //       },
+    //       duration: 2,
+    //     })
+    //     .start();
+    // },
     // Find the minimum of the displayed sine curve and position the
     // wavelength arrow annotation to align with it.
     setWavelengthPosition: (deltaX = 0) => {
@@ -232,6 +237,18 @@ function addMedium(
     },
     movePad,
   };
+  figure.fnMap.global.add('showEnvelope', () => {
+    envelope.show();
+    envelope.stop();
+      envelope.animations.new()
+        .custom({
+          callback: (p) => {
+            envelope.pointsToDraw = Math.floor(envelope.drawingObject.numVertices / 6 * p) * 6;
+          },
+          duration: 2,
+        })
+        .start();
+  })
   movePad.notifications.add('setTransform', () => {
     if (maxTimeReached) {
       return;

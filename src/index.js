@@ -95,6 +95,8 @@ const unpause = () => {
   freezeButton.custom.off();
   time.unpause();
 };
+figure.fnMap.global.add('pause', () => pause());
+figure.fnMap.global.add('unpause', () => unpause());
 
 
 const stop = () => {
@@ -232,12 +234,23 @@ nav.loadSlides([
   {
     scenarioCommon: 'default',
     showCommon: 'm1',
-    show: ['resetButton'],
-    hideCommon: ['m1.xAxis', 'm1.yAxis'],
-    enterState: () => {
-      m1._ballTracker.undim();
-    }
+    hideCommon: ['m1.xAxis', 'm1.yAxis', 'm1.ballTracker', 'm1.envelope'],
+    exec: [
+      ['0:05', 'pause'],
+      ['0:05', 'showEnvelope'],
+      ['0:07', 'unpause'],
+    ],
   },
+  // {
+  //   hideCommon: ['m1.xAxis', 'm1.yAxis', 'm1.ballTracker'],
+  //   transition: {
+  //     trigger: () => pause(),
+  //     trigger: () => m1.custom.drawEnvelope(),
+  //   },
+  //   steadyState: () => {
+  //     pause();
+  //   },
+  // },
   {
     enterStateCommon: () => {
       m1._balls.get(m1.custom.highlights).map(e => e.setScenario('highlight'));
