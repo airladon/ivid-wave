@@ -19,9 +19,12 @@ const figure = new Fig.Figure({
 // Global colors used in equations.js and slides.js
 const colorText = [1, 1, 0.3, 1];
 const color0 = [1, 0, 0, 1];
+const colorZero = [1, 0, 0, 1];
 const color1 = [0, 0.5, 1, 1];
+const colorOne = [0, 0.8, 1, 1];
 const colorLight = [0.8, 0.8, 0.8, 1];
 const colorDark = [0.3, 0.3, 0.3, 1];
+const colorYellow = [1, 1, 0.3, 1];
 const color3 = [1, 0, 1, 1];
 const color4 = [0.7, 0.7, 0.7, 1];
 const colorOn = [0, 0.8, 0, 1];
@@ -52,6 +55,7 @@ const m1 = figure.get('m1');
 const p1 = figure.get('p1');
 const ocean = figure.get('ocean');
 const timePlot1 = figure.get('timePlot1');
+const eqnSine = figure.get('eqnSine');
 const resetButton = figure.get('resetButton');
 const pulseButton = figure.get('pulseButton');
 // const pulseButton2 = figure.get('pulseButton2');
@@ -226,7 +230,7 @@ sine2fButton.onClick = () => {
 figure.addCursor();
 
 const nav = figure.addSlideNavigator({
-  nextButton: null, prevButton: null, text: null,
+  nextButton: null, prevButton: null, text: null, equation: [eqnSine],
 });
 // figure.addFrameRate(10, { font: { color: [1, 0, 0, 1 ]} });
 time.setTimeSpeed(1);
@@ -234,23 +238,29 @@ nav.loadSlides([
   {
     scenarioCommon: 'default',
     showCommon: 'm1',
+    form: 'yx1eyx0',
+    // show: ['eqnSine'],
     hideCommon: ['m1.xAxis', 'm1.yAxis', 'm1.ballTracker', 'm1.envelope'],
-    exec: [
-      ['0:05', 'pause'],
-      ['0:05', 'showEnvelope'],
-      ['0:07', 'unpause'],
-    ],
+    // steadyState: () => {
+    //   eqnSine.showForm('yx1');
+    // },
+    // exec: [
+    //   ['0:05', 'pause'],
+    //   ['0:05', 'showEnvelope'],
+    //   ['0:07', 'unpause'],
+    // ],
   },
-  // {
-  //   hideCommon: ['m1.xAxis', 'm1.yAxis', 'm1.ballTracker'],
-  //   transition: {
-  //     trigger: () => pause(),
-  //     trigger: () => m1.custom.drawEnvelope(),
-  //   },
-  //   steadyState: () => {
-  //     pause();
-  //   },
-  // },
+  // { form: 'yx1eyx0' },
+  { form: 'yx1eyx0es' },
+  { form: 'yx1estmt1' },
+  { form: 'yx1estmt1expandUnder' },
+  { form: 'yx1estmt1expand' },
+  { form: 'yx1estmt1up' },
+  { form: 'yx1estmt1xv' },
+  { form: 'yx1estmt1fOnV' },
+  { form: 'yx1estmt1fOnVLambdaUp' },
+  { form: 'yx1estmt1fOnVLambda' },
+  { form: 'yx1estmt1fLambda' },
   {
     enterStateCommon: () => {
       m1._balls.get(m1.custom.highlights).map(e => e.setScenario('highlight'));
