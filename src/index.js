@@ -57,6 +57,7 @@ const p1 = figure.get('p1');
 const ocean = figure.get('ocean');
 const timePlot1 = figure.get('timePlot1');
 const eqnSine = figure.get('eqnSine');
+const eqnSineX0 = figure.get('eqnSineX0');
 const resetButton = figure.get('resetButton');
 const pulseButton = figure.get('pulseButton');
 // const pulseButton2 = figure.get('pulseButton2');
@@ -242,9 +243,11 @@ nav.loadSlides([
     form: 'yx1eyx0',
     // show: ['eqnSine'],
     hideCommon: ['m1.xAxis', 'm1.yAxis', 'm1.ballTracker', 'm1.envelope'],
-    // steadyState: () => {
-    //   eqnSine.showForm('yx1');
-    // },
+    steadyState: () => {
+      eqnSineX0.showForm('yx0');
+      eqnSineX0.setPosition(2, 2);
+      console.log(eqnSineX0)
+    },
     // exec: [
     //   ['0:05', 'pause'],
     //   ['0:05', 'showEnvelope'],

@@ -46,4 +46,5 @@ function addFigureElements() {
   const pressurePlot = addPressureMedium('p1', 18, 2, 0.1, 0.4);
   addOceanMedium('ocean', 24, 4, 0.07, 0.4);
   addSineEquation('eqnSine');
+  addSineX0Equation('eqnSineX0');
 };
