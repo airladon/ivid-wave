@@ -106,6 +106,7 @@ const reset = () => {
   stop();
   // setInAnimation(false);
   maxTimeReached = false;
+  m1.custom.trackingTime = 0;
   m1.custom.reset();
   p1.custom.reset();
   time.reset();
@@ -231,7 +232,11 @@ nav.loadSlides([
   {
     scenarioCommon: 'default',
     showCommon: 'm1',
+    show: ['resetButton'],
     hideCommon: ['m1.xAxis', 'm1.yAxis'],
+    enterState: () => {
+      m1._ballTracker.undim();
+    }
   },
   {
     enterStateCommon: () => {

@@ -57,6 +57,12 @@ function addMedium(
       },
       // movePad moves the first particle in the medium
       {
+        name: 'envelope',
+        make: 'polyline',
+        width: 0.1,
+        color: color1,
+      },
+      {
         name: 'firstBall',
         make: 'primitives.polygon',
         radius: 0.2,
@@ -64,6 +70,7 @@ function addMedium(
         // line: { width: 0.2 },
         color: [1, 0, 0, 1],
       },
+      
       {
         name: 'movePad',
         make: 'primitives.polygon',
@@ -122,18 +129,16 @@ function addMedium(
   xValues.forEach((x, index) => {
     balls.add(ball(x, index, ballSize * (x === 0 ? 1 : 1)));
     const b = balls.getElement(`ball${index}`);
-    // b.custom.x = axis.drawToValue(x);
     b.custom.x = x;
     b.custom.drawX = axis.valueToDraw(x);
-    // if (index === 0) { b.scenarios.highlight = { color: [1, 0, 0, 0.5], scale: [1.3, 1.3] }; }
-    // if (index % 20 === 0) { toFront.push(index) }
   });
   const highlights = xValues.map((x, i) => x % 2 === 0 && x > 0 ? i : -1).filter(i => i > -1).map(i => `ball${i}`);
   balls.toFront(highlights);
   const tracker = medium.add(ball(0, 'Tracker', ballSize));
-  tracker.setColor(color3);
+  tracker.scenarios.default.color = color1;
   const movePad = medium.getElement('movePad');
   const firstBall = medium.getElement('firstBall');
+  const envelope = medium.getElement('envelope');
   const wavelength = medium.getElement('wavelength');
   medium.custom = {
     f: 0.2,   // Current frequency of sine wave for medium
@@ -157,10 +162,17 @@ function addMedium(
       // Record the displacement
       medium.custom.recording.record(y, deltaTime);
       // Calculate the displacement of each particle and set it
+      const envelopePoints = [];
       for (let i = 0; i < xValues.length; i += 1) {
         const b = balls[`_ball${i}`];
         const by = medium.custom.recording.getValueAtTimeAgo((b.custom.x) / medium.custom.c);
         b.setPosition(b.custom.drawX, by);
+        if (envelope.isShown) {
+          envelopePoints.push([b.custom.drawX, by]);
+        }
+      }
+      if (envelope.isShown) {
+        envelope.custom.updatePoints({ points: envelopePoints });
       }
 
       // If the tracker is being used, then calculate its current position and
@@ -170,10 +182,11 @@ function addMedium(
         const ballSpaceTime = axis.drawToValue(ballSize * 2) / medium.custom.c;
         // Quantize the space so the tracker particle can only exist on an
         // existing particle and not between
-        const t = Math.floor(
-          (time.now() + medium.custom.trackingTime) / ballSpaceTime,
-        ) * ballSpaceTime;
-
+        // const t = Math.floor(
+        //   (time.now() + medium.custom.trackingTime) / ballSpaceTime,
+        // ) * ballSpaceTime;
+        const t = time.now() + medium.custom.trackingTime;
+        // console.log(time.now(), t)
         // If the tracker is within the axis, then position it appropriately,
         // otherwise position it way off
         const xValue = Math.max(t * medium.custom.c, 0);
