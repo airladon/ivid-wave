@@ -23,6 +23,7 @@ const colorZero = [1, 0, 0, 1];
 const color1 = [0, 0.5, 1, 1];
 const colorOne = [0, 0.8, 1, 1];
 const colorLight = [0.8, 0.8, 0.8, 1];
+const colorMid = [0.6, 0.6, 0.6, 1];
 const colorDark = [0.3, 0.3, 0.3, 1];
 const colorYellow = [1, 1, 0.3, 1];
 const color3 = [1, 0, 1, 1];
@@ -258,9 +259,20 @@ nav.loadSlides([
   { form: 'yx1estmt1up' },
   { form: 'yx1estmt1xv' },
   { form: 'yx1estmt1fOnV' },
-  { form: 'yx1estmt1fOnVLambdaUp' },
-  { form: 'yx1estmt1fOnVLambda' },
-  { form: 'yx1estmt1fLambda' },
+  { form: 'yx1estmt1fOnVLUp' },
+  { form: 'yx1estmt1fOnVL' },
+  { form: 'yx1estmt1fL1' },
+  { form: 'yx1estmt1fLS1' },
+  { form: 'yx1estmt1fL' },
+  { form: 'yx1estmt1fLToX' },
+  { form: 'yxestmt1fL' },
+  { form: 'yxestmt1fLConstT' },
+  { form: 'yxestmt1fLConstX' },
+  { form: 'yxestmt1fL' },
+  { form: 'yxeswUpL' },
+  { form: 'yxewL' },
+  { form: 'yxewLUpK' },
+  { form: 'yxewK' },
   {
     enterStateCommon: () => {
       m1._balls.get(m1.custom.highlights).map(e => e.setScenario('highlight'));
