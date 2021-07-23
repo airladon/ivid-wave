@@ -35,6 +35,44 @@ void main() {
       }
     }
   }
+  console.log(centers)
+  const addCircle = (name, index) => {
+    const position = Fig.getPoint([centers[index], centers[index + 1]]);
+    const radius = ((position.y + 2) * (position.y + 2)) / 40;
+    return {
+      name,
+      make: 'polygon',
+      sides: 20,
+      position,
+      radius,
+      line: { width: 0.03 },
+      color: [1, 1, 0, 1],
+    };
+  };
+  const addHighlight = (name, index) => {
+    const position = Fig.getPoint([centers[index], centers[index + 1]]);
+    return {
+      name,
+      make: 'polygon',
+      sides: 20,
+      position,
+      radius: (position.y + 2) / 20,
+      color: [0, 0.5, 1, 1],
+      mods: {
+        update: (deltaTime) => {
+          // update: (deltaTime) => {
+            const r = ((position.y + 2) * (position.y + 2)) / 40;
+            const f = 0.2;
+            const c = 1.0;
+            const theta = -2.0 * 3.1415926 * f * (deltaTime - position.x / c);
+            const x = position.x + r * Math.cos(theta);
+            const y = position.y + r * Math.sin(theta);
+            figure.get(`ocean.${name}`).setPosition(x, y);
+          // }
+        }
+      }
+    };
+  };
   const medium = figure.add({
     name,
     make: 'collection',
@@ -47,6 +85,10 @@ void main() {
         xStep: length / 20,
         yStep: length / 20,
       },
+      addCircle('c1', 20100),
+      addCircle('c2', 20250),
+      addCircle('c3', 20400),
+      addCircle('c4', 25050),
       {
         name: 'particles',
         make: 'gl',
@@ -73,15 +115,10 @@ void main() {
         // position: [10, 5],
         // mods: { state: { isChanging: true } },
       },
-      // {
-      //   name: 'mask',
-      //   make: 'rectangle',
-      //   width: 19.2,
-      //   height: 7,
-      //   line: { width: 1 },
-      //   color: [0, 0, 0, 1],
-      //   position: [9, 0],
-      // },
+      addHighlight('h1', 20100),
+      addHighlight('h2', 20250),
+      addHighlight('h3', 20400),
+      addHighlight('h4', 25050),
     ],
     // transform: [['t', 5, 6]],
     position: [0, 6],
@@ -95,7 +132,12 @@ void main() {
     // movePad,
     // recording: new Recorder(10),
     update: () => {
-      medium._particles.drawingObject.uniforms.u_time.value = [figure.timeKeeper.now() / 1000];
+      const t = figure.timeKeeper.now() / 1000;
+      medium._particles.drawingObject.uniforms.u_time.value = [t];
+      medium._h1.update(t);
+      medium._h2.update(t);
+      medium._h3.update(t);
+      medium._h4.update(t);
       // const newOffsets = Array(offsets.length);
       // const x = movePad.transform.t().x;
       // medium._diaphram.setPosition(x, 0);

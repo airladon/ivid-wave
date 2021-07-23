@@ -242,21 +242,6 @@ nav.loadSlides([
     ],
   },
   {
-    transition: { in: 'resetButton' },
-  },
-  {
-    show: ['resetButton'],
-    transition: { in: ['freezeTimeButton', 'freezeTimeLabel'] },
-  },
-  {
-    show: ['resetButton', 'freezeTimeButton', 'freezeTimeLabel'],
-    transition: { in: ['slowTimeLabel', 'slowTimeButton'] },
-  },
-  {
-    show: [
-      'resetButton', 'freezeTimeLabel', 'freezeTimeButton',
-      'slowTimeLabel', 'slowTimeButton',
-    ],
     transition: [
       { out: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'] },
       { in: 'p1' },
@@ -266,19 +251,21 @@ nav.loadSlides([
   {
     hide: ['m1'],
     transition: [
-      { out: ['pulseButton', 'sineButton', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton', 'p1'] },
+      { out: ['pulseButton', 'sineButton', 'p1'] },
       { in: ['ocean'] },
     ],
   },
   {
-    show: [
-      'resetButton', 'freezeTimeLabel', 'freezeTimeButton',
-      'slowTimeLabel', 'slowTimeButton',
-    ],
     transition: [
-      { out: ['ocean'] },
-      { trigger: 'softReset' },
-      { in: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton'] },
+      { out: 'ocean' },
+      { in: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'] },
+    ],
+  },
+  {
+    transition: [
+      { in: ['slowTimeLabel', 'slowTimeButton'] },
+      { in: ['freezeTimeButton', 'freezeTimeLabel'] },
+      { in: 'resetButton' },
     ],
   },
   {    
@@ -304,45 +291,49 @@ nav.loadSlides([
     transition: { in: ['pulseButton'] },
   },
   {
-    enterState: () => {
-      m1.setPosition([5, 6]);
-      m1._balls.dim();
-      m1._balls.undim(['ball0'])
-      m1._balls.setScenarios('default');
-      m1._balls.get(m1.custom.highlights).map(e => e.setScenario('highlight'));
-    },
-    showCommon: [
-      'm1',
-      'resetButton',
-      'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton',
-      'velocity', 'velocityButton',
-      'pulseButton', 'sineButton', 'sine2fButton',
-    ],
-    // hide: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.minorGrid'],
+    show: ['velocityButton', 'velocity', 'pulseButton'],
+    transition: { in: ['sineButton', 'sine2fButton'] },
   },
-  {
-    enterState: () => {
-      m1.setPosition([5, 6]);
-      // m1._balls.setScenarios('highlight');
-      m1._balls.setScenarios('default');
-      m1._balls.get(m1.custom.highlights).map(e => e.setScenario('highlight'));
-    },
-    hide: ['m1.xAxis', 'm1.yAxis'],
-    transition: [
-      { pulse: { 'm1.balls': m1.custom.highlights }, scale: 3 },
-    ],
-  },
-  {
-    scenario: 'default',
-    transition: [
-      { scenario: 'm1', target: 'default', duration: 0.1 },
-      { in: ['m1.xAxis', 'm1.yAxis'] },
-      [
-        // { trigger: 'softReset' },
-        { in: 'timePlot1' },
-      ],
-    ],
-  },
+  // {
+  //   enterState: () => {
+  //     m1.setPosition([5, 6]);
+  //     m1._balls.dim();
+  //     m1._balls.undim(['ball0'])
+  //     m1._balls.setScenarios('default');
+  //     m1._balls.get(m1.custom.highlights).map(e => e.setScenario('highlight'));
+  //   },
+  //   showCommon: [
+  //     'm1',
+  //     'resetButton',
+  //     'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton',
+  //     'velocity', 'velocityButton',
+  //     'pulseButton', 'sineButton', 'sine2fButton',
+  //   ],
+  //   // hide: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.minorGrid'],
+  // },
+  // {
+  //   enterState: () => {
+  //     m1.setPosition([5, 6]);
+  //     // m1._balls.setScenarios('highlight');
+  //     m1._balls.setScenarios('default');
+  //     m1._balls.get(m1.custom.highlights).map(e => e.setScenario('highlight'));
+  //   },
+  //   hide: ['m1.xAxis', 'm1.yAxis'],
+  //   transition: [
+  //     { pulse: { 'm1.balls': m1.custom.highlights }, scale: 3 },
+  //   ],
+  // },
+  // {
+  //   scenario: 'default',
+  //   transition: [
+  //     { scenario: 'm1', target: 'default', duration: 0.1 },
+  //     { in: ['m1.xAxis', 'm1.yAxis'] },
+  //     [
+  //       // { trigger: 'softReset' },
+  //       { in: 'timePlot1' },
+  //     ],
+  //   ],
+  // },
 ]);
 
 
