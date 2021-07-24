@@ -47,4 +47,5 @@ function addFigureElements() {
   addOceanMedium('ocean', 24, 4, 0.07, 0.4);
   addSineEquation('eqnSine');
   addSineX0Equation('eqnSineX0');
+  addDiffEquation('eqnDiff');
 };

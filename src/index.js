@@ -19,7 +19,7 @@ const figure = new Fig.Figure({
 // Global colors used in equations.js and slides.js
 const colorText = [1, 1, 0.3, 1];
 const color0 = [1, 0, 0, 1];
-const colorZero = [1, 0, 0, 1];
+const colorZero = [1, 0.3, 0.3, 1];
 const color1 = [0, 0.5, 1, 1];
 const colorOne = [0, 0.8, 1, 1];
 const colorLight = [0.8, 0.8, 0.8, 1];
@@ -58,6 +58,7 @@ const ocean = figure.get('ocean');
 const timePlot1 = figure.get('timePlot1');
 const eqnSine = figure.get('eqnSine');
 const eqnSineX0 = figure.get('eqnSineX0');
+const eqnDiff = figure.get('eqnDiff');
 const resetButton = figure.get('resetButton');
 const pulseButton = figure.get('pulseButton');
 // const pulseButton2 = figure.get('pulseButton2');
@@ -246,7 +247,9 @@ nav.loadSlides([
     steadyState: () => {
       eqnSineX0.showForm('yx0');
       eqnSineX0.setPosition(2, 2);
-      console.log(eqnSineX0)
+      eqnDiff.showForm('d1Inv');
+      eqnDiff.setPosition(12, 2);
+      eqnDiff.goToForm({ form: 'd1Expand', duration: 2, delay: 1, animate: 'move' })
     },
     // exec: [
     //   ['0:05', 'pause'],
