@@ -12,7 +12,7 @@ uniform mat3 u_matrix;
 varying vec2 v_texcoord;
 void main() {
   float twopi = 2.0 * 3.1415926;
-  float L = 10.0;
+  float L = 10.08;
   float f = 0.4;
   float delta = 0.4 * sin(twopi / L * a_position.x - twopi * f * u_time);
   delta = a_offset;
@@ -33,8 +33,6 @@ void main() {
     vars: ['u_color', 'u_texture'],
   };
   const points = [];
-  const sides = 10;
-  const step = Math.PI * 2 / (sides);
   const offsets = [];
   const xLocations = [];
   const y = height;
@@ -63,13 +61,13 @@ void main() {
         uniforms: [{ name: 'u_time', length: 1, type: 'FLOAT' }],
         texture: { src: './title.png', mapTo: new Fig.Rect(0, 0, length, height) },
         color: [1, 0, 0, 1],
-        transform: [['t', 0, -1]],
+        transform: [['t', 0, -0.6]],
       },
       {
         name: 'envelope',
         make: 'polyline',
         width: 0.05,
-        color: color1,
+        color: colorLight,
       },
       {
         name: 'movePadHighlight',
@@ -97,7 +95,7 @@ void main() {
       },
     ],
     // transform: [['t', 12 - length / 2, 6 - height / 2]],
-    position: [6, 5],
+    position: [8, 5],
   });
   // title.setPosition(5, 5);
   console.log(offsets.length)

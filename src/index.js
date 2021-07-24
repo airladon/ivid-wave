@@ -55,6 +55,7 @@ addFigureElements();
 const m1 = figure.get('m1');
 const p1 = figure.get('p1');
 const ocean = figure.get('ocean');
+const examples = figure.get('examples');
 const intro = figure.get('intro');
 const timePlot1 = figure.get('timePlot1');
 const eqnSine = figure.get('eqnSine');
@@ -246,7 +247,7 @@ nav.loadSlides([
     scenarioCommon: 'default',
     showCommon: 'm1',
     // form: 'yx1eyx0',
-    show: ['title', 'intro'],
+    show: ['title', 'examples'],
     hideCommon: ['m1.xAxis', 'm1.yAxis', 'm1.ballTracker', 'm1.envelope'],
     hide: 'm1',
     steadyState: () => {

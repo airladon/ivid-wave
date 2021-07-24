@@ -9,10 +9,12 @@ attribute float a_center;
 uniform float u_style;
 uniform mat3 u_matrix;
 uniform float u_time;
+uniform vec4 u_col;
+varying vec4 v_col;
 void main() {
   float x;
   float y;
-  if (u_style < 1.0) {
+  if (u_style == 0.0) {
     if (a_position.y > 0.0) {
       float r = ((a_position.y + 2.0) * (a_position.y + 2.0)) / 80.0;
       float f = 0.6;
@@ -24,17 +26,39 @@ void main() {
       x = a_position.x;
       y = a_position.y;
     }
+    v_col = u_col;
   }
-  if (u_style > 1.0) {
+  if (u_style == 1.0) {
     float f = 0.3;
-    float L = 4.0;
-    float c = -2.0;
+    float L = 4.5;
+    float c = 2.0;
     float twoPi = 3.131596 * 2.0;
-    float d = 0.3 * sin(twoPi * f * u_time + twoPi / L * a_center);
+    float d = 0.3 * sin(twoPi * f * u_time - twoPi / L * a_center);
     x = a_position.x + d;
     y = a_position.y;
+    v_col = u_col;
+  }
+  if (u_style == 2.0) {
+    float f = 0.1;
+    float c = -2.0;
+    float twoPi = 3.131596 * 2.0;
+    float L = 2.0 * abs(sin(twoPi * u_time * f)) + 2.0;
+    float d = 0.3 * sin(twoPi * f * u_time + twoPi / L * a_position.y);
+    x = a_position.x + 0.0;
+    float refY = 2.0 * sin(twoPi / L * (a_position.x - 5.0));
+    if (a_position.y == 0.0) {
+      // y = (a_position.y) * sin(twoPi / 10.0 * a_position.x) - d / 2.0;
+      y = refY - 0.2 - 0.2 * abs(cos(twoPi / L * (a_position.x - 5.0)));
+    } else { 
+      // y = (a_position.y) * sin(twoPi / 10.0 * a_position.x) - d / 2.0;
+      y = refY;
+    }
+    
+    // y = a_position.y + d;
+    v_col = vec4((L - 2.0) / 2.0, 0, 1.0 - (L - 2.0) / 2.0, 1);
   }
   gl_Position = vec4((u_matrix * vec3(x, y, 1)).xy, 0, 1);
+  // v_col = vec4(1, 1, 0, 0.8);
 }`;
 
   const points = [];
@@ -75,11 +99,11 @@ void main() {
         // matrix)
         vertexShader: {
           src: vertexShader,
-          vars: ['a_position', 'u_matrix', 'u_time', 'u_style', 'a_center'],
+          vars: ['a_position', 'u_matrix', 'u_time', 'u_style', 'a_center', 'u_col'],
         },
         // vertexShader: 'simple',
         // Build in shader with one color for all vertices
-        fragShader: 'simple',
+        fragShader: 'vertexColor',
         // fragShader: {
         //   src: fragmentShader,
         //   vars: ['u_color'],
@@ -91,6 +115,7 @@ void main() {
         uniforms: [
           { name: 'u_time', length: 1, type: 'FLOAT' },
           { name: 'u_style', length: 1, type: 'FLOAT' },
+          { name: 'u_col', length: 4, type: 'FLOAT' },
         ],
         // Element color and mods
         color: [0, 0.5, 1, 0.8],
@@ -103,7 +128,7 @@ void main() {
       // addHighlight('h4', 25050),
     ],
     // transform: [['t', 5, 6]],
-    position: [6, 6],
+    position: [0, 0],
   });
   console.log(medium._particles.drawingObject.uniforms)
   // const movePad = medium._movePad;
@@ -116,7 +141,8 @@ void main() {
     update: () => {
       const t = figure.timeKeeper.now() / 1000;
       medium._particles.drawingObject.uniforms.u_time.value = [t];
-      medium._particles.drawingObject.uniforms.u_style.value = [2.0];
+      medium._particles.drawingObject.uniforms.u_style.value = [1.0];
+      medium._particles.drawingObject.uniforms.u_col.value = [0.5, 0.5, 0.5, 0.2];
       // medium._h1.update(t);
       // medium._h2.update(t);
       // medium._h3.update(t);
