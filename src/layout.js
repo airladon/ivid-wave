@@ -48,4 +48,5 @@ function addFigureElements() {
   addSineEquation('eqnSine');
   addSineX0Equation('eqnSineX0');
   addDiffEquation('eqnDiff');
+  addTitle(2.88 * 4, 1.44 * 4, 0.1);
 };
