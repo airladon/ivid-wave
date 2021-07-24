@@ -55,6 +55,7 @@ addFigureElements();
 const m1 = figure.get('m1');
 const p1 = figure.get('p1');
 const ocean = figure.get('ocean');
+const intro = figure.get('intro');
 const timePlot1 = figure.get('timePlot1');
 const eqnSine = figure.get('eqnSine');
 const eqnSineX0 = figure.get('eqnSineX0');
@@ -149,6 +150,7 @@ function update() {
   if (timePlot1.isShown) { timePlot1.custom.update(); }
   if (ocean.isShown) { ocean.custom.update(deltaTime); }
   if (title.isShown) { title.custom.update(deltaTime); }
+  if (intro.isShown) { intro.custom.update(deltaTime); }
   // if (timePlot2.isShown) { timePlot2.custom.update(); }
 }
 
@@ -244,10 +246,11 @@ nav.loadSlides([
     scenarioCommon: 'default',
     showCommon: 'm1',
     // form: 'yx1eyx0',
-    show: ['title'],
+    show: ['title', 'intro'],
     hideCommon: ['m1.xAxis', 'm1.yAxis', 'm1.ballTracker', 'm1.envelope'],
     hide: 'm1',
     steadyState: () => {
+
     //   eqnSineX0.showForm('yx0');
     //   eqnSineX0.setPosition(2, 2);
     //   eqnDiff.showForm('d1Inv');
@@ -255,7 +258,7 @@ nav.loadSlides([
     //   eqnDiff.goToForm({ form: 'd1Expand', duration: 2, delay: 1, animate: 'move' })
     //   // figure.get('title').setPosition(5, 5);
     //   // console.log(title.getPosition())
-    a.show();
+    // a.show();
     },
     // exec: [
     //   ['0:05', 'pause'],
