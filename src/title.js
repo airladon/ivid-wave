@@ -10,14 +10,14 @@ uniform float u_time;
 uniform mat3 u_matrix;
 varying vec2 v_texcoord;
 void main() {
-  float L = 0.3;
-  float f = 1.0;
+  // float L = 0.3;
+  // float f = 1.0;
   float twopi = 2.0 * 3.1415926;
-  float delta = 0.0 * sin(twopi / L * a_position.x - twopi * f * u_time);
-  float L2 = 10.0;
-  float f2 = 0.4;
-  float delta2 = 0.4 * sin(twopi / L2 * a_position.x - twopi * f2 * u_time);
-  gl_Position = vec4((u_matrix * vec3(a_position.x, a_position.y + delta + delta2, 1)).xy, 0, 1);
+  // float delta = 0.0 * sin(twopi / L * a_position.x - twopi * f * u_time);
+  float L = 10.0;
+  float f = 0.4;
+  float delta = 0.4 * sin(twopi / L * a_position.x - twopi * f * u_time);
+  gl_Position = vec4((u_matrix * vec3(a_position.x, a_position.y + delta, 1)).xy, 0, 1);
   v_texcoord = a_texcoord;
 }`,
   vars: ['a_position', 'a_texcoord', 'u_matrix', 'u_time'],
@@ -61,7 +61,7 @@ void main() {
     texture: { src: './title.png', mapTo: new Fig.Rect(0, 0, length, height) },
     color: [1, 0, 0, 1],
     // position: [3, 6],
-    transform: [['t', 3, 6]],
+    transform: [['t', 12 - length / 2, 6 - height / 2]],
   });
   // title.setPosition(5, 5);
   title.custom.update = () => {
