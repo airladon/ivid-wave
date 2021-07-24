@@ -232,14 +232,6 @@ sine2fButton.onClick = () => {
 ..######..########.####.########..########..######.
 */
 
-const a = figure.add({
-  make: 'rectangle',
-  length: 5,
-  width: 5,
-  position: [5, 5],
-  color: [1, 0, 0, 1],
-  texture: { src: './title.png' },
-});
 figure.addCursor();
 
 const nav = figure.addSlideNavigator({

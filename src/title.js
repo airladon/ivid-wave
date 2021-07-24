@@ -19,7 +19,7 @@ void main() {
   gl_Position = vec4((u_matrix * vec3(a_position.x, a_position.y + delta, 1)).xy, 0, 1);
   v_texcoord = a_texcoord;
 }`,
-  vars: ['a_position', 'a_texcoord', 'u_matrix', 'u_time'],
+  vars: ['a_position', 'a_texcoord', 'u_matrix', 'a_offset', 'u_time'],
   };
   const fragShader = {
     src: `
@@ -57,7 +57,7 @@ void main() {
         name: 'title',
         make: 'gl',
         vertexShader,
-        fragShader,
+        fragShader: 'withTexture',
         vertices: { data: points },
         buffers: [{ name: 'a_offset', data: offsets, size: 1, usage: 'DYNAMIC' }],
         uniforms: [{ name: 'u_time', length: 1, type: 'FLOAT' }],
