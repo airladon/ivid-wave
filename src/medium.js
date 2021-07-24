@@ -248,7 +248,7 @@ function addMedium(
           duration: 2,
         })
         .start();
-  })
+  });
   movePad.notifications.add('setTransform', () => {
     if (maxTimeReached) {
       return;

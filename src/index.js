@@ -20,7 +20,7 @@ const figure = new Fig.Figure({
 const colorText = [1, 1, 0.3, 1];
 const color0 = [1, 0, 0, 1];
 const colorZero = [1, 0.3, 0.3, 1];
-const color1 = [0, 0.5, 1, 1];
+const color1 = [0, 0.5, 0.8, 1];
 const colorOne = [0, 0.8, 1, 1];
 const colorLight = [0.8, 0.8, 0.8, 1];
 const colorMid = [0.6, 0.6, 0.6, 1];
@@ -148,7 +148,7 @@ function update() {
   // if (medium2.isShown) { medium2.custom.update(deltaTime); }
   if (timePlot1.isShown) { timePlot1.custom.update(); }
   if (ocean.isShown) { ocean.custom.update(deltaTime); }
-  if (title.isShown) { title.custom.update(); }
+  if (title.isShown) { title.custom.update(deltaTime); }
   // if (timePlot2.isShown) { timePlot2.custom.update(); }
 }
 
@@ -232,6 +232,14 @@ sine2fButton.onClick = () => {
 ..######..########.####.########..########..######.
 */
 
+const a = figure.add({
+  make: 'rectangle',
+  length: 5,
+  width: 5,
+  position: [5, 5],
+  color: [1, 0, 0, 1],
+  texture: { src: './title.png' },
+});
 figure.addCursor();
 
 const nav = figure.addSlideNavigator({
@@ -243,17 +251,19 @@ nav.loadSlides([
   {
     scenarioCommon: 'default',
     showCommon: 'm1',
-    form: 'yx1eyx0',
+    // form: 'yx1eyx0',
     show: ['title'],
     hideCommon: ['m1.xAxis', 'm1.yAxis', 'm1.ballTracker', 'm1.envelope'],
+    hide: 'm1',
     steadyState: () => {
-      eqnSineX0.showForm('yx0');
-      eqnSineX0.setPosition(2, 2);
-      eqnDiff.showForm('d1Inv');
-      eqnDiff.setPosition(12, 2);
-      eqnDiff.goToForm({ form: 'd1Expand', duration: 2, delay: 1, animate: 'move' })
-      // figure.get('title').setPosition(5, 5);
-      // console.log(title.getPosition())
+    //   eqnSineX0.showForm('yx0');
+    //   eqnSineX0.setPosition(2, 2);
+    //   eqnDiff.showForm('d1Inv');
+    //   eqnDiff.setPosition(12, 2);
+    //   eqnDiff.goToForm({ form: 'd1Expand', duration: 2, delay: 1, animate: 'move' })
+    //   // figure.get('title').setPosition(5, 5);
+    //   // console.log(title.getPosition())
+    a.show();
     },
     // exec: [
     //   ['0:05', 'pause'],
