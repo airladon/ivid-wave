@@ -93,23 +93,42 @@ function addMedium(
         name: 'wavelength',
         make: 'collections.line',
         options: {
-          width: 0.01,
-          color: color1,
+          width: 0.05,
+          color: colorOne,
           arrow: 'barb',
           label: {
             text: '\u03bb',
             offset: 0.04,
-            location: 'bottom',
+            location: 'top',
+            scale: 4,
           },
           p1: [100, 0],
           p2: [101, 0],
+        },
+      },
+      {
+        name: 'velocity',
+        make: 'collections.line',
+        options: {
+          width: 0.05,
+          color: colorOne,
+          arrow: { end: 'barb' },
+          label: {
+            text: 'v',
+            offset: 0.04,
+            style: 'italic',
+            location: 'top',
+            scale: 4,
+          },
+          p1: [10, 1.5],
+          p2: [12, 1.5],
         },
       },
     ],
     mods: {
       scenarios: {
         default: { position: defaultPosition, scale: 1 },
-        right: { position: [9, 6], scale: 1 },
+        summary: { position: [2, 6], scale: 0.8 },
       },
     },
   });
@@ -134,6 +153,7 @@ function addMedium(
   const firstBall = medium.getElement('firstBall');
   const envelope = medium.getElement('envelope');
   const wavelength = medium.getElement('wavelength');
+  const velocity = medium.getElement('velocity');
   medium.custom = {
     f: 0.2,   // Current frequency of sine wave for medium
     c: 1,     // Propagation velocity of medium
@@ -226,14 +246,14 @@ function addMedium(
       const x0Phase = (2 * Math.PI * medium.custom.f * t) % (2 * Math.PI);
       const lambda = medium.custom.c / medium.custom.f;
       const wavelengthDraw = axis.valueToDraw(lambda);
-      const wavelengthStartPhase = Math.PI / 2 * 3;
+      const wavelengthStartPhase = Math.PI / 2;
       let deltaPhase = Math.PI * 2 - (wavelengthStartPhase - x0Phase);
       if (x0Phase > wavelengthStartPhase) {
         deltaPhase = x0Phase - wavelengthStartPhase;
       }
       const xDistanceToStart = deltaPhase / Math.PI / 2 * lambda;
       const xDraw = axis.valueToDraw(xDistanceToStart) + deltaX;
-      wavelength.setEndPoints([xDraw, -A], [xDraw + wavelengthDraw, -A]);
+      wavelength.setEndPoints([xDraw, A], [xDraw + wavelengthDraw, A]);
     },
     movePad,
   };
@@ -248,6 +268,19 @@ function addMedium(
           duration: 2,
         })
         .start();
+  });
+  figure.fnMap.global.add('showWavelength', () => {
+    medium.custom.setWavelengthPosition(0);
+    wavelength.animations.new().dissolveIn(0.5).start();
+  });
+  figure.fnMap.global.add('hideWavelength', () => {
+    wavelength.animations.new().dissolveOut(0.5).start();
+  });
+  figure.fnMap.global.add('showVelocity', () => {
+    velocity.animations.new().dissolveIn(0.5).start();
+  });
+  figure.fnMap.global.add('hideVelocity', () => {
+    velocity.animations.new().dissolveOut(0.5).start();
   });
   movePad.notifications.add('setTransform', () => {
     if (maxTimeReached) {

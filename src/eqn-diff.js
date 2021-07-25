@@ -62,6 +62,12 @@ function addDiffEquation(name) {
       d1Inv: ['d2ydt2', 'equals', 'vSq', ' ', overlay('ddxInv'), 'd2ydx2'],
       d1Expand: ['d2ydt2', 'equals', 'vSq', ' ', 'ddx', ' ', 'dydx'],
     },
+    mods: {
+      scenarios: {
+        default: { position: [12, 6], scale: 1 },
+        summary: { position: [16.5, 6], scale: 1 },
+      },
+    },
   });
 }
 

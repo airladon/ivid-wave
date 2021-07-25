@@ -60,6 +60,7 @@ const intro = figure.get('intro');
 const timePlot1 = figure.get('timePlot1');
 const eqnSine = figure.get('eqnSine');
 const eqnSineX0 = figure.get('eqnSineX0');
+const eqnVLF = figure.get('eqnVLF');
 const eqnDiff = figure.get('eqnDiff');
 const title = figure.get('title');
 const resetButton = figure.get('resetButton');
@@ -234,6 +235,33 @@ sine2fButton.onClick = () => {
 .##....##.##........##..##.....##.##.......##....##
 ..######..########.####.########..########..######.
 */
+figure.fnMap.global.add('startSineWave', () => {
+  reset();
+  m1.custom.f = 0.3;
+  m1.custom.setVelocity(1.5);
+  sineWave(m1, 0);
+});
+
+figure.fnMap.global.add('showVLF', () => {
+  eqnVLF.showForm('vlf');
+  eqnVLF.animations.new().dissolveIn(0.5).start();
+});
+figure.fnMap.global.add('hideVLF', () => {
+  eqnVLF.animations.new().dissolveOut(0.5).start();
+});
+
+
+figure.fnMap.global.add('showSine', () => {
+  eqnSine.showForm('yxewK');
+  eqnSine.animations.new().dissolveIn(0.5).start();
+});
+figure.fnMap.global.add('hideSine', () => {
+  eqnSine.animations.new().dissolveOut(0.5).start();
+});
+figure.fnMap.global.add('showWaveEqn', () => {
+  eqnDiff.showForm('d1');
+  eqnDiff.animations.new().dissolveIn(0.5).start();
+});
 
 figure.addCursor();
 
@@ -245,50 +273,71 @@ time.setTimeSpeed(1);
 nav.loadSlides([
   {
     scenarioCommon: 'default',
-    showCommon: 'm1',
-    // form: 'yx1eyx0',
-    show: ['title', 'examples'],
-    hideCommon: ['m1.xAxis', 'm1.yAxis', 'm1.ballTracker', 'm1.envelope'],
-    hide: 'm1',
-    steadyState: () => {
-
-    //   eqnSineX0.showForm('yx0');
-    //   eqnSineX0.setPosition(2, 2);
-    //   eqnDiff.showForm('d1Inv');
-    //   eqnDiff.setPosition(12, 2);
-    //   eqnDiff.goToForm({ form: 'd1Expand', duration: 2, delay: 1, animate: 'move' })
-    //   // figure.get('title').setPosition(5, 5);
-    //   // console.log(title.getPosition())
-    // a.show();
-    },
+    show: ['title'],
+    exec: [
+      ['0:30', 'showExamples'],
+      ['0:50', 'outTitle'],
+      ['0:50', 'outExamples'],
+    ],
     // exec: [
     //   ['0:05', 'pause'],
     //   ['0:05', 'showEnvelope'],
     //   ['0:07', 'unpause'],
     // ],
   },
+  {
+    scenario: 'summary',
+    show: ['m1'],
+    hide: ['m1.ballTracker', 'm1.envelope', 'm1.grid', 'm1.velocity'],
+    // time: '0:50.5',
+    // steadyState: () => {
+    //   eqnVLF.showForm('vlf');
+    // },
+    time: '0:50.5',
+    transition: [
+      { in: ['m1.grid', 'm1.balls', 'm1.grid', 'm1.yAxis', 'm1.xAxis']}
+    ],
+    execDelta: [
+      [1, 'startSineWave'],
+      [7, 'pause'],
+      [7, 'showVelocity'],
+      [8, 'showWavelength'],
+      [9, 'showVLF'],
+      [10, 'hideWavelength'],
+      [10, 'hideVelocity'],
+      [10, 'hideVLF'],
+      [11, 'unpause'],
+      [14, 'showSine'],
+      [15, 'hideSine'],
+      [16, 'showWaveEqn'],
+    ],
+  },
   // { form: 'yx1eyx0' },
-  { form: 'yx1eyx0es' },
-  { form: 'yx1estmt1' },
-  { form: 'yx1estmt1expandUnder' },
-  { form: 'yx1estmt1expand' },
-  { form: 'yx1estmt1up' },
-  { form: 'yx1estmt1xv' },
-  { form: 'yx1estmt1fOnV' },
-  { form: 'yx1estmt1fOnVLUp' },
-  { form: 'yx1estmt1fOnVL' },
-  { form: 'yx1estmt1fL1' },
-  { form: 'yx1estmt1fLS1' },
-  { form: 'yx1estmt1fL' },
-  { form: 'yx1estmt1fLToX' },
-  { form: 'yxestmt1fL' },
-  { form: 'yxestmt1fLConstT' },
-  { form: 'yxestmt1fLConstX' },
-  { form: 'yxestmt1fL' },
-  { form: 'yxeswUpL' },
-  { form: 'yxewL' },
-  { form: 'yxewLUpK' },
-  { form: 'yxewK' },
+  // { form: 'yx1eyx0es' },
+  // { form: 'yx1estmt1' },
+  // { form: 'yx1estmt1expandUnder' },
+  // { form: 'yx1estmt1expand' },
+  // { form: 'yx1estmt1up' },
+  // { form: 'yx1estmt1xv' },
+  // { form: 'yx1estmt1fOnV' },
+  // { form: 'yx1estmt1fOnVLUp' },
+  // { form: 'yx1estmt1fOnVL' },
+  // { form: 'yx1estmt1fL1' },
+  // { form: 'yx1estmt1fLS1' },
+  // { form: 'yx1estmt1fL' },
+  // { form: 'yx1estmt1fLToX' },
+  // { form: 'yxestmt1fL' },
+  // { form: 'yxestmt1fLConstT' },
+  // { form: 'yxestmt1fLConstX' },
+  // { form: 'yxestmt1fL' },
+  // { form: 'yxeswUpL' },
+  // { form: 'yxewL' },
+  // { form: 'yxewLUpK' },
+  // { form: 'yxewK' },
+  {
+    showCommon: ['m1'],
+    hide: ['m1.xAxis', 'm1.yAxis', 'm1.ballTracker', 'm1.envelope', 'm1.velocity'],
+  },
   {
     enterStateCommon: () => {
       m1._balls.get(m1.custom.highlights).map(e => e.setScenario('highlight'));
@@ -299,7 +348,7 @@ nav.loadSlides([
   },
   {
     transition: [
-      { out: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'] },
+      { out: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall',] },
       { in: 'p1' },
       { in: ['pulseButton', 'sineButton'] },
     ],
@@ -393,5 +442,5 @@ nav.loadSlides([
 ]);
 
 
-// // figure.recorder.loadAudioTrack(new Audio('http://localhost:8081/src/audio-track.mp3'));
+figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.mp3'));
 // // figure.recorder.loadVideoTrack('http://localhost:8081/src/video-track.json');

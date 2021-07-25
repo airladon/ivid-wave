@@ -35,7 +35,6 @@ void main() {
       }
     }
   }
-  console.log(centers)
   const addCircle = (name, index) => {
     const position = Fig.getPoint([centers[index], centers[index + 1]]);
     const radius = ((position.y + 2) * (position.y + 2)) / 40;
@@ -123,7 +122,6 @@ void main() {
     // transform: [['t', 5, 6]],
     position: [0, 6],
   });
-  console.log(medium._particles.drawingObject.uniforms)
   // const movePad = medium._movePad;
   medium.custom = {
     // c: 2,

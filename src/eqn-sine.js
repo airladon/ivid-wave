@@ -40,6 +40,12 @@ function addSineEquation(name) {
     scale: 4,
     position: [4, 8],
     color: colorLight,
+    mods: {
+      scenarios: {
+        default: { position: [12, 6], scale: 1 },
+        summary: { position: [15, 6], scale: 1 },
+      }
+    },
     elements: {
       sin: { style: 'normal' },
       lb1: { symbol: 'bracket', side: 'left', lineWidth: 0.07, width: 0.16 },

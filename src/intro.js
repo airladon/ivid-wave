@@ -130,7 +130,6 @@ void main() {
     // transform: [['t', 5, 6]],
     position: [0, 0],
   });
-  console.log(medium._particles.drawingObject.uniforms)
   // const movePad = medium._movePad;
   medium.custom = {
     // c: 2,

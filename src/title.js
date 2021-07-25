@@ -98,7 +98,6 @@ void main() {
     position: [8, 5],
   });
   // title.setPosition(5, 5);
-  console.log(offsets.length)
   const envelope = title.getElement('envelope');
   const movePad = title.getElement('movePad');
   const movePadHighlight = title.getElement('movePadHighlight');
@@ -128,5 +127,8 @@ void main() {
       title._title.drawingObject.updateBuffer('a_offset', offsets);
     },
   }
+  figure.fnMap.global.add('outTitle', () => {
+    title.animations.new().dissolveOut(0.5).start();
+  });
   return title;
 }
