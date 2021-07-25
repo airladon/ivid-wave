@@ -279,6 +279,10 @@ nav.loadSlides([
       ['0:50', 'outTitle'],
       ['0:50', 'outExamples'],
     ],
+    steadyState: () => {
+      eqnDiff.showForm('d1');
+      eqnDiff.setPosition(10, 3);
+    },
     // exec: [
     //   ['0:05', 'pause'],
     //   ['0:05', 'showEnvelope'],
