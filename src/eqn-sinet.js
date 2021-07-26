@@ -105,7 +105,7 @@ function addSineTEquation(name) {
       oneX: { text: '1', color: colorPositionText },
       oneX1: { text: '1', color: colorPositionText },
       v: { color: colorVelocity },
-      equals1: '  =  ',
+      equals1: ' = ',
       equals2: '  =  ',
       equals3: '  =  ',
       // w1: '\u03c9',
@@ -122,12 +122,18 @@ function addSineTEquation(name) {
       arrow1: { symbol: 'line', width: 0.04, arrow: { start: { head: 'triangle' } } },
       // arrow2: { symbol: 'line', width: 0.04, arrow: { start: { head: 'triangle' } } },
       vin1: { symbol: 'vinculum', lineWidth: 0.05 },
-      tBox1: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0], isTouchable: true },
-      tBox2: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0], isTouchable: true },
-      tBox3: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0], isTouchable: true },
-      tBox4: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0], isTouchable: true },
-      tBox5: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0], isTouchable: true },
-      tBox6: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0], isTouchable: true },
+      tBox1: { symbol: 'tBox', touchBorder: [0.5, 0.5, 0.2, 0.5], isTouchable: true },
+      tBox2: { symbol: 'tBox', touchBorder: [0.25, 0.5, 0.3, 0.5], isTouchable: true },
+      tBox3: { symbol: 'tBox', touchBorder: [0.4, 0.5, 0.4, 0.5], isTouchable: true },
+      tBox4: { symbol: 'tBox', touchBorder: [0, 0.5, -0.2, 0.5], isTouchable: true },
+      tBox5: { symbol: 'tBox', touchBorder: [0.2, 0.5, 0.4, 0.5], isTouchable: true },
+      tBox6: { symbol: 'tBox', touchBorder: [0.2, 0.5, 0.2, 0.5], isTouchable: true },
+      tBox7: { symbol: 'tBox', touchBorder: [0.5, 0.5, 0.2, 0.5], isTouchable: true },
+      tBox8: { symbol: 'tBox', touchBorder: [0.25, 0.5, 0.3, 0.5], isTouchable: true },
+      tBox9: { symbol: 'tBox', touchBorder: [0.4, 0.5, 0.4, 0.5], isTouchable: true },
+      tBox10: { symbol: 'tBox', touchBorder: [0.2, 0.5, -0.15, 0.5], isTouchable: true },
+      tBox11: { symbol: 'tBox', touchBorder: [0.3, 0.5, 0.3, 0.5], isTouchable: true },
+      tBox12: { symbol: 'tBox', touchBorder: [0.3, 0.5, 0.3, 0.5], isTouchable: true },
     },
     phrases: {
       x0: { sub: ['x_1', 'zeroX'] },
@@ -136,7 +142,7 @@ function addSineTEquation(name) {
       x12: { sub: ['x_4', 'oneX1'] },
       f1: { sub: ['f_1', 't_f1'] },
       f2: { sub: ['f_2', 't_f2'] },
-      yx0tequalsF: ['y_1', fn('x0', cont('t_1', 0.25), 1), 'equals1', 'f1', ' ', brac('t_2', 2)],
+      yx0tequalsF: [t('y_1', 7), fn(t('x0', 8), cont(t('t_1', 9), 0.25), 1), ' ', t('equals1', 10), ' ', t('f1', 11), ' ', brac(t('t_2', 12), 2)],
       yx1t: ['y_2', fn('x1', cont('t_3', 0.25), 3)],
       yxt: [t('y_2', 1), fn(t('x_2', 2), cont(t('t_3', 3), 0.25), 3)],
       t1: { sub: ['t_4', 'oneT'] },
@@ -151,7 +157,7 @@ function addSineTEquation(name) {
       yx0t_0: ['y_1'],
       yx0t_1: ['y_1', fn('x0', cont(' ', 0.25), 1)],
       yx0t_2: ['y_1', fn('x0', cont('t_1', 0.25), 1)],
-      yx0t_3: ['y_1', fn('x0', cont('t_1', 0.25), 1), 'equals1'],
+      yx0t_3: ['y_1', fn('x0', cont('t_1', 0.25), 1), ' ', 'equals1'],
       yx0t_4: ['yx0tequalsF'],
       yx1t_0: lines(['yx0tequalsF', ['yx1t']]),
       yx1t_1: lines([
@@ -206,6 +212,7 @@ function addSineTEquation(name) {
       time: { color: colorTimeText },
       time_1: { color: colorTimeText },
       functionOfTime: { text: 'function of time', color: colorTimeText },
+      functionOfTime_1: { text: 'function of time', color: colorTimeText },
       f: { color: colorFText, style: 'italic' },
       t: { color: colorFText, style: 'italic' },
       t_1: { color: colorTimeText, style: 'italic' },
@@ -216,18 +223,18 @@ function addSineTEquation(name) {
       equals: { text: '=', color: colorFText },
       vin1: { symbol: 'vinculum', color: colorTimeText, lineWidth: 0.05 },
       v: { style: 'italic', color: colorTimeText },
-      tBox1: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0], isTouchable: true },
-      tBox2: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0], isTouchable: true },
-      tBox3: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0], isTouchable: true },
-      tBox4: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0], isTouchable: true },
-      tBox5: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0], isTouchable: true },
-      tBox6: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0], isTouchable: true },
-      tBox7: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0], isTouchable: true },
-      tBox8: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0], isTouchable: true },
-      tBox9: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0], isTouchable: true },
-      tBox10: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0], isTouchable: true },
-      tBox11: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0], isTouchable: true },
-      tBox12: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0], isTouchable: true },
+      tBox1: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.5, 0.2], isTouchable: true },
+      tBox2: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0.2], isTouchable: true },
+      tBox3: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.5, 0.2], isTouchable: true },
+      tBox4: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.05, 0.2], isTouchable: true },
+      tBox5: { symbol: 'tBox', touchBorder: [0.2, 0.1, 0.5, 0.2], isTouchable: true },
+      tBox6: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.5, 0], isTouchable: true },
+      tBox7: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.5, 0.2], isTouchable: true },
+      tBox8: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0.2], isTouchable: true },
+      tBox9: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.5, 0.2], isTouchable: true },
+      tBox10: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.5, 0.2], isTouchable: true },
+      tBox11: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.5, 0.2], isTouchable: true },
+      tBox12: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.5, 0.2], isTouchable: true },
     },
     phrases: {
       x0: { sub: ['x', '_0'] },
@@ -246,7 +253,7 @@ function addSineTEquation(name) {
       ], 1.2),
       yx0_2: lines([
         ['The', '  ', t('disturbance', 7), '  ', 'at', '  ', t(['position', '  ', 'x0'], 8), '  ', 'is a ', t('functionOfTime', 9),],
-        [t('equal to', 10), '  ', t('ft', 11), '  ', 'which is also a function of ', t('time', 12), '_.'],
+        [t('equal', 10), '_ to ', t('ft', 11), '  ', 'which is also a ', t('functionOfTime_1', 12), '_.'],
       ], 1.2),
       yx1_0: ['The', '  ', 'disturbance', '  ', 'at', '  ', 'position', '  ', 'x1'],
       yx1_1: lines([
@@ -285,5 +292,12 @@ function addSineTEquation(name) {
   highlight(4, 'equals2', 'is the', [-0.2, 0.2, -0.2, 0.2], 0.1, 1.3, 1.1);
   highlight(5, ['f_2', 't_f2'], ['time dependent disturbance at', '_0_f'], [0.3, 0.1, 0.2, 0.1], 0.1, 1.3, 1.05);
   highlight(6, ['t_6', 'vin1', 'v', 'x_4'], ['time_1', 't_2', 'x_t', 'v'], [0.1, 0.1, 0.1, 0.1], 0.1, 1.3, 1.1);
+
+  highlight(7, 'y_1', 'disturbance', [0.2, 0.1, 0.1, 0.1], 0.1, 1.3, 1.1);
+  highlight(8, ['x_1', 'zeroX'], ['position', '_0'], [0.1, 0.1, 0.1, 0.1], 0.1, 1.3, 1.1);
+  highlight(9, 't_1', 'functionOfTime', [0.1, 0.1, 0.1, 0.1], 0.1, 1.3, 1.1);
+  highlight(10, 'equals1', 'equal', [-0.2, 0.1, -0.2, 0.1], 0.1, 1.3, 1.1);
+  highlight(11, ['f_1', 't_f1'], ['f', 't'], [0.3, 0.1, 0.2, 0.1], [0.3, 0.1, 0.2, 0.1], 1.3, 1.1);
+  highlight(12, ['t_2'], 'functionOfTime_1', [0.1, 0.1, 0.1, 0.1], 0.1, 1.3, 1.1);
 }
 

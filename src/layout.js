@@ -66,4 +66,39 @@ function addFigureElements() {
     line: { width: 0.03 },
     color: colorLight,
   })
+
+  figure.showTouchBorders = () => {
+    const elements = figure.elements.getAllElements();
+    const colors = [
+      [0.5, 0.5, 1, 1],
+      [0, 1, 1, 1],
+      [1, 0, 1, 1],
+      [1, 0, 0, 1],
+      [1, 0.5, 0, 1],
+      [1, 1, 1, 1],
+    ];
+    let colorIndex = 0;
+    for (let i = 0; i < elements.length; i += 1) {
+      const element = elements[i];
+      if (element.isTouchable && element.isShown) {
+        const touchBorder = element.getBorder('figure', 'touchBorder');
+        if (touchBorder[0].length > 0) {
+          for (let j = 0; j < touchBorder.length; j += 1) {
+            figure.add({
+              name: `buffer${i}${j}`,
+              make: 'polyline',
+              options: {
+                points: touchBorder[j],
+                width: 0.02,
+                color: colors[colorIndex % colors.length],
+                dash: [0.1, 0.1],
+                close: true,
+              },
+            });
+          }
+          colorIndex += 1;
+        }
+      }
+    }
+  };
 };
