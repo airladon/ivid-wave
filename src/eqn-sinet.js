@@ -154,10 +154,10 @@ function addSineTEquation(name) {
     //   elementMods: getElementMods(['2', 'pi', 'f', 'lb7', 'rb7', 't_6', 'min2', 't_2', '_1_2', '2_1', 'pi1', 'f_1', 't_3', 'min1', '2_2', 'pi2', 'f_2', 't_1', '_1_1', 'f_2', 'vin1', 'v', 'vin2', 'lambda', 'x_1', 't_5', 'x_1', 'x_2'], colorLight),
     // },
     forms: {
-      yx0t_0: ['y_1'],
-      yx0t_1: ['y_1', fn('x0', cont(' ', 0.25), 1)],
-      yx0t_2: ['y_1', fn('x0', cont('t_1', 0.25), 1)],
-      yx0t_3: ['y_1', fn('x0', cont('t_1', 0.25), 1), ' ', 'equals1'],
+      yx0t_0: [t('y_1', 7),],
+      yx0t_1: [t('y_1', 7),, fn(t('x0', 8), cont(' ', 0.25), 1)],
+      yx0t_2: [t('y_1', 7),, fn(t('x0', 8), cont(t('t_1', 9), 0.25), 1)],
+      yx0t_3: [t('y_1', 7),, fn(t('x0', 8), cont(t('t_1', 9), 0.25), 1), ' ', t('equals1', 10), ' ', t('f1', 11)],
       yx0t_4: ['yx0tequalsF'],
       yx1t_0: lines(['yx0tequalsF', ['yx1t']]),
       yx1t_1: lines([
@@ -245,13 +245,26 @@ function addSineTEquation(name) {
       xOnV: frac('x_t', 1, 'v', 0.7, 0.02, 0.02),
     },
     forms: {
-      yx0_0: ['The', '  ', 'disturbance'], 
-      yx0_1: ['The', '  ', 'disturbance', '  ', 'at', '  ', 'position', '  ', 'x0'],
-      yx0_2: lines([
-        ['The', '  ', 'disturbance', '  ', 'at', '  ', 'position', '  ', 'x0', '  ', 'is a'],
-        ['functionOfTime'],
+      // yx0_0: ['The', '  ', 'disturbance'], 
+      // yx0_1: ['The', '  ', 'disturbance', '  ', 'at', '  ', 'position', '  ', 'x0'],
+      // yx0_2: lines([
+      //   ['The', '  ', 'disturbance', '  ', 'at', '  ', 'position', '  ', 'x0', '  ', 'is a'],
+      //   ['functionOfTime'],
+      // ], 1.2),
+      yx0t_0: lines([
+        ['The', '  ', t('disturbance', 7)],
       ], 1.2),
-      yx0_2: lines([
+      yx0t_1: lines([
+        ['The', '  ', t('disturbance', 7), '  ', 'at', '  ', t(['position', '  ', 'x0'], 8)],
+      ], 1.2),
+      yx0t_2: lines([
+        ['The', '  ', t('disturbance', 7), '  ', 'at', '  ', t(['position', '  ', 'x0'], 8), '  ', 'is a ', t('functionOfTime', 9),],
+      ], 1.2),
+      yx0t_3: lines([
+        ['The', '  ', t('disturbance', 7), '  ', 'at', '  ', t(['position', '  ', 'x0'], 8), '  ', 'is a ', t('functionOfTime', 9),],
+        [t('equal', 10), '_ to ', t('ft', 11)],
+      ], 1.2),
+      yx0t_4: lines([
         ['The', '  ', t('disturbance', 7), '  ', 'at', '  ', t(['position', '  ', 'x0'], 8), '  ', 'is a ', t('functionOfTime', 9),],
         [t('equal', 10), '_ to ', t('ft', 11), '  ', 'which is also a ', t('functionOfTime_1', 12), '_.'],
       ], 1.2),

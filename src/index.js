@@ -291,40 +291,104 @@ figure.fnMap.global.add('showWaveEqn', () => {
 figure.addCursor();
 
 const nav = figure.addSlideNavigator({
-  nextButton: null, prevButton: null, text: null, equation: [eqnSineT],
+  nextButton: null, prevButton: null, text: null, equation: eqnSineT, // equation: {
+  //   eqnSineT, sineTExplanation,
+  // },
 });
+
+const eqnTransition = (eqns) => {
+  // const eqns = Object.keys(eqnOptions);
+  // const forms = Object.values(eqnOptions);
+  return {
+    enterState: () => {
+      eqns.forEach(( e => {
+        [eqn, fromForm] = e;
+        eqn.showForm(fromForm);
+      }));
+    },
+    transition: (done) => {
+      let d = done;
+      eqns.forEach(( e => {
+        [eqn, , toForm] = e;
+        eqn.animations.new()
+          .goToForm({ target: toForm, animate: 'move', duration: 1.5})
+          .whenFinished(d)
+          .start();
+        d = null; 
+      }));
+    },
+    steadyState: () => {
+      eqns.forEach(( e => {
+        [eqn, , toForm] = e;
+        eqn.showForm(toForm);
+      }));
+    }
+  }
+}
 // figure.addFrameRate(10, { font: { color: [1, 0, 0, 1 ]} });
 time.setTimeSpeed(1);
 nav.loadSlides([
+  {
+    scenarioCommon: 'default',
+    steadyState: () => {
+      eqnSineT.showForm('yx0t_0');
+      sineTExplanation.showForm('yx0t_0');
+    },
+  },
+  eqnTransition([[eqnSineT, 'yx0t_0', 'yx0t_1'], [sineTExplanation, 'yx0t_0', 'yx0t_1']]),
+  eqnTransition([[eqnSineT, 'yx0t_1', 'yx0t_2'], [sineTExplanation, 'yx0t_1', 'yx0t_2']]),
+  eqnTransition([[eqnSineT, 'yx0t_2', 'yx0t_3'], [sineTExplanation, 'yx0t_2', 'yx0t_3']]),
+  eqnTransition([[eqnSineT, 'yx0t_3', 'yx0t_4'], [sineTExplanation, 'yx0t_3', 'yx0t_4']]),
+  // {
+  //   form: { eqnSineT: 'yx0t_1', sineTExplanation: 'yx0t_1' },
+  // },
+  // {
+  //   form: { eqnSineT: 'yx0t_2', sineTExplanation: 'yx0t_2' },
+  // },
+  // {
+  //   form: { eqnSineT: 'yx0t_3', sineTExplanation: 'yx0t_3' },
+  // },
+  // {
+  //   enterState: () => {
+  //     eqnSineT.showForm('yx0t_0');
+  //     sineTExplanation.showForm('yx0t_0');
+  //   },
+  //   transition: [
+  //     [
+  //       { gotoForm: eqnSineT, target: 'yx0t_1' },
+  //       { gotoForm: sineTExplanation, target: 'yx0t_1' },
+  //     ]
+  //   ],
+  // },
+
+  // { scenarioCommon: 'default', form: 'yx0t_0' },
+  // { form: 'yx0t_1' },
+  // { form: 'yx0t_2' },
+  // { form: 'yx0t_3' },
   // {
   //   scenarioCommon: 'default',
-  //   form: 'yx0t_4',
-  //   steadyState: () => {
-  //     // figure.get('sineTExplanation').show();
+  //   // form: 'yx0t_4',
+  //   transition: [
+
+  //   ]
+
   //     figure.get('sineTExplanation').showForm('yx0_2');
   //   }
   // },
-  {
-    scenarioCommon: 'default',
-    form: 'yx1t_7',
-    steadyState: () => {
-      // figure.get('sineTExplanation').show();
-      figure.get('sineTExplanation').showForm('summary_1');
-    }
-  },
-  { form: 'yx0t_0' },
-  { form: 'yx0t_1' },
-  { form: 'yx0t_2' },
-  { form: 'yx0t_3' },
   { form: 'yx0t_4' },
   { form: 'yx1t_0' },
   { form: 'yx1t_1' },
-  { form: 'yx1t_2', steadyState: () => eqnSineT.dim(eqnSineT.getPhraseElements(['yx0tequalsF'])) },
+  { form: 'yx1t_2' },
   { form: 'yx1t_3' },
   { form: 'yx1t_4' },
   { form: 'yx1t_5' },
   { form: 'yx1t_6' },
-  { form: 'yx1t_7' },
+  {
+    form: 'yx1t_7',
+    steadyState: () => {
+      figure.get('sineTExplanation').showForm('summary_1');
+    }
+  },
   {
     show: ['diffExplanation2'],
     steadyState: () => {
