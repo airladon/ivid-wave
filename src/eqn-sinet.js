@@ -162,26 +162,30 @@ function addSineTEquation(name) {
       yx1t_0: lines(['yx0tequalsF', ['yx1t']]),
       yx1t_1: lines([
         'yx0tequalsF',
-        ['yx1t', 'equals2', 'y_3', fn('x01', ['t_5', 'min1', 't1'], 4)],
+        ['yx1t', 'equals2', 'y_3', fn('x01', cont('', 0.4), 4)],
       ]), 
       yx1t_2: lines([
         'yx0tequalsF',
+        ['yx1t', 'equals2', 'y_3', fn('x01', ['t_5', 'min1', 't1'], 4)],
+      ]), 
+      yx1t_3: lines([
+        'yx0tequalsF',
         ['yx1t', 'equals2', 'y_3', fn('x01', ['t_5', 'min1', 't1'], 4), 'equals3', 'f2', ' ', brac(['t_6', 'min2', 't12'], 5)],
       ]),
-      yx1t_3: lines([
+      yx1t_4: lines([
         'yx0tequalsF',
         ['yx1t', 'equals2', 'f2', ' ', brac(['t_6', 'min2', 't12'], 5)],
       ]), 
-      yx1t_4: lines([
+      yx1t_5: lines([
         ['yx1t', 'equals2', 'f2', ' ', brac(['t_6', 'min2', 't12'], 5)],
       ]), 
-      yx1t_5: lines([
+      yx1t_6: lines([
         ['yx1t', 'equals2', 'f2', ' ', brac(['t_6', 'min2', top('t12', 'x1OnV', 'arrow1')], 5)],
       ]), 
-      yx1t_6: lines([
+      yx1t_7: lines([
         ['yx1t', 'equals2', 'f2', ' ', brac(['t_6', 'min2', 'x1OnV'], 5)],
       ]),
-      yx1t_7: lines([
+      yx1t_8: lines([
         ['yxt', t('equals2', 4), t('f2', 5), ' ', brac(t(['t_6', 'min2', 'xOnV'], 6), 5)],
       ]),
     },

@@ -383,8 +383,9 @@ nav.loadSlides([
   { form: 'yx1t_4' },
   { form: 'yx1t_5' },
   { form: 'yx1t_6' },
+  { form: 'yx1t_7' },
   {
-    form: 'yx1t_7',
+    form: 'yx1t_8',
     steadyState: () => {
       figure.get('sineTExplanation').showForm('summary_1');
     }
