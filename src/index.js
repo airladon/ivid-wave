@@ -17,6 +17,18 @@ const figure = new Fig.Figure({
 ..######...########..#######..########..##.....##.########..######.
 */
 // Global colors used in equations.js and slides.js
+const colorRed = [1, 0, 0, 1];
+const colorRedText = [1, 0.2, 0.2, 1];
+const colorBlue = [0, 0.5, 0.8, 1];
+const colorBlueText = [0.2, 0.7, 1, 1];
+const colorGreen = [0, 1, 0, 1];
+const colorGreenText = [0.3, 1, 0.3, 1];
+const colorYellow = [1, 1, 0, 1];
+const colorYellowText = [1, 1, 0.3, 1];
+const colorPurple = [1, 0, 1, 1];
+const colorPurpleText = [1, 0.3, 1, 1];
+const colorCyan = [0, 1, 1, 1];
+const colorCyanText = [0.3, 1, 1, 1];
 const colorText = [1, 1, 0.3, 1];
 const color0 = [1, 0, 0, 1];
 const colorZero = [1, 0.3, 0.3, 1];
@@ -25,12 +37,23 @@ const colorOne = [0, 0.8, 1, 1];
 const colorLight = [0.8, 0.8, 0.8, 1];
 const colorMid = [0.6, 0.6, 0.6, 1];
 const colorDark = [0.3, 0.3, 0.3, 1];
-const colorYellow = [1, 1, 0.3, 1];
 const color3 = [1, 0, 1, 1];
 const color4 = [0.7, 0.7, 0.7, 1];
 const colorOn = [0, 0.8, 0, 1];
 const colorOff = [0.4, 0.4, 0.4, 1];
 const colorBackground = [0, 0, 0, 1];
+const colorDisturbanceText = colorRedText;
+const colorPositionText = colorBlueText;
+const colorTimeText = colorYellowText;
+const colorDisturb = colorRed;
+const colorPosition = colorBlue;
+const colorTime = colorYellow;
+const colorF = colorPurple;
+const colorFText = colorPurpleText;
+const colorG = colorGreen;
+const colorGText = colorGreenText;
+const colorVelocity = colorCyan;
+const colorVelocityText = colorCyanText;
 
 
 const { Transform, Point } = Fig;
@@ -59,6 +82,8 @@ const examples = figure.get('examples');
 const intro = figure.get('intro');
 const timePlot1 = figure.get('timePlot1');
 const eqnSine = figure.get('eqnSine');
+const eqnSineT = figure.get('eqnSineT');
+const sineTExplanation = figure.get('sineTExplanation');
 const eqnSineX0 = figure.get('eqnSineX0');
 const eqnVLF = figure.get('eqnVLF');
 const eqnDiff = figure.get('eqnDiff');
@@ -266,11 +291,38 @@ figure.fnMap.global.add('showWaveEqn', () => {
 figure.addCursor();
 
 const nav = figure.addSlideNavigator({
-  nextButton: null, prevButton: null, text: null, equation: [eqnSine],
+  nextButton: null, prevButton: null, text: null, equation: [eqnSineT],
 });
 // figure.addFrameRate(10, { font: { color: [1, 0, 0, 1 ]} });
 time.setTimeSpeed(1);
 nav.loadSlides([
+  {
+    scenarioCommon: 'default',
+    form: 'yx1t_7',
+    steadyState: () => {
+      // figure.get('sineTExplanation').show();
+      figure.get('sineTExplanation').showForm('summary_1');
+    }
+  },
+  { form: 'yx0t_0' },
+  { form: 'yx0t_1' },
+  { form: 'yx0t_2' },
+  { form: 'yx0t_3' },
+  { form: 'yx0t_4' },
+  { form: 'yx1t_0' },
+  { form: 'yx1t_1' },
+  { form: 'yx1t_2', steadyState: () => eqnSineT.dim(eqnSineT.getPhraseElements(['yx0tequalsF'])) },
+  { form: 'yx1t_3' },
+  { form: 'yx1t_4' },
+  { form: 'yx1t_5' },
+  { form: 'yx1t_6' },
+  { form: 'yx1t_7' },
+  {
+    show: ['diffExplanation2'],
+    steadyState: () => {
+      eqnDiff.showForm('d1');
+    },
+  },
   {
     scenarioCommon: 'default',
     show: ['title'],
@@ -279,16 +331,13 @@ nav.loadSlides([
       ['0:50', 'outTitle'],
       ['0:50', 'outExamples'],
     ],
-    steadyState: () => {
-      eqnDiff.showForm('d1');
-      eqnDiff.setPosition(10, 3);
-    },
     // exec: [
     //   ['0:05', 'pause'],
     //   ['0:05', 'showEnvelope'],
     //   ['0:07', 'unpause'],
     // ],
   },
+  
   {
     scenario: 'summary',
     show: ['m1'],

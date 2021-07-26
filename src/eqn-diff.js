@@ -53,7 +53,7 @@ function addDiffEquation(name) {
   const eqn = figure.add({
     name,
     make: 'equation',
-    scale: 4,
+    scale: 6,
     position: [4, 8],
     color: colorLight,
     elements: {
@@ -81,8 +81,8 @@ function addDiffEquation(name) {
       vBox: { symbol: 'tBox', touchBorder: [0.5, 1, 0, 1], isTouchable: true },
       dxBox: { symbol: 'tBox', touchBorder: [0, 0.5, 0.5, 1], isTouchable: true },
       dtBox: { symbol: 'tBox', touchBorder: 0.5, isTouchable: true },
-      braceB: { symbol: 'brace', side: 'bottom', lineWidth: 0.05, width: 0.15 },
-      braceB1: { symbol: 'brace', side: 'bottom', lineWidth: 0.05, width: 0.15 },
+      braceB: { symbol: 'brace', side: 'bottom', lineWidth: 0.05, width: 0.2 },
+      braceB1: { symbol: 'brace', side: 'bottom', lineWidth: 0.05, width: 0.2 },
       braceT: { symbol: 'brace', side: 'top', lineWidth: 0.05, width: 0.15 },
       gradient: 'disturbance gradient',
       gradChange: 'change in gradient over x',
@@ -100,21 +100,74 @@ function addDiffEquation(name) {
     },
     forms: {
       order1: ['dydt', 'equals', 'v', ' ', 'dydx'],
-      d1: ['d2ydt2', 'equals', 'vSq', ' ', 'd2ydx2'],
+      // d1: ['d2ydt2', 'equals', 'vSq', ' ', 'd2ydx2'],
       // d1Touch: ['d2ydt2', 'equals', 'vSq', ' ', 'd2ydx2'],
-      d1Inv1: ['d2ydt2', 'equals', 'vSq', ' ', cont('d2ydx2', 2, 'right')],
-      d1Inv2: ['d2ydt2', 'equals', 'vSq', ' ', cont([overlay('ddxInv'), 'd2ydx2'], 2, 'right')],
-      dyExpand: ['d2ydt2', 'equals', 'vSq', ' ', cont(bot(['ddx', '  ', top('dydx', 'gradient', 'braceT', 0.05, 0.08)], 'gradChange', 'braceB', 0.05, 0.08), 2, 'right')],
+      d1Inv1: ['d2ydt2', 'equals', 'vSq', ' ', cont('d2ydx2', 3, 'right')],
+      d1Inv2: ['d2ydt2', 'equals', 'vSq', ' ', cont([overlay('ddxInv'), 'd2ydx2'], 3, 'right')],
+      dyExpand: ['d2ydt2', 'equals', 'vSq', ' ', cont(bot(['ddx', '  ', top('dydx', 'gradient', 'braceT', 0.05, 0.08)], 'gradChange', 'braceB', 0.05, 0.08), 3, 'right')],
       dVel: ['d2ydt2', 'equals', '  ', bot('vSq', 'velocity', 'arrow1', 0.1, 0.1), '     ', 'd2ydx2'],
       dAcc: [bot('d2ydt2', 'acceleration', 'braceB1', 0.05, 0.08), 'equals', 'vSq', ' ', 'd2ydx2'],
+      d1: {
+        content: ['d2ydt2', 'equals', 'vSq', ' ', 'd2ydx2'],
+        elementMods: {
+          d2: { color: color3 },
+          _2_2: { color: color3 },
+          _2_4: { color: color3 },
+          v2: { color: color3 },
+          t: { color: color3 },
+          d4: { color: color3 },
+          y_2: { color: colorOn },
+          y_1: { color: colorOn },
+          d1: { color: color1 },
+          d3: { color: color1 },
+          _2_1: { color: color1 },
+          _2_3: { color: color1 },
+          v1: { color: color1 },
+          x: { color: color1 },
+        }
+      },
     },
     mods: {
       scenarios: {
-        default: { position: [12, 6], scale: 1 },
+        default: { position: [8, 6], scale: 1 },
         summary: { position: [16.5, 6], scale: 1 },
       },
     },
   });
+  figure.add([
+    {
+      name: 'diffExplanation1',
+      make: 'textLines',
+      text: [
+        '|Disturbance acceleration| is |proportional| to how',
+        'rapidly the |disturbance gradient changes| in space.',
+      ],
+      modifiers: {
+        'Disturbance acceleration': { font: { color: colorOn } },
+        'disturbance gradient changes': { font: { color: color3 } },
+        proportional: { font: { color: color1, style: 'italic' } },
+      },
+      font: { size: 0.8 },
+      color: colorLight,
+      position: [2, 3],
+    },
+    {
+      name: 'diffExplanation2',
+      make: 'textLines',
+      text: [
+        'If the |disturbance| |changes quickly in time| then it will',
+        'also |change quickly over space|.',
+      ],
+      modifiers: {
+        'disturbance': { font: { color: colorOn } },
+        'changes quickly in time': { font: { color: color3 } },
+        'change quickly over space': { font: { color: color1 } },
+      },
+      font: { size: 0.8 },
+      color: colorLight,
+      position: [2, 3],
+    },
+  ]);
   const setColors = (phrases) => {
     eqn.setColor(colorLight);
     const elements = eqn.getPhraseElements(phrases);
