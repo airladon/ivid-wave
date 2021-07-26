@@ -54,4 +54,16 @@ function addFigureElements() {
   addTitle(8, 4, 0.1);
   addIntro(24, 4, 0.1);
   addExamples();
+  figure.add({
+    name: 'highlighter',
+    make: 'collections.rectangle',
+    line: { width: 0.03 },
+    color: colorLight,
+  });
+  figure.add({
+    name: 'highlighter2',
+    make: 'collections.rectangle',
+    line: { width: 0.03 },
+    color: colorLight,
+  })
 };

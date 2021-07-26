@@ -298,6 +298,14 @@ time.setTimeSpeed(1);
 nav.loadSlides([
   {
     scenarioCommon: 'default',
+    form: 'yx0t_4',
+    steadyState: () => {
+      // figure.get('sineTExplanation').show();
+      figure.get('sineTExplanation').showForm('yx0_2');
+    }
+  },
+  {
+    scenarioCommon: 'default',
     form: 'yx1t_7',
     steadyState: () => {
       // figure.get('sineTExplanation').show();
