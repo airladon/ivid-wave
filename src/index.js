@@ -42,14 +42,16 @@ const color4 = [0.7, 0.7, 0.7, 1];
 const colorOn = [0, 0.8, 0, 1];
 const colorOff = [0.4, 0.4, 0.4, 1];
 const colorBackground = [0, 0, 0, 1];
-const colorDisturbanceText = colorRedText;
+const colorDisturbance = colorGreen;
+const colorDisturbanceText = colorGreenText;
 const colorPositionText = colorBlueText;
 const colorTimeText = colorYellowText;
-const colorDisturb = colorRed;
 const colorPosition = colorBlue;
 const colorTime = colorYellow;
-const colorF = colorPurple;
-const colorFText = colorPurpleText;
+const colorF = colorRed;
+const colorFText = colorRedText;
+const colorX = colorPurple;
+const colorXText = colorPurpleText;
 const colorG = colorGreen;
 const colorGText = colorGreenText;
 const colorVelocity = colorCyan;
@@ -125,11 +127,18 @@ const pause = () => {
   time.pause();
   // freezeButton.setLabel('On');
   freezeButton.custom.on();
+  if (m1._envelope2.isShown) {
+    figure.fnMap.global.exec('copyEnvelope');
+    m1._envelope2.setOpacity(1);
+  }
 };
 const unpause = () => {
   // freezeButton.setLabel('Off');
   freezeButton.custom.off();
   time.unpause();
+  if (m1._envelope2.isShown) {
+    m1._envelope2.setOpacity(0);
+  }
 };
 figure.fnMap.global.add('pause', () => pause());
 figure.fnMap.global.add('unpause', () => unpause());
@@ -149,6 +158,9 @@ const reset = () => {
   p1.custom.reset();
   time.reset();
   pause();
+  if (m1._envelope2.isShown) {
+    m1._envelope2.setOpacity(0);
+  }
 };
 figure.fnMap.global.add('reset', () => reset());
 figure.fnMap.global.add('softReset', () => {
@@ -203,7 +215,7 @@ figure.notifications.add('afterDraw', () => {
 resetButton.onClick = () => reset();
 freezeButton.notifications.add('onClick', () => {
   if (time.isPaused()) unpause(); else pause();
-})
+});
 // freezeButton.onClick = () => {
 //   if (time.isPaused()) unpause(); else pause();
 // };
@@ -296,49 +308,201 @@ const nav = figure.addSlideNavigator({
   // },
 });
 
-const eqnTransition = (eqns) => {
-  // const eqns = Object.keys(eqnOptions);
-  // const forms = Object.values(eqnOptions);
-  return {
-    enterState: () => {
-      eqns.forEach(( e => {
-        [eqn, fromForm] = e;
-        eqn.showForm(fromForm);
-      }));
-    },
-    transition: (done) => {
-      let d = done;
-      eqns.forEach(( e => {
-        [eqn, , toForm] = e;
-        eqn.animations.new()
-          .goToForm({ target: toForm, animate: 'move', duration: 1.5})
-          .whenFinished(d)
-          .start();
-        d = null; 
-      }));
-    },
-    steadyState: () => {
-      eqns.forEach(( e => {
-        [eqn, , toForm] = e;
-        eqn.showForm(toForm);
-      }));
-    }
-  }
-}
+// const eqnTransition = (eqns, dim = []) => {
+//   // const eqns = Object.keys(eqnOptions);
+//   // const forms = Object.values(eqnOptions);
+//   return {
+//     enterState: () => {
+//       eqns.forEach(( e => {
+//         [eqn, fromForm] = e;
+//         eqn.showForm(fromForm);
+//       }));
+//     },
+//     transition: (done) => {
+//       eqns.forEach(((e, i) => {
+//         [eqn, , toForm] = e;
+//         eqn.animations.new()
+//           .delay(i)
+//           .goToForm({ target: toForm, animate: 'move', duration: 1.5})
+//           .whenFinished(i == eqns.length - 1 ? done : null)
+//           .start();
+//       }));
+//     },
+//     steadyState: () => {
+//       eqns.forEach(((e) => {
+//         [eqn, , toForm] = e;
+//         eqn.showForm(toForm);
+//         eqn.undim();
+//       if (dim.length > 0) {
+//         dim.forEach(((e) => {
+//           if (e.name.startsWith('tBox')) {
+//             return;
+//           }
+//           e.dim();
+//         }));
+//       }
+//     }
+//   }
+// }
+
+const twoEqn = (eqn1, eqn2, form1, form2, dim = []) => ({
+  enterState: () => {
+    eqn1.showForm(form1);
+    eqn2.showForm(form1);
+    dim.forEach(e => e.dim());
+  },
+  transition: [
+    { goToForm: eqn1, target: form2 },
+    { goToForm: eqn2, target: form2 },
+  ],
+  steadyState: () => {
+    eqn1.showForm(form2);
+    eqn2.showForm(form2);
+  },
+});
 // figure.addFrameRate(10, { font: { color: [1, 0, 0, 1 ]} });
 time.setTimeSpeed(1);
 nav.loadSlides([
   {
-    scenarioCommon: 'default',
+    scenarioCommon: ['default', 'top'],
+    // scenarioCommon: ['default', 'right'],
+    scenario: 'right',
+    showCommon: ['m1', 'timePlot1', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton'],
+    hideCommon: ['m1.ballTracker', 'm1.envelope', 'm1.x0', 'm1.eqn', 'm1.envelope2'],
+    hide: ['timePlot1.eqn'],
+  },
+  {
+    scenario: 'right',
+    transition: { in: 'timePlot1.eqn' },
+  },
+  {
+    scenario: 'right',
+    show: ['sineTExplanation'],
+    enterState: () => {
+      sineTExplanation.showForm('yx0t_4');
+    },
+    transition: [
+      { scenario: ['m1', 'timePlot1'],  target: 'top' },
+      { in: sineTExplanation },
+    ],
+  },
+  {
+    scenario: 'top',
+    show: ['eqnSineT', 'sineTExplanation'],
+    enterState: () => {
+      eqnSineT.showForm('yx0t_4');
+      sineTExplanation.showForm('yx0t_4');
+    },
+    transition: [
+      { in: eqnSineT },
+    ],
+  },
+  {
+    hideCommon: ['m1.ballTracker', 'm1.envelope', 'm1.eqn', 'm1.envelope2'],
+    enterState: () => {
+      eqnSineT.showForm('yx0t_4');
+      sineTExplanation.showForm('yx0t_4');
+    },
+    transition: [
+      { out: sineTExplanation },
+      { dim: eqnSineT.getPhraseElements('yx0tequalsF') },
+      { goToForm: eqnSineT, target: 'yx1t_0' },
+      { in: 'm1.x0' },
+    ],
     steadyState: () => {
-      eqnSineT.showForm('yx0t_0');
-      sineTExplanation.showForm('yx0t_0');
+      eqnSineT.showForm('yx1t_0');
     },
   },
-  eqnTransition([[eqnSineT, 'yx0t_0', 'yx0t_1'], [sineTExplanation, 'yx0t_0', 'yx0t_1']]),
-  eqnTransition([[eqnSineT, 'yx0t_1', 'yx0t_2'], [sineTExplanation, 'yx0t_1', 'yx0t_2']]),
-  eqnTransition([[eqnSineT, 'yx0t_2', 'yx0t_3'], [sineTExplanation, 'yx0t_2', 'yx0t_3']]),
-  eqnTransition([[eqnSineT, 'yx0t_3', 'yx0t_4'], [sineTExplanation, 'yx0t_3', 'yx0t_4']]),
+  // {
+  //   hideCommon: ['m1.ballTracker', 'm1.envelope'],
+  //   enterState: () => {
+  //     eqnSineT.showForm('yx1t_0');
+  //     sineTExplanation.showForm('yx1t_0');
+  //   },
+  //   transition: [
+  //     [
+  //       { out: sineTExplanation },
+  //       { out: eqnSineT },
+  //       { out: 'm1.x0' },
+  //     ],
+  //   ],
+  //   steadyState: () => {
+  //     eqnSineT.showForm('yx1t_0');
+  //   },
+  // },
+  twoEqn(sineTExplanation, eqnSineT, 'yx1t_0', 'yx1t_1', eqnSineT.getPhraseElements('yx0tequalsF')),
+  twoEqn(sineTExplanation, eqnSineT, 'yx1t_1', 'yx1t_2', eqnSineT.getPhraseElements('yx0tequalsF')),
+  twoEqn(sineTExplanation, eqnSineT, 'yx1t_2', 'yx1t_3', eqnSineT.getPhraseElements('yx0tequalsF')),
+  twoEqn(sineTExplanation, eqnSineT, 'yx1t_3', 'yx1t_4', eqnSineT.getPhraseElements('yx0tequalsF')),
+  twoEqn(sineTExplanation, eqnSineT, 'yx1t_4', 'yx1t_5', eqnSineT.getPhraseElements('yx0tequalsF')),
+  twoEqn(sineTExplanation, eqnSineT, 'yx1t_5', 'yx1t_6', eqnSineT.getPhraseElements('yx0tequalsF')),
+  twoEqn(sineTExplanation, eqnSineT, 'yx1t_6', 'yx1t_7', eqnSineT.getPhraseElements('yx0tequalsF')),
+  {
+    enterState: () => {
+      eqnSineT.showForm('yx1t_7');
+      sineTExplanation.showForm('summary_1');
+    },
+    transition: [
+      { in: sineTExplanation },
+    ],
+    steadyState: () => {
+      eqnSineT.showForm('yx1t_7');
+      sineTExplanation.showForm('summary_1');
+      console.log('here')
+    },
+  },
+  {
+    enterState: () => {
+      eqnSineT.showForm('yx1t_7');
+      sineTExplanation.showForm('summary_1');
+    },
+    transition: [
+      [
+        { out: [sineTExplanation, eqnSineT, 'm1.x0', 'timePlot1'] },
+        { scenario: 'm1', target: 'default' },
+      ],
+    ],
+  },
+  {
+    scenario: 'default',
+    showCommon: ['m1', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton'],
+    hideCommon: [{ m1: ['x0', 'ballTracker'] }],
+    transition: [
+      { trigger: 'showEnvelope', duration: 2 },
+      { out: 'm1.balls' },
+      { in: 'm1.eqn' },
+      { trigger: 'copyEnvelope' },
+      { in: 'm1.envelope2', duration: 0 },
+    ],
+  },
+  // eqnTransition([[eqnSineT, 'yx1t_0', 'yx1t_1']], eqnSineT.getPhraseElements('yx0tequalsF')),
+  // eqnTransition([[eqnSineT, 'yx1t_1', 'yx1t_2']], eqnSineT.getPhraseElements('yx0tequalsF')),
+  // eqnTransition([[eqnSineT, 'yx1t_2', 'yx1t_3']]), eqnSineT.getPhraseElements('yx0tequalsF'),
+  // eqnTransition([[eqnSineT, 'yx1t_3', 'yx1t_4']], eqnSineT.getPhraseElements('yx0tequalsF')),
+  // eqnTransition([[eqnSineT, 'yx1t_4', 'yx1t_5']], eqnSineT.getPhraseElements('yx0tequalsF')),
+  // eqnTransition([[eqnSineT, 'yx1t_5', 'yx1t_6']]),
+  // eqnTransition([[eqnSineT, 'yx1t_6', 'yx1t_7']]),
+  // eqnTransition([[eqnSineT, 'yx1t_7', 'yx1t_7'], [sineTExplanation, 'summary_1']]),
+  // eqnTransition([[sineTExplanation, null, 'summary_1'], [eqnSineT, 'yx1t_7', 'yx1t_7']]),
+  {
+    show: ['eqnSineT', 'sineTExplanation'],
+    enterState: () => {
+      eqnSineT.showForm('yx1t_7');
+      sineTExplanation.showForm('summary_1');
+    },
+    transition: [
+      { out: sineTExplanation },
+      [
+        { scenario: ['m1', 'timePlot1'],  target: 'rightSmall' },
+        { scenario: eqnSineT, target: 'bottom' },
+        { dim: eqnSineT.getFormElements('yx1t_7') }
+      ],
+    ],
+    steadyState: () => {
+      eqnSineT.showForm('yx1t_7');
+    },
+  },
+  // eqnTransition([[eqnSineT, 'yx1t_6', 'yx1t_7']]),
   // {
   //   form: { eqnSineT: 'yx0t_1', sineTExplanation: 'yx0t_1' },
   // },

@@ -1,4 +1,4 @@
-function addSineTEquation(name) {
+function addSineXEquation(name) {
   const brac = (content, index) => ({
     brac: [`lb${index}`, content, `rb${index}`],
   });
