@@ -209,6 +209,7 @@ function addMedium(
         summary: { position: [2, 6], scale: 0.8 },
         right: { position: [9.5, 6], scale: 1 },
         top: { position: [10, 8.4], scale: 0.7 },
+        topCenter: { position: [7, 8.4], scale: 0.7 },
         bottom: { position: [10, 3], scale: 0.6 },
         rightSmall: { position: [10, 7], scale: 0.9 },
       },

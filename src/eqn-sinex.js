@@ -63,7 +63,7 @@ function addSineXEquation(name) {
     dimColor: colorLight,
     mods: {
       scenarios: {
-        default: { position: [7, 4], scale: 1 },
+        default: { position: [9, 4], scale: 1 },
         // default: { position: [7, 8], scale: 1 },
         summary: { position: [15, 6], scale: 1 },
         // bottom: { position: [7, 1.5], scale: 1 },
@@ -109,20 +109,11 @@ function addSineXEquation(name) {
       v: { color: colorVelocity },
       equals1: ' = ',
       equals2: '  =  ',
-      equals3: '  =  ',
-      // w1: '\u03c9',
       min1: '  \u2212  ',
       min2: '  \u2212  ',
-      // min2: '  \u2212  ',
-      // min3: '  \u2212  ',
       comma1: ' , ',  
       comma3: ' , ',
-      comma4: ' , ',
-      // comma3: ' , ',
-      // lambda: '\u03bb',
-      // lambda1: '\u03bb',
       arrow1: { symbol: 'line', width: 0.04, arrow: { start: { head: 'triangle' } } },
-      // arrow2: { symbol: 'line', width: 0.04, arrow: { start: { head: 'triangle' } } },
       vin1: { symbol: 'vinculum', lineWidth: 0.05 },
       tBox1: { symbol: 'tBox', touchBorder: [0.5, 0.5, 0.2, 0.5], isTouchable: true },
       tBox2: { symbol: 'tBox', touchBorder: [0.25, 0.5, 0.3, 0.5], isTouchable: true },
@@ -130,21 +121,22 @@ function addSineXEquation(name) {
       tBox4: { symbol: 'tBox', touchBorder: [0, 0.5, -0.2, 0.5], isTouchable: true },
       tBox5: { symbol: 'tBox', touchBorder: [0.2, 0.5, 0.4, 0.5], isTouchable: true },
       tBox6: { symbol: 'tBox', touchBorder: [0.2, 0.5, 0.2, 0.5], isTouchable: true },
-      tBox7: { symbol: 'tBox', touchBorder: [0.5, 0.5, 0.2, 0.5], isTouchable: true },
-      tBox8: { symbol: 'tBox', touchBorder: [0.25, 0.5, 0.3, 0.5], isTouchable: true },
-      tBox9: { symbol: 'tBox', touchBorder: [0.4, 0.5, 0.4, 0.5], isTouchable: true },
+      tBox7: { symbol: 'tBox', touchBorder: [0.5, 0.5, 0.2, 0.6], isTouchable: true },
+      tBox8: { symbol: 'tBox', touchBorder: [0.25, 0.5, 0.3, 0.6], isTouchable: true },
+      tBox9: { symbol: 'tBox', touchBorder: [0.4, 0.6, 0.4, 0.5], isTouchable: true },
       tBox10: { symbol: 'tBox', touchBorder: [0.2, 0.5, -0.15, 0.5], isTouchable: true },
-      tBox11: { symbol: 'tBox', touchBorder: [0.3, 0.5, 0.3, 0.5], isTouchable: true },
-      tBox12: { symbol: 'tBox', touchBorder: [0.3, 0.5, 0.3, 0.5], isTouchable: true },
+      tBox11: { symbol: 'tBox', touchBorder: [0.05, 0.3, 0.1, 0.3], isTouchable: true },
     },
     phrases: {
       x0: { sub: ['x_1', 'zeroX'] },
       x01: { sub: ['x_3', 'zeroX1'] },
       x1: { sub: ['x_2', 'oneX'] },
       x12: { sub: ['x_4', 'oneX1'] },
-      f1: { sub: ['f_1', 't_f1'] },
-      f2: { sub: ['f_2', 't_f2'] },
-      yx0tequalsF: [t('y_1', 7), fn(t('x0', 8), cont(t('t_1', 9), 0.25), 1), ' ', t('equals1', 10), ' ', t('f1', 11), ' ', brac(t('t_2', 12), 2)],
+      // f1: { sub: ['f_1', 't_f1'] },
+      f1: 'f_1',
+      // f2: { sub: ['f_2', 't_f2'] },
+      f2: 'f_2',
+      yx0tequalsF: [t('y_1', 7), fn(t('x0', 8), cont(t('t_1', 9), 0.25), 1), ' ', t('equals1', 10), ' ', t(['f1', ' ', brac('t_2', 2)], 11)],
       yx1t: ['y_2', fn('x1', cont('t_3', 0.25), 3)],
       yxt: [t('y_2', 1), fn(t('x_2', 2), cont(t('t_3', 3), 0.25), 3)],
       t1: { sub: ['t_4', 'oneT'] },
@@ -152,42 +144,28 @@ function addSineXEquation(name) {
       x1OnV: frac('x12', 1, 'v', 0.8),
       xOnV: frac('x_4', 1, 'v', 0.8),
     },
-    // formDefaults: {
-    //   elementMods: getElementMods(['2', 'pi', 'f', 'lb7', 'rb7', 't_6', 'min2', 't_2', '_1_2', '2_1', 'pi1', 'f_1', 't_3', 'min1', '2_2', 'pi2', 'f_2', 't_1', '_1_1', 'f_2', 'vin1', 'v', 'vin2', 'lambda', 'x_1', 't_5', 'x_1', 'x_2'], colorLight),
-    // },
     forms: {
-      yx0t_0: [t('y_1', 7),],
-      yx0t_1: [t('y_1', 7),, fn(t('x0', 8), cont(' ', 0.25), 1)],
-      yx0t_2: [t('y_1', 7),, fn(t('x0', 8), cont(t('t_1', 9), 0.25), 1)],
-      yx0t_3: [t('y_1', 7),, fn(t('x0', 8), cont(t('t_1', 9), 0.25), 1), ' ', t('equals1', 10), ' ', t('f1', 11)],
+      // yx0t_0: [t('y_1', 7),],
+      // yx0t_1: [t('y_1', 7),, fn(t('x0', 8), cont(' ', 0.25), 1)],
+      // yx0t_2: [t('y_1', 7),, fn(t('x0', 8), cont(t('t_1', 9), 0.25), 1)],
+      // yx0t_3: [t('y_1', 7),, fn(t('x0', 8), cont(t('t_1', 9), 0.25), 1), ' ', t('equals1', 10), ' ', t('f_1', 11)],
       yx0t_4: ['yx0tequalsF'],
       yx1t_0: lines(['yx0tequalsF', ['yx1t']]),
       yx1t_1: lines([
         'yx0tequalsF',
-        ['yx1t', 'equals2', 'y_3', fn('x01', cont('', 0.4), 4)],
-      ]), 
+        ['yx1t', 'equals2', 'f2'],
+      ]),
       yx1t_2: lines([
         'yx0tequalsF',
-        ['yx1t', 'equals2', 'y_3', fn('x01', ['t_5', 'min1', 't1'], 4)],
-      ]), 
-      yx1t_3: lines([
-        'yx0tequalsF',
-        ['yx1t', 'equals2', 'y_3', fn('x01', ['t_5', 'min1', 't1'], 4), 'equals3', 'f2', ' ', brac(['t_6', 'min2', 't12'], 5)],
-      ]),
-      // yx1t_4: lines([
-      //   'yx0tequalsF',
-      //   ['yx1t', 'equals2', 'f2', ' ', brac(['t_6', 'min2', 't12'], 5)],
-      // ]), 
-      yx1t_4: lines([[],
         ['yx1t', 'equals2', 'f2', ' ', brac(['t_6', 'min2', 't12'], 5)],
-      ]), 
-      yx1t_5: lines([[],
+      ]),
+      yx1t_3: lines([[],
         ['yx1t', 'equals2', 'f2', ' ', brac(['t_6', 'min2', top('t12', 'x1OnV', 'arrow1')], 5)],
-      ]), 
-      yx1t_6: lines([[],
+      ]),
+      yx1t_4: lines([[],
         ['yx1t', 'equals2', 'f2', ' ', brac(['t_6', 'min2', 'x1OnV'], 5)],
       ]),
-      yx1t_7: lines([
+      yx1t_5: lines([
         ['yxt', t('equals2', 4), t('f2', 5), ' ', brac(t(['t_6', 'min2', 'xOnV'], 6), 5)],
       ]),
     },
@@ -223,16 +201,18 @@ function addSineXEquation(name) {
       t: { color: colorFText, style: 'italic' },
       t_1: { color: colorTimeText, style: 'italic' },
       t_2: { color: colorTimeText, style: 'italic' },
-      before: { color: colorTimeText },
-      'time dependent disturbance at': { color: colorFText },
+      // before: { color: colorTimeText },
+      ago: { color: colorTimeText },
+      'disturbance that happened at': { color: colorFText },
       'any position': { color: colorPositionText },
+      'any time': { color: colorTimeText },
       equals: { text: '=', color: colorFText },
       vin1: { symbol: 'vinculum', color: colorTimeText, lineWidth: 0.05 },
       v: { style: 'italic', color: colorTimeText },
       tBox1: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.5, 0.2], isTouchable: true },
       tBox2: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0.2], isTouchable: true },
-      tBox3: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.5, 0.2], isTouchable: true },
-      tBox4: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.05, 0.2], isTouchable: true },
+      tBox3: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.2, 0.2], isTouchable: true },
+      tBox4: { symbol: 'tBox', touchBorder: [0.05, 0.2, 0.05, 0.2], isTouchable: true },
       tBox5: { symbol: 'tBox', touchBorder: [0.2, 0.1, 0.5, 0.2], isTouchable: true },
       tBox6: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.5, 0], isTouchable: true },
       tBox7: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.5, 0.2], isTouchable: true },
@@ -240,52 +220,58 @@ function addSineXEquation(name) {
       tBox9: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.5, 0.2], isTouchable: true },
       tBox10: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.5, 0.2], isTouchable: true },
       tBox11: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.5, 0.2], isTouchable: true },
-      tBox12: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.5, 0.2], isTouchable: true },
+      // tBox12: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.5, 0.2], isTouchable: true },
     },
     phrases: {
       x0: { sub: ['x', '_0'] },
       x1: { sub: ['x_1', '_1'] },
-      ft: { sub: ['f', 't'] },
+      // ft: { sub: ['f', 't'] },
+      ft: 'f',
       t1: { sub: ['t_1', '_1_1'] },
       xe0: ['x_f', ' ', 'equals', ' ', '_0_f' ],
       xOnV: frac('x_t', 1, 'v', 0.7, 0.02, 0.02),
     },
     forms: {
-      // yx0_0: ['The', '  ', 'disturbance'], 
-      // yx0_1: ['The', '  ', 'disturbance', '  ', 'at', '  ', 'position', '  ', 'x0'],
-      // yx0_2: lines([
-      //   ['The', '  ', 'disturbance', '  ', 'at', '  ', 'position', '  ', 'x0', '  ', 'is a'],
-      //   ['functionOfTime'],
+      // yx0t_0: lines([
+      //   ['The', '  ', t('disturbance', 7)],
       // ], 1.2),
-      yx0t_0: lines([
-        ['The', '  ', t('disturbance', 7)],
-      ], 1.2),
-      yx0t_1: lines([
-        ['The', '  ', t('disturbance', 7), '  ', 'at', '  ', t(['position', '  ', 'x0'], 8)],
-      ], 1.2),
-      yx0t_2: lines([
-        ['The', '  ', t('disturbance', 7), '  ', 'at', '  ', t(['position', '  ', 'x0'], 8), '  ', 'is a ', t('functionOfTime', 9),],
-      ], 1.2),
-      yx0t_3: lines([
-        ['The', '  ', t('disturbance', 7), '  ', 'at', '  ', t(['position', '  ', 'x0'], 8), '  ', 'is a ', t('functionOfTime', 9),],
-        [t('equal', 10), '_ to ', t('ft', 11)],
-      ], 1.2),
+      // yx0t_1: lines([
+      //   ['The', '  ', t('disturbance', 7), '  ', 'at', '  ', t(['position', '  ', 'x0'], 8)],
+      // ], 1.2),
+      // yx0t_2: lines([
+      //   ['The', '  ', t('disturbance', 7), '  ', 'at', '  ', t(['position', '  ', 'x0'], 8), '  ', 'is a ', t('functionOfTime', 9),],
+      // ], 1.2),
+      // yx0t_3: lines([
+      //   ['The', '  ', t('disturbance', 7), '  ', 'at', '  ', t(['position', '  ', 'x0'], 8), '  ', 'is a ', t('functionOfTime', 9),],
+      //   [t('equal', 10), '_ to ', t('ft', 11)],
+      // ], 1.2),
+      // yx0t_4: lines([
+      //   ['The', '  ', t('disturbance', 7), '  ', 'at', '  ', t(['position', '  ', 'x0'], 8), '  ', 'is a ', t('functionOfTime', 9),],
+      //   [t('equal', 10), '_ to ', t('ft', 11), '  ', 'which is also a ', t('functionOfTime_1', 12), '_.'],
+      // ], 1.2),
+      // yx0t_4: lines([
+      //   ['The', '  ', t('disturbance', 7), '  ', 'at', '  ', t(['position', '  ', 'x0'], 8), '  ', 'is a ', t('functionOfTime', 9),],
+      //   [t('equal', 10), '_ to ', t('ft', 11), '_.'],
+      // ], 1.2),
       yx0t_4: lines([
-        ['The', '  ', t('disturbance', 7), '  ', 'at', '  ', t(['position', '  ', 'x0'], 8), '  ', 'is a ', t('functionOfTime', 9),],
-        [t('equal', 10), '_ to ', t('ft', 11), '  ', 'which is also a ', t('functionOfTime_1', 12), '_.'],
+        ['The', '  ', t('disturbance', 7), '  ', 'at', '  ', t(['position', '  ', 'x0'], 8), '  ', 'is a ', t('functionOfTime', 9), '  ', t('equal', 10), '_ to ', t('ft', 11), '_.'],
       ], 1.2),
-      yx1_0: ['The', '  ', 'disturbance', '  ', 'at', '  ', 'position', '  ', 'x1'],
-      yx1_1: lines([
-        ['The', '  ', 'disturbance', '  ', 'at', '  ', 'somePosition', '  ', 'x1', '  ', 'is equal to'],
-        ['as the ', 'disturbance_1', '_ at', '  ', 'x0', ' ', '_, ', 'someTime', '  ', 't1', '  ', 'ago' ],
-      ], 1.2),
+      // yx1_0: ['The', '  ', 'disturbance', '  ', 'at', '  ', 'position', '  ', 'x1'],
+      // yx1_1: lines([
+      //   ['The', '  ', 'disturbance', '  ', 'at', '  ', 'somePosition', '  ', 'x1', '  ', 'is equal to'],
+      //   ['as the ', 'disturbance_1', '_ at', '  ', 'x0', ' ', '_, ', 'someTime', '  ', 't1', '  ', 'ago' ],
+      // ], 1.2),
+      // summary_1: lines([
+      //   ['The', '  ', t('disturbance', 1), '_ at ', t(['any position', '  ', 'x_1'], 2), '  ', 'and', '  ', t(['time', '  ', 't_1'], 3), '  ', t('is the', 4)],
+      //   [t(['time dependent disturbance at', '  ', 'xe0'], 5), '  ', 'at ', t(['time_1', '  ', 'xOnV', '  ', 'before', '  ',  't_2'], 6), '_.'],
+      // ], 1.2),
       summary_1: lines([
-        ['The', '  ', t('disturbance', 1), '_ at ', t(['any position', '  ', 'x_1'], 2), '  ', 'and', '  ', t(['time', '  ', 't_1'], 3), '  ', t('is the', 4)],
-        [t(['time dependent disturbance at', '  ', 'xe0'], 5), '  ', 'at ', t(['time_1', '  ', 'xOnV', '  ', 'before', '  ',  't_2'], 6), '_.'],
+        ['The', '  ', t('disturbance', 1), '_ at ', t(['any position', '  ', 'x_1'], 2), '  ', 'and', '  ', t(['any time', '  ', 't_1'], 3), '  ', t('is the', 4)],
+        [t(['disturbance that happened at', '  ', 'xe0'], 5), '  ', 'at ', t(['time_1', '  ', 'xOnV', '  ', 'ago'], 6), '_.'],
       ], 1.2),
     },
   });
-  for (let i = 1; i <= 12; i += 1) {
+  for (let i = 1; i <= 11; i += 1) {
     const d = description.get(`tBox${i}`);
     const e = eqn.get(`tBox${i}`);
     d.dimColor = [0, 0, 0, 0];
@@ -315,16 +301,16 @@ function addSineXEquation(name) {
   }
   highlight(1, 'y_2', 'disturbance', [0.2, 0.2, 0.1, 0.2], 0.1, 1.3, 1.1);
   highlight(2, 'x_2', ['any position', 'x_1'], [0.1, 0.2, 0.1, 0.2], 0.1, 1.3, 1.1);
-  highlight(3, 't_3', ['time', 't_1'], [0.1, 0.1, 0.1, 0.1], 0.1, 1.3, 1.1);
+  highlight(3, 't_3', ['any time', 't_1'], [0.1, 0.2, 0.15, 0.05], 0.1, 1.3, 1.1);
   highlight(4, 'equals2', 'is the', [-0.2, 0.2, -0.2, 0.2], 0.1, 1.3, 1.1);
-  highlight(5, ['f_2', 't_f2'], ['time dependent disturbance at', '_0_f'], [0.3, 0.1, 0.2, 0.1], 0.1, 1.3, 1.05);
-  highlight(6, ['t_6', 'vin1', 'v', 'x_4'], ['time_1', 't_2', 'x_t', 'v'], [0.1, 0.1, 0.1, 0.1], 0.1, 1.3, 1.1);
+  highlight(5, ['f_2'], ['disturbance that happened at', '_0_f'], [0.3, 0.1, 0.3, 0.1], 0.1, 1.3, 1.05);
+  highlight(6, ['t_6', 'vin1', 'v', 'x_4'], ['time_1', 'ago', 'x_t', 'v'], [0.1, 0.1, 0.1, 0.1], 0.1, 1.3, 1.1);
 
   highlight(7, 'y_1', 'disturbance', [0.2, 0.1, 0.1, 0.1], 0.1, 1.3, 1.1);
   highlight(8, ['x_1', 'zeroX'], ['position', '_0'], [0.1, 0.1, 0.1, 0.1], 0.1, 1.3, 1.1);
   highlight(9, 't_1', 'functionOfTime', [0.1, 0.1, 0.1, 0.1], 0.1, 1.3, 1.1);
   highlight(10, 'equals1', 'equal', [-0.2, 0.1, -0.2, 0.1], 0.1, 1.3, 1.1);
-  highlight(11, ['f_1', 't_f1'], ['f', 't'], [0.3, 0.1, 0.2, 0.1], [0.3, 0.1, 0.2, 0.1], 1.3, 1.1);
-  highlight(12, ['t_2'], 'functionOfTime_1', [0.1, 0.1, 0.1, 0.1], 0.1, 1.3, 1.1);
+  highlight(11, ['f_1', 't_2'], ['f'], [0.3, 0.15, 0.5, 0.35], [0.25, 0.1, 0.3, 0.1], 1.3, 1.1);
+  // highlight(12, ['t_2'], 'functionOfTime_1', [0.1, 0.1, 0.1, 0.1], 0.1, 1.3, 1.1);
 }
 

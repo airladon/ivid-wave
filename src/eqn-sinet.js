@@ -83,11 +83,12 @@ function addSineTEquation(name) {
       rb5: { symbol: 'bracket', side: 'right', lineWidth: 0.07, width: 0.16 },
       y_1: { color: colorDisturbanceText },
       y_2: { color: colorDisturbanceText },
-      y_3: { color: colorDisturbanceText },
+      // y_3: { color: colorDisturbanceText },
       x_1: { color: colorPositionText },
       x_2: { color: colorPositionText },
       x_3: { color: colorPositionText },
       x_4: { color: colorPositionText },
+      x_5: { color: colorPositionText },
       t_1: { color: colorTimeText },
       t_2: { color: colorTimeText },
       t_3: { color: colorTimeText },
@@ -99,6 +100,8 @@ function addSineTEquation(name) {
       t_f2: { color: colorFText },
       f_1: { color: colorFText },
       f_2: { color: colorFText },
+      g_1: { color: colorGText },
+      g_2: { color: colorGText },
       zeroT: { text: '0', color: colorTimeText },
       oneT: { text: '1', color: colorTimeText },
       oneT1: { text: '1', color: colorTimeText },
@@ -109,20 +112,11 @@ function addSineTEquation(name) {
       v: { color: colorVelocity },
       equals1: ' = ',
       equals2: '  =  ',
-      equals3: '  =  ',
-      // w1: '\u03c9',
       min1: '  \u2212  ',
       min2: '  \u2212  ',
-      // min2: '  \u2212  ',
-      // min3: '  \u2212  ',
       comma1: ' , ',  
       comma3: ' , ',
-      comma4: ' , ',
-      // comma3: ' , ',
-      // lambda: '\u03bb',
-      // lambda1: '\u03bb',
       arrow1: { symbol: 'line', width: 0.04, arrow: { start: { head: 'triangle' } } },
-      // arrow2: { symbol: 'line', width: 0.04, arrow: { start: { head: 'triangle' } } },
       vin1: { symbol: 'vinculum', lineWidth: 0.05 },
       tBox1: { symbol: 'tBox', touchBorder: [0.5, 0.5, 0.2, 0.5], isTouchable: true },
       tBox2: { symbol: 'tBox', touchBorder: [0.25, 0.5, 0.3, 0.5], isTouchable: true },
@@ -135,40 +129,34 @@ function addSineTEquation(name) {
       tBox9: { symbol: 'tBox', touchBorder: [0.4, 0.6, 0.4, 0.5], isTouchable: true },
       tBox10: { symbol: 'tBox', touchBorder: [0.2, 0.5, -0.15, 0.5], isTouchable: true },
       tBox11: { symbol: 'tBox', touchBorder: [0.05, 0.3, 0.1, 0.3], isTouchable: true },
-      // tBox12: { symbol: 'tBox', touchBorder: [0.3, 0.5, 0.3, 0.5], isTouchable: true },
     },
     phrases: {
       x0: { sub: ['x_1', 'zeroX'] },
+      t0: { sub: ['t_1', 'zeroT'] },
       x01: { sub: ['x_3', 'zeroX1'] },
       x1: { sub: ['x_2', 'oneX'] },
       x12: { sub: ['x_4', 'oneX1'] },
+      t1: { sub: ['t_3', 'oneT'] },
+      t12: { sub: ['t_4', 'oneT1'] },
       // f1: { sub: ['f_1', 't_f1'] },
       f1: 'f_1',
       // f2: { sub: ['f_2', 't_f2'] },
       f2: 'f_2',
-      // yx0tequalsF: [t('y_1', 7), fn(t('x0', 8), cont(t('t_1', 9), 0.25), 1), ' ', t('equals1', 10), ' ', t('f1', 11), ' ', brac(t('t_2', 12), 2)],
       yx0tequalsF: [t('y_1', 7), fn(t('x0', 8), cont(t('t_1', 9), 0.25), 1), ' ', t('equals1', 10), ' ', t(['f1', ' ', brac('t_2', 2)], 11)],
+      yxt0equalsG: [t('y_1', 7), fn(t('x_1', 8), t('t0', 9), 1), ' ', t('equals1', 10), ' ', t(['g_1', ' ', brac('x_3', 2)], 11)],
       yx1t: ['y_2', fn('x1', cont('t_3', 0.25), 3)],
+      yxt1: ['y_2', fn('x_4', 't1', 3)],
       yxt: [t('y_2', 1), fn(t('x_2', 2), cont(t('t_3', 3), 0.25), 3)],
       t1: { sub: ['t_4', 'oneT'] },
       t12: { sub: ['t_7', 'oneT1'] },
       x1OnV: frac('x12', 1, 'v', 0.8),
       xOnV: frac('x_4', 1, 'v', 0.8),
+      t1V: ['v', ' ', 't12'],
+      tV: ['v', ' ', 't_4'],
     },
-    // formDefaults: {
-    //   elementMods: getElementMods(['2', 'pi', 'f', 'lb7', 'rb7', 't_6', 'min2', 't_2', '_1_2', '2_1', 'pi1', 'f_1', 't_3', 'min1', '2_2', 'pi2', 'f_2', 't_1', '_1_1', 'f_2', 'vin1', 'v', 'vin2', 'lambda', 'x_1', 't_5', 'x_1', 'x_2'], colorLight),
-    // },
     forms: {
-      yx0t_0: [t('y_1', 7),],
-      yx0t_1: [t('y_1', 7),, fn(t('x0', 8), cont(' ', 0.25), 1)],
-      yx0t_2: [t('y_1', 7),, fn(t('x0', 8), cont(t('t_1', 9), 0.25), 1)],
-      yx0t_3: [t('y_1', 7),, fn(t('x0', 8), cont(t('t_1', 9), 0.25), 1), ' ', t('equals1', 10), ' ', t('f_1', 11)],
-      yx0t_4: ['yx0tequalsF'],
+      yx0t: 'yx0tequalsF',
       yx1t_0: lines(['yx0tequalsF', ['yx1t']]),
-      // yx1t_1: lines([
-      //   'yx0tequalsF',
-      //   ['yx1t', 'equals2', 'y_3', fn('x01', cont('', 0.4), 4)],
-      // ]), 
       yx1t_1: lines([
         'yx0tequalsF',
         ['yx1t', 'equals2', 'f2'],
@@ -186,30 +174,23 @@ function addSineTEquation(name) {
       yx1t_5: lines([
         ['yxt', t('equals2', 4), t('f2', 5), ' ', brac(t(['t_6', 'min2', 'xOnV'], 6), 5)],
       ]),
-      // yx1t_2: lines([
-      //   'yx0tequalsF',
-      //   ['yx1t', 'equals2', 'y_3', fn('x01', ['t_5', 'min1', 't1'], 4)],
-      // ]), 
-      // yx1t_3: lines([
-      //   'yx0tequalsF',
-      //   ['yx1t', 'equals2', 'y_3', fn('x01', ['t_5', 'min1', 't1'], 4), 'equals3', 'f2', ' ', brac(['t_6', 'min2', 't12'], 5)],
-      // ]),
-      // yx1t_4: lines([
-      //   'yx0tequalsF',
-      //   ['yx1t', 'equals2', 'f2', ' ', brac(['t_6', 'min2', 't12'], 5)],
-      // ]), 
-      // yx1t_4: lines([[],
-      //   ['yx1t', 'equals2', 'f2', ' ', brac(['t_6', 'min2', 't12'], 5)],
-      // ]), 
-      // yx1t_5: lines([[],
-      //   ['yx1t', 'equals2', 'f2', ' ', brac(['t_6', 'min2', top('t12', 'x1OnV', 'arrow1')], 5)],
-      // ]), 
-      // yx1t_6: lines([[],
-      //   ['yx1t', 'equals2', 'f2', ' ', brac(['t_6', 'min2', 'x1OnV'], 5)],
-      // ]),
-      // yx1t_7: lines([
-      //   ['yxt', t('equals2', 4), t('f2', 5), ' ', brac(t(['t_6', 'min2', 'xOnV'], 6), 5)],
-      // ]),
+      yxt0: 'yxt0equalsG',
+      yxt1_0: lines([
+        ['yxt0equalsG'],
+        ['yxt1', 'equals2', 'g_2', brac(['x_5', 'min2', 'x1'], 5)],
+      ]),
+      yxt1_1: lines([
+        [],
+        ['yxt1', 'equals2', 'g_2', brac(['x_5', 'min2', top('x1', 't1V', 'arrow1')], 5)],
+      ]),
+      yxt1_2: lines([
+        [],
+        ['yxt1', 'equals2', 'g_2', brac(['x_5', 'min2', 't1V'], 5)],
+      ]),
+      yxt1_3: lines([
+        [],
+        ['yxt', 'equals2', 'g_2', brac(['x_5', 'min2', 'tV'], 5)],
+      ]),
     },
   });
   const description = figure.add({
@@ -274,43 +255,18 @@ function addSineTEquation(name) {
       xOnV: frac('x_t', 1, 'v', 0.7, 0.02, 0.02),
     },
     forms: {
-      // yx0t_0: lines([
-      //   ['The', '  ', t('disturbance', 7)],
-      // ], 1.2),
-      // yx0t_1: lines([
-      //   ['The', '  ', t('disturbance', 7), '  ', 'at', '  ', t(['position', '  ', 'x0'], 8)],
-      // ], 1.2),
-      // yx0t_2: lines([
-      //   ['The', '  ', t('disturbance', 7), '  ', 'at', '  ', t(['position', '  ', 'x0'], 8), '  ', 'is a ', t('functionOfTime', 9),],
-      // ], 1.2),
-      // yx0t_3: lines([
-      //   ['The', '  ', t('disturbance', 7), '  ', 'at', '  ', t(['position', '  ', 'x0'], 8), '  ', 'is a ', t('functionOfTime', 9),],
-      //   [t('equal', 10), '_ to ', t('ft', 11)],
-      // ], 1.2),
-      // yx0t_4: lines([
-      //   ['The', '  ', t('disturbance', 7), '  ', 'at', '  ', t(['position', '  ', 'x0'], 8), '  ', 'is a ', t('functionOfTime', 9),],
-      //   [t('equal', 10), '_ to ', t('ft', 11), '  ', 'which is also a ', t('functionOfTime_1', 12), '_.'],
-      // ], 1.2),
-      // yx0t_4: lines([
-      //   ['The', '  ', t('disturbance', 7), '  ', 'at', '  ', t(['position', '  ', 'x0'], 8), '  ', 'is a ', t('functionOfTime', 9),],
-      //   [t('equal', 10), '_ to ', t('ft', 11), '_.'],
-      // ], 1.2),
-      yx0t_4: lines([
+      yx0t: lines([
         ['The', '  ', t('disturbance', 7), '  ', 'at', '  ', t(['position', '  ', 'x0'], 8), '  ', 'is a ', t('functionOfTime', 9), '  ', t('equal', 10), '_ to ', t('ft', 11), '_.'],
       ], 1.2),
-      // yx1_0: ['The', '  ', 'disturbance', '  ', 'at', '  ', 'position', '  ', 'x1'],
-      // yx1_1: lines([
-      //   ['The', '  ', 'disturbance', '  ', 'at', '  ', 'somePosition', '  ', 'x1', '  ', 'is equal to'],
-      //   ['as the ', 'disturbance_1', '_ at', '  ', 'x0', ' ', '_, ', 'someTime', '  ', 't1', '  ', 'ago' ],
-      // ], 1.2),
-      // summary_1: lines([
-      //   ['The', '  ', t('disturbance', 1), '_ at ', t(['any position', '  ', 'x_1'], 2), '  ', 'and', '  ', t(['time', '  ', 't_1'], 3), '  ', t('is the', 4)],
-      //   [t(['time dependent disturbance at', '  ', 'xe0'], 5), '  ', 'at ', t(['time_1', '  ', 'xOnV', '  ', 'before', '  ',  't_2'], 6), '_.'],
-      // ], 1.2),
       summary_1: lines([
         ['The', '  ', t('disturbance', 1), '_ at ', t(['any position', '  ', 'x_1'], 2), '  ', 'and', '  ', t(['any time', '  ', 't_1'], 3), '  ', t('is the', 4)],
         [t(['disturbance that happened at', '  ', 'xe0'], 5), '  ', 'at ', t(['time_1', '  ', 'xOnV', '  ', 'ago'], 6), '_.'],
       ], 1.2),
+      summary_2: 'the disturbance at some position and time is the disturbance at t = 0 shifted by the distance the wave has propogated in the time since',
+      // summary_2: lines([
+      //   ['The ', 'disturbance', '_ at ', 'position ', 'x_1', '_ and time ', 't_1', '_ is the ', 'disturbance at ', 't_2', '_ = 0']
+      //   ['shifted by the distance the wave has propogated in the time since.'],
+      // ], 1.2),
     },
   });
   for (let i = 1; i <= 11; i += 1) {

@@ -359,6 +359,10 @@ const twoEqn = (eqn1, eqn2, form1, form2, dim = []) => ({
     eqn1.showForm(form2);
     eqn2.showForm(form2);
   },
+  leaveState: () => {
+    eqn1.undim();
+    eqn2.undim();
+  },
 });
 // figure.addFrameRate(10, { font: { color: [1, 0, 0, 1 ]} });
 time.setTimeSpeed(1);
@@ -378,7 +382,7 @@ nav.loadSlides([
     scenario: 'right',
     show: ['sineTExplanation'],
     enterState: () => {
-      sineTExplanation.showForm('yx0t_4');
+      sineTExplanation.showForm('yx0t');
     },
     transition: [
       { scenario: ['m1', 'timePlot1'],  target: 'top' },
@@ -389,8 +393,8 @@ nav.loadSlides([
     scenario: 'top',
     show: ['eqnSineT', 'sineTExplanation'],
     enterState: () => {
-      eqnSineT.showForm('yx0t_4');
-      sineTExplanation.showForm('yx0t_4');
+      eqnSineT.showForm('yx0t');
+      sineTExplanation.showForm('yx0t');
     },
     transition: [
       { in: eqnSineT },
@@ -399,8 +403,8 @@ nav.loadSlides([
   {
     // hideCommon: ['m1.ballTracker', 'm1.envelope', 'm1.eqn', 'm1.envelope2'],
     enterState: () => {
-      eqnSineT.showForm('yx0t_4');
-      sineTExplanation.showForm('yx0t_4');
+      eqnSineT.showForm('yx0t');
+      sineTExplanation.showForm('yx0t');
     },
     transition: [
       { out: sineTExplanation },
@@ -412,30 +416,11 @@ nav.loadSlides([
       eqnSineT.showForm('yx1t_0');
     },
   },
-  // {
-  //   hideCommon: ['m1.ballTracker', 'm1.envelope'],
-  //   enterState: () => {
-  //     eqnSineT.showForm('yx1t_0');
-  //     sineTExplanation.showForm('yx1t_0');
-  //   },
-  //   transition: [
-  //     [
-  //       { out: sineTExplanation },
-  //       { out: eqnSineT },
-  //       { out: 'm1.x0' },
-  //     ],
-  //   ],
-  //   steadyState: () => {
-  //     eqnSineT.showForm('yx1t_0');
-  //   },
-  // },
   twoEqn(sineTExplanation, eqnSineT, 'yx1t_0', 'yx1t_1', eqnSineT.getPhraseElements('yx0tequalsF')),
   twoEqn(sineTExplanation, eqnSineT, 'yx1t_1', 'yx1t_2', eqnSineT.getPhraseElements('yx0tequalsF')),
   twoEqn(sineTExplanation, eqnSineT, 'yx1t_2', 'yx1t_3', eqnSineT.getPhraseElements('yx0tequalsF')),
   twoEqn(sineTExplanation, eqnSineT, 'yx1t_3', 'yx1t_4', eqnSineT.getPhraseElements('yx0tequalsF')),
   twoEqn(sineTExplanation, eqnSineT, 'yx1t_4', 'yx1t_5', eqnSineT.getPhraseElements('yx0tequalsF')),
-  // twoEqn(sineTExplanation, eqnSineT, 'yx1t_5', 'yx1t_6', eqnSineT.getPhraseElements('yx0tequalsF')),
-  // twoEqn(sineTExplanation, eqnSineT, 'yx1t_6', 'yx1t_7', eqnSineT.getPhraseElements('yx0tequalsF')),
   {
     enterState: () => {
       eqnSineT.showForm('yx1t_5');
@@ -476,10 +461,70 @@ nav.loadSlides([
   },
   {
     scenario: 'default',
-    showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'm1.eqn', 'm1.eqn1', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton'],
+    showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'm1.eqn', 'm1.eqn1', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton', eqnSineT],
     transition: [
       { in: 'm1.eqn1' },
     ],
+  },
+  {
+    scenarioCommon: ['default', 'topCenter'],
+    enterState: () => {
+      eqnSineT.showForm('yxt0');
+    },
+    transition: [
+      { scenario: 'm1', start: 'default', target: 'topCenter' },
+      { in: eqnSineT },
+    ],
+    steadyState: () => {
+      eqnSineT.showForm('yxt0');
+    },
+  },
+  {
+    enterState: () => {
+      eqnSineT.showForm('yxt0');
+    },
+    transition: { goToForm: eqnSineT, start: 'yxt0', target: 'yxt1_0' },
+    steadyState: () => {
+      eqnSineT.showForm('yxt1_0');
+    },
+  },
+  {
+    enterState: () => {
+      eqnSineT.showForm('yxt1_0');
+    },
+    transition: { goToForm: eqnSineT, target: 'yxt1_1' },
+    steadyState: () => {
+      eqnSineT.showForm('yxt1_1');
+    },
+  },
+  {
+    enterState: () => {
+      eqnSineT.showForm('yxt1_1');
+    },
+    transition: { goToForm: eqnSineT, target: 'yxt1_2' },
+    steadyState: () => {
+      eqnSineT.showForm('yxt1_2');
+    },
+  },
+  {
+    enterState: () => {
+      eqnSineT.showForm('yxt1_2');
+    },
+    transition: { goToForm: eqnSineT, target: 'yxt1_3' },
+    steadyState: () => {
+      eqnSineT.showForm('yxt1_3');
+    },
+  },
+  {
+    enterState: () => {
+      eqnSineT.showForm('yxt1_2');
+      sineTExplanation.showForm('summary_2');
+    },
+    transition: { in: sineTExplanation },
+    steadyState: () => {
+      eqnSineT.showForm('yxt1_3');
+      sineTExplanation.showForm('summary_2');
+    },
   },
   // eqnTransition([[eqnSineT, 'yx1t_0', 'yx1t_1']], eqnSineT.getPhraseElements('yx0tequalsF')),
   // eqnTransition([[eqnSineT, 'yx1t_1', 'yx1t_2']], eqnSineT.getPhraseElements('yx0tequalsF')),
@@ -537,7 +582,7 @@ nav.loadSlides([
   // { form: 'yx0t_3' },
   // {
   //   scenarioCommon: 'default',
-  //   // form: 'yx0t_4',
+  //   // form: 'yx0t',
   //   transition: [
 
   //   ]
@@ -545,7 +590,7 @@ nav.loadSlides([
   //     figure.get('sineTExplanation').showForm('yx0_2');
   //   }
   // },
-  { form: 'yx0t_4' },
+  { form: 'yx0t' },
   { form: 'yx1t_0' },
   { form: 'yx1t_1' },
   { form: 'yx1t_2' },
