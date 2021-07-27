@@ -32,7 +32,7 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
           rb: { symbol: 'bracket', side: 'right', lineWidth: 0.07, width: 0.16 },
         },
         forms: {
-          0: [{ sub: ['f', 't'] }, { brac: ['lb', 't_1', 'rb'] }],
+          0: ['f', ' ', { brac: ['lb', 't_1', 'rb'] }],
         },
         position: [4, -1],
       }
