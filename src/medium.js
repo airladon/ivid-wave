@@ -60,7 +60,7 @@ function addMedium(
         name: 'envelope2',
         make: 'polyline',
         width: 0.1,
-        color: color1,
+        color: colorPositionText,
         simple: true,
       },
       {
@@ -186,7 +186,7 @@ function addMedium(
       {
         name: 'eqn1',
         make: 'equation',
-        color: color1,
+        color: colorPositionText,
         scale: 4,
         elements: {
           lb: { symbol: 'bracket', side: 'left', lineWidth: 0.07, width: 0.16 },
@@ -300,7 +300,7 @@ function addMedium(
             eqn.setOpacity(0);
           }
         }
-        if (eqn1.isShown) {
+        if (medium._envelope2.isShown) {
           let minValue = envelopePoints[0].y;
           let x = 0;
           for (let i = 0; i < envelopePoints.length; i += 1) {
@@ -447,16 +447,13 @@ function addMedium(
       // const newEnvelope = lastEnvelope.map(p => p.add(movePadEnv.custom.x, 0));
       medium._envelope2.custom.updatePoints({ points: envelopePoints });
       movePadEnv.transform.updateTranslation(length / 2, 0);
-      if (eqn1.isShown) {
-        const sign = movePadEnv.custom.x > 0 ? '\u2212' : '+';
-        eqn1.updateElementText({
-          value: `${Math.abs(Fig.tools.math.round(movePadEnv.custom.x * 2, 1)).toFixed(1)}`,
-          sign: sign,
-        }, 'current');
-        // eqn1._value.drawingObject.setText(`${Math.abs(Fig.tools.math.round(movePadEnv.custom.x, 1))}`);
-        // eqn1._sign.drawingObject.setText(sign);
-        // eqn1.layoutForms('all');
-      }
+      // if (medium._envelope2.isShown) {
+      const sign = movePadEnv.custom.x > 0 ? '\u2212' : '+';
+      eqn1.updateElementText({
+        value: `${Math.abs(Fig.tools.math.round(movePadEnv.custom.x * 2, 1)).toFixed(1)}`,
+        sign: sign,
+      }, 'current');
+      // }
     }
   })
   return medium;
