@@ -17,7 +17,7 @@ const xAxis = (name, title, units, xLength, XMaxValue) => ({
     length: xLength * 1.05,
     line: { width: 0.032, arrow: { end: 'barb' } },
     title: {
-      font: { style: 'italic', family: 'serif', size: 0.18 * 4 },
+      font: { style: 'italic', family: 'TeXGyreTermes', size: 0.18 * 4 },
       text: [title, { font: { size: 0.24 }, lineSpace: 0.24, text: units }],
       position: [xLength * 1.05 - 0.12, -0.3],
     },
@@ -36,7 +36,7 @@ const yAxis = (name, title, units, AValue, yAxisTitleSide) => ({
     line: { width: 0.032, arrow: 'barb' },
     position: [0, -AValue - 0.5],
     title: {
-      font: { style: 'italic', family: 'serif', size: 0.18 * 4 },
+      font: { style: 'italic', family: 'TeXGyreTermes', size: 0.18 * 4 },
       text: {
         text: `${title}|unitsText|`,
       },

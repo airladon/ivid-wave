@@ -3,7 +3,7 @@
 const figure = new Fig.Figure({
   limits: [0, 0, 24, 12],
   color: [0.3, 0.3, 0.3, 1],
-  font: { size: 0.1 },
+  font: { size: 0.1, family: 'Open Sans', style: 'normal' },
   backgroundColor: [0, 0, 0, 1],
 });
 
@@ -367,6 +367,139 @@ const twoEqn = (eqn1, eqn2, form1, form2, dim = []) => ({
 // figure.addFrameRate(10, { font: { color: [1, 0, 0, 1 ]} });
 time.setTimeSpeed(1);
 nav.loadSlides([
+  /*
+  .########.####.########.##.......########
+  ....##.....##.....##....##.......##......
+  ....##.....##.....##....##.......##......
+  ....##.....##.....##....##.......######..
+  ....##.....##.....##....##.......##......
+  ....##.....##.....##....##.......##......
+  ....##....####....##....########.########
+  */
+  {
+    scenarioCommon: 'default',
+    show: ['title'],
+    // exec: [
+    //   ['0:30', 'showExamples'],
+    //   ['0:50', 'outTitle'],
+    //   ['0:50', 'outExamples'],
+    // ],
+    // exec: [
+    //   ['0:05', 'pause'],
+    //   ['0:05', 'showEnvelope'],
+    //   ['0:07', 'unpause'],
+    // ],
+  },
+  {
+    show: ['title', 'examples'],
+    transition: [
+      { trigger: 'showExamples' },
+    ],
+  },
+  
+  {
+    scenario: 'summary',
+    show: ['m1'],
+    hide: ['m1.ballTracker', 'm1.envelope', 'm1.grid', 'm1.velocity'],
+    // time: '0:50.5',
+    // steadyState: () => {
+    //   eqnVLF.showForm('vlf');
+    // },
+    time: '0:50.5',
+    transition: [
+      { in: ['m1.grid', 'm1.balls', 'm1.grid', 'm1.yAxis', 'm1.xAxis']}
+    ],
+    execDelta: [
+      [1, 'startSineWave'],
+      [7, 'pause'],
+      [7, 'showVelocity'],
+      [8, 'showWavelength'],
+      [9, 'showVLF'],
+      [10, 'hideWavelength'],
+      [10, 'hideVelocity'],
+      [10, 'hideVLF'],
+      [11, 'unpause'],
+      [14, 'showSine'],
+      [15, 'hideSine'],
+      [16, 'showWaveEqn'],
+    ],
+  },
+
+
+  {
+    showCommon: ['m1.grid', 'm1.balls', 'm1.firstBall', 'm1.movePad'],
+  },
+  {
+    enterStateCommon: () => {
+      m1._balls.get(m1.custom.highlights).map(e => e.setScenario('highlight'));
+    },
+    transition: [
+      { pulse: { 'm1.balls': m1.custom.highlights }, scale: 3 },
+    ],
+  },
+  {
+    transition: [
+      { out: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'] },
+      { in: 'p1' },
+      { in: ['pulseButton', 'sineButton'] },
+    ],
+  },
+  {
+    hide: ['m1'],
+    transition: [
+      { out: ['pulseButton', 'sineButton', 'p1'] },
+      { in: ['ocean'] },
+    ],
+  },
+  {
+    transition: [
+      { out: 'ocean' },
+      { in: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'] },
+    ],
+  },
+  {
+    transition: [
+      { in: ['slowTimeLabel', 'slowTimeButton'] },
+      { in: ['freezeTimeButton', 'freezeTimeLabel'] },
+      { in: 'resetButton' },
+    ],
+  },
+  {    
+    showCommon: [
+      'm1', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton',
+      'slowTimeLabel', 'slowTimeButton', 'timePlot1',
+    ],
+    hideCommon: [],
+    transition: [
+      { scenario: 'm1', target: 'right', duration: 2 },
+      [
+        { in: ['m1.xAxis', 'm1.yAxis'] },
+        { in: 'timePlot1' },
+      ],
+    ],
+  },
+  {
+    scenarioCommon: 'right',
+    transition: { in: ['velocityButton', 'velocity'] },
+  },
+  {
+    show: ['velocityButton', 'velocity'],
+    transition: { in: ['pulseButton'] },
+  },
+  {
+    show: ['velocityButton', 'velocity', 'pulseButton'],
+    transition: { in: ['sineButton', 'sine2fButton'] },
+  },
+
+  /*
+  .##.....##....###....########.##.....##....########
+  .###...###...##.##......##....##.....##.......##...
+  .####.####..##...##.....##....##.....##.......##...
+  .##.###.##.##.....##....##....#########.......##...
+  .##.....##.#########....##....##.....##.......##...
+  .##.....##.##.....##....##....##.....##.......##...
+  .##.....##.##.....##....##....##.....##.......##...
+  */
   {
     scenarioCommon: ['default', 'top'],
     // scenarioCommon: ['default', 'right'],
@@ -435,6 +568,16 @@ nav.loadSlides([
       console.log('here')
     },
   },
+
+  /*
+  .##.....##....###....########.##.....##....##.....##
+  .###...###...##.##......##....##.....##.....##...##.
+  .####.####..##...##.....##....##.....##......##.##..
+  .##.###.##.##.....##....##....#########.......###...
+  .##.....##.#########....##....##.....##......##.##..
+  .##.....##.##.....##....##....##.....##.....##...##.
+  .##.....##.##.....##....##....##.....##....##.....##
+  */
   {
     enterState: () => {
       eqnSineT.showForm('yx1t_5');
@@ -785,3 +928,42 @@ nav.loadSlides([
 
 figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.mp3'));
 // // figure.recorder.loadVideoTrack('http://localhost:8081/src/video-track.json');
+
+
+(function (document) {
+    var width;
+    var body = document.body;
+  
+    var container = document.createElement('span');
+    container.innerHTML = Array(100).join('wi');
+    container.style.cssText = [
+      'position:absolute',
+      'width:auto',
+      'font-size:128px',
+      'left:-99999px'
+    ].join(' !important;');
+  
+    var getWidth = function (fontFamily) {
+      container.style.fontFamily = fontFamily;
+  
+      body.appendChild(container);
+      width = container.clientWidth;
+      body.removeChild(container);
+  
+      return width;
+    };
+  
+    // Pre compute the widths of monospace, serif & sans-serif
+    // to improve performance.
+    var monoWidth  = getWidth('monospace');
+    var serifWidth = getWidth('serif');
+    var sansWidth  = getWidth('sans-serif');
+  
+    window.isFontAvailable = function (font) {
+      return monoWidth !== getWidth(font + ',monospace') ||
+        sansWidth !== getWidth(font + ',sans-serif') ||
+        serifWidth !== getWidth(font + ',serif');
+    };
+  })(document);
+
+  console.log(isFontAvailable('Times New Roman'))

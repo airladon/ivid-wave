@@ -61,6 +61,12 @@ function addSineTEquation(name) {
     position: [4, 8],
     color: colorLight,
     dimColor: colorLight,
+    // font: { family: 'MathJax_Math-Italic' },
+    // textFont: { family: 'Roboto' },
+    // font: { family: '"Times New Roman", "Times", "Crimson Text", serif', style: 'italic' },
+    font: { family: 'TeXGyreTermes' },
+    textFont: { family: 'TeXGyreTermes' },
+    // textFont: { style: 'normal', family: 'Times New Roman, Times, Crimson Text, serif' },
     mods: {
       scenarios: {
         default: { position: [9, 4], scale: 1 },
@@ -146,9 +152,9 @@ function addSineTEquation(name) {
       yxt0equalsG: [t('y_1', 7), fn(t('x_1', 8), t('t0', 9), 1), ' ', t('equals1', 10), ' ', t(['g_1', ' ', brac('x_3', 2)], 11)],
       yx1t: ['y_2', fn('x1', cont('t_3', 0.25), 3)],
       yxt1: ['y_2', fn('x_4', 't1', 3)],
-      yxt: [t('y_2', 1), fn(t('x_2', 2), cont(t('t_3', 3), 0.25), 3)],
-      t1: { sub: ['t_4', 'oneT'] },
-      t12: { sub: ['t_7', 'oneT1'] },
+      yxt: [t('y_2', 1), fn(t('x_4', 2), cont(t('t_3', 3), 0.25), 3)],
+      // t1: { sub: ['t_4', 'oneT'] },
+      // t12: { sub: ['t_7', 'oneT1'] },
       x1OnV: frac('x12', 1, 'v', 0.8),
       xOnV: frac('x_4', 1, 'v', 0.8),
       t1V: ['v', ' ', 't12'],
@@ -188,7 +194,6 @@ function addSineTEquation(name) {
         ['yxt1', 'equals2', 'g_2', brac(['x_5', 'min2', 't1V'], 5)],
       ]),
       yxt1_3: lines([
-        [],
         ['yxt', 'equals2', 'g_2', brac(['x_5', 'min2', 'tV'], 5)],
       ]),
     },
@@ -197,7 +202,9 @@ function addSineTEquation(name) {
     name: 'sineTExplanation',
     make: 'equation',
     color: colorLight,
-    textFont: { style: 'normal' },
+    // textFont: { style: 'normal' },
+    font: { family: 'TeXGyreTermes' },
+    textFont: { family: 'TeXGyreTermes', style: 'normal' },
     scale: 4,
     position: [2, 2],
     elements: {
@@ -229,6 +236,7 @@ function addSineTEquation(name) {
       'disturbance that happened at': { color: colorFText },
       'any position': { color: colorPositionText },
       'any time': { color: colorTimeText },
+      'shifted': { text: 'shifted by the distance the wave has propogated in the time since', color: colorPositionText },
       equals: { text: '=', color: colorFText },
       vin1: { symbol: 'vinculum', color: colorTimeText, lineWidth: 0.05 },
       v: { style: 'italic', color: colorTimeText },
@@ -262,11 +270,11 @@ function addSineTEquation(name) {
         ['The', '  ', t('disturbance', 1), '_ at ', t(['any position', '  ', 'x_1'], 2), '  ', 'and', '  ', t(['any time', '  ', 't_1'], 3), '  ', t('is the', 4)],
         [t(['disturbance that happened at', '  ', 'xe0'], 5), '  ', 'at ', t(['time_1', '  ', 'xOnV', '  ', 'ago'], 6), '_.'],
       ], 1.2),
-      summary_2: 'the disturbance at some position and time is the disturbance at t = 0 shifted by the distance the wave has propogated in the time since',
-      // summary_2: lines([
-      //   ['The ', 'disturbance', '_ at ', 'position ', 'x_1', '_ and time ', 't_1', '_ is the ', 'disturbance at ', 't_2', '_ = 0']
-      //   ['shifted by the distance the wave has propogated in the time since.'],
-      // ], 1.2),
+      // summary_2: 'the disturbance at some position and time is the disturbance at t = 0 shifted by the distance the wave has propogated in the time since',
+      summary_2: lines([
+        ['The ', 'disturbance', '_ at ', 'position ', 'x_1', '_ and time ', 't_1', '_ is the ', 'disturbance at ', 't_2', '_ = 0'],
+        ['shifted', '_.'],
+      ], 1.2),
     },
   });
   for (let i = 1; i <= 11; i += 1) {
