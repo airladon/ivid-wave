@@ -485,8 +485,60 @@ nav.loadSlides([
   .########..########.##......
   */
   {
-    steadyState: () => console.log('huh?'),
-    showCommon: ['m1.grid', 'm1.balls', 'm1.firstBall', 'm1.movePad'],
+    enterState: () => {
+      p1._particles.drawingObject.uniforms.u_highlight.value = [0];
+      eqnSineT.showForm('summaryPage')
+      eqnSineT.dim();
+      eqnVLF.dim();
+      eqnVLF.showForm('vlf');
+      eqnDiff.showForm('d1Mono');
+    },
+    // showCommon: ['m1.grid', 'm1.balls', 'm1.firstBall', 'm1.movePad'],
+    // show: ['p1.particles', 'p1.diaphram', 'p1.movePad', eqnSineT, eqnVLF, eqnDiff],
+    scenario: 'summary',
+    // transition: [
+    //   [
+    //     { out: ['m1.balls', 'm1.firstBall', 'm1.movePad'], final: true },
+    //     { out: ['p1.particles', 'p1.diaphram', 'p1.movePad', eqnSineT, eqnVLF, eqnDiff] },
+    //   ],
+    //   { scenario: m1, target: 'default', duration: 0 },
+    //   { in: ['m1.grid', 'm1.balls', 'm1.firstBall', 'm1.movePad'], final: false },
+    // ],
+    transition: (done) => {
+      p1._particles.showAll();
+      p1._diaphram.showAll();
+      p1._movePad.showAll();
+      m1._balls.showAll();
+      m1._firstBall.showAll();
+      m1._movePad.showAll();
+      // m1.animations.new()
+      //   .dissolveOut({ elements: ['balls', 'firstBall', 'movePad'] })
+      //   .scenario({ target: 'default', duration: 0.01 })
+      //   .trigger('softReset')
+      //   .dissolveIn({ elements: ['grid', 'balls', 'firstBall', 'movePad']})
+      //   .whenFinished(done)
+      //   .start();
+      figure.animations.new()
+        .dissolveOut({
+          elements: ['p1.particles', 'p1.diaphram', 'p1.movePad', eqnSineT, eqnVLF, eqnDiff, 'm1.balls', 'm1.firstBall', 'm1.movePad'
+          ],
+          duration: 0.5
+        })
+        .scenarios({ target: 'default', duration: 0.01 })
+        .trigger({ callback: 'softReset' })
+        // .dissolveIn({ elements: ['m1.grid'] })
+        .dissolveIn({ elements: ['m1.grid', 'm1.firstBall', 'm1.movePad', 'm1.balls'], duration: 0.5 })
+        .whenFinished(done)
+        .start();
+    },
+    steadyState: () => {
+      m1.setScenario('default');
+      m1.show(['grid', 'balls', 'firstBall', 'movePad']);
+      p1.hide();
+      eqnSineT.hide();
+      eqnVLF.hide();
+      eqnDiff.hide();
+    },
   },
 
   /*
@@ -499,6 +551,7 @@ nav.loadSlides([
   ....##.......##....##........########..######.
   */
   {
+    showCommon: ['m1.grid', 'm1.balls', 'm1.firstBall', 'm1.movePad'],
     enterState: () => {
       m1._balls.get(m1.custom.highlights).map(e => e.setScenario('highlight'));
     },

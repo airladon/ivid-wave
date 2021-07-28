@@ -9,7 +9,7 @@ function addExamples() {
     make: 'text',
     text: label,
     position,
-    font: { color: color1, size },
+    font: { color: colorBlueText, size },
     xAlign: 'center',
   })
   const s = 0.8;
