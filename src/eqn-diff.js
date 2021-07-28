@@ -56,6 +56,7 @@ function addDiffEquation(name) {
     scale: 6,
     position: [4, 8],
     color: colorLight,
+    dimColor: colorLight,
     elements: {
       lb1: { symbol: 'bracket', side: 'left', lineWidth: 0.07, width: 0.16 },
       rb1: { symbol: 'bracket', side: 'right', lineWidth: 0.07, width: 0.16 },
@@ -126,11 +127,30 @@ function addDiffEquation(name) {
           x: { color: color1 },
         }
       },
+      d1Mono: {
+        content: ['d2ydt2', 'equals', 'vSq', ' ', 'd2ydx2'],
+        elementMods: {
+          d2: { color: colorLight },
+          _2_2: { color: colorLight },
+          _2_4: { color: colorLight },
+          v2: { color: colorLight },
+          t: { color: colorLight },
+          d4: { color: colorLight },
+          y_2: { color: colorLight },
+          y_1: { color: colorLight },
+          d1: { color: colorLight },
+          d3: { color: colorLight },
+          _2_1: { color: colorLight },
+          _2_3: { color: colorLight },
+          v1: { color: colorLight },
+          x: { color: colorLight },
+        }
+      },
     },
     mods: {
       scenarios: {
         default: { position: [8, 6], scale: 1 },
-        summary: { position: [16.5, 6], scale: 1 },
+        summary: { position: [17, 3], scale: 0.7 },
       },
     },
   });

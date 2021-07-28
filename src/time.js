@@ -41,7 +41,7 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
     mods: {
       scenarios: {
         default: { position: defaultPosition, scale: 1 },
-        right: { position: [1.5, 6], scale: 1 },
+        // right: { position: [1.5, 6], scale: 1 },
         top: { position: [4.5, 8.4], scale: 0.7 },
         bottom: { position: [5, 3], scale: 0.6 },
         rightSmall: { position: [2, 7], scale: 0.9 },

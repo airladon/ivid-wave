@@ -71,8 +71,9 @@ function addSineTEquation(name) {
       scenarios: {
         default: { position: [9, 4], scale: 1 },
         // default: { position: [7, 8], scale: 1 },
-        summary: { position: [15, 6], scale: 1 },
+        summary: { position: [16, 8], scale: 1 },
         mathx: { position: [8, 4], scale: 1 },
+        center: { position: [8, 8], scale: 1.2 },
         // bottom: { position: [7, 1.5], scale: 1 },
       }
     },
@@ -96,6 +97,7 @@ function addSineTEquation(name) {
       x_3: { color: colorPositionText },
       x_4: { color: colorPositionText },
       x_5: { color: colorPositionText },
+      x_g: { color: colorGText },
       x_t: { color: colorTimeText },
       t_1: { color: colorTimeText },
       t_2: { color: colorTimeText },
@@ -216,6 +218,21 @@ function addSineTEquation(name) {
       yxt1_3: lines([
         ['yxt_1', '  ', t('equals2', 15), '  ', t('g_2', 16), brac(t(['x_5', 'min_x', 'tV'], 17), 5)],
       ]),
+      summary1: lines([
+        ['yxt_1', '  ', 'equals2', '  ', { sub: ['g_2', 'x_g'] }, brac(['x_5', 'min_x', 'tV'], 5)],
+      ]),
+      summary: lines([
+        ['yxt_1', '  ', 'equals2', '  ', { sub: ['g_2', 'x_g'] }, brac(['x_5', 'min_x', 'tV'], 5)],
+        ['y_1', fn('x_1', cont('t_1', 0.25), 1), '  ', 'equals1', '  ', { sub: ['f_1', 't_f1'] }, ' ', brac(['t_2', 'min_t', 'xOnV'], 2)],
+      ], 3),
+      summaryClean1: lines([
+        ['y_2', '  ', 'equals2', '  ', { sub: ['g_2', 'x_g'] }, brac(['x_5', 'min_x', 'tV'], 5)],
+      ]),
+      summaryClean: lines([
+        ['y_2', '  ', 'equals2', '  ', { sub: ['g_2', 'x_g'] }, brac(['x_5', 'min_x', 'tV'], 5)],
+        ['y_1', '  ', 'equals1', '  ', { sub: ['f_1', 't_f1'] }, ' ', brac(['t_2', 'min_t', 'xOnV'], 2)],
+      ], 3),
+      summaryPage: ['y_2', '  ', 'equals2', '  ', 'g_2', brac(['x_5', 'min_x', 'tV'], 5)],
     },
   });
   const description = figure.add({

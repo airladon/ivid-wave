@@ -207,7 +207,7 @@ function addMedium(
     mods: {
       scenarios: {
         default: { position: defaultPosition, scale: 1 },
-        summary: { position: [2, 6], scale: 0.8 },
+        summary: { position: [2, 8], scale: 0.8 },
         right: { position: [9.5, 6], scale: 1 },
         top: { position: [10, 8.4], scale: 0.7 },
         mathx: { position: [7.5, 8.4], scale: 0.7 },

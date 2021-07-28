@@ -46,7 +46,8 @@ void main() {
   const offsets = [];
   const xLocations = [];
   for (let x = 0; x <= length; x += gridStep) {
-    const r = (x === 0 || Fig.tools.math.round(x) === 10.8) ? particleSize * 1.6 : particleSize;
+    // const r = (x === 0 || Fig.tools.math.round(x) === 10.8) ? particleSize * 1.6 : particleSize;
+    const r = particleSize;
     for (let y = -height / 2; y <= height / 2; y += gridStep) {
       // const x1 = x + Fig.tools.math.rand(-gridStep / 4, gridStep / 4);
       // const y1 = y + Fig.tools.math.rand(-gridStep / 4, gridStep / 4);
@@ -61,9 +62,33 @@ void main() {
       }
     }
   }
+  const centers = [
+    new Fig.Point(10.8, height / 2),
+    new Fig.Point(10.8, height / 2 - gridStep),
+    new Fig.Point(10.8, height / 2 - gridStep * 2),
+  ];
+  const addCircle = (name, index) => {
+    const position = Fig.getPoint([centers[index], centers[index + 1]]);
+    const radius = ((position.y + 2) * (position.y + 2)) / 40;
+    return {
+      name,
+      make: 'polygon',
+      sides: 20,
+      position,
+      radius,
+      line: { width: 0.04 },
+      color: color1,
+    };
+  };
   const medium = figure.add({
     name,
     make: 'collection',
+    mods: {
+      scenarios: {
+        default: { position: [3, 6], scale: 1 },
+        summary: { position: [2, 3], scale: 0.58 }
+      },
+    },
     elements: [
       {
         name: 'grid',
@@ -96,6 +121,9 @@ void main() {
         // position: [10, 5],
         // mods: { state: { isChanging: true } },
       },
+      addCircle('c1', 1),
+      addCircle('c2', 2),
+      addCircle('c3', 3),
       {
         name: 'diaphram',
         make: 'rectangle',
@@ -123,9 +151,12 @@ void main() {
       },
     ],
     // transform: [['t', 5, 6]],
-    position: [3, 6],
+    // position: [3, 6],
   });
   const movePad = medium._movePad;
+  const c1 = medium.get('c1');
+  const c2 = medium.get('c2');
+  const c3 = medium.get('c3');
   medium.custom = {
     c: 2,
     A: 0.5,
@@ -142,6 +173,12 @@ void main() {
         newOffsets[i * 3] = xOffset;
         newOffsets[i * 3 + 1] = xOffset;
         newOffsets[i * 3 + 2] = xOffset;
+      }
+      if (c1.isShown) {
+        const xOffset = medium.custom.recording.getValueAtTimeAgo(10.8 / medium.custom.c);
+        c1.setPosition(centers[0].add(xOffset, 0));
+        c2.setPosition(centers[1].add(xOffset, 0));
+        c3.setPosition(centers[2].add(xOffset, 0));
       }
       medium._particles.drawingObject.updateBuffer('a_offset', newOffsets);
     },
