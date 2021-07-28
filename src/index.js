@@ -303,7 +303,7 @@ figure.fnMap.global.add('showWaveEqn', () => {
 figure.addCursor();
 
 const nav = figure.addSlideNavigator({
-  nextButton: null, prevButton: null, text: null, equation: eqnSineT, // equation: {
+  nextButton: null, prevButton: null, text: null, equation: [eqnSineT, eqnVLF]// equation: {
   //   eqnSineT, sineTExplanation,
   // },
 });
@@ -431,7 +431,7 @@ nav.loadSlides([
       p1._particles.drawingObject.uniforms.u_highlight.value = [1];
       eqnSineT.undim();
       eqnVLF.undim();
-      eqnDiff.undim();
+      // eqnDiff.undim();
     },
   },
   // {
@@ -802,7 +802,7 @@ nav.loadSlides([
   {
     form: 'summaryClean',
     transition: [
-        { out: { m1: ['xAxis', 'yAxis', 'envelope', 'envelope2', 'eqn', 'eqn1', 'firstBall', 'grid'] } },
+        { out: [{ m1: ['xAxis', 'yAxis', 'envelope', 'envelope2', 'eqn', 'eqn1', 'firstBall', 'grid'] }, 'freezeTimeLabel', 'freezeTimeButton', 'resetButton'] },
         [
           { scenario: eqnSineT, target: 'center' },
           // { goToForm: eqnSineT, target: 'summaryClean1' },
@@ -812,7 +812,58 @@ nav.loadSlides([
         { goToForm: eqnSineT, target: 'summaryClean', delay: 1 },
     ],
   },
+
+  /*
+  .########..########.########..####..#######..########..####..######.
+  .##.....##.##.......##.....##..##..##.....##.##.....##..##..##....##
+  .##.....##.##.......##.....##..##..##.....##.##.....##..##..##......
+  .########..######...########...##..##.....##.##.....##..##..##......
+  .##........##.......##...##....##..##.....##.##.....##..##..##......
+  .##........##.......##....##...##..##.....##.##.....##..##..##....##
+  .##........########.##.....##.####..#######..########..####..######.
+  */
   
+  {
+    scenario: ['default', 'right', 'center'],
+    form: null,
+    showCommon: [
+      'm1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton',
+      'slowTimeLabel', 'slowTimeButton', 'timePlot1', 'pulseButton', 'sineButton', 'm1.xAxis', 'm1.yAxis',
+      'velocityButton', 'velocity', 'm1.widthArrow'
+    ],
+    hideCommon: 'timePlot1.eqn',
+    hide: 'm1.widthArrow',
+    enterState: () => {
+      reset();
+    },
+    transition: [
+      { out: eqnSineT },
+      { in: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'timePlot1.grid', 'pulseButton', 'sineButton', 'm1.xAxis', 'm1.yAxis', 'velocityButton', 'velocity'],
+      },
+    ],
+  },
+  {
+    scenarioCommon: ['default', 'right'],
+    fromForm: [null, 'wvt'],
+    form: [null, 'wvt'],
+    transition: [
+      { trigger: () => m1.custom.setWidthArrow(3, 6, -0.5) },
+      [
+        { in: 'm1.setWidthArrow' },
+        { in: eqnVLF },
+      ],
+    ],
+  },
+  { form: [null, 'wavelengthwvt'] },
+  { form: [null, 'lwvt'] },
+  { form: [null, 'lvt'] },
+  { form: [null, 'lvtf'] },
+  { form: [null, 'lvf'] },
+  { form: [null, 'vlf'] },
+  {
+    scenarioCommon: ['default', 'right'],
+    transition: { in: ['velocityButton', 'velocity'] },
+  },
   // {
   //   show: ['eqnSineT', 'sineTExplanation'],
   //   enterState: () => {

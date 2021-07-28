@@ -134,6 +134,17 @@ function addMedium(
         },
       },
       {
+        name: 'widthArrow',
+        make: 'collections.line',
+        options: {
+          width: 0.05,
+          color: colorYellowText,
+          arrow: 'barb',
+          p1: [100, 0],
+          p2: [101, 0],
+        },
+      },
+      {
         name: 'velocity',
         make: 'collections.line',
         options: {
@@ -241,6 +252,7 @@ function addMedium(
   const eqn1 = medium.getElement('eqn1');
   const wavelength = medium.getElement('wavelength');
   const velocity = medium.getElement('velocity');
+  const widthArrow = medium.getElement('widthArrow');
   let lastEnvelope = [];
   let lastEnvelopeNumVertices = 0;
   medium.custom = {
@@ -389,6 +401,11 @@ function addMedium(
       const xDistanceToStart = deltaPhase / Math.PI / 2 * lambda;
       const xDraw = axis.valueToDraw(xDistanceToStart) + deltaX;
       wavelength.setEndPoints([xDraw, A], [xDraw + wavelengthDraw, A]);
+    },
+    setWidthArrow: (x0, x1, y) => {
+      const x0Draw = axis.valueToDraw(x0);
+      const x1Draw = axis.valueToDraw(x1);
+      widthArrow.setEndPoints([x0Draw, y], [x1Draw, y]);
     },
     movePad,
   };
