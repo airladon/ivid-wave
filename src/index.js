@@ -52,8 +52,8 @@ const colorF = colorRed;
 const colorFText = colorRedText;
 const colorX = colorPurple;
 const colorXText = colorPurpleText;
-const colorG = colorGreen;
-const colorGText = colorGreenText;
+const colorG = colorPurple;
+const colorGText = colorPurpleText;
 const colorVelocity = colorCyan;
 const colorVelocityText = colorCyanText;
 
@@ -397,6 +397,15 @@ nav.loadSlides([
     ],
   },
   
+  /*
+  ..######..##.....##.##.....##.##.....##....###....########..##....##
+  .##....##.##.....##.###...###.###...###...##.##...##.....##..##..##.
+  .##.......##.....##.####.####.####.####..##...##..##.....##...####..
+  ..######..##.....##.##.###.##.##.###.##.##.....##.########.....##...
+  .......##.##.....##.##.....##.##.....##.#########.##...##......##...
+  .##....##.##.....##.##.....##.##.....##.##.....##.##....##.....##...
+  ..######...#######..##.....##.##.....##.##.....##.##.....##....##...
+  */
   {
     scenario: 'summary',
     show: ['m1'],
@@ -425,10 +434,28 @@ nav.loadSlides([
     ],
   },
 
-
+  /*
+  .########..########.########
+  .##.....##.##.......##......
+  .##.....##.##.......##......
+  .##.....##.######...######..
+  .##.....##.##.......##......
+  .##.....##.##.......##......
+  .########..########.##......
+  */
   {
     showCommon: ['m1.grid', 'm1.balls', 'm1.firstBall', 'm1.movePad'],
   },
+
+  /*
+  .########.##....##.########..########..######.
+  ....##.....##..##..##.....##.##.......##....##
+  ....##......####...##.....##.##.......##......
+  ....##.......##....########..######....######.
+  ....##.......##....##........##.............##
+  ....##.......##....##........##.......##....##
+  ....##.......##....##........########..######.
+  */
   {
     enterStateCommon: () => {
       m1._balls.get(m1.custom.highlights).map(e => e.setScenario('highlight'));
@@ -525,47 +552,43 @@ nav.loadSlides([
   {
     scenario: 'top',
     show: ['eqnSineT', 'sineTExplanation'],
+    form: 'yx0t',
     enterState: () => {
-      eqnSineT.showForm('yx0t');
       sineTExplanation.showForm('yx0t');
     },
-    transition: [
-      { in: eqnSineT },
-    ],
   },
   {
-    // hideCommon: ['m1.ballTracker', 'm1.envelope', 'm1.eqn', 'm1.envelope2'],
     enterState: () => {
-      eqnSineT.showForm('yx0t');
       sineTExplanation.showForm('yx0t');
     },
     transition: [
       { out: sineTExplanation },
-      { dim: eqnSineT.getPhraseElements('yx0tequalsF') },
-      { goToForm: eqnSineT, target: 'yx1t_0' },
+      // { dim: eqnSineT.getPhraseElements('yx0tequalsF') },
       { in: 'm1.x0' },
     ],
-    steadyState: () => {
-      eqnSineT.showForm('yx1t_0');
-    },
   },
-  twoEqn(sineTExplanation, eqnSineT, 'yx1t_0', 'yx1t_1', eqnSineT.getPhraseElements('yx0tequalsF')),
-  twoEqn(sineTExplanation, eqnSineT, 'yx1t_1', 'yx1t_2', eqnSineT.getPhraseElements('yx0tequalsF')),
-  twoEqn(sineTExplanation, eqnSineT, 'yx1t_2', 'yx1t_3', eqnSineT.getPhraseElements('yx0tequalsF')),
-  twoEqn(sineTExplanation, eqnSineT, 'yx1t_3', 'yx1t_4', eqnSineT.getPhraseElements('yx0tequalsF')),
-  twoEqn(sineTExplanation, eqnSineT, 'yx1t_4', 'yx1t_5', eqnSineT.getPhraseElements('yx0tequalsF')),
+  {
+    form: 'yx1t_0',
+    show: 'm1.x0',
+    // enterStateCommon: () => {
+    //   eqnSineT.getPhraseElements('yx0tequalsF').forEach(e => e.dim());
+    // }
+  },
+  { form: 'yx1t_1', show: 'm1.x0' },
+  { form: 'yx1t_2', show: 'm1.x0' },
+  { form: 'yx1t_3', show: 'm1.x0' },
+  { form: 'yx1t_4', show: 'm1.x0' },
+  { form: 'yx1t_5', show: 'm1.x0' },
+  { transition: { out: 'm1.x0' } },
   {
     enterState: () => {
-      eqnSineT.showForm('yx1t_5');
       sineTExplanation.showForm('summary_1');
     },
     transition: [
       { in: sineTExplanation },
     ],
     steadyState: () => {
-      eqnSineT.showForm('yx1t_5');
       sineTExplanation.showForm('summary_1');
-      console.log('here')
     },
   },
 
@@ -579,13 +602,15 @@ nav.loadSlides([
   .##.....##.##.....##....##....##.....##....##.....##
   */
   {
+    enterStateCommon: () => {},
     enterState: () => {
       eqnSineT.showForm('yx1t_5');
       sineTExplanation.showForm('summary_1');
     },
+    form: null,
     transition: [
       [
-        { out: [sineTExplanation, eqnSineT, 'm1.x0', 'timePlot1'] },
+        { out: [sineTExplanation, eqnSineT, 'timePlot1'] },
         { scenario: 'm1', target: 'default' },
       ],
     ],
@@ -593,7 +618,6 @@ nav.loadSlides([
   {
     scenario: 'default',
     showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'm1.eqn', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton', 'm1.movePadEnv'],
-    hideCommon: [{ m1: ['x0', 'ballTracker', 'eqn1'] }],
     transition: [
       { trigger: 'showEnvelope', duration: 2 },
       { out: 'm1.balls' },
@@ -610,92 +634,48 @@ nav.loadSlides([
     ],
   },
   {
-    scenarioCommon: ['default', 'topCenter'],
+    scenarioCommon: ['default', 'mathx'],
     enterState: () => {
       eqnSineT.showForm('yxt0');
     },
+    form: 'yxt0',
     transition: [
-      { scenario: 'm1', start: 'default', target: 'topCenter' },
+      { scenario: 'm1', start: 'default', target: 'mathx' },
       { in: eqnSineT },
     ],
-    steadyState: () => {
-      eqnSineT.showForm('yxt0');
-    },
   },
+  { form: 'yxt1_0' },
+  { form: 'yxt1_1' },
+  { form: 'yxt1_2' },
+  { form: 'yxt1_3' },
   {
     enterState: () => {
-      eqnSineT.showForm('yxt0');
-    },
-    transition: { goToForm: eqnSineT, start: 'yxt0', target: 'yxt1_0' },
-    steadyState: () => {
-      eqnSineT.showForm('yxt1_0');
-    },
-  },
-  {
-    enterState: () => {
-      eqnSineT.showForm('yxt1_0');
-    },
-    transition: { goToForm: eqnSineT, target: 'yxt1_1' },
-    steadyState: () => {
-      eqnSineT.showForm('yxt1_1');
-    },
-  },
-  {
-    enterState: () => {
-      eqnSineT.showForm('yxt1_1');
-    },
-    transition: { goToForm: eqnSineT, target: 'yxt1_2' },
-    steadyState: () => {
-      eqnSineT.showForm('yxt1_2');
-    },
-  },
-  {
-    enterState: () => {
-      eqnSineT.showForm('yxt1_2');
-    },
-    transition: { goToForm: eqnSineT, target: 'yxt1_3' },
-    steadyState: () => {
-      eqnSineT.showForm('yxt1_3');
-    },
-  },
-  {
-    enterState: () => {
-      eqnSineT.showForm('yxt1_2');
       sineTExplanation.showForm('summary_2');
     },
     transition: { in: sineTExplanation },
     steadyState: () => {
-      eqnSineT.showForm('yxt1_3');
       sineTExplanation.showForm('summary_2');
     },
   },
-  // eqnTransition([[eqnSineT, 'yx1t_0', 'yx1t_1']], eqnSineT.getPhraseElements('yx0tequalsF')),
-  // eqnTransition([[eqnSineT, 'yx1t_1', 'yx1t_2']], eqnSineT.getPhraseElements('yx0tequalsF')),
-  // eqnTransition([[eqnSineT, 'yx1t_2', 'yx1t_3']]), eqnSineT.getPhraseElements('yx0tequalsF'),
-  // eqnTransition([[eqnSineT, 'yx1t_3', 'yx1t_4']], eqnSineT.getPhraseElements('yx0tequalsF')),
-  // eqnTransition([[eqnSineT, 'yx1t_4', 'yx1t_5']], eqnSineT.getPhraseElements('yx0tequalsF')),
-  // eqnTransition([[eqnSineT, 'yx1t_5', 'yx1t_6']]),
-  // eqnTransition([[eqnSineT, 'yx1t_6', 'yx1t_7']]),
-  // eqnTransition([[eqnSineT, 'yx1t_7', 'yx1t_7'], [sineTExplanation, 'summary_1']]),
-  // eqnTransition([[sineTExplanation, null, 'summary_1'], [eqnSineT, 'yx1t_7', 'yx1t_7']]),
-  {
-    show: ['eqnSineT', 'sineTExplanation'],
-    enterState: () => {
-      eqnSineT.showForm('yx1t_7');
-      sineTExplanation.showForm('summary_1');
-    },
-    transition: [
-      { out: sineTExplanation },
-      [
-        { scenario: ['m1', 'timePlot1'],  target: 'rightSmall' },
-        { scenario: eqnSineT, target: 'bottom' },
-        { dim: eqnSineT.getFormElements('yx1t_7') }
-      ],
-    ],
-    steadyState: () => {
-      eqnSineT.showForm('yx1t_7');
-    },
-  },
+  
+  // {
+  //   show: ['eqnSineT', 'sineTExplanation'],
+  //   enterState: () => {
+  //     eqnSineT.showForm('yx1t_7');
+  //     sineTExplanation.showForm('summary_1');
+  //   },
+  //   transition: [
+  //     { out: sineTExplanation },
+  //     [
+  //       { scenario: ['m1', 'timePlot1'],  target: 'rightSmall' },
+  //       { scenario: eqnSineT, target: 'bottom' },
+  //       { dim: eqnSineT.getFormElements('yx1t_7') }
+  //     ],
+  //   ],
+  //   steadyState: () => {
+  //     eqnSineT.showForm('yx1t_7');
+  //   },
+  // },
   // eqnTransition([[eqnSineT, 'yx1t_6', 'yx1t_7']]),
   // {
   //   form: { eqnSineT: 'yx0t_1', sineTExplanation: 'yx0t_1' },
@@ -733,21 +713,21 @@ nav.loadSlides([
   //     figure.get('sineTExplanation').showForm('yx0_2');
   //   }
   // },
-  { form: 'yx0t' },
-  { form: 'yx1t_0' },
-  { form: 'yx1t_1' },
-  { form: 'yx1t_2' },
-  { form: 'yx1t_3' },
-  { form: 'yx1t_4' },
-  { form: 'yx1t_5' },
-  { form: 'yx1t_6' },
-  { form: 'yx1t_7' },
-  {
-    form: 'yx1t_8',
-    steadyState: () => {
-      figure.get('sineTExplanation').showForm('summary_1');
-    }
-  },
+  // { form: 'yx0t' },
+  // { form: 'yx1t_0' },
+  // { form: 'yx1t_1' },
+  // { form: 'yx1t_2' },
+  // { form: 'yx1t_3' },
+  // { form: 'yx1t_4' },
+  // { form: 'yx1t_5' },
+  // { form: 'yx1t_6' },
+  // { form: 'yx1t_7' },
+  // {
+  //   form: 'yx1t_8',
+  //   steadyState: () => {
+  //     figure.get('sineTExplanation').showForm('summary_1');
+  //   }
+  // },
   {
     show: ['diffExplanation2'],
     steadyState: () => {
@@ -796,28 +776,7 @@ nav.loadSlides([
       [16, 'showWaveEqn'],
     ],
   },
-  // { form: 'yx1eyx0' },
-  // { form: 'yx1eyx0es' },
-  // { form: 'yx1estmt1' },
-  // { form: 'yx1estmt1expandUnder' },
-  // { form: 'yx1estmt1expand' },
-  // { form: 'yx1estmt1up' },
-  // { form: 'yx1estmt1xv' },
-  // { form: 'yx1estmt1fOnV' },
-  // { form: 'yx1estmt1fOnVLUp' },
-  // { form: 'yx1estmt1fOnVL' },
-  // { form: 'yx1estmt1fL1' },
-  // { form: 'yx1estmt1fLS1' },
-  // { form: 'yx1estmt1fL' },
-  // { form: 'yx1estmt1fLToX' },
-  // { form: 'yxestmt1fL' },
-  // { form: 'yxestmt1fLConstT' },
-  // { form: 'yxestmt1fLConstX' },
-  // { form: 'yxestmt1fL' },
-  // { form: 'yxeswUpL' },
-  // { form: 'yxewL' },
-  // { form: 'yxewLUpK' },
-  // { form: 'yxewK' },
+  
   {
     showCommon: ['m1'],
     hide: ['m1.xAxis', 'm1.yAxis', 'm1.ballTracker', 'm1.envelope', 'm1.velocity'],
