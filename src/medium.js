@@ -141,8 +141,8 @@ function addMedium(
           width: 0.05,
           color: colorLight,
           arrow: 'barb',
-          p1: [100, 0],
-          p2: [101, 0],
+          p1: [0, -1],
+          p2: [2, -1],
           align: 'center',
         },
       },
@@ -491,6 +491,13 @@ function addMedium(
     widthArrow.showAll();
     widthArrow.animations.new()
       .length({ start: 0.5, target: 7.8, duration: 1 })
+      // .dissolveIn({ element: 'label' })
+      .start();
+  });
+  figure.fnMap.global.add('growWASmall', () => {
+    widthArrow.showAll();
+    widthArrow.animations.new()
+      .length({ start: 0.5, target: 3.9, duration: 1 })
       // .dissolveIn({ element: 'label' })
       .start();
   });
