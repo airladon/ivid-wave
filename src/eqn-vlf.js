@@ -23,10 +23,13 @@ function addVLFEquation(name) {
     font: { family: 'TeXGyreTermes' },
     textFont: { family: 'TeXGyreTermes' },
     elements: {
-      equals: { text: ' = ' },
+      equals: { text: ' = ', color: colorLight },
       lambda: '\u03bb',
       arrow1: { symbol: 'line', width: 0.04, arrow: { start: { head: 'triangle' } } },
       vin: { symbol: 'vinculum', lineWidth: 0.05 },
+      v: { color: colorVelocityText },
+      T: { color: colorTimeText },
+      w: { color: colorPositionText },
     },
     phrases: {
       onF: { frac: {
@@ -35,7 +38,9 @@ function addVLFEquation(name) {
     },
     forms: {
       vlf: ['v', 'equals', 'lambda', ' ', 'f'],
-      wvt: ['w', 'equals', 'v', ' ', 'T'],
+      wAlone: { content: 'w', alignment: { xAlign: 'left' } },
+      we: { content: ['w', 'equals'], alignment: { xAlign: 'left' } },
+      wvt: { content: ['w', 'equals', 'v', ' ', 'T'], alignment: { fixTo: null, xAlign: 'left' } },
       wavelengthwvt: [bot('w', 'wavelength', 'arrow1'), 'equals', 'v', ' ', 'T'],
       lwvt: [bot('w', 'lambda', 'arrow1'), 'equals', 'v', ' ', 'T'],
       lvt: ['lambda', 'equals', 'v', ' ', 'T'],
@@ -49,7 +54,7 @@ function addVLFEquation(name) {
       scenarios: {
         default: { position: [12, 6], scale: 1 },
         summary: { position: [18, 5.7], scale: 1 },
-        right: { position: [14.5, 4.4], scale: 1 },
+        right: { position: [12, 4], scale: 1 },
       },
     },
   });

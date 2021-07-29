@@ -121,13 +121,14 @@ function addMedium(
         make: 'collections.line',
         options: {
           width: 0.05,
-          color: colorOne,
+          color: colorLight,
           arrow: 'barb',
           label: {
             text: '\u03bb',
             offset: 0.04,
             location: 'top',
             scale: 4,
+            font: { color: colorPositionText },
           },
           p1: [100, 0],
           p2: [101, 0],
@@ -138,10 +139,11 @@ function addMedium(
         make: 'collections.line',
         options: {
           width: 0.05,
-          color: colorYellowText,
+          color: colorLight,
           arrow: 'barb',
           p1: [100, 0],
           p2: [101, 0],
+          align: 'center',
         },
       },
       {
@@ -158,8 +160,8 @@ function addMedium(
             location: 'top',
             scale: 4,
           },
-          p1: [10, 1.5],
-          p2: [12, 1.5],
+          p1: [4.2, 3],
+          p2: [6.2, 3],
         },
       },
       {
@@ -474,6 +476,23 @@ function addMedium(
       }, 'current');
       // }
     }
-  })
+  });
+  // const velocity = medium._velocity;
+  figure.fnMap.global.add('growV', () => {
+    velocity.showAll();
+    velocity._label.hide();
+    velocity.animations.new()
+      .length({ start: 0.5, target: 2, duration: 1 })
+      .dissolveIn({ element: 'label' })
+      .start();
+  });
+  // const widthArrow = medium._widthArrow;
+  figure.fnMap.global.add('growWA', () => {
+    widthArrow.showAll();
+    widthArrow.animations.new()
+      .length({ start: 0.5, target: 7.8, duration: 1 })
+      // .dissolveIn({ element: 'label' })
+      .start();
+  });
   return medium;
 }

@@ -580,10 +580,26 @@ nav.loadSlides([
     hide: 'm1',
     show: 'ocean',
     transition: [
-      { in: { ocean: ['h1', 'h2', 'h3', 'h4'] } },
-      { in: { ocean: ['c1', 'c2', 'c3', 'c4'] }, delay: 1 },
+      // { in: { ocean: ['h1', 'h2', 'h3', 'h4'] } },
+      { in: { ocean: ['c1', 'c2', 'c3', 'c4'] } },
     ],
   },
+  /*
+  .########..########.########..####..#######..########..####..######.
+  .##.....##.##.......##.....##..##..##.....##.##.....##..##..##....##
+  .##.....##.##.......##.....##..##..##.....##.##.....##..##..##......
+  .########..######...########...##..##.....##.##.....##..##..##......
+  .##........##.......##...##....##..##.....##.##.....##..##..##......
+  .##........##.......##....##...##..##.....##.##.....##..##..##....##
+  .##........########.##.....##.####..#######..########..####..######.
+  */
+  {
+    transition: [
+      { out: 'ocean' },
+      { in: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'pulseButton', 'sineButton', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel'] },
+    ],
+  },
+
 
   /*
   .##.....##.########.##........#######...######..####.########.##....##
@@ -595,23 +611,15 @@ nav.loadSlides([
   ....###....########.########..#######...######..####....##.......##...
   */
   {
-    transition: [
-      { out: 'ocean' },
-      { in: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'] },
-    ],
-  },
-  {
+    show: ['pulseButton', 'sineButton', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel'],
     transition: [
       { in: ['slowTimeLabel', 'slowTimeButton'] },
-      { in: ['freezeTimeButton', 'freezeTimeLabel'] },
-      { in: 'resetButton', delay: 1 },
-      { in: ['pulseButton', 'sineButton'], delay: 2 },
     ],
   },
   {
     showCommon: [
       'm1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton',
-      'slowTimeLabel', 'slowTimeButton', 'timePlot1', 'pulseButton', 'sineButton', 'm1.xAxis', 'm1.yAxis',
+      'slowTimeLabel', 'slowTimeButton', 'timePlot1.xAxis', 'timePlot.yAxis', 'timePlot.trace', 'timePlot.grid', 'pulseButton', 'sineButton', 'm1.xAxis', 'm1.yAxis',
     ],
     hideCommon: 'timePlot1.eqn',
     transition: [
@@ -624,15 +632,38 @@ nav.loadSlides([
     ],
   },
   {
+    show: [['m1.xAxis', 'm1.yAxis'], { timePlot1: ['xAxis', 'yAxis', 'grid', 'trace'] }],
     scenarioCommon: ['default', 'right'],
     transition: { in: ['velocityButton', 'velocity'] },
   },
   {
-    // showCommon: [
-    //   'm1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton',
-    //   'slowTimeLabel', 'slowTimeButton', 'timePlot1', 'pulseButton', 'sineButton', 'm1.xAxis', 'm1.yAxis', 'velocityButton', 'velocity'
-    // ],
-    show: ['m1.ballTracker', 'velocityButton', 'velocity'],
+    show: ['m1.xAxis', 'm1.yAxis', 'm1.ballTracker', 'velocityButton', 'velocity', { timePlot1: ['xAxis', 'yAxis', 'grid', 'trace'] }],
+  },
+  {
+    showCommon: [
+      'm1.balls', 'm1.grid', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'm1.xAxis', 'm1.yAxis', 'timePlot.grid',
+    ],
+    fromForm: [null, 'wAlone'],
+    form: [null, 'wvt'],
+    show: { timePlot1: ['xAxis', 'yAxis', 'grid', 'trace'] },
+    enterState: () => {
+      m1.custom.setWidthArrow(0, 6, -1);
+    },
+    transition: [
+      { out: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton',
+      'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton'] },
+      // { in: 'timePlot1.widthArrow' },
+      { trigger: 'growT', duration: 1, delay: 1 },
+      { trigger: 'growV', duration: 1, delay: 1 },
+      { trigger: 'growWA', duration: 1, delay: 1 },
+      { in: eqnVLF },
+      { goToForm: eqnVLF, target: 'we' },
+      { goToForm: eqnVLF, target: 'wvt' },
+    ],
+    steadyState: () => {
+      m1._widthArrow.setLength(7.8);
+      timePlot1._widthArrow.setLength(2);
+    },
   },
   // {
   //   show: ['velocityButton', 'velocity'],

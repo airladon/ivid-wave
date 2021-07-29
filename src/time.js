@@ -19,7 +19,26 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
         options: {
           simple: true,
           width: 0.08,
-          color: color0,
+          color: colorTimeText,
+        },
+      },
+      {
+        name: 'widthArrow',
+        make: 'collections.line',
+        options: {
+          width: 0.05,
+          color: colorLight,
+          arrow: 'barb',
+          label: {
+            text: 'T',
+            location: 'bottom',
+            offset: 0.3,
+            scale: 4,
+            color: colorTimeText,
+          },
+          p1: [0, -1],
+          p2: [2, -1],
+          align: 'center',
         },
       },
       {
@@ -59,5 +78,14 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
     }
     trace.custom.updatePoints({ points });
   };
+  const T = timePlot._widthArrow;
+  figure.fnMap.global.add('growT', () => {
+    T.showAll();
+    T._label.hide();
+    T.animations.new()
+      .length({ start: 0.5, target: 2, duration: 1 })
+      .dissolveIn({ element: 'label' })
+      .start();
+  })
   return timePlot;
 }
