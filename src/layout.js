@@ -37,8 +37,31 @@ function addFigureElements() {
     //   'slow',
     // ]),
   ]);
+  addDefsEquation('defs');
+  // figure.add({
+  //   name: 'waveDefinition',
+  //   make: 'textLines',
+  //   font: { size: 1, color: colorLight },
+  //   xAlign: 'center',
+  //   position: [11.5, 1],
+  //   text: ['|Wave|: propogating disturbance'],
+  //   modifiers: {
+  //     Wave: { font: { color: colorGText } },
+  //   },
+  // });
+  // figure.add({
+  //   name: 'tranvserseDef',
+  //   make: 'textLines',
+  //   font: { size: 1, color: colorLight },
+  //   xAlign: 'left',
+  //   position: [12, 1],
+  //   text: ['|Transverse|: acting, lying, or being across'],
+  //   modifiers: {
+  //     Transverse: { font: { color: colorGText } },
+  //   },
+  // });
 
-  const m1 = addMedium('m1', 13, 10, 2.5, [5, 6], false, 0.12, 0.125);
+  const m1 = addMedium('m1', 13, 10, 2.5, [5.5, 6], false, 0.12, 0.125);
   m1.setPosition(0.1, 0);
   const timePlot1 = addTimePlot(
     'timePlot1', 6.5, 10.5, m1.custom.recording, 2.5 * 13 / 10, [1, 6],

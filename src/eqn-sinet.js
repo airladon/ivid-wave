@@ -71,7 +71,7 @@ function addSineTEquation(name) {
       scenarios: {
         default: { position: [9, 4], scale: 1 },
         // default: { position: [7, 8], scale: 1 },
-        summary: { position: [16, 8], scale: 1 },
+        summary: { position: [16, 5.7], scale: 1 },
         mathx: { position: [8, 4], scale: 1 },
         center: { position: [8, 8], scale: 1.2 },
         // bottom: { position: [7, 1.5], scale: 1 },

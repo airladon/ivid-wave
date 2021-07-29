@@ -8,17 +8,17 @@ attribute float a_offset;
 uniform mat3 u_matrix;
 uniform float u_time;
 varying float v_col;
-uniform float u_highlight;
+// uniform float u_highlight;
 void main() {
   float x = a_position.x + a_offset;
   float y = a_position.y;
   gl_Position = vec4((u_matrix * vec3(x, y, 1)).xy, 0, 1);
   v_col = 0.0;
-  if (u_highlight > 0.0) {
-    if (mod(a_position.x, 10.8) == 0.0) {
-      v_col = 1.0;
-    }
-  }
+  // if (u_highlight > 0.0) {
+  //   if (mod(a_position.x, 10.8) == 0.0) {
+  //     v_col = 1.0;
+  //   }
+  // }
   if (a_position.x < 0.25) {
     v_col = 2.0;
   }
@@ -64,19 +64,21 @@ void main() {
   }
   const centers = [
     new Fig.Point(10.8, height / 2),
-    new Fig.Point(10.8, height / 2 - gridStep),
-    new Fig.Point(10.8, height / 2 - gridStep * 2),
+    // new Fig.Point(10.8, height / 2 - gridStep),
+    // new Fig.Point(10.8, height / 2 - gridStep * 2),
+    // new Fig.Point(10.8, height / 2 - gridStep * 4),
+    new Fig.Point(10.8, height / 2 - gridStep * 5),
   ];
   const addCircle = (name, index) => {
     const position = Fig.getPoint([centers[index], centers[index + 1]]);
-    const radius = ((position.y + 2) * (position.y + 2)) / 40;
+    const radius = ((position.y + 2) * (position.y + 2)) / 25;
     return {
       name,
       make: 'polygon',
       sides: 20,
       position,
       radius,
-      line: { width: 0.04 },
+      // line: { width: 0.04 },
       color: color1,
     };
   };
@@ -103,7 +105,7 @@ void main() {
         make: 'gl',
         vertexShader: {
           src: vertexShader,
-          vars: ['a_position', 'a_offset', 'u_matrix', 'u_highlight'],
+          vars: ['a_position', 'a_offset', 'u_matrix'],
         },
         // vertexShader: 'simple',
         // Build in shader with one color for all vertices
@@ -115,15 +117,14 @@ void main() {
         // Define buffers and uniforms
         vertices: { data: points },
         buffers: [{ name: 'a_offset', data: offsets, size: 1, usage: 'DYNAMIC' }],
-        uniforms: [{ name: 'u_highlight', length: 1, type: 'FLOAT' }],
+        // uniforms: [{ name: 'u_highlight', length: 1, type: 'FLOAT' }],
         // Element color and mods
         color: colorLight,
         // position: [10, 5],
         // mods: { state: { isChanging: true } },
       },
       addCircle('c1', 1),
-      addCircle('c2', 2),
-      addCircle('c3', 3),
+      addCircle('c6', 6),
       {
         name: 'diaphram',
         make: 'rectangle',
@@ -155,8 +156,8 @@ void main() {
   });
   const movePad = medium._movePad;
   const c1 = medium.get('c1');
-  const c2 = medium.get('c2');
-  const c3 = medium.get('c3');
+  const c6 = medium.get('c6');
+  // const c3 = medium.get('c3');
   medium.custom = {
     c: 2,
     A: 0.5,
@@ -177,8 +178,8 @@ void main() {
       if (c1.isShown) {
         const xOffset = medium.custom.recording.getValueAtTimeAgo(10.8 / medium.custom.c);
         c1.setPosition(centers[0].add(xOffset, 0));
-        c2.setPosition(centers[1].add(xOffset, 0));
-        c3.setPosition(centers[2].add(xOffset, 0));
+        c6.setPosition(centers[1].add(xOffset, 0));
+        // c3.setPosition(centers[2].add(xOffset, 0));
       }
       medium._particles.drawingObject.updateBuffer('a_offset', newOffsets);
     },
@@ -198,7 +199,7 @@ void main() {
       medium.custom.f = frequency;
     },
   };
-  medium._particles.drawingObject.uniforms.u_highlight.value = [1];
+  // medium._particles.drawingObject.uniforms.u_highlight.value = [1];
   movePad.notifications.add('setTransform', () => {
     // if (maxTimeReached) {
     //   return;

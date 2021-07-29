@@ -56,6 +56,7 @@ const colorG = colorPurple;
 const colorGText = colorPurpleText;
 const colorVelocity = colorCyan;
 const colorVelocityText = colorCyanText;
+const colorWave = colorPurpleText;
 
 
 const { Transform, Point } = Fig;
@@ -84,6 +85,7 @@ const examples = figure.get('examples');
 const intro = figure.get('intro');
 const timePlot1 = figure.get('timePlot1');
 const eqnSine = figure.get('eqnSine');
+const defs = figure.get('defs');
 const eqnSineT = figure.get('eqnSineT');
 const sineTExplanation = figure.get('sineTExplanation');
 // const eqnSineX0 = figure.get('eqnSineX0');
@@ -303,7 +305,7 @@ figure.fnMap.global.add('showWaveEqn', () => {
 figure.addCursor();
 
 const nav = figure.addSlideNavigator({
-  nextButton: null, prevButton: null, text: null, equation: [eqnSineT, eqnVLF]// equation: {
+  nextButton: null, prevButton: null, text: null, equation: [eqnSineT, eqnVLF, defs]// equation: {
   //   eqnSineT, sineTExplanation,
   // },
 });
@@ -410,7 +412,7 @@ nav.loadSlides([
   {
     scenario: 'summary',
     enterState: () => {
-      p1._particles.drawingObject.uniforms.u_highlight.value = [0];
+      // p1._particles.drawingObject.uniforms.u_highlight.value = [0];
       eqnSineT.showForm('summaryPage')
       eqnSineT.dim();
       eqnVLF.dim();
@@ -423,12 +425,12 @@ nav.loadSlides([
       { trigger: () => sineWave(m1, 0) },
       { in: ['p1.particles', 'p1.diaphram', 'p1.movePad'], delay: 1 },
       { trigger: () => sineWave(p1, 0) },
-      { in: eqnSineT },
       { in: eqnVLF },
+      { in: eqnSineT },
       { in: eqnDiff },
     ],
     leaveState: () => {
-      p1._particles.drawingObject.uniforms.u_highlight.value = [1];
+      // p1._particles.drawingObject.uniforms.u_highlight.value = [1];
       eqnSineT.undim();
       eqnVLF.undim();
       // eqnDiff.undim();
@@ -486,24 +488,14 @@ nav.loadSlides([
   */
   {
     enterState: () => {
-      p1._particles.drawingObject.uniforms.u_highlight.value = [0];
+      // p1._particles.drawingObject.uniforms.u_highlight.value = [0];
       eqnSineT.showForm('summaryPage')
       eqnSineT.dim();
       eqnVLF.dim();
       eqnVLF.showForm('vlf');
       eqnDiff.showForm('d1Mono');
     },
-    // showCommon: ['m1.grid', 'm1.balls', 'm1.firstBall', 'm1.movePad'],
-    // show: ['p1.particles', 'p1.diaphram', 'p1.movePad', eqnSineT, eqnVLF, eqnDiff],
     scenario: 'summary',
-    // transition: [
-    //   [
-    //     { out: ['m1.balls', 'm1.firstBall', 'm1.movePad'], final: true },
-    //     { out: ['p1.particles', 'p1.diaphram', 'p1.movePad', eqnSineT, eqnVLF, eqnDiff] },
-    //   ],
-    //   { scenario: m1, target: 'default', duration: 0 },
-    //   { in: ['m1.grid', 'm1.balls', 'm1.firstBall', 'm1.movePad'], final: false },
-    // ],
     transition: (done) => {
       p1._particles.showAll();
       p1._diaphram.showAll();
@@ -511,13 +503,6 @@ nav.loadSlides([
       m1._balls.showAll();
       m1._firstBall.showAll();
       m1._movePad.showAll();
-      // m1.animations.new()
-      //   .dissolveOut({ elements: ['balls', 'firstBall', 'movePad'] })
-      //   .scenario({ target: 'default', duration: 0.01 })
-      //   .trigger('softReset')
-      //   .dissolveIn({ elements: ['grid', 'balls', 'firstBall', 'movePad']})
-      //   .whenFinished(done)
-      //   .start();
       figure.animations.new()
         .dissolveOut({
           elements: ['p1.particles', 'p1.diaphram', 'p1.movePad', eqnSineT, eqnVLF, eqnDiff, 'm1.balls', 'm1.firstBall', 'm1.movePad'
@@ -526,7 +511,6 @@ nav.loadSlides([
         })
         .scenarios({ target: 'default', duration: 0.01 })
         .trigger({ callback: 'softReset' })
-        // .dissolveIn({ elements: ['m1.grid'] })
         .dissolveIn({ elements: ['m1.grid', 'm1.firstBall', 'm1.movePad', 'm1.balls'], duration: 0.5 })
         .whenFinished(done)
         .start();
@@ -539,7 +523,26 @@ nav.loadSlides([
       eqnVLF.hide();
       eqnDiff.hide();
     },
+    form: [null, null, null],
   },
+  {
+    showCommon: ['m1.grid', 'm1.balls', 'm1.firstBall', 'm1.movePad'],
+    // transition: { in: 'waveDefinition' },
+    form: [null, null, 'waveDef']
+  },
+  {
+    enterState: () => {
+      pause();
+    },
+    // show: 'waveDefinition',
+    transition: { trigger: 'showEnvelope', duration: 2 },
+    steadyState: () => {
+      unpause();
+      m1._envelope.pointsToDraw = Math.floor(m1._envelope.drawingObject.numVertices / 6) * 6;
+      m1._envelope.show();
+    } 
+  },
+  
 
   /*
   .########.##....##.########..########..######.
@@ -551,28 +554,48 @@ nav.loadSlides([
   ....##.......##....##........########..######.
   */
   {
-    showCommon: ['m1.grid', 'm1.balls', 'm1.firstBall', 'm1.movePad'],
+    form: [null, null, null],
+  },
+  {
+    fromForm: [null, null, 'transverseWave'],
+    form: [null, null, 'transverseDef'],
     enterState: () => {
       m1._balls.get(m1.custom.highlights).map(e => e.setScenario('highlight'));
     },
     transition: [
       { pulse: { 'm1.balls': m1.custom.highlights }, scale: 3 },
+      { in: 'm1.disturbanceLines' },
+      { in: defs },
+      { goToForm: defs, target: 'transverseDef', delay: 1 }
     ],
     leaveState: () => {
       m1._balls.undim();
     },
   },
   {
+    form: [null, null, null],
     transition: [
-      { out: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'] },
+      { out: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', defs] },
+      { trigger: 'softReset' },
       { in: 'p1' },
-      { in: ['pulseButton', 'sineButton'] },
+      { in: ['pulseButton', 'sineButton', 'resetButton'] },
     ],
   },
   {
+    form: [null, null, 'longWave'],
+    hide: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'],
+    show: ['pulseButton', 'sineButton', 'resetButton', 'p1'],
+  },
+  {
+    form: [null, null, 'longDef'],
+    hide: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'],
+    show: ['pulseButton', 'sineButton', 'resetButton', 'p1'],
+  },
+  {
     hide: 'm1',
+    form: [null, null, null],
     transition: [
-      { out: ['pulseButton', 'sineButton', 'p1'] },
+      { out: ['pulseButton', 'sineButton', 'resetButton', 'p1', defs] },
       { in: { ocean: ['h1', 'h2', 'h3', 'h4', 'particles', 'grid'] } },
     ],
   },

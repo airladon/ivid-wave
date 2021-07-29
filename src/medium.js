@@ -25,6 +25,14 @@ function addMedium(
       }
     },
   });
+  const makeVertLine = (xPos) => ({
+    make: 'line',
+    p1: [xPos / maxValue * length, -A / 2],
+    p2: [xPos / maxValue * length, A / 2],
+    arrow: 'barb',
+    width: 0.05,
+    color: color1,
+  });
   figure.add({
     name: stringName,
     make: 'collection',
@@ -48,6 +56,17 @@ function addMedium(
       },
       xAxis('xAxis', 'x', '', length, maxValue),
       yAxis('yAxis', 'y', '', A * length / maxValue, yAxisTitle),
+      {
+        name: 'disturbanceLines',
+        make: 'collection',
+        elements: [
+          makeVertLine(2),
+          makeVertLine(4),
+          makeVertLine(6),
+          makeVertLine(8),
+          makeVertLine(10),
+        ],
+      },
       {
         name: 'balls',
         make: 'collection',
