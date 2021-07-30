@@ -233,6 +233,10 @@ function addSineTEquation(name) {
         ['y_1', '  ', 'equals1', '  ', { sub: ['f_1', 't_f1'] }, ' ', brac(['t_2', 'min_t', 'xOnV'], 2)],
       ], 3),
       summaryPage: ['y_2', '  ', 'equals2', '  ', 'g_2', brac(['x_5', 'min_x', 'tV'], 5)],
+      periodic: lines([
+        ['y_2', '  ', 'equals2', '  ', { sub: ['g_2', 'x_g'] }, brac(['x_5', 'min_x', 'tV'], 5)],
+        ['y_1', '  ', 'equals1', '  ', { sub: ['f_1', 't_f1'] }, ' ', brac(['t_2', 'min_t', 'xOnV'], 2)],
+      ], 3),
     },
   });
   const description = figure.add({

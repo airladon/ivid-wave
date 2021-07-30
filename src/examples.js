@@ -38,30 +38,31 @@ function addExamples() {
       text('uv', 'UV Radiation', 0.6 * s, [15, 10.6]),
     ],
   });
-  const d = 0.4;
+  const d = 0.5;
+  const delay = 0.2;
   figure.fnMap.global.add('showExamples', () => {
     examples.show();
     examples.hideAll();
     examples.animations.new()
-      .dissolveIn({ element: 'ocean', duration: 0.4 })
-      .dissolveIn({ element: 'sound', duration: 0.4, delay: 0.5 })
-      .dissolveIn({ element: 'light', duration: 0.4, delay: 0.5 })
-      .dissolveIn({ element: 'wifi', duration: 0.4, delay: 0.5 })
-      .dissolveIn({ element: 'seismic', duration: d })
-      .dissolveIn({ element: 'shock', duration: d })
-      .dissolveIn({ element: 'gravity', duration: d })
-      .dissolveIn({ element: 'ultrasound', duration: d })
-      .dissolveIn({ element: 'radar', duration: d })
-      .dissolveIn({ element: 'radio', duration: d })
-      .dissolveIn({ element: 'cell', duration: d })
-      .dissolveIn({ element: 'gps', duration: d })
-      .dissolveIn({ element: 'ripples', duration: d })
-      .dissolveIn({ element: 'xrays', duration: d })
-      .dissolveIn({ element: 'gamma', duration: d })
-      .dissolveIn({ element: 'micro', duration: d })
-      .dissolveIn({ element: 'infra', duration: d })
-      .dissolveIn({ element: 'vibrating', duration: d })
-      .dissolveIn({ element: 'uv', duration: d })
+      .dissolveIn({ element: 'ocean', duration: d })
+      .dissolveIn({ element: 'sound', duration: d, delay: 1.5 })
+      .dissolveIn({ element: 'light', duration: d, delay: 2.4 })
+      .dissolveIn({ element: 'wifi', duration: d, delay: 0.5 })
+      .dissolveIn({ element: 'seismic', duration: d, delay })
+      .dissolveIn({ element: 'shock', duration: d, delay })
+      .dissolveIn({ element: 'gravity', duration: d, delay })
+      .dissolveIn({ element: 'ultrasound', duration: d, delay })
+      .dissolveIn({ element: 'radar', duration: d, delay })
+      .dissolveIn({ element: 'radio', duration: d, delay })
+      .dissolveIn({ element: 'cell', duration: d, delay })
+      .dissolveIn({ element: 'gps', duration: d, delay })
+      .dissolveIn({ element: 'ripples', duration: d, delay })
+      .dissolveIn({ element: 'xrays', duration: d, delay })
+      .dissolveIn({ element: 'gamma', duration: d, delay })
+      .dissolveIn({ element: 'micro', duration: d, delay })
+      .dissolveIn({ element: 'infra', duration: d, delay })
+      .dissolveIn({ element: 'vibrating', duration: d, delay })
+      .dissolveIn({ element: 'uv', duration: d, delay })
       .start();
   });
   figure.fnMap.global.add('outExamples', () => {

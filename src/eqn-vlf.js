@@ -61,6 +61,9 @@ function addVLFEquation(name) {
       lvt: ['lambda', 'equals', 'v', ' ', 'T'],
       lvtf: ['lambda', 'equals', 'v', ' ', bot('T', 'onF', 'arrow1', 0.15)],
       lvf: ['lambda', 'equals', { frac: { numerator: 'v', symbol: 'vin', denominator: 'f', scale: 0.8, numeratorSpace: 0.02, denominatorSpace: 0.02 } }],
+      l: { content: 'lambda', alignment: { xAlign: -0.6 } },
+      we6: ['w', 'equals', '_6'],
+      we12: ['w', 'equals', '_12'],
     },
     formDefaults: {
       alignment: { fixTo: 'equals' },

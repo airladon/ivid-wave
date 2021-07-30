@@ -167,6 +167,7 @@ const reset = () => {
 figure.fnMap.global.add('reset', () => reset());
 figure.fnMap.global.add('softReset', () => {
   m1.custom.reset();
+  p1.custom.reset();
   time.reset();
   pause();
 });
@@ -302,7 +303,7 @@ figure.fnMap.global.add('showWaveEqn', () => {
   eqnDiff.animations.new().dissolveIn(0.5).start();
 });
 
-figure.addCursor();
+figure.addCursor({ width: 0.1, color: [0.5, 1, 1, 1], radius: 0.4 });
 
 const nav = figure.addSlideNavigator({
   nextButton: null, prevButton: null, text: null, equation: [eqnSineT, eqnVLF, defs]// equation: {
@@ -381,19 +382,9 @@ nav.loadSlides([
   {
     scenarioCommon: 'default',
     show: ['title'],
-    // exec: [
-    //   ['0:30', 'showExamples'],
-    //   ['0:50', 'outTitle'],
-    //   ['0:50', 'outExamples'],
-    // ],
-    // exec: [
-    //   ['0:05', 'pause'],
-    //   ['0:05', 'showEnvelope'],
-    //   ['0:07', 'unpause'],
-    // ],
   },
   {
-    time: '0:01',
+    time: '0:40',
     show: ['title', 'examples'],
     transition: [
       { trigger: 'showExamples' },
@@ -411,6 +402,7 @@ nav.loadSlides([
   */
   {
     scenario: 'summary',
+    time: '0:56',
     enterState: () => {
       // p1._particles.drawingObject.uniforms.u_highlight.value = [0];
       eqnSineT.showForm('summaryPage')
@@ -425,9 +417,9 @@ nav.loadSlides([
       { trigger: () => sineWave(m1, 0) },
       { in: ['p1.particles', 'p1.diaphram', 'p1.movePad'], delay: 1 },
       { trigger: () => sineWave(p1, 0) },
-      { in: eqnVLF },
-      { in: eqnSineT },
-      { in: eqnDiff },
+      { in: eqnVLF, delay: 2 },
+      { in: eqnSineT, delay: 2 },
+      { in: eqnDiff, delay: 2 },
     ],
     leaveState: () => {
       // p1._particles.drawingObject.uniforms.u_highlight.value = [1];
@@ -524,6 +516,12 @@ nav.loadSlides([
       eqnDiff.hide();
     },
     form: [null, null, null],
+    leaveState: () => {
+      // p1._particles.drawingObject.uniforms.u_highlight.value = [1];
+      eqnSineT.undim();
+      eqnVLF.undim();
+      // eqnDiff.undim();
+    },
   },
   {
     showCommon: ['m1.grid', 'm1.balls', 'm1.firstBall', 'm1.movePad'],
@@ -598,6 +596,7 @@ nav.loadSlides([
       { out: ['pulseButton', 'sineButton', 'resetButton', 'p1', defs] },
       { in: { ocean: ['h1', 'h2', 'h3', 'h4', 'particles', 'grid'] } },
     ],
+    leaveState: 'softReset',
   },
   {
     hide: 'm1',
@@ -641,9 +640,15 @@ nav.loadSlides([
     ],
   },
   {
+    show: ['pulseButton', 'sineButton', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'slowTimeLabel', 'slowTimeButton'],
+    // scenarioCommon: ['default', 'right'],
+    transition: { in: ['velocityButton', 'velocity'] },
+  },
+  {
     showCommon: [
       'm1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton',
       'slowTimeLabel', 'slowTimeButton', 'timePlot1.xAxis', 'timePlot.yAxis', 'timePlot.trace', 'timePlot.grid', 'pulseButton', 'sineButton', 'm1.xAxis', 'm1.yAxis',
+      'velocityButton', 'velocity',
     ],
     hideCommon: 'timePlot1.eqn',
     transition: [
@@ -655,12 +660,9 @@ nav.loadSlides([
       ],
     ],
   },
+  
   {
-    show: [['m1.xAxis', 'm1.yAxis'], { timePlot1: ['xAxis', 'yAxis', 'grid', 'trace'] }],
     scenarioCommon: ['default', 'right'],
-    transition: { in: ['velocityButton', 'velocity'] },
-  },
-  {
     show: ['m1.xAxis', 'm1.yAxis', 'm1.ballTracker', 'velocityButton', 'velocity', { timePlot1: ['xAxis', 'yAxis', 'grid', 'trace'] }],
   },
   {
@@ -714,8 +716,8 @@ nav.loadSlides([
   },
   {
     scenarioCommon: ['default', 'right', 'wavelength'],
-    fromForm: [null, 'wvt1'],
-    form: [null, 'wvt1'],
+    fromForm: [null, 'l'],
+    form: [null, 'l'],
     show: { timePlot1: ['xAxis', 'yAxis', 'grid', 'trace'] },
     enterStateCommon: () => {
       m1.custom.setWidthArrow(0, 3, -1);
@@ -736,7 +738,7 @@ nav.loadSlides([
       m1._widthArrow.setLength(3.9);
     },
   },
-  { form: [null, 'wavelengthwvt'] },
+  // { form: [null, 'wavelengthwvt'] },
   { form: [null, 'lvt'] },
   { form: [null, 'lvtf'] },
   { form: [null, 'lvf'] },
@@ -775,10 +777,12 @@ nav.loadSlides([
     showCommon: [
       'm1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton',
       'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'timePlot1.grid', 'm1.xAxis', 'm1.yAxis',
+      'timePlot1.eqn',
     ],
     scenario: 'topRight',
     form: [null, null],
     hideCommon: [],
+    hide: 'timePlot1.eqn',
     transition: [
       { out: ['pulseButton', 'sineButton', 'slowTimeButton', 'slowTimeLabel', 'velocityButton', 'velocity', eqnVLF] },
     ],
@@ -857,7 +861,7 @@ nav.loadSlides([
     form: null,
     transition: [
       [
-        { out: [sineTExplanation, eqnSineT, 'timePlot1'] },
+        { out: [sineTExplanation, eqnSineT, 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'timePlot1.grid', 'timePlot1.eqn'] },
         { scenario: 'm1', target: 'default' },
       ],
     ],
@@ -937,48 +941,48 @@ nav.loadSlides([
       eqnDiff.showForm('d1');
     },
   },
-  {
-    scenarioCommon: 'default',
-    show: ['title'],
-    exec: [
-      ['0:30', 'showExamples'],
-      ['0:50', 'outTitle'],
-      ['0:50', 'outExamples'],
-    ],
-    // exec: [
-    //   ['0:05', 'pause'],
-    //   ['0:05', 'showEnvelope'],
-    //   ['0:07', 'unpause'],
-    // ],
-  },
+  // {
+  //   scenarioCommon: 'default',
+  //   show: ['title'],
+  //   exec: [
+  //     ['0:30', 'showExamples'],
+  //     ['0:50', 'outTitle'],
+  //     ['0:50', 'outExamples'],
+  //   ],
+  //   // exec: [
+  //   //   ['0:05', 'pause'],
+  //   //   ['0:05', 'showEnvelope'],
+  //   //   ['0:07', 'unpause'],
+  //   // ],
+  // },
   
-  {
-    scenario: 'summary',
-    show: ['m1'],
-    hide: ['m1.ballTracker', 'm1.envelope', 'm1.grid', 'm1.velocity'],
-    // time: '0:50.5',
-    // steadyState: () => {
-    //   eqnVLF.showForm('vlf');
-    // },
-    time: '0:50.5',
-    transition: [
-      { in: ['m1.grid', 'm1.balls', 'm1.grid', 'm1.yAxis', 'm1.xAxis']}
-    ],
-    execDelta: [
-      [1, 'startSineWave'],
-      [7, 'pause'],
-      [7, 'showVelocity'],
-      [8, 'showWavelength'],
-      [9, 'showVLF'],
-      [10, 'hideWavelength'],
-      [10, 'hideVelocity'],
-      [10, 'hideVLF'],
-      [11, 'unpause'],
-      [14, 'showSine'],
-      [15, 'hideSine'],
-      [16, 'showWaveEqn'],
-    ],
-  },
+  // {
+  //   scenario: 'summary',
+  //   show: ['m1'],
+  //   hide: ['m1.ballTracker', 'm1.envelope', 'm1.grid', 'm1.velocity'],
+  //   // time: '0:50.5',
+  //   // steadyState: () => {
+  //   //   eqnVLF.showForm('vlf');
+  //   // },
+  //   // time: '0:50.5',
+  //   transition: [
+  //     { in: ['m1.grid', 'm1.balls', 'm1.grid', 'm1.yAxis', 'm1.xAxis']}
+  //   ],
+  //   execDelta: [
+  //     [1, 'startSineWave'],
+  //     [7, 'pause'],
+  //     [7, 'showVelocity'],
+  //     [8, 'showWavelength'],
+  //     [9, 'showVLF'],
+  //     [10, 'hideWavelength'],
+  //     [10, 'hideVelocity'],
+  //     [10, 'hideVLF'],
+  //     [11, 'unpause'],
+  //     [14, 'showSine'],
+  //     [15, 'hideSine'],
+  //     [16, 'showWaveEqn'],
+  //   ],
+  // },
   
   {
     showCommon: ['m1'],
