@@ -430,6 +430,17 @@ function addMedium(
     },
     movePad,
   };
+  medium.backupState = medium._state;
+  medium._state = (options) => {
+    medium.customState.recorder = medium.custom.recording.encodeData();
+    return medium.backupState(options);
+  };
+  medium.backupStateSet = medium.stateSet;
+  medium.stateSet = () => {
+    medium.backupStateSet();
+    console.log(medium.customState.recorder);
+    medium.custom.recording.loadEncodedData(medium.customState.recorder[0], medium.customState.recorder[1]);
+  }
   figure.fnMap.global.add('showEnvelope', () => {
     envelope.show();
     envelope.stop();
