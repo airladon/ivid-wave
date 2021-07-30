@@ -27,13 +27,13 @@ function addDefsEquation(name) {
     forms: {
       waveDef: ['Wave', 'colon', 'propDisturb'],
       transverseWave: ['Transverse', '  ', 'Wave'],
-      transverseDef: ['Transverse', 'colon', 'adjective', ' ', 'across'],
+      transverseDef: ['Transverse', 'colon', 'across'],
       longWave: {
         content: ['long', '  ', 'Wave'],
         alignment: { yAlign: -0.4 },
       },
       longDef: {
-        content: ['long', 'colon', 'adjective', ' ', 'along'],
+        content: ['long', 'colon', 'along'],
         alignment: { yAlign: -0.4 },
       },
     }

@@ -45,10 +45,10 @@ function addExamples() {
     examples.hideAll();
     examples.animations.new()
       .dissolveIn({ element: 'ocean', duration: d })
-      .dissolveIn({ element: 'sound', duration: d, delay: 1 })
+      .dissolveIn({ element: 'sound', duration: d, delay: 1.5 })
       .dissolveIn({ element: 'light', duration: d, delay: 1.9 })
-      .dissolveIn({ element: 'wifi', duration: d, delay: 0.5 })
-      .dissolveIn({ element: 'seismic', duration: d, delay: 2 })
+      .dissolveIn({ element: 'wifi', duration: d, delay: 0.3 })
+      .dissolveIn({ element: 'seismic', duration: d, delay: 2.5 })
       .dissolveIn({ element: 'shock', duration: d, delay })
       .dissolveIn({ element: 'gravity', duration: d, delay })
       .dissolveIn({ element: 'ultrasound', duration: d, delay })

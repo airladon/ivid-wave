@@ -384,7 +384,7 @@ nav.loadSlides([
     show: ['title'],
   },
   {
-    time: '0:41',
+    time: '0:40.5',
     show: ['title', 'examples'],
     transition: [
       { trigger: 'showExamples' },
@@ -478,28 +478,27 @@ nav.loadSlides([
     },
     form: [null, null, null],
     leaveState: () => {
-      // p1._particles.drawingObject.uniforms.u_highlight.value = [1];
       eqnSineT.undim();
       eqnVLF.undim();
-      // eqnDiff.undim();
     },
   },
   {
+    time: '1:27',
     showCommon: ['m1.grid', 'm1.balls', 'm1.firstBall', 'm1.movePad'],
-    // transition: { in: 'waveDefinition' },
-    form: [null, null, 'waveDef']
-  },
-  {
     enterState: () => {
       pause();
     },
-    // show: 'waveDefinition',
     transition: { trigger: 'showEnvelope', duration: 2 },
     steadyState: () => {
       unpause();
       m1._envelope.pointsToDraw = Math.floor(m1._envelope.drawingObject.numVertices / 6) * 6;
       m1._envelope.show();
     } 
+  },
+  {
+    time: '1:35.5',
+    show: 'm1.envelope',
+    form: [null, null, 'waveDef']
   },
   
 
@@ -513,18 +512,22 @@ nav.loadSlides([
   ....##.......##....##........########..######.
   */
   {
+    time: '1:38',
     form: [null, null, null],
+    transition: { out: ['m1.envelope', defs] },
   },
   {
+    time: '1:40.5',
     fromForm: [null, null, 'transverseWave'],
     form: [null, null, 'transverseDef'],
     enterState: () => {
       m1._balls.get(m1.custom.highlights).map(e => e.setScenario('highlight'));
     },
+    show: '_cursor_',
     transition: [
       { pulse: { 'm1.balls': m1.custom.highlights }, scale: 3 },
       { in: 'm1.disturbanceLines' },
-      { in: defs },
+      { in: defs, delay: 6 },
       { goToForm: defs, target: 'transverseDef', delay: 1 }
     ],
     leaveState: () => {
@@ -532,6 +535,7 @@ nav.loadSlides([
     },
   },
   {
+    time: '2:00',
     form: [null, null, null],
     transition: [
       { out: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', defs] },
