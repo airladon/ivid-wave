@@ -39,16 +39,16 @@ function addExamples() {
     ],
   });
   const d = 0.5;
-  const delay = 0.2;
+  const delay = 0.15;
   figure.fnMap.global.add('showExamples', () => {
     examples.show();
     examples.hideAll();
     examples.animations.new()
       .dissolveIn({ element: 'ocean', duration: d })
-      .dissolveIn({ element: 'sound', duration: d, delay: 1.5 })
-      .dissolveIn({ element: 'light', duration: d, delay: 2.4 })
+      .dissolveIn({ element: 'sound', duration: d, delay: 1 })
+      .dissolveIn({ element: 'light', duration: d, delay: 1.9 })
       .dissolveIn({ element: 'wifi', duration: d, delay: 0.5 })
-      .dissolveIn({ element: 'seismic', duration: d, delay })
+      .dissolveIn({ element: 'seismic', duration: d, delay: 2 })
       .dissolveIn({ element: 'shock', duration: d, delay })
       .dissolveIn({ element: 'gravity', duration: d, delay })
       .dissolveIn({ element: 'ultrasound', duration: d, delay })

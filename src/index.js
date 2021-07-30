@@ -384,7 +384,7 @@ nav.loadSlides([
     show: ['title'],
   },
   {
-    time: '0:40',
+    time: '0:41',
     show: ['title', 'examples'],
     transition: [
       { trigger: 'showExamples' },
@@ -402,7 +402,7 @@ nav.loadSlides([
   */
   {
     scenario: 'summary',
-    time: '0:56',
+    time: '1:00',
     enterState: () => {
       // p1._particles.drawingObject.uniforms.u_highlight.value = [0];
       eqnSineT.showForm('summaryPage')
@@ -415,11 +415,11 @@ nav.loadSlides([
     transition: [
       { in: ['m1.balls', 'm1.firstBall', 'm1.movePad'] },
       { trigger: () => sineWave(m1, 0) },
-      { in: ['p1.particles', 'p1.diaphram', 'p1.movePad'], delay: 1 },
+      { in: ['p1.particles', 'p1.diaphram', 'p1.movePad'], delay: 3 },
       { trigger: () => sineWave(p1, 0) },
-      { in: eqnVLF, delay: 2 },
-      { in: eqnSineT, delay: 2 },
-      { in: eqnDiff, delay: 2 },
+      { in: eqnVLF, delay: 3 },
+      { in: eqnSineT, delay: 0 },
+      { in: eqnDiff, delay: 0 },
     ],
     leaveState: () => {
       // p1._particles.drawingObject.uniforms.u_highlight.value = [1];
@@ -428,46 +428,6 @@ nav.loadSlides([
       // eqnDiff.undim();
     },
   },
-  // {
-  //   scenario: 'summary',
-  //   transition: [
-  //     { out: ['m1.balls', 'm1.firstBall', 'm1.movePad'] },
-  //     { in: ['p1.particles', 'p1.diaphram', 'p1.movePad'] },
-  //   ],
-  // },
-  // {
-  //   scenario: 'summary',
-  //   show: ['m1.grid', 'm1.balls', 'm1.movePad', 'm1.firstBall'],
-  //   // hide: ['m1.ballTracker', 'm1.envelope', 'm1.grid', 'm1.velocity'],
-  //   // time: '0:50.5',
-  //   // steadyState: () => {
-  //   //   eqnVLF.showForm('vlf');
-  //   // },
-  //   time: '0:02',
-  //   transition: [
-  //     { in: ['m1.grid', 'm1.balls', 'm1.firstBall', 'm1.movePad'] },
-  //     { in: ['p1'] },
-  //   ],
-  //   // transition: (done) => {
-  //   //   console.log('adsfasdf');
-  //   //   done();
-  //   // },
-  //   // steadyState: () => console.log('1'),
-  //   execDelta: [
-  //     [2, 'startSineWave'],
-  //     [7, 'pause'],
-  //     [7, 'showVelocity'],
-  //     [8, 'showWavelength'],
-  //     [9, 'showVLF'],
-  //     [10, 'hideWavelength'],
-  //     [10, 'hideVelocity'],
-  //     [10, 'hideVLF'],
-  //     [11, 'unpause'],
-  //     [14, 'showSine'],
-  //     [15, 'hideSine'],
-  //     [16, 'showWaveEqn'],
-  //   ],
-  // },
 
   /*
   .########..########.########
@@ -487,6 +447,7 @@ nav.loadSlides([
       eqnVLF.showForm('vlf');
       eqnDiff.showForm('d1Mono');
     },
+    time: '1:10',
     scenario: 'summary',
     transition: (done) => {
       p1._particles.showAll();
