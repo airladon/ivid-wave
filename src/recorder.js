@@ -71,22 +71,52 @@ function Recorder(duration) {
 
 
   function encodeData(precision = 2) {
+    const getZerosNum = (i, dataIn) => {
+      let n = i;
+      let counter = 0;
+      while (dataIn[n] === 0 && n < num) {
+        counter += 1;
+        n += 1;
+      }
+      return counter;
+    }
     const rounded = data.slice(index - num, index).map(n => Fig.tools.math.roundNum(n, precision));
-    // deltaValues = [rounded[0]];
-    const deltaValues = Array(num)
+    const deltaValues = [];
     deltaValues[0] = 0;
     for (let i = 1; i < rounded.length; i += 1) {
       deltaValues[i] = Fig.tools.math.roundNum((rounded[i] - rounded[i - 1]) * (10 ** precision));
-      // console.log(deltaValues[i])
     }
-    return [rounded[0], deltaValues];
+    const compressed = [];
+    let i = 0;
+    while (i < num) {
+      const n = getZerosNum(i, deltaValues);
+      if (n > 0) {
+        compressed.push(Fig.tools.math.round(n / 10000, 5));
+        i += n;
+      } else {
+        compressed.push(deltaValues[i]);
+        i += 1;
+      }
+    }
+    return [rounded[0], compressed];
   }
 
   function decodeData(firstValue, dataIn, precision = 2) {
+    // first decompress the data
+    const decompressed = [];
+    for (let i = 0; i < dataIn.length; i += 1) {
+      if (Math.abs(dataIn[i]) < 1) {
+        for (j = 0; j < Fig.tools.math.roundNum(dataIn[i] * 10000); j += 1) {
+          decompressed.push(0);
+        }
+      } else {
+        decompressed.push(dataIn[i]);
+      }
+    }
     const decoded = Array(num);
     decoded[0] = firstValue;
     for(let i = 1; i < num; i += 1) {
-      decoded[i] = decoded[i - 1] + dataIn[i] / (10 ** precision);
+      decoded[i] = decoded[i - 1] + decompressed[i] / (10 ** precision);
     }
     return decoded;
   }
@@ -106,7 +136,6 @@ function Recorder(duration) {
   // Reset all the data values with an initial value or a callback function
   // that fills out all values
   function reset(initialValueOrCallback = 0) {
-    console.log('reseting')
     if (typeof initialValueOrCallback === 'number') {
       data = [...Array(num).fill(initialValueOrCallback), ...Array(num)];
     } else {
