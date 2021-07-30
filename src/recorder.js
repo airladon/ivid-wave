@@ -12,7 +12,7 @@ of times arrays need to be copied.
  */
 // eslint-disable-next-line no-unused-vars
 function Recorder(duration) {
-  const timeStep = 0.005;
+  const timeStep = 0.01;
   const num = duration / timeStep;
   let buffered = false;
   let index;
@@ -25,6 +25,7 @@ function Recorder(duration) {
   function incrementIndex() {
     index += 1;
     if (index === num * 2) {
+      console.log('incrementing');
       data = [...data.slice(num), ...Array(num)];
       index = num;
       buffered = true;
@@ -68,6 +69,35 @@ function Recorder(duration) {
     };
   }
 
+
+  function encodeData(precision = 2) {
+    const rounded = data.slice(index - num, index).map(n => Fig.tools.math.roundNum(n, precision));
+    // deltaValues = [rounded[0]];
+    const deltaValues = Array(num)
+    deltaValues[0] = 0;
+    for (let i = 1; i < rounded.length; i += 1) {
+      deltaValues[i] = Fig.tools.math.roundNum((rounded[i] - rounded[i - 1]) * (10 ** precision));
+      // console.log(deltaValues[i])
+    }
+    return [rounded[0], deltaValues];
+  }
+
+  function decodeData(firstValue, dataIn, precision = 2) {
+    const decoded = Array(num);
+    decoded[0] = firstValue;
+    for(let i = 1; i < num; i += 1) {
+      decoded[i] = decoded[i - 1] + dataIn[i] / (10 ** precision);
+    }
+    return decoded;
+  }
+
+  function loadEncodedData(firstValue, dataIn, precision = 2) {
+    const decoded = decodeData(firstValue, dataIn, precision);
+    data = [...decoded.slice(), ...Array(num)];
+    buffered = false;
+    index = num;
+  }
+
   function getValueAtTimeAgo(timeDelta) {
     const deltaIndex = Math.floor(timeDelta / timeStep + timeStep / 10);
     return data[index - deltaIndex - 1];
@@ -76,6 +106,7 @@ function Recorder(duration) {
   // Reset all the data values with an initial value or a callback function
   // that fills out all values
   function reset(initialValueOrCallback = 0) {
+    console.log('reseting')
     if (typeof initialValueOrCallback === 'number') {
       data = [...Array(num).fill(initialValueOrCallback), ...Array(num)];
     } else {
@@ -86,10 +117,23 @@ function Recorder(duration) {
   }
   reset();
 
+  function getIndex() {
+    return index;
+  }
+
+  function getData() {
+    return data;
+  }
+
   return {
     record,
     getRecording,
     getValueAtTimeAgo,
     reset,
+    encodeData,
+    loadEncodedData,
+    decodeData,
+    getIndex,
+    getData,
   };
 }

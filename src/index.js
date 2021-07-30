@@ -1098,3 +1098,5 @@ figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.
   })(document);
 
   console.log(isFontAvailable('Times New Roman'))
+
+  r = title.custom.recording

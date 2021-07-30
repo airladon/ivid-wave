@@ -18,7 +18,7 @@ function TimeKeeper() {
   let paused = false;
   let blurred = false;
 
-  let getNow = () => performance.now() / 1000;
+  let getNow = () => figure.timeKeeper.now() / 1000;
 
   // This method is for testing only. The browser tests need to tie the
   // reference time `getNow` to the test time source, which makes animation
