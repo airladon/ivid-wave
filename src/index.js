@@ -1058,7 +1058,13 @@ nav.loadSlides([
 
 
 figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.mp3'));
-// // figure.recorder.loadVideoTrack('http://localhost:8081/src/video-track.json');
+figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
+figure.recorder.notifications.add('seek', () => pause());
+
+// TODO - add more onClick notifications here for all touchable elements
+title._movePad.notifications.add('onClick', () => unpause());
+m1._movePad.notifications.add('onClick', () => unpause());
+p1._movePad.notifications.add('onClick', () => unpause());
 
 
 (function (document) {

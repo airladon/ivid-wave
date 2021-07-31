@@ -91,7 +91,7 @@ function Recorder(duration) {
     while (i < num) {
       const n = getZerosNum(i, deltaValues);
       if (n > 0) {
-        compressed.push(Fig.tools.math.round(n / 10000, 5));
+        compressed.push(Fig.tools.math.round(n / 100000, 6));
         i += n;
       } else {
         compressed.push(deltaValues[i]);
@@ -106,7 +106,7 @@ function Recorder(duration) {
     const decompressed = [];
     for (let i = 0; i < dataIn.length; i += 1) {
       if (Math.abs(dataIn[i]) < 1) {
-        for (j = 0; j < Fig.tools.math.roundNum(dataIn[i] * 10000); j += 1) {
+        for (j = 0; j < Fig.tools.math.roundNum(dataIn[i] * 100000); j += 1) {
           decompressed.push(0);
         }
       } else {
