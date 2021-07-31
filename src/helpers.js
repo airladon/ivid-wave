@@ -64,13 +64,13 @@ const button = (name, position, text, modifiers = {}) => ({
   make: 'collections.rectangle',
   options: {
     button: true,
-    line: { width: 0.04 },
+    line: { width: 0.04, color: colorOff },
     label: { text, font: { color: colorLight }, modifiers },
     width: 1.5,
     height: 0.9,
     corner: { radius: 0.2, sides: 3 },
     position,
-    color: colorOff,
+    color: colorLight,
   },
   mods: {
     isTouchable: true,

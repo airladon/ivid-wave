@@ -41,7 +41,7 @@ void main() {
     return {
       name,
       make: 'polygon',
-      sides: 20,
+      sides: 30,
       position,
       radius,
       line: { width: 0.03 },
