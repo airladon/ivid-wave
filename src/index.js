@@ -127,6 +127,7 @@ const { pulse, sineWave } = getDisturbances();
 */
 const pause = () => {
   time.pause();
+  figure.elements.customState.pause = true;
   // freezeButton.setLabel('On');
   freezeButton.custom.on();
   if (m1._envelope2.isShown) {
@@ -136,6 +137,7 @@ const pause = () => {
 };
 const unpause = () => {
   // freezeButton.setLabel('Off');
+  figure.elements.customState.pause = false;
   freezeButton.custom.off();
   time.unpause();
   if (m1._envelope2.isShown) {
@@ -145,6 +147,15 @@ const unpause = () => {
 figure.fnMap.global.add('pause', () => pause());
 figure.fnMap.global.add('unpause', () => unpause());
 
+figure.elements.backupStateSet = figure.elements.stateSet;
+figure.elements.stateSet = () => {
+  figure.elements.backupStateSet();
+  if (figure.elements.customState.pause) {
+    pause();
+  } else {
+    unpause();
+  }
+}
 
 const stop = () => {
   m1.custom.stop();
@@ -1059,7 +1070,9 @@ nav.loadSlides([
 
 figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.mp3'));
 figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
-figure.recorder.notifications.add('seek', () => pause());
+figure.recorder.notifications.add('stateSet', () => pause());
+figure.recorder.notifications.add('seek', () => pause())
+figure.recorder.notifications.add('playbackStopped', () => pause());
 
 // TODO - add more onClick notifications here for all touchable elements
 title._movePad.notifications.add('onClick', () => unpause());
