@@ -138,7 +138,9 @@ void main() {
   title.backupStateSet = title.stateSet;
   title.stateSet = () => {
     title.backupStateSet();
-    title.custom.recording.loadEncodedData(title.customState.recorder[0], title.customState.recorder[1]);
+    if (title.customState.recorder != null) {
+      title.custom.recording.loadEncodedData(title.customState.recorder[0], title.customState.recorder[1]);
+    }
   }
   return title;
 }

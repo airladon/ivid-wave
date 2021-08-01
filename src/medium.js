@@ -438,7 +438,9 @@ function addMedium(
   medium.backupStateSet = medium.stateSet;
   medium.stateSet = () => {
     medium.backupStateSet();
-    medium.custom.recording.loadEncodedData(medium.customState.recorder[0], medium.customState.recorder[1]);
+    if (medium.customState.recorder != null) {
+      medium.custom.recording.loadEncodedData(medium.customState.recorder[0], medium.customState.recorder[1]);
+    }
   }
   figure.fnMap.global.add('showEnvelope', () => {
     envelope.show();

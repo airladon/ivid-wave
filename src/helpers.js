@@ -12,14 +12,15 @@ const xAxis = (name, title, units, xLength, XMaxValue) => ({
   make: 'collections.axis',
   options: {
     start: 0,
-    color: color4,
+    color: colorLight,
     stop: XMaxValue * 1.05,
     length: xLength * 1.05,
     line: { width: 0.032, arrow: { end: 'barb' } },
     title: {
-      font: { style: 'italic', family: 'TeXGyreTermes', size: 0.18 * 4 },
+      font: { style: 'italic', family: 'TeXGyreTermes', size: 0.18 * 4, color: colorLight, },
       text: [title, { font: { size: 0.24 }, lineSpace: 0.24, text: units }],
       position: [xLength * 1.05 - 0.12, -0.3],
+      color: colorLight,
     },
   },
 });
@@ -29,14 +30,14 @@ const yAxis = (name, title, units, AValue, yAxisTitleSide) => ({
   make: 'collections.axis',
   options: {
     axis: 'y',
-    color: color4,
+    color: colorLight,
     start: -AValue,
     stop: AValue,
     length: AValue * 2 + 1,
     line: { width: 0.032, arrow: 'barb' },
     position: [0, -AValue - 0.5],
     title: {
-      font: { style: 'italic', family: 'TeXGyreTermes', size: 0.18 * 4 },
+      font: { style: 'italic', family: 'TeXGyreTermes', size: 0.18 * 4, color: colorLight, },
       text: {
         text: `${title}|unitsText|`,
       },
@@ -46,6 +47,7 @@ const yAxis = (name, title, units, AValue, yAxisTitleSide) => ({
       xAlign: 'left',
       rotation: 0,
       offset: yAxisTitleSide ? [0, AValue - 0.24] : [0.4, AValue + 0.6],
+      color: colorLight,
     },
   },
 });

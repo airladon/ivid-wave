@@ -556,16 +556,19 @@ nav.loadSlides([
     ],
   },
   {
+    time: '2:27',
     form: [null, null, 'longWave'],
     hide: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'],
     show: ['pulseButton', 'sineButton', 'resetButton', 'p1'],
   },
   {
+    time: '2:30.5',
     form: [null, null, 'longDef'],
     hide: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'],
     show: ['pulseButton', 'sineButton', 'resetButton', 'p1'],
   },
   {
+    time: '2:42.5',
     hide: 'm1',
     form: [null, null, null],
     transition: [
@@ -575,6 +578,7 @@ nav.loadSlides([
     leaveState: 'softReset',
   },
   {
+    time: '2:48',
     hide: 'm1',
     show: 'ocean',
     transition: [
@@ -593,6 +597,7 @@ nav.loadSlides([
   .##........########.##.....##.####..#######..########..####..######.
   */
   {
+    time: '3:00',
     transition: [
       { out: 'ocean' },
       { in: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'pulseButton', 'sineButton', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel'] },
@@ -610,17 +615,20 @@ nav.loadSlides([
   ....###....########.########..#######...######..####....##.......##...
   */
   {
+    time: '3:54',
     show: ['pulseButton', 'sineButton', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel'],
     transition: [
       { in: ['slowTimeLabel', 'slowTimeButton'] },
     ],
   },
   {
+    time: '4:23.5',
     show: ['pulseButton', 'sineButton', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'slowTimeLabel', 'slowTimeButton'],
     // scenarioCommon: ['default', 'right'],
     transition: { in: ['velocityButton', 'velocity'] },
   },
   {
+    time: '4:25.5',
     showCommon: [
       'm1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton',
       'slowTimeLabel', 'slowTimeButton', 'timePlot1.xAxis', 'timePlot.yAxis', 'timePlot.trace', 'timePlot.grid', 'pulseButton', 'sineButton', 'm1.xAxis', 'm1.yAxis',
@@ -634,6 +642,8 @@ nav.loadSlides([
         { in: ['m1.xAxis', 'm1.yAxis'] },
         { in: { timePlot1: ['xAxis', 'yAxis', 'grid', 'trace'] } },
       ],
+      { pulse: 'timePlot1.yAxis.title', delay: 0.2, yAlign: 'bottom' },
+      { pulse: 'timePlot1.xAxis.title', delay: 0.5, xAlign: 'left', yAlign: 'top', scale: 2 },
     ],
   },
   
@@ -1069,7 +1079,7 @@ nav.loadSlides([
 
 
 figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.mp3'));
-figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
+// figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
 figure.recorder.notifications.add('stateSet', () => pause());
 figure.recorder.notifications.add('seek', () => pause())
 figure.recorder.notifications.add('playbackStopped', () => pause());

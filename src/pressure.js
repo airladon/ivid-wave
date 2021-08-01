@@ -219,7 +219,9 @@ void main() {
   medium.backupStateSet = medium.stateSet;
   medium.stateSet = () => {
     medium.backupStateSet();
-    medium.custom.recording.loadEncodedData(medium.customState.recorder[0], medium.customState.recorder[1]);
+    if (medium.customState.recorder != null) {
+      medium.custom.recording.loadEncodedData(medium.customState.recorder[0], medium.customState.recorder[1]);
+    }
   }
   // const element = figure.add({
   //   name,
