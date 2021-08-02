@@ -177,6 +177,7 @@ const reset = () => {
 };
 figure.fnMap.global.add('reset', () => reset());
 figure.fnMap.global.add('softReset', () => {
+  m1.custom.trackingTime = 0;
   m1.custom.reset();
   p1.custom.reset();
   time.reset();
@@ -381,6 +382,10 @@ const twoEqn = (eqn1, eqn2, form1, form2, dim = []) => ({
 // figure.addFrameRate(10, { font: { color: [1, 0, 0, 1 ]} });
 time.setTimeSpeed(1);
 nav.loadSlides([
+  {
+    scenario: 'default',
+    show: 'eqnMaxwell',
+  },
   /*
   .########.####.########.##.......########
   ....##.....##.....##....##.......##......
@@ -644,14 +649,17 @@ nav.loadSlides([
       ],
       { pulse: 'timePlot1.yAxis.title', delay: 0.2, yAlign: 'bottom' },
       { pulse: 'timePlot1.xAxis.title', delay: 0.5, xAlign: 'left', yAlign: 'top', scale: 2 },
+      { in: 'm1.ballTracker' },
+      { pulse: 'm1.ballTracker', delay: 1.5 },
     ],
   },
   
+  // {
+  //   scenarioCommon: ['default', 'right'],
+  //   show: ['m1.xAxis', 'm1.yAxis', 'm1.ballTracker', 'velocityButton', 'velocity', { timePlot1: ['xAxis', 'yAxis', 'grid', 'trace'] }],
+  // },
   {
     scenarioCommon: ['default', 'right'],
-    show: ['m1.xAxis', 'm1.yAxis', 'm1.ballTracker', 'velocityButton', 'velocity', { timePlot1: ['xAxis', 'yAxis', 'grid', 'trace'] }],
-  },
-  {
     showCommon: [
       'm1.balls', 'm1.grid', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'm1.xAxis', 'm1.yAxis', 'timePlot.grid',
     ],

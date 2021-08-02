@@ -235,6 +235,18 @@ function addMedium(
         },
         position: [5, 2],
       },
+      {
+        name: 'ballTracker',
+        make: 'arrow',
+        align: 'tip',
+        angle: Math.PI / 2,
+        head: 'triangle',
+        width: 0.4,
+        length: 0.5,
+        tail: 0.2,
+        tailWidth: 0.2,
+        color: colorPositionText,
+      },
     ],
     mods: {
       scenarios: {
@@ -264,8 +276,9 @@ function addMedium(
   });
   const highlights = xValues.map((x, i) => x % 2 === 0 && x > 0 ? i : -1).filter(i => i > -1).map(i => `ball${i}`);
   balls.toFront(highlights);
-  const tracker = medium.add(ball(0, 'Tracker', ballSize));
-  tracker.scenarios.default.color = color1;
+  // const tracker = medium.add(ball(0, 'Tracker', ballSize * 2 ));
+  // tracker.scenarios.default.color = color1;
+  const tracker = medium.getElement('ballTracker');
   const movePad = medium.getElement('movePad');
   const firstBall = medium.getElement('firstBall');
   const envelope = medium.getElement('envelope');
@@ -372,10 +385,10 @@ function addMedium(
         // If the tracker is within the axis, then position it appropriately,
         // otherwise position it way off
         const xValue = Math.max(t * medium.custom.c, 0);
-        const x = axis.valueToDraw(xValue);
+        const x = axis.valueToDraw(xValue - 0.1);
         if (t > 0 && axis.inAxis(xValue + 0.2)) {
-          const by = medium.custom.recording.getValueAtTimeAgo(t);
-          tracker.setPosition(x, by);
+          // const by = medium.custom.recording.getValueAtTimeAgo(t);
+          tracker.setPosition(x, -0.2);
         } else {
           tracker.setPosition(100, 0);
         }

@@ -74,6 +74,7 @@ function addFigureElements() {
   addSineX0Equation('eqnSineX0');
   addVLFEquation('eqnVLF');
   addDiffEquation('eqnDiff');
+  addMaxwellEquation('eqnMaxwell');
   // addTitle(2.88 * 4, 1.44 * 4, 0.1);
   addTitle(8, 4, 0.1);
   addIntro(24, 4, 0.1);
