@@ -130,17 +130,25 @@ void main() {
   figure.fnMap.global.add('outTitle', () => {
     title.animations.new().dissolveOut(0.5).start();
   });
-  title.backupState = title._state;
-  title._state = (options) => {
+  title.notifications.add('getState', () => {
     title.customState.recorder = title.custom.recording.encodeData();
-    return title.backupState(options);
-  };
-  title.backupStateSet = title.stateSet;
-  title.stateSet = () => {
-    title.backupStateSet();
+  });
+  // title.backupState = title._state;
+  // title._state = (options) => {
+  //   title.customState.recorder = title.custom.recording.encodeData();
+  //   return title.backupState(options);
+  // };
+  title.notifications.add('setState', () => {
     if (title.customState.recorder != null) {
       title.custom.recording.loadEncodedData(title.customState.recorder[0], title.customState.recorder[1]);
     }
-  }
+  });
+  // title.backupStateSet = title.stateSet;
+  // title.stateSet = () => {
+  //   title.backupStateSet();
+  //   if (title.customState.recorder != null) {
+  //     title.custom.recording.loadEncodedData(title.customState.recorder[0], title.customState.recorder[1]);
+  //   }
+  // }
   return title;
 }
