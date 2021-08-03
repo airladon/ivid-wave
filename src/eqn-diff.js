@@ -1,7 +1,7 @@
 function addDiffEquation(name) {
-  const brac = (content, index) => ({
-    brac: [`lb${index}`, content, `rb${index}`],
-  });
+  // const brac = (content, index) => ({
+  //   brac: [`lb${index}`, content, `rb${index}`],
+  // });
 
   const d2 = (dIndex) => ({
     sup: [`d${dIndex}`, `_2_${dIndex}`],
@@ -9,11 +9,11 @@ function addDiffEquation(name) {
   const sq = (content, _2Index) => ({
     sup: [content, `_2_${_2Index}`],
   })
-  const frac = (numerator, vIndex, denominator, numeratorSpace = 0.05, overhang = 0.05) => ({
-    frac: {
-      numerator, symbol: `v${vIndex}`, denominator, numeratorSpace, overhang,
-    },
-  });
+  // const frac = (numerator, vIndex, denominator, numeratorSpace = 0.05, overhang = 0.05) => ({
+  //   frac: {
+  //     numerator, symbol: `v${vIndex}`, denominator, numeratorSpace, overhang,
+  //   },
+  // });
   const t = (content, boxName) => ({
     tBox: [content, boxName],
   });
@@ -91,13 +91,13 @@ function addDiffEquation(name) {
       acceleration: 'disturbance acceleration'
     },
     phrases: {
-      d2ydx2: t(frac([d2(1), 'y_1'], 1, ['d3', sq('x', 3)], 0.02, 0.01), 'dxBox'),
-      d2ydt2: t(frac([d2(2), 'y_2'], 2, ['d4', sq('t', 4)], 0.02, 0.01), 'dtBox'),
-      dydx: frac(['d1', 'y_1'], 1, ['d3', 'x'], 0.02, 0.01),
-      dydt: frac(['d2', 'y_2'], 2, ['d4', 't'], 0.02, 0.01),
+      d2ydx2: t(frac([d2(1), 'y_1'], 1, ['d3', sq('x', 3)], 0.02, 0.05, 0.01), 'dxBox'),
+      d2ydt2: t(frac([d2(2), 'y_2'], 2, ['d4', sq('t', 4)], 0.02, 0.05, 0.01), 'dtBox'),
+      dydx: frac(['d1', 'y_1'], 1, ['d3', 'x'], 0.02, 0.05, 0.01),
+      dydt: frac(['d2', 'y_2'], 2, ['d4', 't'], 0.02, 0.05, 0.01),
       vSq: t(sq('v', 5), 'vBox'),
-      ddx: frac('d5', 4, ['d6', 'x_1'], 0.05, 0.01),
-      ddxInv: frac([sq('d5', 99), 'y_99'], 4, ['d6', sq('x_1')], 0.02, 0.01),
+      ddx: frac('d5', 4, ['d6', 'x_1'], 0.05, 0.05, 0.01),
+      ddxInv: frac([sq('d5', 99), 'y_99'], 4, ['d6', sq('x_1')], 0.02, 0.05, 0.01),
     },
     forms: {
       order1: ['dydt', 'equals', 'v', ' ', 'dydx'],

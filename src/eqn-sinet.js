@@ -1,34 +1,40 @@
 function addSineTEquation(name) {
-  const brac = (content, index) => ({
-    brac: [`lb${index}`, content, `rb${index}`],
-  });
+  // const brac = (content, index) => ({
+  //   brac: [`lb${index}`, content, `rb${index}`],
+  // });
   const fn = (c1, c2, index) => ({
     brac: [`lb${index}`, [c1, `comma${index}`, c2], `rb${index}`],
   })
-  const cont = (content, width, inSize = true) => ({
-    container: { content, width, inSize },
-  });
-  const lines = (content, baselineSpace = 2) => ({
-    lines: { content, justify: 'left', baselineSpace },
-  })
-  const frac = (numerator, vIndex, denominator, scale = 1, numeratorSpace = 0.05, denominatorSpace = 0.05) => ({
-    frac: {
-      numerator, symbol: `vin${vIndex}`, denominator, scale, numeratorSpace, denominatorSpace
-    },
-  });
+  // const cont = (content, width, inSize = true) => ({
+  //   container: { content, width, inSize },
+  // });
+  
+
 
   const t = (content, boxIndex) => ({
     tBox: [content, `tBox${boxIndex}`],
   });
 
-  const top = (content, comment, symbol, commentSpace = 0.2, scale = 1) => ({
+  const top = (content, comment, symbol, commentSpace = 0.2, scale = 1, commentLineSpace = 0.2, contentLineSpace = 0.2) => ({
     topComment: {
       content,
       comment,
       symbol,
       commentSpace,
-      commentLineSpace: 0.2,
-      contentLineSpace: 0.2,
+      commentLineSpace,
+      contentLineSpace,
+      inSize: false,
+      scale,
+    },
+  });
+  const bot = (content, comment, symbol, commentSpace = 0.2, scale = 1, commentLineSpace = 0.2, contentLineSpace = 0.2) => ({
+    bottomComment: {
+      content,
+      comment,
+      symbol,
+      commentSpace,
+      commentLineSpace,
+      contentLineSpace,
       inSize: false,
       scale,
     },
@@ -89,6 +95,8 @@ function addSineTEquation(name) {
       rb4: { symbol: 'bracket', side: 'right', lineWidth: 0.07, width: 0.16 },
       lb5: { symbol: 'bracket', side: 'left', lineWidth: 0.07, width: 0.16 },
       rb5: { symbol: 'bracket', side: 'right', lineWidth: 0.07, width: 0.16 },
+      lb6: { symbol: 'squareBracket', side: 'left', lineWidth: 0.07, width: 0.16 },
+      rb6: { symbol: 'squareBracket', side: 'right', lineWidth: 0.07, width: 0.16 },
       y_1: { color: colorDisturbanceText },
       y_2: { color: colorDisturbanceText },
       // y_3: { color: colorDisturbanceText },
@@ -113,6 +121,10 @@ function addSineTEquation(name) {
       f_2: { color: colorFText },
       g_1: { color: colorGText },
       g_2: { color: colorGText },
+      g_3: { color: colorGText },
+      sin: { style: 'normal' },
+      lambda: '\u03bb',
+      twopi: '2\u03c0',
       zeroT: { text: '0', color: colorTimeText },
       oneT: { text: '1', color: colorTimeText },
       oneT1: { text: '1', color: colorTimeText },
@@ -128,12 +140,15 @@ function addSineTEquation(name) {
       equals2: ' = ',
       min1: '  \u2212  ',
       min2: '  \u2212  ',
+      min3: '  \u2212  ',
       min_t: { text: '  \u2212  ', color: colorTimeText },
       min_x: { text: '  \u2212  ', color: colorPositionText },
       comma1: ' , ',  
       comma3: ' , ',
       arrow1: { symbol: 'line', width: 0.04, arrow: { start: { head: 'triangle' } } },
+      arrow2: { symbol: 'line', width: 0.04, arrow: { start: { head: 'triangle' } } },
       vin1: { symbol: 'vinculum', color: colorTimeText, lineWidth: 0.05 },
+      vin2: { symbol: 'vinculum', color: colorLight, lineWidth: 0.05 },
       tBox1: { symbol: 'tBox', touchBorder: [0.5, 0.5, 0.2, 0.5], isTouchable: true },
       tBox2: { symbol: 'tBox', touchBorder: [0.25, 0.5, 0.3, 0.5], isTouchable: true },
       tBox3: { symbol: 'tBox', touchBorder: [0.4, 0.5, 0.4, 0.5], isTouchable: true },
@@ -180,6 +195,7 @@ function addSineTEquation(name) {
       xOnV: frac('x_t', 1, 'v_t', 0.8),
       t1V: ['v_x', ' ', 't1_x'],
       tV: ['v_x', ' ', 't_x'],
+      yxt2: ['yxt_1', '  ', t('equals2', 15), '  ', t('g_2', 16), brac(t(['x_5', 'min_x', 'tV'], 17), 5)],
     },
     forms: {
       yx0t: 'yx0tequalsF',
@@ -216,7 +232,7 @@ function addSineTEquation(name) {
         ['yxt1', '  ', 'equals2', '  ', 'g_2', brac(['x_5', 'min_x', 't1V'], 5)],
       ]),
       yxt1_3: lines([
-        ['yxt_1', '  ', t('equals2', 15), '  ', t('g_2', 16), brac(t(['x_5', 'min_x', 'tV'], 17), 5)],
+        'yxt2',
       ]),
       summary1: lines([
         ['yxt_1', '  ', 'equals2', '  ', { sub: ['g_2', 'x_g'] }, brac(['x_5', 'min_x', 'tV'], 5)],
@@ -233,6 +249,21 @@ function addSineTEquation(name) {
         ['y_1', '  ', 'equals1', '  ', { sub: ['f_1', 't_f1'] }, ' ', brac(['t_2', 'min_t', 'xOnV'], 2)],
       ], 3),
       summaryPage: ['y_2', '  ', 'equals2', '  ', 'g_2', brac(['x_5', 'min_x', 'tV'], 5)],
+      yxt1_3gP: lines([
+        ['yxt2'],
+        ['g_1', brac(['x_1'], 2), 'equals1', 'sin', brac([frac('twopi', 2, 'lambda', 0.7), '  ', 'x_3'], 4)],
+      ], 3),
+      yxt1_3gPSub: lines([
+        ['yxt2'],
+        ['g_1', brac(bot('x_1', ['x_4', 'min2', 'v_2', 't_2'], 'arrow1', 0.2, 0.7), 2), 'equals1', 'sin', brac([frac('twopi', 2, 'lambda', 0.7), '  ', bot('x_3', ['x_6', 'min3', 'v_3', 't_4'], 'arrow2', 0.2, 0.7)], 4)],
+      ], 3),
+      yxt1_3gPSubDone: lines([
+        ['yxt2'],
+        ['g_1', brac(['x_4', 'min2', 'v_2', 't_2'], 2), 'equals1', 'sin', brac([frac('twopi', 2, 'lambda', 0.7), '  ', brac(['x_6', 'min3', 'v_3', 't_4'], 6)], 4)],
+      ], 3),
+      ysin_01: lines([[],
+        ['yxt_1', '  ', 'equals2', '  ', 'sin', brac([frac('twopi', 2, 'lambda', 0.7), '  ', brac(['x_6', 'min3', 'v_3', 't_4'], 6)], 4)],
+      ]),
       periodic: lines([
         ['y_2', '  ', 'equals2', '  ', { sub: ['g_2', 'x_g'] }, brac(['x_5', 'min_x', 'tV'], 5)],
         ['y_1', '  ', 'equals1', '  ', { sub: ['f_1', 't_f1'] }, ' ', brac(['t_2', 'min_t', 'xOnV'], 2)],

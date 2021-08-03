@@ -598,7 +598,7 @@ function addMedium(
       eqn1.updateElementText({
         value: `${Math.abs(Fig.tools.math.round(movePadEnv.custom.x * 2, 1)).toFixed(1)}`,
         sign: sign,
-        x_1: xDashLineG.isShown ? 'x\'' : 'x',
+        x_1: xDashLineG.isShown || xDashLineG.opacity < 1 ? 'x\'' : 'x',
       }, 'current');
       // }
     }

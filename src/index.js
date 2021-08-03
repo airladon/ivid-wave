@@ -213,6 +213,8 @@ figure.notifications.add('beforeDraw', () => {
   update();
 });
 
+figure.fnMap.global.add('update', () => update());
+
 // After each draw, call a next animation frame so udpates happen on each frame
 figure.notifications.add('afterDraw', () => {
   figure.animateNextFrame();
@@ -386,10 +388,10 @@ figure.shortcuts = {
 // figure.addFrameRate(10, { font: { color: [1, 0, 0, 1 ]} });
 time.setTimeSpeed(1);
 nav.loadSlides([
-  // {
-  //   scenario: 'default',
-  //   show: 'eqnMaxwell',
-  // },
+  {
+    scenario: 'default',
+    show: 'eqnTimeWave',
+  },
   /*
   .########.####.########.##.......########
   ....##.....##.....##....##.......##......
@@ -904,7 +906,7 @@ nav.loadSlides([
   },
   {
     scenario: 'default',
-    showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'm1.eqn', 'm1.eqn1', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton',  'm1.xDashLine', 'm1.xDashLineG', eqnSineT],
+    showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'm1.eqn', 'm1.eqn1', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton', eqnSineT],
     transition: [
       { out: ['m1.movePad', 'm1.firstBall', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton'] },
       { in: 'm1.xDashLine' },
@@ -914,13 +916,19 @@ nav.loadSlides([
   },
   {
     scenario: 'default',
-    showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'm1.eqn', 'm1.eqn1', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton',  'm1.xDashLine', 'm1.xDashLineG', eqnSineT],
+    showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.eqn', 'm1.eqn1', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv', eqnSineT],
     transition: [
-      { out: 'm1.xDashLine' },
-      { out: 'm1.xDashLineG' },
-      { out: 'm1.eqn1' },
-      { in: ['m1.movePad', 'm1.firstBall', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton'] },
-      { in: 'm1.eqn1' },
+      [
+        { out: 'm1.xDashLine' },
+        { out: 'm1.xDashLineG' },
+        { out: 'm1.eqn1' },
+      ],
+      // { in: ['m1.movePad', 'm1.firstBall', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton'] },
+      { position: 'movePadEnv', delta: 0.001, duration: 0 },
+      // { trigger: 'update' },
+      [
+        { in: 'm1.eqn1' },
+      ],
     ],
   },
   {
@@ -947,6 +955,30 @@ nav.loadSlides([
       sineTExplanation.showForm('summary_2');
     },
   },
+
+  // /*
+  // .##.....##....###....########.##.....##....########.
+  // .###...###...##.##......##....##.....##....##.....##
+  // .####.####..##...##.....##....##.....##....##.....##
+  // .##.###.##.##.....##....##....#########....########.
+  // .##.....##.#########....##....##.....##....##.......
+  // .##.....##.##.....##....##....##.....##....##.......
+  // .##.....##.##.....##....##....##.....##....##.......
+  // */
+  // {
+  //   showCommon: [],
+  //   scenarioCommon: 'center',
+  //   transition: [
+  //     { out: ['m1.xAxis', 'm1.yAxis', 'm1.envelope', 'm1.envelope2', 'm1.eqn1', 'm1.eqn', 'm1.grid'] },
+  //     { scenario: eqnSineT, target: 'center' },
+  //   ],
+  // },
+  // { form: 'yxt1_3gP' },
+  // { form: 'yxt1_3gPSub' },
+  // { form: 'yxt1_3gPSubDone' },
+  // { form: 'ysin_01' },
+
+
 
   /*
   .########.##....##.########..########..######.

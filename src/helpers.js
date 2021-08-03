@@ -208,3 +208,62 @@ const label = (name, position, col, text) => ({
 });
 
 
+/*
+.########..#######..##....##
+.##.......##.....##.###...##
+.##.......##.....##.####..##
+.######...##.....##.##.##.##
+.##.......##..##.##.##..####
+.##.......##....##..##...###
+.########..#####.##.##....##
+*/
+const frac = (numerator, vIndex, denominator, scale = 1, numeratorSpace = 0.05, denominatorSpace = 0.05, overhang = 0.05) => ({
+  frac: {
+    numerator, symbol: `vin${vIndex}`, denominator, scale, numeratorSpace, denominatorSpace
+  },
+});
+
+const lines = (content, baselineSpace = 2, justify = 'left', options = {}) => ({
+  lines: Fig.tools.misc.joinObjects({}, { content, justify, baselineSpace }, options),
+});
+
+const sub = (content, subscript) => ({ sub: [content, subscript] });
+
+const brac = (content, index) => ({
+  brac: [`lb${index}`, content, `rb${index}`],
+});
+
+const form = (content, alignment = 'equals1', yAlign = 'basline') => ({
+  content,
+  alignment: alignment === 'left' || typeof alignment === 'number' ? { xAlign: alignment, yAlign } : { fixtTo: alignment, yAlign },
+});
+
+const cont = (content, width, inSize = true) => ({
+  container: { content, width, inSize },
+});
+
+const tc = (content, comment, symbol, commentSpace = 0.2, scale = 1, commentLineSpace = 0.2, contentLineSpace = 0.2) => ({
+  topComment: {
+    content,
+    comment,
+    symbol,
+    commentSpace,
+    commentLineSpace,
+    contentLineSpace,
+    inSize: false,
+    scale,
+  },
+});
+
+const bc = (content, comment, symbol, commentSpace = 0.2, scale = 1, commentLineSpace = 0.2, contentLineSpace = 0.2) => ({
+  bottomComment: {
+    content,
+    comment,
+    symbol,
+    commentSpace,
+    commentLineSpace,
+    contentLineSpace,
+    inSize: false,
+    scale,
+  },
+});

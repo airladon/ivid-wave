@@ -9,11 +9,11 @@ function addMaxwellEquation(name) {
   // const sq = (content, _2Index) => ({
   //   sup: [content, `_2_${_2Index}`],
   // })
-  const frac = (numerator, vIndex, denominator, numeratorSpace = 0.05, denominatorSpace = 0.05, overhang = 0.05) => ({
-    frac: {
-      numerator, symbol: `v${vIndex}`, denominator, numeratorSpace, denominatorSpace, overhang,
-    },
-  });
+  // const frac = (numerator, vIndex, denominator, numeratorSpace = 0.05, denominatorSpace = 0.05, overhang = 0.05) => ({
+  //   frac: {
+  //     numerator, symbol: `v${vIndex}`, denominator, numeratorSpace, denominatorSpace, overhang,
+  //   },
+  // });
   const t = (content, boxName) => ({
     tBox: [content, boxName],
   });
@@ -27,9 +27,9 @@ function addMaxwellEquation(name) {
       xAlign,
     },
   });
-  const lines = (content, baselineSpace = 2) => ({
-    lines: { content, justify: 'left', baselineSpace, justify: 'element' },
-  });
+  // const lines = (content, baselineSpace = 2) => ({
+  //   lines: { content, justify: 'left', baselineSpace, justify: 'element' },
+  // });
   const line = (content, equalsIndex) => ({
     content,
     justify: `equals${equalsIndex}`,
