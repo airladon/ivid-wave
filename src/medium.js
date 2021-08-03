@@ -90,6 +90,13 @@ function addMedium(
         simple: true,
       },
       {
+        name: 'periodicEnvelope',
+        make: 'polyline',
+        width: 0.1,
+        color: colorGText,
+        simple: true,
+      },
+      {
         name: 'firstBall',
         make: 'primitives.polygon',
         radius: 0.2,
@@ -153,6 +160,51 @@ function addMedium(
           p2: [101, 0],
         },
       },
+      {
+        name: 'xDashLine',
+        make: 'collections.line',
+        width: 0.06,
+        dash: [0.2, 0.1],
+        p1: [6, -1],
+        p2: [6, -3.7],
+        color: colorPositionText,
+        label: {
+          text: 'x\'',
+          location: 'start',
+          scale: 4,
+          font: { color: colorPositionText },
+        }
+      },
+      {
+        name: 'xDashLineG',
+        make: 'collections.line',
+        width: 0.06,
+        dash: [0.2, 0.1],
+        p1: [3, -1],
+        p2: [3, -3.7],
+        color: colorPositionText,
+      },
+      // {
+      //   name: 'sixArrow',
+      //   make: 'collections.line',
+      //   options: {
+      //     width: 0.05,
+      //     color: colorLight,
+      //     arrow: 'barb',
+      //     label: {
+      //       text: '6',
+      //       offset: 0.04,
+      //       location: 'bottom',
+      //       scale: 4,
+      //       font: { color: colorPositionText },
+      //     },
+      //     p1: [0, -1],
+      //     p2: [6 * maxValue / length, -1],
+      //     align: 'center',
+      //   },
+      // },
+      arrow('vArrow', '6', [0, -1], [3 / maxValue * length, -1], colorPositionText),
+      arrow('v2Arrow', '12', [0, -1], [6 / maxValue * length, -1], colorPositionText),
       {
         name: 'widthArrow',
         make: 'collections.line',
@@ -282,11 +334,14 @@ function addMedium(
   const movePad = medium.getElement('movePad');
   const firstBall = medium.getElement('firstBall');
   const envelope = medium.getElement('envelope');
+  const periodicEnvelope = medium.getElement('periodicEnvelope');
   const eqn = medium.getElement('eqn');
   const eqn1 = medium.getElement('eqn1');
   const wavelength = medium.getElement('wavelength');
   const velocity = medium.getElement('velocity');
   const widthArrow = medium.getElement('widthArrow');
+  const xDashLine = medium.getElement('xDashLine');
+  const xDashLineG = medium.getElement('xDashLineG');
   let lastEnvelope = [];
   let lastEnvelopeNumVertices = 0;
   medium.custom = {
@@ -317,7 +372,7 @@ function addMedium(
           const b = balls[`_ball${i}`];
           const by = medium.custom.recording.getValueAtTimeAgo((b.custom.x) / medium.custom.c);
           b.setPosition(b.custom.drawX, by);
-          if (envelope.isShown) {
+          if (envelope.isShown || periodicEnvelope.isShown) {
             envelopePoints.push([b.custom.drawX, by]);
           }
         }
@@ -357,17 +412,43 @@ function addMedium(
               minValue = envelopePoints[i].y;
             }
           }
+          const newX = x + movePadEnv.custom.x / maxValue * length;
+          const minX = Math.min(Math.max(0, x), length);
+          const minNewX = Math.min(Math.max(0, newX), length);
           if (minValue < 0) {
-            const newX = x + movePadEnv.custom.x / maxValue * length;
-            eqn1.setPosition(
-              Math.min(Math.max(0, newX), length),
-              minValue - 1,
-            );
+            if (xDashLineG.isShown) {
+              eqn1.setPosition(
+                minX,
+                -5.3,
+              );
+            } else {
+              eqn1.setPosition(
+                minNewX,
+                minValue - 1,
+              );
+            }
             eqn1.setOpacity(1);
           } else {
             eqn1.setOpacity(0);
           }
+          if (xDashLine.isShown) {
+            xDashLine.setEndPoints([minNewX, -3.5], [minNewX, minValue]);
+            if (newX < 0 || newX > length) {
+              xDashLine.setOpacity(0);
+            } else {
+              xDashLine.setOpacity(1);
+            }
+          }
+          if (xDashLineG.isShown) {
+            xDashLineG.setEndPoints([minX, -4.6], [minX, minValue]);
+          }
         }
+      }
+      if (periodicEnvelope.isShown) {
+        const threeSLength = medium.custom.c * 3;
+        const numParticles = threeSLength / ballSpace;
+        periodicEnvelope.custom.updatePoints({ points: envelopePoints.slice(numParticles, numParticles * 2) });
+        periodicEnvelope.pointsToDraw = periodicEnvelope.drawingObject.points.length / 2;
       }
 
       // If the tracker is being used, then calculate its current position and
@@ -517,6 +598,7 @@ function addMedium(
       eqn1.updateElementText({
         value: `${Math.abs(Fig.tools.math.round(movePadEnv.custom.x * 2, 1)).toFixed(1)}`,
         sign: sign,
+        x_1: xDashLineG.isShown ? 'x\'' : 'x',
       }, 'current');
       // }
     }
@@ -545,5 +627,15 @@ function addMedium(
       // .dissolveIn({ element: 'label' })
       .start();
   });
+
+  // const a6 = medium._sixArrow;
+  // figure.fnMap.global.add('grow6', () => {
+  //   a6.showAll();
+  //   a6._label.hide();
+  //   a6.animations.new()
+  //     .length({ start: 0.5, target: 3 / maxValue * length, duration: 1 })
+  //     .dissolveIn({ element: 'label' })
+  //     .start();
+  // });
   return medium;
 }

@@ -22,25 +22,46 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
           color: colorTimeText,
         },
       },
-      {
-        name: 'widthArrow',
-        make: 'collections.line',
-        options: {
-          width: 0.05,
-          color: colorLight,
-          arrow: 'barb',
-          label: {
-            text: 'T',
-            location: 'bottom',
-            offset: 0.3,
-            scale: 4,
-            color: colorTimeText,
-          },
-          p1: [0, -1],
-          p2: [2, -1],
-          align: 'center',
-        },
-      },
+      // {
+      //   name: 'widthArrow',
+      //   make: 'collections.line',
+      //   options: {
+      //     width: 0.05,
+      //     color: colorLight,
+      //     arrow: 'barb',
+      //     label: {
+      //       text: 'T',
+      //       location: 'bottom',
+      //       offset: 0.3,
+      //       scale: 4,
+      //       color: colorTimeText,
+      //     },
+      //     p1: [0, -1],
+      //     p2: [2, -1],
+      //     align: 'center',
+      //   },
+      // },
+      arrow('TArrow', 'T', [0, -1], [2, -1], colorTimeText),
+      arrow('secondsArrow', '3', [0, -1], [2, -1], colorTimeText),
+      // {
+      //   name: 'secondsArrow',
+      //   make: 'collections.line',
+      //   options: {
+      //     width: 0.05,
+      //     color: colorLight,
+      //     arrow: 'barb',
+      //     label: {
+      //       text: '3',
+      //       location: 'bottom',
+      //       offset: 0.3,
+      //       scale: 4,
+      //       color: colorTimeText,
+      //     },
+      //     p1: [0, -1],
+      //     p2: [2, -1],
+      //     align: 'center',
+      //   },
+      // },
       {
         name: 'eqn',
         make: 'equation',
@@ -78,14 +99,38 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
     }
     trace.custom.updatePoints({ points });
   };
-  const T = timePlot._widthArrow;
-  figure.fnMap.global.add('growT', () => {
-    T.showAll();
-    T._label.hide();
-    T.animations.new()
-      .length({ start: 0.5, target: 2, duration: 1 })
+  // const T = timePlot._widthArrow;
+  // figure.fnMap.global.add('growT', () => {
+  //   T.showAll();
+  //   T._label.hide();
+  //   T.animations.new()
+  //     .length({ start: 0.5, target: 2, duration: 1 })
+  //     .dissolveIn({ element: 'label' })
+  //     .start();
+  // });
+  // const S = timePlot._secondsArrow;
+  // figure.fnMap.global.add('grow3', () => {
+  //   S.showAll();
+  //   S._label.hide();
+  //   S.animations.new()
+  //     .length({ start: 0.5, target: 2, duration: 1 })
+  //     .dissolveIn({ element: 'label' })
+  //     .start();
+  // });
+  figure.fnMap.global.add('growArrow', (payload) => {
+    const [name, duration] = payload;
+    const S = figure.get(name);
+    S.showAll();
+    S._label.hide();
+    S.animations.new()
+      .length({ start: 0.5, duration })
       .dissolveIn({ element: 'label' })
       .start();
-  })
+  });
+  figure.fnMap.global.add('setArrow', (name) => {
+    const S = figure.get(name);
+    S.showAll();
+    S.setEndPoints(S.custom.endPoints[0], S.custom.endPoints[1]);
+  });
   return timePlot;
 }
