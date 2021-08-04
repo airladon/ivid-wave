@@ -391,10 +391,10 @@ figure.shortcuts = {
 // figure.addFrameRate(10, { font: { color: [1, 0, 0, 1 ]} });
 time.setTimeSpeed(1);
 nav.loadSlides([
-  // {
-  //   scenario: 'default',
-  //   show: 'eqnTimeWave',
-  // },
+  {
+    scenario: 'default',
+    show: 'eqnTimeWave',
+  },
   {
     scenario: 'default',
     show: 'eqnSinT',
