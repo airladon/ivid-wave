@@ -30,10 +30,10 @@ function addMaxwellEquation(name) {
   // const lines = (content, baselineSpace = 2) => ({
   //   lines: { content, justify: 'left', baselineSpace, justify: 'element' },
   // });
-  const line = (content, equalsIndex) => ({
-    content,
-    justify: `equals${equalsIndex}`,
-  });
+  // const line = (content, equalsIndex) => ({
+  //   content,
+  //   justify: `equals${equalsIndex}`,
+  // });
   const bot = (content, comment, symbol, commentSpace = 0.05, contentSpace = 0.05, commentLineSpace = 0.05, contentLineSpace = 0.05) => ({
     bottomComment: {
       content,

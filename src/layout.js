@@ -71,7 +71,8 @@ function addFigureElements() {
   addSineEquation('eqnSine');
   addSineTEquation('eqnSineT');
   // addSineXEquation('eqnSineX');
-  addSineX0Equation('eqnSineX0');
+  addSinXEquation('eqnSinX');
+  addSinTEquation('eqnSinT');
   addVLFEquation('eqnVLF');
   addDiffEquation('eqnDiff');
   addMaxwellEquation('eqnMaxwell');

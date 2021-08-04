@@ -227,6 +227,11 @@ const lines = (content, baselineSpace = 2, justify = 'left', options = {}) => ({
   lines: Fig.tools.misc.joinObjects({}, { content, justify, baselineSpace }, options),
 });
 
+const line = (content, equalsIndex) => ({
+  content,
+  justify: `equals${equalsIndex}`,
+});
+
 const sub = (content, subscript) => ({ sub: [content, subscript] });
 
 const brac = (content, index) => ({
@@ -235,7 +240,7 @@ const brac = (content, index) => ({
 
 const form = (content, alignment = 'equals1', yAlign = 'basline') => ({
   content,
-  alignment: alignment === 'left' || typeof alignment === 'number' ? { xAlign: alignment, yAlign } : { fixtTo: alignment, yAlign },
+  alignment: alignment === 'left' || alignment === 'center' || typeof alignment === 'number' ? { xAlign: alignment, yAlign } : { fixTo: alignment, yAlign },
 });
 
 const cont = (content, width, inSize = true) => ({
@@ -255,15 +260,20 @@ const tc = (content, comment, symbol, commentSpace = 0.2, scale = 1, commentLine
   },
 });
 
-const bc = (content, comment, symbol, commentSpace = 0.2, scale = 1, commentLineSpace = 0.2, contentLineSpace = 0.2) => ({
+const bc = (content, comment, symbol, commentSpace = 0.2, contentSpace = 0.2, scale = 1, commentLineSpace = 0.2, contentLineSpace = 0.2) => ({
   bottomComment: {
     content,
     comment,
     symbol,
     commentSpace,
+    contentSpace,
     commentLineSpace,
     contentLineSpace,
     inSize: false,
     scale,
   },
+});
+
+const box = (content, symbol, space = 0.05, inSize = false) => ({
+  box: { content, symbol, inSize, space },
 });

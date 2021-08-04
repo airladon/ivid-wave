@@ -1,5 +1,4 @@
-function addTimeWave(name) {
-
+function addSinXEquation(name) {
   figure.add({
     name,
     make: 'collection',
@@ -19,8 +18,8 @@ function addTimeWave(name) {
           lb4: { symbol: 'bracket', side: 'left', lineWidth: 0.07, width: 0.16 },
           rb4: { symbol: 'bracket', side: 'right', lineWidth: 0.07, width: 0.16 },
           min1: { text: '  \u2212  ', color: colorTimeText },
-          h_1: { color: colorFText },
-          h_2: { color: colorFText },
+          f_1: { color: colorFText },
+          f_2: { color: colorFText },
           y_1: { color: colorDisturbanceText },
           y_2: { color: colorDisturbanceText },
           v: { color: colorVelocityText },
@@ -30,14 +29,14 @@ function addTimeWave(name) {
           comma1: ' , ',  
           comma2: ' , ',
           arrow1: { symbol: 'line', width: 0.04, arrow: { start: { head: 'triangle' } } },
-          // arrow2: { symbol: 'line', width: 0.04, arrow: { start: { head: 'triangle' } } },
+          arrow2: { symbol: 'line', width: 0.04, arrow: { start: { head: 'triangle' } } },
           vin1: { symbol: 'vinculum', lineWidth: 0.05 },
           vin2: { symbol: 'vinculum', lineWidth: 0.05, color: colorTimeText },
           x_1: { color: colorPositionText },
           x_2: { color: colorPositionText },
           x_3: { color: colorPositionText },
-          // x_4: { color: colorPositionText },
-          // x_5: { color: colorPositionText },
+          x_4: { color: colorPositionText },
+          x_5: { color: colorPositionText },
           x_6: { color: colorTimeText },
           _0_1: { color: colorPositionText },
           _1_1: { color: colorPositionText },
@@ -56,25 +55,25 @@ function addTimeWave(name) {
           t1_1: sub('t_5', '_1_3'),
         },
         // formDefaults: { alignment: { fixTo: 'equals1' } },
-        formDefaults: { alignment: { fixTo: 'equals2' } },
+        formDefaults: { alignment: { xAlign: 'center' } },
         forms: {
-          0: form(lines([['y_1', brac(['x0_1', 'comma1', 't_1'], 1), 'equals1', ' ', 'h_1', ' ', brac('t_2', 2)]], 2.5, 'element'), 'equals1'),
-          1: lines([
-            ['y_1', brac(['x0_1', 'comma1', 't_1'], 1), 'equals1', ' ', 'h_1', ' ', brac('t_2', 2)],
-            ['y_2', brac(['x1_1', 'comma2', 't_3'], 3), 'equals2', ' ', 'h_2', ' ', brac(['t_4', 'min1', 't1_1'], 4)],
-          ], 2.5, 'element'),
+          0: ['y_1', brac(['x0_1', 'comma1', 't_1'], 1), 'equals1', ' ', 'f_1', ' ', brac('t_2', 2)],
+          1: form(lines([
+            ['y_1', brac(['x0_1', 'comma1', 't_1'], 1), 'equals1', ' ', 'f_1', ' ', brac('t_2', 2)],
+            ['y_2', brac(['x1_1', 'comma2', 't_3'], 3), 'equals2', ' ', 'f_2', ' ', brac(['t_4', 'min1', 't1_1'], 4)],
+          ], 2.5), 'center', 0.3),
           2: lines([
-            ['y_2', brac(['x1_1', 'comma2', 't_3'], 3), 'equals2', ' ', 'h_2', ' ', brac(['t_4', 'min1', tc('t1_1', frac('x1_2', 1, 'v', 0.7), 'arrow1')], 4)],
+            ['y_2', brac(['x1_1', 'comma2', 't_3'], 3), 'equals2', ' ', 'f_2', ' ', brac(['t_4', 'min1', tc('t1_1', frac('x1_2', 1, 'v', 0.7), 'arrow1')], 4)],
           ]),
           3: lines([
-            ['y_2', brac(['x1_1', 'comma2', 't_3'], 3), 'equals2', ' ', 'h_2', ' ', brac(['t_4', 'min1', frac('x1_2', 1, 'v', 0.7)], 4)],
+            ['y_2', brac(['x1_1', 'comma2', 't_3'], 3), 'equals2', ' ', 'f_2', ' ', brac(['t_4', 'min1', frac('x1_2', 1, 'v', 0.7)], 4)],
           ]),
           4: lines([
-            ['y_2', brac(['x_2', 'comma2', 't_3'], 3), 'equals2', ' ', 'h_2', ' ', brac(['t_4', 'min1', frac('x_3', 1, 'v', 0.7)], 4)],
+            ['y_2', brac(['x_2', 'comma2', 't_3'], 3), 'equals2', ' ', 'f_2', ' ', brac(['t_4', 'min1', frac('x_3', 1, 'v', 0.7)], 4)],
           ]),
           5: lines([
             [
-              'y_2', brac(['x_2', 'comma2', 't_3'], 3), 'equals2', ' ', 'h_2', ' ',
+              'y_2', brac(['x_2', 'comma2', 't_3'], 3), 'equals2', ' ', 'f_2', ' ',
               brac([
                 't_4', 'min1',
                 {
@@ -96,7 +95,7 @@ function addTimeWave(name) {
         color: colorLight,
         textFont: { style: 'normal', color: colorLight },
         elements: {
-          h: { style: 'italic', color: colorFText },
+          f: { style: 'italic', color: colorFText },
           disturbance: { color: colorDisturbanceText },
           disturbance_1: { color: colorFText },
           position: { color: colorPositionText },
@@ -157,7 +156,7 @@ function addTimeWave(name) {
         forms: {
           0: lines([
             ['A ', 'disturbance', '_ at ', 'initial position', '  ', 'x0_1', '_ is a ', 'function of time'],
-            ['equal to ', 'h', 'stop'],
+            ['equal to ', 'f', 'stop'],
           ], 1),
           1: lines([
             ['The ', 'initial disturbance', '_ propogates away from the ', 'initial position_1'],
@@ -215,3 +214,4 @@ function addTimeWave(name) {
     position: [12, 3],
   });
 };
+
