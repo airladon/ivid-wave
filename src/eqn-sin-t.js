@@ -20,45 +20,47 @@ function addSinTEquation(name) {
           rb4: { symbol: 'bracket', side: 'right', lineWidth: 0.07, width: 0.16 },
           lb5: { symbol: 'squareBracket', side: 'left', lineWidth: 0.07, width: 0.16 },
           rb5: { symbol: 'squareBracket', side: 'right', lineWidth: 0.07, width: 0.16 },
-          sin: { style: 'normal' },
+          sin: { style: 'normal', color: colorFText },
           min1: { text: '  \u2212  ', color: colorTimeText },
           min2: { text: '  \u2212  ', color: colorTimeText },
           min3: { text: '  \u2212  ', color: colorTimeText },
+          min4: { text: '  \u2212  ' },
           h_1: { color: colorFText },
           h_2: { color: colorFText },
           y_1: { color: colorDisturbanceText },
-          y_2: { color: colorDisturbanceText },
-          v: { color: colorVelocityText },
+          // y_2: { color: colorDisturbanceText },
+          // v: { color: colorVelocityText },
           v_t: { color: colorTimeText },
           v_t2: { color: colorTimeText },
           v_t3: { color: colorTimeText },
           equals1: '  =  ',
           equals2: '  =  ',
           comma1: ' , ',  
-          comma2: ' , ',
+          // comma2: ' , ',
           arrow1: { symbol: 'line', width: 0.04, arrow: { start: { head: 'triangle' } } },
           arrow2: { symbol: 'line', width: 0.04, arrow: { start: { head: 'triangle' } } },
           vin1: { symbol: 'vinculum', lineWidth: 0.05, color: colorTimeText },
           vin2: { symbol: 'vinculum', lineWidth: 0.05, color: colorTimeText },
           vin3: { symbol: 'vinculum', lineWidth: 0.05, color: colorTimeText },
+          vin4: { symbol: 'vinculum', lineWidth: 0.05 },
           x_1: { color: colorPositionText },
-          x_2: { color: colorPositionText },
-          x_3: { color: colorPositionText },
-          x_4: { color: colorPositionText },
-          x_5: { color: colorPositionText },
+          // x_2: { color: colorPositionText },
+          // x_3: { color: colorPositionText },
+          // x_4: { color: colorPositionText },
+          // x_5: { color: colorPositionText },
           x_t: { color: colorTimeText },
           x_t2: { color: colorTimeText },
           x_t3: { color: colorTimeText },
-          _0_1: { color: colorPositionText },
-          _1_1: { color: colorPositionText },
-          _1_2: { color: colorPositionText },
+          // _0_1: { color: colorPositionText },
+          // _1_1: { color: colorPositionText },
+          // _1_2: { color: colorPositionText },
           t_1: { color: colorTimeText },
           t_2: { color: colorTimeText },
           t_3: { color: colorTimeText },
           t_4: { color: colorTimeText },
           t_5: { color: colorTimeText },
           t_6: { color: colorTimeText },
-          _1_3: { color: colorTimeText },
+          // _1_3: { color: colorTimeText },
           twoPi_1: '2\u03c0',
           twoPi_2: '2\u03c0',
           twoPi_3: '2\u03c0',
@@ -116,52 +118,57 @@ function addSinTEquation(name) {
           ], 2.5, 'element'), 'sin'),
           6: form(lines([
             line([
-              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(bc(['twoPi_1', 'f_1', ' ', brac(['t_6', 'min3', 'txv_2'], 5)], ['twoPi_2', 'f_2', ' ', 't_2', 'min1', 'twoPi_3', 'f_3', ' ', 'txv_1'], 'brace', 0.01, 0.1, 0.7), 4)
+              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(bc(['twoPi_1', 'f_1', ' ', brac(['t_6', 'min3', 'txv_2'], 5)], ['twoPi_2', 'f_2', ' ', 't_2', 'min4', 'twoPi_3', 'f_3', ' ', 'txv_1'], 'brace', 0.01, 0.1, 0.7), 4)
             ], 2),
           ], 2.5, 'element'), 'sin'),
           7: form(lines([
             line([
-              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['twoPi_2', 'f_2', ' ', 't_2', 'min1', 'twoPi_3', 'f_3', ' ', 'txv_1'], 4)
+              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['twoPi_2', 'f_2', ' ', 't_2', 'min4', 'twoPi_3', 'f_3', ' ', 'txv_1'], 4)
             ], 2),
           ], 2.5, 'element'), 'sin'),
           8: form(lines([
             line([
-              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac([bc(['twoPi_2', 'f_2'], 'w', 'brace2', 0.05, 0.05, 0.9), ' ', 't_2', 'min1', 'twoPi_3', 'f_3', ' ', 'txv_1'], 4)
+              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac([bc(['twoPi_2', 'f_2'], 'w', 'brace2', 0.05, 0.05, 0.9), ' ', 't_2', 'min4', 'twoPi_3', 'f_3', ' ', 'txv_1'], 4)
             ], 2),
           ], 2.5, 'element'), 'sin'),
           9: form(lines([
             line([
-              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['w', ' ', 't_2', 'min1', 'twoPi_3', 'f_3', ' ', 'txv_1'], 4)
+              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['w', ' ', 't_2', 'min4', 'twoPi_3', 'f_3', ' ', 'txv_1'], 4)
             ], 2),
           ], 2.5, 'element'), 'sin'),
           10: form(lines([
             line([
-              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['w', ' ', 't_2', 'min1', 'twoPi_3', ' ', frac(['f_3', ' ', 'x_t2'], 2, 'v_t2', 0.7)], 4)
+              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['w', ' ', 't_2', 'min4', 'twoPi_3', ' ', frac(['f_3', ' ', 'x_t2'], 2, 'v_t2', 0.7)], 4)
             ], 2),
           ], 2.5, 'element'), 'sin'),
           11: form(lines([
             line([
-              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['w', ' ', 't_2', 'min1', 'twoPi_3', ' ', frac('f_3', 2, 'v_t2', 0.7), ' ', 'x_t2'], 4)
+              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['w', ' ', 't_2', 'min4', 'twoPi_3', ' ', frac('f_3', 2, 'v_t2', 0.7), ' ', 'x_t2'], 4)
             ], 2),
           ], 2.5, 'element'), 'sin'),
           12: form(lines([
             line([
-              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['w', ' ', 't_2', 'min1', 'twoPi_3', '    ', bc(box(frac('f_3', 2, 'v_t2', 0.7), 'box1'), frac('_1_4', 1, 'lambda'), 'arrow1', 0.05, 0.15, 0.6, 0.1, 0.35), '    ', 'x_t2'], 4)
+              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['w', ' ', 't_2', 'min4', 'twoPi_3', '    ', bc(box(frac('f_3', 2, 'v_t2', 0.7), 'box1'), frac('_1_4', 4, 'lambda'), 'arrow1', 0.05, 0.15, 0.6, 0.1, 0.35), '    ', 'x_t2'], 4)
             ], 2),
           ], 2.5, 'element'), 'sin'),
           13: form(lines([
             line([
-              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['w', ' ', 't_2', 'min1', frac('twoPi_3', 1, 'lambda', 0.7), ' ', 'x_t2'], 4)
+              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['w', ' ', 't_2', 'min4', frac('twoPi_3', 4, 'lambda', 0.7), ' ', 'x_t2'], 4)
             ], 2),
           ], 2.5, 'element'), 'sin'),
           14: form(lines([
             line([
-              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['w', ' ', 't_2', 'min1', bc(box(frac('twoPi_3', 1, 'lambda', 0.7), 'box'), 'k', 'arrow1', 0.05, 0.15, 0.7, 0.1, 0.35), '   ', 'x_t2'], 4)
+              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['w', ' ', 't_2', 'min4', bc(box(frac('twoPi_3', 4, 'lambda', 0.7), 'box'), 'k', 'arrow1', 0.05, 0.15, 0.7, 0.1, 0.35), '   ', 'x_t2'], 4)
             ], 2),
           ], 2.5, 'element'), 'sin'),
           15: form(lines([
             line([
-              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['w', ' ', 't_2', 'min1', 'k', ' ', 'x_t2'], 4)
+              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['w', ' ', 't_2', 'min4', 'k', ' ', 'x_t2'], 4)
+            ], 2),
+          ], 2.5, 'element'), 'sin'),
+          16: form(lines([
+            line([
+              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['w', ' ', 't_2', '_  +  ', 'k', ' ', 'x_t2'], 4)
             ], 2),
           ], 2.5, 'element'), 'sin'),
         },
@@ -191,8 +198,10 @@ function addSinTEquation(name) {
           'disturbance at ': { color: colorFText },
           'delayed time ': { color: colorTimeText },
           h: { color: colorFText },
+          f: { style: 'italic' },
           // 'function of time': { color: colorTimeText },
           ago: { color: colorTimeText },
+          sin: { color: colorFText },
           // 'disturbance at ': { color: colorFText },
           // '_ is ago ': { color: colorTimeText },
           // 'How long ': { color: colorTimeText },
@@ -221,6 +230,7 @@ function addSinTEquation(name) {
           // _1_5: { color: colorTimeText },
           v_1: { style: 'italic', color: colorVelocityText },
           v_2: { style: 'italic', color: colorVelocityText },
+          plusV: { text: '+v', style: 'italic', color: colorVelocityText },
           v_3: { style: 'italic', color: colorTimeText },
           twoPif: { text: '2\u03c0f', style: 'italic' },
           twoPi: { text: '2\u03c0', style: 'italic' },
@@ -250,8 +260,13 @@ function addSinTEquation(name) {
             ['disturbance that happened at ', 'x0_2', '_ at ', 'time', '  ', 'xOnV1', '  ', 'ago', 'stop'],
           ], 1),
           1: lines([
-            ['Make the ', 'disturbance at ', 'x0_3', '_ a sin function.'],
+            ['Make the ', 'disturbance at ', 'x0_3', '_ a ', 'sin', '_ function.'],
           ]),
+          '1a': lines([
+            ['The sin function\'s output repeats every time it\'s input is a'],
+            ['multiple of ', 'twoPi', '_. Thus the ', 'twoPif', '_ term repeats the sin function'],
+            ['f', ' ', '_ times per second.']
+          ], 1),
           2: lines([
             ['Substitute the ', 'delayed time ', 'into ', 'h', 'stop'],
           ]),
@@ -259,7 +274,7 @@ function addSinTEquation(name) {
             ['Equate like terms.'],
           ]),
           4: lines([
-            ['Expand sin function input.'],
+            ['Expand the ', 'sin', '_ function input.'],
           ]),
           5: lines([
             ['twoPif', '_ is commonly called the angular frequency ', 'w', 'stop'],
@@ -269,7 +284,14 @@ function addSinTEquation(name) {
           ]),
           7: lines([
             ['twoPiL', '_ is commonly called the wave number ', 'k'],
-          ])
+          ]),
+          8: lines([
+            ['This equation describes a sine wave travelling with velocity ', 'plusV', 'stop'],
+          ]),
+          9: lines([
+            ['If the wave were travelling in the negative direction, then the sign'],
+            ['would switch.'],
+          ], 1),
         }
       },
       {
@@ -283,6 +305,7 @@ function addSinTEquation(name) {
           { form: ['0', '0'] },
           { form: ['1', '0'] },
           { form: ['1', '1'] },
+          { form: ['1a', '1'] },
           { form: ['2', '1'] },
           { form: ['2', '2'] },
           { form: ['2', '3'] },
@@ -303,6 +326,9 @@ function addSinTEquation(name) {
           { form: ['7', '13'] },
           { form: ['7', '14'] },
           { form: ['7', '15'] },
+          { form: ['8', '15'] },
+          { form: ['9', '15'] },
+          { form: ['9', '16'] },
           // { form: ['2', '0'] },
           // { form: ['3', '0'] },
           // { form: ['3', '1'] },
