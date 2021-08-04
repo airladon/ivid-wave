@@ -247,13 +247,14 @@ const cont = (content, width, inSize = true) => ({
   container: { content, width, inSize },
 });
 
-const tc = (content, comment, symbol, commentSpace = 0.2, scale = 1, commentLineSpace = 0.2, contentLineSpace = 0.2) => ({
+const tc = (content, comment, symbol, commentSpace = 0.2, contentSpace = 0.2, scale = 1, commentLineSpace = 0.2, contentLineSpace = 0.2) => ({
   topComment: {
     content,
     comment,
     symbol,
     commentSpace,
     commentLineSpace,
+    contentSpace,
     contentLineSpace,
     inSize: false,
     scale,

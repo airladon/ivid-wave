@@ -62,10 +62,10 @@ function addSinTEquation(name) {
           k: { color: colorK },
         },
         phrases: {
-          x0_1: sub('x_1', '_0_1'),
-          x1_1: sub('x_2', '_1_1'),
-          x1_2: sub('x_3', '_1_2'),
-          t1_1: sub('t_5', '_1_3'),
+          // x0_1: sub('x_1', '_0_1'),
+          // x1_1: sub('x_2', '_1_1'),
+          // x1_2: sub('x_3', '_1_2'),
+          // t1_1: sub('t_5', '_1_3'),
           yxt: ['y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals1', ' ', 'h_1', ' ', brac(['t_2', 'min1', frac('x_t', 1, 'v_t', 0.7)], 2)],
           yxtBox: [{ box: [['y_1', brac(['x_1', 'comma1', 't_1'], 1)], 'box1', false, 0.05] }, 'equals1', ' ', 'h_1', ' ', brac(['t_2', 'min1', frac('x_t', 1, 'v_t', 0.7)], 2)],
           txv_1: frac('x_t2', 2, 'v_t2', 0.7),
@@ -209,7 +209,7 @@ function addSinTEquation(name) {
           k: { color: colorK, style: 'italic' },
         },
         phrases: {
-          x0_1: sub('x_1', '_0_1'),
+          // x0_1: sub('x_1', '_0_1'),
           x0_2: sub('x_2', '_0_2'),
           x0_3: sub('x_3', '_0_3'),
           xOnV: frac('x_5', 1, 'v_1', 0.8, 0.02, 0.02),
