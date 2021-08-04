@@ -68,7 +68,7 @@ function addFigureElements() {
   );
   const pressurePlot = addPressureMedium('p1', 18, 2, 0.1, 0.4);
   addOceanMedium('ocean', 24, 4, 0.07, 0.4);
-  addSineEquation('eqnSine');
+  // addSineEquation('eqnSine');
   addSineTEquation('eqnSineT');
   // addSineXEquation('eqnSineX');
   addSinXEquation('eqnSinX');
@@ -76,7 +76,7 @@ function addFigureElements() {
   addVLFEquation('eqnVLF');
   addDiffEquation('eqnDiff');
   addMaxwellEquation('eqnMaxwell');
-  addTimeWave('eqnTimeWave');
+  addTimeWave('eqnGenT');
   // addTitle(2.88 * 4, 1.44 * 4, 0.1);
   addTitle(8, 4, 0.1);
   addIntro(24, 4, 0.1);
@@ -91,6 +91,13 @@ function addFigureElements() {
     name: 'highlighter2',
     make: 'collections.rectangle',
     line: { width: 0.03 },
+    color: colorLight,
+  })
+  figure.add({
+    name: 'highlighter3',
+    make: 'collections.rectangle',
+    line: { width: 0.03 },
+    corner: { radius: 0.2, sides: 5 },
     color: colorLight,
   })
 
@@ -128,4 +135,9 @@ function addFigureElements() {
       }
     }
   };
+  figure.add([
+    labelButton('timeWaveSelector', [4, 1],  [{ text: 'Initial Disturbance', font: { size: 0.35 } }, 'General Time']),
+    labelButton('sinSpaceSelector', [12, 1], [{ text: 'Initial Disturbance', font: { size: 0.35 } }, 'Periodic Time']),
+    labelButton('sinTimeSelector', [20, 1],  [{ text: 'Initial Disturbance', font: { size: 0.35 } }, 'Periodic Space']),
+  ]);
 };

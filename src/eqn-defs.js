@@ -8,12 +8,12 @@ function addDefsEquation(name) {
     scale: 4.7,
     position: [12, 1],
     formDefaults: { alignment: { xAlign: 'center' } },
-    // mods: {
-    //   scenarios: {
-    //     default: { position: [2, 2] },
-    //     mathx: { position: [1, 2] },
-    //   },
-    // },
+    mods: {
+      scenarios: {
+        default: { position: [12, 1] },
+        top: { position: [12, 8] },
+      },
+    },
     elements: {
       Transverse: { color: colorWave },
       Wave: { color: colorWave },
@@ -36,6 +36,16 @@ function addDefsEquation(name) {
         content: ['long', 'colon', 'along'],
         alignment: { yAlign: -0.4 },
       },
-    }
+      // initialSpace: ['Disturbance g(x) at an initial time'],
+      // both: {
+      //   lines: {
+      //     content: [
+      //       ['Disturbance g(x) at an initial time'],
+      //       ['Disturbance h(t) at an initial position'],
+      //     ],
+      //     baselineSpace: 4,
+      //   },
+      // },
+    },
   });
 }

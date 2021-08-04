@@ -87,9 +87,12 @@ const ocean = figure.get('ocean');
 const examples = figure.get('examples');
 const intro = figure.get('intro');
 const timePlot1 = figure.get('timePlot1');
-const eqnSine = figure.get('eqnSine');
+// const eqnSine = figure.get('eqnSine');
 const defs = figure.get('defs');
 const eqnSineT = figure.get('eqnSineT');
+const eqnGenT = figure.get('eqnGenT');
+const eqnSinT = figure.get('eqnSinT');
+const eqnSinX = figure.get('eqnSinX');
 const sineTExplanation = figure.get('sineTExplanation');
 // const eqnSineX0 = figure.get('eqnSineX0');
 const eqnVLF = figure.get('eqnVLF');
@@ -103,6 +106,10 @@ const sine2fButton = figure.get('sine2fButton');
 const freezeButton = figure.get('freezeTimeButton');
 const slowTimeButton = figure.get('slowTimeButton');
 const velocityButton = figure.get('velocityButton');
+const timeWaveSelector = figure.get('timeWaveSelector');
+const sinSpaceSelector = figure.get('sinSpaceSelector');
+const sinTimeSelector = figure.get('sinTimeSelector');
+const highlighter3 = figure.get('highlighter3');
 // const velocityButton2 = figure.get('velocityButton2');
 // const freqButton1 = figure.get('freqButton1');
 // const freqButton2 = figure.get('freqButton2');
@@ -283,6 +290,50 @@ sine2fButton.onClick = () => {
   sineWave(m1, 0);
 };
 
+const selector = (selector, show, hide1, hide2, surroundBorder) => {
+  highlighter3.stop();
+  highlighter3.showAll();
+  highlighter3.surround(selector, surroundBorder);
+  highlighter3.pulse({ scale: 1.04, duration: 0.3 });
+  if (show.isShown) {
+    return;
+  }
+  hide1.hide();
+  hide2.hide();
+  show.showAll();
+  show._nav.goToSlide(0);
+  show.animations.new().dissolveIn(0.3).start();
+}
+timeWaveSelector.onClick = () => selector(timeWaveSelector, eqnGenT, eqnSinT, eqnSinX, [0.4, 0.35, 0.6, 0.4]);
+sinSpaceSelector.onClick = () => selector(sinSpaceSelector, eqnSinX, eqnSinT, eqnGenT, [0.4, 0.35, 0.6, 0.4]);
+sinTimeSelector.onClick = () => selector(sinTimeSelector, eqnSinT, eqnSinX, eqnGenT, [0.4, 0.25, 0.6, 0.4]);
+// sinSpaceSelector.onClick = () => {
+//   highlighter3.stop();
+//   highlighter3.showAll();
+//   highlighter3.surround(sinSpaceSelector, [0.4, 0.4, 0.6, 0.4]);
+//   highlighter3.pulse({ scale: 1.04, duration: 0.3 });
+//   if (eqnSinX.isShown) {
+//     return;
+//   }
+//   eqnSinT.hide();
+//   eqnGenT.hide();
+//   eqnSinX.showAll();
+//   eqnSinX._nav.goToSlide(0);
+//   eqnSinX.animations.new().dissolveIn(0.3).start();
+// }
+// sinTimeSelector.onClick = () => {
+//   eqnSinX.hide();
+//   eqnGenT.hide();
+//   eqnSinT.showAll();
+//   eqnSinT._nav.goToSlide(0);
+//   highlighter3.stop();
+//   highlighter3.showAll();
+//   highlighter3.surround(sinTimeSelector, [0.4, 0.2, 0.6, 0.4]);
+//   highlighter3.pulse({ scale: 1.04, duration: 0.3 });
+// }
+// sinSpaceSelector
+// sinTimeSelector
+
 /*
 ..######..##.......####.########..########..######.
 .##....##.##........##..##.....##.##.......##....##
@@ -308,13 +359,13 @@ figure.fnMap.global.add('hideVLF', () => {
 });
 
 
-figure.fnMap.global.add('showSine', () => {
-  eqnSine.showForm('yxewK');
-  eqnSine.animations.new().dissolveIn(0.5).start();
-});
-figure.fnMap.global.add('hideSine', () => {
-  eqnSine.animations.new().dissolveOut(0.5).start();
-});
+// figure.fnMap.global.add('showSine', () => {
+//   eqnSine.showForm('yxewK');
+//   eqnSine.animations.new().dissolveIn(0.5).start();
+// });
+// figure.fnMap.global.add('hideSine', () => {
+//   eqnSine.animations.new().dissolveOut(0.5).start();
+// });
 figure.fnMap.global.add('showWaveEqn', () => {
   eqnDiff.showForm('d1');
   eqnDiff.animations.new().dissolveIn(0.5).start();
@@ -395,10 +446,10 @@ nav.loadSlides([
   //   scenario: 'default',
   //   show: 'eqnTimeWave',
   // },
-  {
-    scenario: 'default',
-    show: 'eqnSinX',
-  },
+  // {
+  //   scenario: 'default',
+  //   show: 'eqnSinX',
+  // },
   /*
   .########.####.########.##.......########
   ....##.....##.....##....##.......##......
@@ -961,6 +1012,39 @@ nav.loadSlides([
     steadyState: () => {
       sineTExplanation.showForm('summary_2');
     },
+  },
+
+  /*
+  ..######..########.##.......########
+  .##....##.##.......##.......##......
+  .##.......##.......##.......##......
+  ..######..######...##.......######..
+  .......##.##.......##.......##......
+  .##....##.##.......##.......##......
+  ..######..########.########.##......
+  */
+  {
+    // fromForm: ['yxt1_3', null, 'initialSpace'],
+    // form: ['yxt1_3', null, 'initialSpace'],
+    // scenario: 'top',
+    // enterState: () => {
+    //   sineTExplanation.showForm('summary_2');
+    // },
+    hide: 'm1',
+    transition: [
+      { out: [eqnSineT, sineTExplanation, 'm1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.eqn', 'm1.eqn1', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv'] },
+      // { in: defs },
+      // [
+      //   { scenario: eqnSineT, start: 'default', target: 'top' },
+      //   { dim: eqnSineT.getFormElements('yxt1_3') },
+      // ],
+      {
+        in: ['timeWaveSelector', 'sinSpaceSelector', 'sinTimeSelector'],
+      }
+    ],
+    // leaveState: () => {
+    //   eqnSineT.getFormElements('yxt1_3').forEach(e => e.undim());
+    // },
   },
 
   // /*

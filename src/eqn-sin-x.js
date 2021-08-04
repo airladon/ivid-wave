@@ -138,12 +138,12 @@ function addSinXEquation(name) {
             ], 2),
           ], 2.5, 'element'), 'sin'),
         },
-        position: [-1, 3.5],
+        position: [-1, 3],
       },
       {
         name: 'description',
         make: 'equation',
-        scale: 3.6,
+        scale: 3.4,
         color: colorLight,
         textFont: { style: 'normal', color: colorLight },
         elements: {
@@ -241,8 +241,9 @@ function addSinXEquation(name) {
         make: 'collections.slideNavigator',
         equation: ['description', 'eqn'],
         color: colorLight,
-        nextButton: { type: 'arrow', position: [11, -0.3], width: 2, length: 1,color: colorLight },
-        prevButton: { type: 'arrow', position: [-11, -0.3], width: 2, length: 1, color: colorLight },
+        nextButton: { type: 'arrow', position: [11, 2.3], width: 2, length: 1,color: colorLight, line: { width: 0.02 }, touchBorder: 0.5 },
+        prevButton: { type: 'arrow', position: [-11, 2.3], width: 2, length: 1, color: colorLight, line: { width: 0.02 }, touchBorder: 0.5 },
+        disableOpacity: 0.2,
         slides: [
           { form: ['0', '0'] },
           { form: ['1', '0'] },
@@ -276,6 +277,6 @@ function addSinXEquation(name) {
         ],
       },
     ],
-    position: [12, 3],
+    position: [12, 4.5],
   });
 };

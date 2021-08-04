@@ -80,6 +80,7 @@ function addSineTEquation(name) {
         summary: { position: [16, 5.7], scale: 1 },
         mathx: { position: [8, 4], scale: 1 },
         center: { position: [8, 8], scale: 1.2 },
+        top: { position: [8, 6], scale: 1 },
         // bottom: { position: [7, 1.5], scale: 1 },
       }
     },
@@ -368,11 +369,14 @@ function addSineTEquation(name) {
       ], 1.2),
     },
   });
-  for (let i = 1; i <= 16; i += 1) {
+  for (let i = 1; i <= 17; i += 1) {
     const d = description.get(`tBox${i}`);
     const e = eqn.get(`tBox${i}`);
     d.dimColor = [0, 0, 0, 0];
     e.dimColor = [0, 0, 0, 0];
+    d.setColor([0, 0, 0, 0]);
+    e.setColor([0, 0, 0, 0]);
+    // e.dimColor = [0, 0, 0, 0];
   }
   // const [d1, d2, d3, d4, d5, d6] = description.get(['tBox1', 'tBox2', 'tBox3', 'tBox4', 'tBox5', 'tBox6']);
   // const [d7, d8, d9, d10, d11, d12] = description.get(['tBox7', 'tBox8', 'tBox9', 'tBox10', 'tBox11', 'tBox12']);

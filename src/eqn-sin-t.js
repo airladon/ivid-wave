@@ -56,7 +56,7 @@ function addSinTEquation(name) {
           box1: { symbol: 'box', lineWidth: 0.04 },
           box2: { symbol: 'box', lineWidth: 0.04 },
           brace: { symbol: 'brace', side: 'bottom', lineWidth: 0.04, width: 0.5 },
-          // brace2: { symbol: 'brace', side: 'bottom', lineWidth: 0.04, width: 0.3 },
+          brace2: { symbol: 'brace', side: 'top', lineWidth: 0.04, width: 0.3 },
           w: { text: '\u03c9', color: colorOmega },
           lambda: { text: '\u03bb' },
           k: { color: colorK },
@@ -111,7 +111,7 @@ function addSinTEquation(name) {
           ], 2.5, 'element'), 'sin'),
           6: form(lines([
             line([
-              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(bc(['twoPi_1', 'f_1', ' ', brac(['t_6', 'min3', 'txv_2'], 5)], ['twoPi_2', 'f_2', ' ', 't_2', 'min4', 'twoPi_3', 'f_3', ' ', 'txv_1'], 'brace', 0.01, 0.1, 0.7), 4)
+              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(tc(['twoPi_1', 'f_1', ' ', brac(['t_6', 'min3', 'txv_2'], 5)], ['twoPi_2', 'f_2', ' ', 't_2', 'min4', 'twoPi_3', 'f_3', ' ', 'txv_1'], 'brace2', 0.01, 0.1, 0.7), 4)
             ], 2),
           ], 2.5, 'element'), 'sin'),
           7: form(lines([
@@ -121,7 +121,7 @@ function addSinTEquation(name) {
           ], 2.5, 'element'), 'sin'),
           8: form(lines([
             line([
-              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['  ', bc(box(['twoPi_2', 'f_2', ' ',], 'box1'), 'w', 'arrow1', 0.05, 0.15, 0.8, 0.1, 0.35), '   ', 't_2', 'min4', 'twoPi_3', 'f_3', ' ', 'txv_1'], 4)
+              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['  ', tc(box(['twoPi_2', 'f_2', ' ',], 'box1'), 'w', 'arrow1', 0.05, 0.15, 0.8, 0.1, 0.35), '   ', 't_2', 'min4', 'twoPi_3', 'f_3', ' ', 'txv_1'], 4)
             ], 2),
           ], 2.5, 'element'), 'sin'),
           9: form(lines([
@@ -141,7 +141,12 @@ function addSinTEquation(name) {
           ], 2.5, 'element'), 'sin'),
           12: form(lines([
             line([
-              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['w', ' ', 't_2', 'min4', 'twoPi_3', '    ', bc(box(frac('f_3', 2, 'v_t2', 0.7), 'box1'), frac('_1_4', 4, 'lambda'), 'arrow1', 0.05, 0.15, 0.6, 0.1, 0.35), '    ', 'x_t2'], 4)
+              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['w', ' ', 't_2', 'min4', 'twoPi_3', '    ', tc(box(frac('f_3', 2, 'v_t2', 0.7), 'box1'), frac('_1_4', 4, 'lambda'), 'arrow1', 0.05, 0.15, 0.6, 0.1, 0.35), '    ', 'x_t2'], 4)
+            ], 2),
+          ], 2.5, 'element'), 'sin'),
+          '12a': form(lines([
+            line([
+              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['w', ' ', 't_2', 'min4', 'twoPi_3', ' ', frac('_1_4', 4, 'lambda'), ' ', 'x_t2'], 4)
             ], 2),
           ], 2.5, 'element'), 'sin'),
           13: form(lines([
@@ -151,7 +156,7 @@ function addSinTEquation(name) {
           ], 2.5, 'element'), 'sin'),
           14: form(lines([
             line([
-              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['w', ' ', 't_2', 'min4', bc(box(frac('twoPi_3', 4, 'lambda', 0.7), 'box'), 'k', 'arrow1', 0.05, 0.15, 0.7, 0.1, 0.35), '   ', 'x_t2'], 4)
+              'y_1', brac(['x_1', 'comma1', 't_1'], 1), 'equals2', 'sin', brac(['w', ' ', 't_2', 'min4', tc(box(frac('twoPi_3', 4, 'lambda', 0.7), 'box'), 'k', 'arrow1', 0.05, 0.15, 0.7, 0.1, 0.35), '   ', 'x_t2'], 4)
             ], 2),
           ], 2.5, 'element'), 'sin'),
           15: form(lines([
@@ -165,12 +170,12 @@ function addSinTEquation(name) {
             ], 2),
           ], 2.5, 'element'), 'sin'),
         },
-        position: [-1, 3.5],
+        position: [-1, 3],
       },
       {
         name: 'description',
         make: 'equation',
-        scale: 3.6,
+        scale: 3.4,
         color: colorLight,
         textFont: { style: 'normal', color: colorLight },
         elements: {
@@ -263,8 +268,9 @@ function addSinTEquation(name) {
         make: 'collections.slideNavigator',
         equation: ['description', 'eqn'],
         color: colorLight,
-        nextButton: { type: 'arrow', position: [11, -0.3], width: 2, length: 1,color: colorLight },
-        prevButton: { type: 'arrow', position: [-11, -0.3], width: 2, length: 1, color: colorLight },
+        nextButton: { type: 'arrow', position: [11, 2.3], width: 2, length: 1,color: colorLight, line: { width: 0.02 }, touchBorder: 0.5 },
+        prevButton: { type: 'arrow', position: [-11, 2.3], width: 2, length: 1, color: colorLight, line: { width: 0.02 }, touchBorder: 0.5 },
+        disableOpacity: 0.2,
         slides: [
           { form: ['0', '0'] },
           { form: ['1', '0'] },
@@ -286,6 +292,7 @@ function addSinTEquation(name) {
           { form: ['6', '10'] },
           { form: ['6', '11'] },
           { form: ['6', '12'] },
+          { form: ['6', '12a'] },
           { form: ['6', '13'] },
           { form: ['7', '13'] },
           { form: ['7', '14'] },
@@ -296,6 +303,6 @@ function addSinTEquation(name) {
         ],
       },
     ],
-    position: [12, 3],
+    position: [12, 4.5],
   });
 };

@@ -207,6 +207,24 @@ const label = (name, position, col, text) => ({
   },
 });
 
+const labelButton = (name, position, text) => ({
+  name,
+  make: 'primitives.textLines',
+  options: {
+    text,
+    position,
+    font: { size: 0.45, color: colorLight },
+    xAlign: 'center',
+    justify: 'center',
+    yAlign: 'middle',
+    color: colorLight,
+    touchBorder: 0.5,
+  },
+  mods: {
+    isTouchable: true,
+  },
+});
+
 
 /*
 .########..#######..##....##
