@@ -443,8 +443,12 @@ figure.shortcuts = {
 time.setTimeSpeed(1);
 nav.loadSlides([
   // {
-  //   scenario: 'default',
-  //   show: 'eqnTimeWave',
+  //   scenario: ['default', 'properties'],
+  //   show: ['eqnProps', 'eqnNewton', 'arrow1', 'arrow2'],
+  //   steadyState: () => {
+  //     eqnDiff.showForm('d1Mono');
+  //   //   eqnDiff.setPosition(19.5, 6);
+  //   },
   // },
   // {
   //   scenario: 'default',
@@ -1024,29 +1028,118 @@ nav.loadSlides([
   ..######..########.########.##......
   */
   {
-    // fromForm: ['yxt1_3', null, 'initialSpace'],
-    // form: ['yxt1_3', null, 'initialSpace'],
-    // scenario: 'top',
-    // enterState: () => {
-    //   sineTExplanation.showForm('summary_2');
-    // },
+    // scenario: 'default',
     hide: 'm1',
+    enterState: () => {
+      sineTExplanation.showForm('summary_2');
+    },
     transition: [
       { out: [eqnSineT, sineTExplanation, 'm1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.eqn', 'm1.eqn1', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv'] },
-      // { in: defs },
-      // [
-      //   { scenario: eqnSineT, start: 'default', target: 'top' },
-      //   { dim: eqnSineT.getFormElements('yxt1_3') },
-      // ],
       {
         in: ['timeWaveSelector', 'sinSpaceSelector', 'sinTimeSelector'],
       }
     ],
-    // leaveState: () => {
-    //   eqnSineT.getFormElements('yxt1_3').forEach(e => e.undim());
-    // },
   },
 
+  /*
+  ..######...########.##....##.########.########.....###....##......
+  .##....##..##.......###...##.##.......##.....##...##.##...##......
+  .##........##.......####..##.##.......##.....##..##...##..##......
+  .##...####.######...##.##.##.######...########..##.....##.##......
+  .##....##..##.......##..####.##.......##...##...#########.##......
+  .##....##..##.......##...###.##.......##....##..##.....##.##......
+  ..######...########.##....##.########.##.....##.##.....##.########
+  */
+  {
+    showCommon: [],
+    fromForm: null,
+    form: null,
+    scenario: 'props',
+    enterState: () => {
+      eqnDiff.showForm('d1Monont');
+    },
+    transition: [
+      { out: ['timeWaveSelector', 'sinSpaceSelector', 'sinTimeSelector'] },
+      [
+        { in: 'eqnProps.mass', delay: dd(true), duration: 0.3 },
+        { in: 'eqnProps.acceleration', delay: dd(), duration: 0.3 },
+        { in: 'eqnProps.force', delay: dd(), duration: 0.3 },
+        { in: 'eqnProps.length', delay: dd(), duration: 0.3 },
+        { in: 'eqnProps.spring constant', delay: dd(), duration: 0.3 },
+        { in: 'eqnProps.time', delay: dd(), duration: 0.3 },
+      ],
+      { in: 'arrow1', delay: 0.5 },
+      { delay: 0.5 },
+      [
+        { in: 'eqnNewton.F', delay: dd(true), duration: 0.3 },
+        { in: 'eqnNewton.equals', delay: dd(), duration: 0.3 },
+        { in: 'eqnNewton.m', delay: dd(), duration: 0.3 },
+        { in: 'eqnNewton.a', delay: dd(), duration: 0.3 },
+      ],
+      [
+        { in: 'eqnNewton.F_1', delay: dd(true), duration: 0.3 },
+        { in: 'eqnNewton.equals1', delay: dd(), duration: 0.3 },
+        { in: 'eqnNewton.k', delay: dd(), duration: 0.3 },
+        { in: 'eqnNewton.x', delay: dd(), duration: 0.3 },
+      ],
+      { in: 'arrow2', delay: 0.5 },
+      { delay: 0.5 },
+      [
+        { in: 'eqnDiff.d2', delay: dd(true), duration: 0.3 },
+        { in: 'eqnDiff._2_2', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.y_2', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.vin2', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.d4', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.t', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff._2_4', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.equals', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.v', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff._2_5', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.d1', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff._2_1', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.y_1', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.vin1', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.d3', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.x', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff._2_3', delay: dd(), duration: 0.3 },
+      ],
+    ],
+    steadyState: () => {
+      eqnDiff.showForm('d1Monont');
+    },
+  },
+  {
+    scenario: 'props',
+    enterState: () => {
+      eqnDiff.showForm('d1MonoSoln');
+    },
+    transition: [
+      { scenario: eqnDiff, target: 'high' },
+      { in: 'eqnDiff.y', delay: 1, duration: 0.3 },
+      { in: 'eqnDiff.equals2', delay: 1, duration: 0.3 },
+      { delay: 0.5 },
+      [
+        { in: 'eqnDiff.a', delay: dd(true), duration: 0.3 },
+        { in: 'eqnDiff.lb1', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.x_1', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.min1', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.v_1', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.t_1', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.rb1', delay: dd(), duration: 0.3 },
+      ],
+      { in: 'eqnDiff.plus1', delay: 0.5, duration: 0.3 },
+      { delay: 0.5 },
+      [
+        { in: 'eqnDiff.b', delay: dd(true), duration: 0.3 },
+        { in: 'eqnDiff.lb2', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.x_2', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.plus2', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.v_2', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.t_2', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.rb2', delay: dd(), duration: 0.3 },
+      ],
+    ],
+  },
   // /*
   // .##.....##....###....########.##.....##....########.
   // .###...###...##.##......##....##.....##....##.....##

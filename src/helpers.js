@@ -256,6 +256,17 @@ const brac = (content, index) => ({
   brac: [`lb${index}`, content, `rb${index}`],
 });
 
+const scale = (content, s) => ({
+  scale: [content, s],
+});
+
+let delay = 0;
+const dd = (reset = false) => {
+  if (reset) { delay = 0 }
+  delay += 0.1;
+  return delay;
+}
+
 const form = (content, alignment = 'equals1', yAlign = 'basline') => ({
   content,
   alignment: alignment === 'left' || alignment === 'center' || typeof alignment === 'number' ? { xAlign: alignment, yAlign } : { fixTo: alignment, yAlign },
