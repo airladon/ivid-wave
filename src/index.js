@@ -110,6 +110,7 @@ const timeWaveSelector = figure.get('timeWaveSelector');
 const sinSpaceSelector = figure.get('sinSpaceSelector');
 const sinTimeSelector = figure.get('sinTimeSelector');
 const highlighter3 = figure.get('highlighter3');
+const diffExplanation = figure.get('diffExplanation');
 // const velocityButton2 = figure.get('velocityButton2');
 // const freqButton1 = figure.get('freqButton1');
 // const freqButton2 = figure.get('freqButton2');
@@ -1029,6 +1030,7 @@ nav.loadSlides([
   */
   {
     // scenario: 'default',
+    clear: true,
     hide: 'm1',
     enterState: () => {
       sineTExplanation.showForm('summary_2');
@@ -1054,22 +1056,24 @@ nav.loadSlides([
     showCommon: [],
     fromForm: null,
     form: null,
-    scenario: 'props',
+    scenario: ['default', 'props'],
     enterState: () => {
-      eqnDiff.showForm('diffMono');
+      eqnDiff.showForm('results');
     },
     transition: [
       { out: ['timeWaveSelector', 'sinSpaceSelector', 'sinTimeSelector'] },
+      { delay: 1 },
       [
-        { in: 'eqnProps.mass', delay: dd(true), duration: 0.3 },
+        { in: 'eqnProps.mass', delay: dd(), duration: 0.3 },
         { in: 'eqnProps.acceleration', delay: dd(), duration: 0.3 },
         { in: 'eqnProps.force', delay: dd(), duration: 0.3 },
         { in: 'eqnProps.length', delay: dd(), duration: 0.3 },
         { in: 'eqnProps.spring constant', delay: dd(), duration: 0.3 },
         { in: 'eqnProps.time', delay: dd(), duration: 0.3 },
+        { in: 'eqnProps.disturbance', delay: dd(), duration: 0.3 },
       ],
-      { in: 'arrow1', delay: 0.5 },
-      { delay: 0.5 },
+      { in: 'arrow1', delay: 1 },
+      { delay: 1 },
       [
         { in: 'eqnNewton.F', delay: dd(true), duration: 0.3 },
         { in: 'eqnNewton.equals', delay: dd(), duration: 0.3 },
@@ -1082,8 +1086,18 @@ nav.loadSlides([
         { in: 'eqnNewton.k', delay: dd(), duration: 0.3 },
         { in: 'eqnNewton.x', delay: dd(), duration: 0.3 },
       ],
-      { in: 'arrow2', delay: 0.5 },
-      { delay: 0.5 },
+      { in: 'arrow2', delay: 1 },
+      { delay: 1 },
+      [
+        { in: 'eqnDiff.v_4', delay: dd(true), duration: 0.3 },
+        { in: 'eqnDiff._2_11', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.equals2', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.k', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.vin5', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.L', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff._2_12', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.m', delay: dd(), duration: 0.3 },
+      ],
       [
         { in: 'eqnDiff.d2', delay: dd(true), duration: 0.3 },
         { in: 'eqnDiff._2_2', delay: dd(), duration: 0.3 },
@@ -1103,71 +1117,150 @@ nav.loadSlides([
         { in: 'eqnDiff.x', delay: dd(), duration: 0.3 },
         { in: 'eqnDiff._2_3', delay: dd(), duration: 0.3 },
       ],
+      [
+        { in: 'eqnDiff.y_6', delay: dd(true), duration: 0.3 },
+        { in: 'eqnDiff.equals1', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.b_1', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.lb3', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.x_4', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.min2', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.v_5', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.t_4', delay: dd(), duration: 0.3 },
+        { in: 'eqnDiff.rb3', delay: dd(), duration: 0.3 },
+      ],
+    ],
+    steadyState: () => {
+      eqnDiff.showForm('results');
+    },
+  },
+  {
+    scenario: 'props',
+    enterState: () => {
+      eqnDiff.showForm('results');
+    },
+    transition: [
+      { goToForm: eqnDiff, target: 'diffMono' },
+      { scenario: eqnDiff, target: 'default' },
     ],
     steadyState: () => {
       eqnDiff.showForm('diffMono');
     },
   },
   {
-    scenario: 'props',
+    scenario: 'default',
     enterState: () => {
       eqnDiff.showForm('diffMono');
     },
     transition: [
       [
         { scenario: eqnDiff, target: 'high' },
-        // { goToForm: eqnDiff, target: 'diff' },
+        { goToForm: eqnDiff, target: 'diffMonoSmall' },
       ],
+      { goToForm: eqnDiff, target: 'diffSolnMono' },
     ],
-    // steadyState: () => {
-    //   eqnDiff.showForm('diff');
-    // }
+    steadyState: () => {
+      eqnDiff.showForm('diffSolnMono');
+    }
   },
+  // {
+  //   // scenario: 'props',
+  //   enterState: () => {
+  //     eqnDiff.showForm('diffMono');
+  //   },
+  //   transition: { scenario: eqnDiff, target: 'high' },
+  // },
   {
     scenario: 'high',
     enterState: () => {
-      eqnDiff.showForm('diffSoln');
+      eqnDiff.showForm('diffSolnMono');
+      diffExplanation.showForm('soln');
     },
     transition: [
-      // { scenario: eqnDiff, target: 'high' },
-      { in: 'eqnDiff.y_5', delay: 1, duration: 0.3 },
-      { in: 'eqnDiff.equals2', delay: 1, duration: 0.3 },
-      { delay: 0.5 },
       [
-        { in: 'eqnDiff.a', delay: dd(true), duration: 0.3 },
-        { in: 'eqnDiff.lb1', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.x_2', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.min1', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.v_2', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.t_2', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.rb1', delay: dd(), duration: 0.3 },
+        { goToForm: eqnDiff, target: 'diffSoln' },
+        { in: diffExplanation },
       ],
-      { in: 'eqnDiff.plus1', delay: 0.5, duration: 0.3 },
-      { delay: 0.5 },
-      [
-        { in: 'eqnDiff.b', delay: dd(true), duration: 0.3 },
-        { in: 'eqnDiff.lb2', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.x_3', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.plus2', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.v_3', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.t_3', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.rb2', delay: dd(), duration: 0.3 },
-      ],
+      // // { scenario: eqnDiff, target: 'high' },
+      // { in: 'eqnDiff.y_5', delay: 1, duration: 0.3 },
+      // { in: 'eqnDiff.equals2', delay: 1, duration: 0.3 },
+      // { delay: 0.5 },
+      // [
+      //   { in: 'eqnDiff.a', delay: dd(true), duration: 0.3 },
+      //   { in: 'eqnDiff.lb1', delay: dd(true), duration: 0.3 },
+      //   { in: 'eqnDiff.x_2', delay: dd(true), duration: 0.3 },
+      //   { in: 'eqnDiff.min1', delay: dd(true), duration: 0.3 },
+      //   { in: 'eqnDiff.v_2', delay: dd(true), duration: 0.3 },
+      //   { in: 'eqnDiff.t_2', delay: dd(true), duration: 0.3 },
+      //   { in: 'eqnDiff.rb1', delay: dd(true), duration: 0.3 },
+      // ],
+      // { in: 'eqnDiff.plus1', delay: 0.5, duration: 0.3 },
+      // { delay: 0.5 },
+      // [
+      //   { in: 'eqnDiff.b', delay: dd(true), duration: 0.3 },
+      //   { in: 'eqnDiff.lb2', delay: dd(true), duration: 0.3 },
+      //   { in: 'eqnDiff.x_3', delay: dd(true), duration: 0.3 },
+      //   { in: 'eqnDiff.plus2', delay: dd(true), duration: 0.3 },
+      //   { in: 'eqnDiff.v_3', delay: dd(true), duration: 0.3 },
+      //   { in: 'eqnDiff.t_3', delay: dd(true), duration: 0.3 },
+      //   { in: 'eqnDiff.rb2', delay: dd(true), duration: 0.3 },
+      // ],
     ],
+    steadyState: () => {
+      eqnDiff.showForm('diffSoln');
+      diffExplanation.showForm('soln');
+    },
   },
+  // {
+  //   scenario: 'high',
+  //   show: ['diffExplanation'],
+  //   enterState: () => {
+  //     eqnDiff.showForm('diffSoln');
+  //     diffExplanation.showForm('soln');
+  //   },
+  //   transition: [
+  //     { in: diffExplanation },
+  //   ],
+  // },
   {
     scenario: 'high',
     show: ['diffExplanation'],
     enterState: () => {
       eqnDiff.showForm('diffSoln');
+      diffExplanation.showForm('soln');
+      console.log('asdf')
     },
     transition: [
-      { goToForm: eqnDiff, target: 'diff' },
-      { scenario: eqnDiff, target: 'default' },
+      [
+        { out: diffExplanation },
+        { out: { eqnDiff: ['y_5', 'equals2', 'a', 'x_2', 'min1', 'v_2', 't_2', 'plus1', 'b', 'x_3', 'plus2', 'v_3', 't_3', 'lb1', 'rb1', 'lb2', 'rb2'] } }
+      ],
+      [
+        { goToForm: eqnDiff, target: 'diff' },
+        { scenario: eqnDiff, target: 'default' },
+      ],
+      { trigger: () => diffExplanation.showForm('diff') },
+      { in: diffExplanation },
     ],
     steadyState: () => {
       eqnDiff.showForm('diff');
+      diffExplanation.showForm('diff');
     },
+  },
+
+  {
+    scenario: 'right',
+    enterState: () => {
+      eqnDiff.showForm('diff');
+      diffExplanation.showForm('diff');
+    },
+    transition: [
+      [
+        { out: diffExplanation },
+        { scenario: eqnDiff, start: 'default', target: 'right' },
+      ],
+      { trigger: 'softReset' },
+      { in: ['m1.xAxis', 'm1.yAxis', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'sine2fButton', 'slowTimeButton', 'slowTimeLabel'] },
+    ],
   },
   // /*
   // .##.....##....###....########.##.....##....########.
