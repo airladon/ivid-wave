@@ -1,5 +1,24 @@
 
 function addFigureElements() {
+  figure.add({
+    name: 'highlighter',
+    make: 'collections.rectangle',
+    line: { width: 0.03 },
+    color: colorLight,
+  });
+  figure.add({
+    name: 'highlighter2',
+    make: 'collections.rectangle',
+    line: { width: 0.03 },
+    color: colorLight,
+  });
+  figure.add({
+    name: 'highlighter3',
+    make: 'collections.rectangle',
+    line: { width: 0.03 },
+    corner: { radius: 0.2, sides: 5 },
+    color: colorLight,
+  });
   figure.add([
     button('pulseButton', [1.2, 0.8], 'Pulse'),
     // button('pulseButton2', [2.1, 0.15], 'Pulse 2'),
@@ -81,25 +100,7 @@ function addFigureElements() {
   addTitle(8, 4, 0.1);
   addIntro(24, 4, 0.1);
   addExamples();
-  figure.add({
-    name: 'highlighter',
-    make: 'collections.rectangle',
-    line: { width: 0.03 },
-    color: colorLight,
-  });
-  figure.add({
-    name: 'highlighter2',
-    make: 'collections.rectangle',
-    line: { width: 0.03 },
-    color: colorLight,
-  })
-  figure.add({
-    name: 'highlighter3',
-    make: 'collections.rectangle',
-    line: { width: 0.03 },
-    corner: { radius: 0.2, sides: 5 },
-    color: colorLight,
-  })
+  
 
   figure.showTouchBorders = () => {
     const elements = figure.elements.getAllElements();
