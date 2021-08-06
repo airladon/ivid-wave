@@ -10,7 +10,8 @@ function getDisturbances() {
     const { movePad, A } = med.custom;
     const { amplitude } = med.customState;
     if (!time.isPaused()) {
-      const t = p * 10000;
+      // const t = p * 10000;
+      const t = time.now() - med.custom.startTime;
       movePad.setPosition(0, A * amplitude * Math.exp(-(((t / 2 - 0.6) * 4 - t / 2) ** 2)));
     }
   });
@@ -19,7 +20,8 @@ function getDisturbances() {
     const { movePad, A } = med.custom;
     const { amplitude } = med.customState;
     if (!time.isPaused()) {
-      const t = p * 10000;
+      // const t = p * 10000;
+      const t = time.now() - med.custom.startTime;
       movePad.setPosition(1.5 * A * amplitude * Math.exp(-(((t / 2 - 0.6) * 4 - t / 2) ** 2)), 0);
     }
   });
@@ -29,6 +31,7 @@ function getDisturbances() {
     // const startTime = time.now();
     const { movePad, A } = med.custom;
     med.customState.amplitude = amplitude;
+    med.custom.startTime = time.now();
     let fnToUse = '';
     if (med.name === 'm1') {
       fnToUse = 'pulseM1DisturbanceStep';
@@ -47,7 +50,8 @@ function getDisturbances() {
     const med = figure.get('m1')
     const { movePad, A } = med.custom;
     if (!time.isPaused()) {
-      const t = p * 10000;
+      // const t = p * 10000;
+      const t = time.now() - med.custom.startTime;
       movePad.setPosition(0, A * 0.8 * Math.sin(2 * Math.PI * med.custom.f * t));
     }
   });
@@ -55,7 +59,8 @@ function getDisturbances() {
     const med = figure.get('p1');
     const { movePad, A } = med.custom;
     if (!time.isPaused()) {
-      const t = p * 10000;
+      // const t = p * 10000;
+      const t = time.now() - med.custom.startTime;
       movePad.setPosition(A * 0.8 * Math.sin(2 * Math.PI * med.custom.f * t), 0);
     }
   });
@@ -63,6 +68,7 @@ function getDisturbances() {
     unpause();
     const { movePad, A } = med.custom;
     const startTime = time.now();
+    med.custom.startTime = time.now();
     let fnToUse = '';
     if (med.name === 'm1') {
       fnToUse = 'sineM1DisturbanceStep';

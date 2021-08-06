@@ -1,6 +1,6 @@
 
 function addPressureMedium(
-  name, length, height, particleSize, gridStep,
+  name, length, height, particleSize, gridStep, recorder,
 ) {
   const vertexShader = `
 attribute vec2 a_position;
@@ -163,7 +163,7 @@ void main() {
     A: 0.5,
     f: 0.2,
     movePad,
-    recording: new Recorder(10),
+    recording: recorder,
     update: (deltaTime) => {
       const newOffsets = Array(offsets.length);
       const x = movePad.transform.t().x;

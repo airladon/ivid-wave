@@ -4,7 +4,7 @@ minVelocity, maxTimeReached, unpause, Transform, range
 */
 
 function addMedium(
-  stringName, length, maxValue, A, defaultPosition, yAxisTitle, ballSize, ballSpace,
+  stringName, length, maxValue, A, defaultPosition, yAxisTitle, ballSize, ballSpace, recorder,
 ) {
   // Particle creater
   const ball = (x, index, radius, sides = 20) => ({
@@ -354,7 +354,8 @@ function addMedium(
     wavelength,
     trackingTime: -10000,
     ball0: balls.getElement('ball0'),
-    recording: new Recorder(maxValue / minVelocity),
+    // recording: new Recorder(maxValue / minVelocity),
+    recording: recorder,
     highlights,
     // xValues.filter((x, i) => (x % 1 === 0) && x > 0).map(x => `ball${x}`),
     // Update function gets the position of the movePad, then records it, and

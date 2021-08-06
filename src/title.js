@@ -1,6 +1,6 @@
 
 function addTitle(
-  length, height, gridStep,
+  length, height, gridStep, recorder,
 ) {
   const vertexShader = {
     src: `
@@ -103,7 +103,7 @@ void main() {
   const movePadHighlight = title.getElement('movePadHighlight');
   title.custom = {
     c: 2,
-    recording: new Recorder(10),
+    recording: recorder,
     update: (deltaTime) => {
       const t = time.now();
       const y = movePad.transform.t().y;
