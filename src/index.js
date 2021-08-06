@@ -1618,10 +1618,10 @@ nav.loadSlides([
 ]);
 
 
-// figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.mp3'));
-// figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
-figure.recorder.loadAudioTrack(new Audio('http://10.0.1.95:8080/src/audio-track.mp3'));
-figure.recorder.loadVideoTrack('http://10.0.1.95:8080/src/video-track.json');
+figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.mp3'));
+figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
+// figure.recorder.loadAudioTrack(new Audio('http://10.0.1.95:8080/src/audio-track.mp3'));
+// figure.recorder.loadVideoTrack('http://10.0.1.95:8080/src/video-track.json');
 figure.recorder.notifications.add('stateSet', () => pause());
 figure.recorder.notifications.add('seek', () => pause())
 figure.recorder.notifications.add('playbackStopped', () => pause());

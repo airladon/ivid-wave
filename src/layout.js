@@ -100,8 +100,6 @@ function addFigureElements() {
   addTitle(8, 4, 0.05, recorder);
   addIntro(24, 4, 0.1);
   addExamples();
-  
-  // figure.addFrameRate(10, { color: [1, 1, 1, 1 ]} );
 
   figure.showTouchBorders = () => {
     const elements = figure.elements.getAllElements();
