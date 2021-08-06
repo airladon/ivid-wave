@@ -79,13 +79,15 @@ let maxTimeReached = false;
 .##.......##.......##.......##.....##.##.......##...###....##....##....##
 .########.########.########.##.....##.########.##....##....##.....######.
 */
+let t = performance.now()
 addFigureElements();
+console.log(performance.now() - t)
 
 const m1 = figure.get('m1');
 const p1 = figure.get('p1');
 const ocean = figure.get('ocean');
 const examples = figure.get('examples');
-const intro = figure.get('intro');
+// const intro = figure.get('intro');
 const timePlot1 = figure.get('timePlot1');
 // const eqnSine = figure.get('eqnSine');
 const defs = figure.get('defs');
@@ -136,6 +138,7 @@ const { pulse, sineWave } = getDisturbances();
 .##.......##.....##.##....##...##..##....##
 .########..#######...######...####..######.
 */
+
 const pause = () => {
   time.pause();
   figure.elements.customState.pause = true;
@@ -155,6 +158,40 @@ const unpause = () => {
     m1._envelope2.setOpacity(0);
   }
 };
+// Update function for everytime we want to update the particles
+// let lastTime = time.now();
+function update(override = false) {
+  if (maxTime > 0 && time.now() > maxTime) {
+    maxTimeReached = true;
+    pause();
+    // resetButton.pulse({ scale: 1.1, duration: 10000, frequency: 1.5 });
+  }
+  console.log(m1.custom.recording.isStationary())
+  if (
+    (time.isPaused() || m1.custom.recording.isStationary())
+    && override === false
+  ) {
+    return;
+  }
+  // const t = time.now();
+  // if (t- lastTime > 0.04) {
+  //   console.log(Fig.round(t - lastTime, 3));
+  // }
+  // lastTime = t;
+
+
+  const deltaTime = time.step();
+  if (m1.isShown) { m1.custom.update(deltaTime); }
+  if (p1.isShown) { p1.custom.update(deltaTime); }
+  // if (medium1.isShown) { medium1.custom.update(deltaTime); }
+  // if (medium2.isShown) { medium2.custom.update(deltaTime); }
+  if (timePlot1.isShown) { timePlot1.custom.update(); }
+  if (ocean.isShown) { ocean.custom.update(deltaTime); }
+  if (title.isShown) { title.custom.update(deltaTime); }
+  // if (intro.isShown) { intro.custom.update(deltaTime); }
+  // if (timePlot2.isShown) { timePlot2.custom.update(); }
+}
+
 figure.fnMap.global.add('pause', () => pause());
 figure.fnMap.global.add('unpause', () => unpause());
 
@@ -185,6 +222,7 @@ const reset = () => {
   if (m1._envelope2.isShown) {
     m1._envelope2.setOpacity(0);
   }
+  update(true);
 };
 figure.fnMap.global.add('reset', () => reset());
 figure.fnMap.global.add('softReset', () => {
@@ -193,6 +231,7 @@ figure.fnMap.global.add('softReset', () => {
   p1.custom.reset();
   time.reset();
   pause();
+  update(true);
 });
 
 // const setTimeSpeed = (timeSpeed, buttonLabel) => {
@@ -200,35 +239,7 @@ figure.fnMap.global.add('softReset', () => {
 //   // slowTimeButton.setLabel(buttonLabel);
 // };
 
-// Update function for everytime we want to update the particles
-// let lastTime = time.now();
-function update(override = false) {
-  if (maxTime > 0 && time.now() > maxTime) {
-    maxTimeReached = true;
-    pause();
-    // resetButton.pulse({ scale: 1.1, duration: 10000, frequency: 1.5 });
-  }
-  if (time.isPaused() && !override) {
-    return;
-  }
-  // const t = time.now();
-  // if (t- lastTime > 0.04) {
-  //   console.log(Fig.round(t - lastTime, 3));
-  // }
-  // lastTime = t;
 
-
-  const deltaTime = time.step();
-  if (m1.isShown) { m1.custom.update(deltaTime); }
-  if (p1.isShown) { p1.custom.update(deltaTime); }
-  // if (medium1.isShown) { medium1.custom.update(deltaTime); }
-  // if (medium2.isShown) { medium2.custom.update(deltaTime); }
-  if (timePlot1.isShown) { timePlot1.custom.update(); }
-  if (ocean.isShown) { ocean.custom.update(deltaTime); }
-  if (title.isShown) { title.custom.update(deltaTime); }
-  if (intro.isShown) { intro.custom.update(deltaTime); }
-  // if (timePlot2.isShown) { timePlot2.custom.update(); }
-}
 
 // Before each draw, update the points
 figure.notifications.add('beforeDraw', () => {
@@ -239,7 +250,9 @@ figure.fnMap.global.add('update', () => update());
 
 // After each draw, call a next animation frame so udpates happen on each frame
 figure.notifications.add('afterDraw', () => {
-  figure.animateNextFrame();
+  if (!m1.custom.recording.isStationary()) {
+    figure.animateNextFrame();
+  }
 });
 
 /*
@@ -277,24 +290,35 @@ velocityButton.notifications.add('onClick', () => {
 });
 
 pulseButton.onClick = () => {
-  if (m1.isShown) {
-    pulse(m1, 1);
+  if (m1.custom.recording.getState() !== 'pulse') {
+    reset();
   }
-  if (p1.isShown) {
-    pulse(p1, 1);
-  }
+  unpause();
+  // time.step();
+  m1.custom.recording.pulse();
+  update(true);
+  // if (m1.isShown) {
+  //   // pulse(m1, 1);
+  // }
+  // if (p1.isShown) {
+  //   // pulse(p1, 1);
+  // }
 };
 
 sineButton.onClick = () => {
   reset();
-  if (m1.isShown) {
-    m1.custom.f = 0.2;
-    sineWave(m1, 0);
-  }
-  if (p1.isShown) {
-    p1.custom.f = 0.4;
-    sineWave(p1, 0);
-  }
+  unpause();
+  // if (m1.isShown) {
+  //   m1.custom.f = 0.2;
+  //   sineWave(m1, 0);
+  // }
+  // if (p1.isShown) {
+  //   p1.custom.f = 0.4;
+  //   sineWave(p1, 0);
+  // }
+  // time.step();
+  m1.custom.recording.sine();
+  update(true);
 };
 sine2fButton.onClick = () => {
   reset();
@@ -454,6 +478,10 @@ figure.shortcuts = {
 // figure.addFrameRate(10, { font: { color: [1, 0, 0, 1 ]} });
 time.setTimeSpeed(1);
 nav.loadSlides([
+  {
+    scenario: 'default',
+    showCommon: ['m1.grid', 'm1.balls', 'm1.firstBall', 'm1.movePad', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'slowTimeButton', 'slowTimeLabel', 'sineButton', 'pulseButton', 'velocityButton'],
+  },
   // {
   //   scenario: ['default', 'properties'],
   //   show: ['eqnProps', 'eqnNewton', 'arrow1', 'arrow2'],
@@ -1619,7 +1647,7 @@ nav.loadSlides([
 
 
 figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.mp3'));
-figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
+// figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
 // figure.recorder.loadAudioTrack(new Audio('http://10.0.1.95:8080/src/audio-track.mp3'));
 // figure.recorder.loadVideoTrack('http://10.0.1.95:8080/src/video-track.json');
 figure.recorder.notifications.add('stateSet', () => pause());
@@ -1671,3 +1699,5 @@ p1._movePad.notifications.add('onClick', () => unpause());
   console.log(isFontAvailable('Times New Roman'))
 
   r = title.custom.recording
+  // reset();
+  update(true);

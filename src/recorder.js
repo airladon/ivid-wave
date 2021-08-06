@@ -1,3 +1,4 @@
+/* globals Fig */
 /**
 This function records values over time. The recorder samples at a specific rate
 (`timeStep`), and if values are input with larger time steps, then additional
@@ -11,18 +12,20 @@ the first half and recording continues from half way. This limits the number
 of times arrays need to be copied.
  */
 // eslint-disable-next-line no-unused-vars
-function Recorder(duration) {
-  const timeStep = 0.01;
+function Recorder(duration, timeKeeper) {
+  const timeStep = 0.016;
   const num = duration / timeStep;
   let buffered = false;
   let index;
   let data;
+  let lastManualValue;
+  let lastManualTime;
   // state = 'pulse' | 'sin' | 'manual'
   // f
   // startTime = Array<number> | number
   // convert to manual
   let state = 'manual';
-  let f = 1;
+  let f = 0.2;
   let startTime = null;
 
   const time = Array(num);
@@ -40,11 +43,44 @@ function Recorder(duration) {
     }
   }
 
+  // Reset all the data values with an initial value or a callback function
+  // that fills out all values
+  function reset(initialValueOrCallback = 0) {
+    if (typeof initialValueOrCallback === 'number') {
+      data = [...Array(num).fill(initialValueOrCallback), ...Array(num)];
+    } else {
+      data = [...initialValueOrCallback(timeStep, num), ...Array(num)];
+    }
+    buffered = false;
+    index = num;
+    startTime = [];
+    state = 'pulse';
+    lastManualValue = 0;
+    lastManualTime = null;
+  }
+
   let lastDelta = 0;
+  function setManual() {
+    if (state !== 'manual') {
+      reset();
+      state = 'manual';
+    }
+    lastManualTime = timeKeeper.now();
+    // if (timeKeeper.now() - lastManualTime > duration) {
+    //   lastManualTime = timeKeeper.now();
+    // }
+  }
   // Add a value to the recording, and the amount of time that has ellapsed
   // since the last record. If the ellapsed time is longer than `timeStep`, then
   // interpolated values will be added at each `timeStep`.
+
   function record(value, deltaTimeIn) {
+    // let deltaTimeIn = timeKeeper.step();
+    if (state !== 'manual') {
+      reset();
+      // deltaTimeIn = 0;
+    }
+    state = 'manual';
     const deltaTime = deltaTimeIn + lastDelta;
     if (deltaTime < timeStep) {
       lastDelta = deltaTime;
@@ -60,6 +96,31 @@ function Recorder(duration) {
       data[index] = lastValue + deltaValue * (i + 1);
       incrementIndex();
     }
+    if (value !== lastManualValue) {
+      lastManualValue = value;
+      lastManualTime = timeKeeper.now();
+    }
+  }
+
+  function isStationary() {
+    const t = timeKeeper.now();
+    if (state === 'pulse') {
+      if (startTime.length === 0) {
+        return true;
+      }
+      if (t - startTime.slice(-1)[0] < duration + 4) {
+        return false;
+      }
+    }
+    if (state === 'sine') {
+      return false;
+    }
+    if (state === 'manual') {
+      if (lastManualTime == null || t - lastManualTime < duration) {
+        return false;
+      }
+    }
+    return true;
   }
 
   function getRecording(fullBuffer = false, timeDuration = 5) {
@@ -87,7 +148,7 @@ function Recorder(duration) {
         n += 1;
       }
       return counter;
-    }
+    };
     const rounded = data.slice(index - num, index).map(n => Fig.tools.math.roundNum(n, precision));
     const deltaValues = [];
     deltaValues[0] = 0;
@@ -114,7 +175,7 @@ function Recorder(duration) {
     const decompressed = [];
     for (let i = 0; i < dataIn.length; i += 1) {
       if (Math.abs(dataIn[i]) < 1) {
-        for (j = 0; j < Fig.tools.math.roundNum(dataIn[i] * 100000); j += 1) {
+        for (let j = 0; j < Fig.tools.math.roundNum(dataIn[i] * 100000); j += 1) {
           decompressed.push(0);
         }
       } else {
@@ -123,7 +184,7 @@ function Recorder(duration) {
     }
     const decoded = Array(num);
     decoded[0] = firstValue;
-    for(let i = 1; i < num; i += 1) {
+    for (let i = 1; i < num; i += 1) {
       decoded[i] = decoded[i - 1] + decompressed[i] / (10 ** precision);
     }
     return decoded;
@@ -136,24 +197,61 @@ function Recorder(duration) {
     index = num;
   }
 
-  function getValueAtTimeAgo(timeDelta) {
-    const deltaIndex = Math.floor(timeDelta / timeStep + timeStep / 10);
-    return data[index - deltaIndex - 1];
+  function getPulse(t) {
+    const amplitude = 1;
+    const A = 1.5;
+    return 1.5 * A * amplitude * Math.exp(-(((t / 2 - 0.6) * 4 - t / 2) ** 2));
   }
 
-  // Reset all the data values with an initial value or a callback function
-  // that fills out all values
-  function reset(initialValueOrCallback = 0) {
-    if (typeof initialValueOrCallback === 'number') {
-      data = [...Array(num).fill(initialValueOrCallback), ...Array(num)];
-    } else {
-      data = [...initialValueOrCallback(timeStep, num), ...Array(num)];
-    }
-    buffered = false;
-    index = num;
-    startTime = null;
-    state = 'pulse';
+  function getSine(t) {
+    const A = 2.5;
+    return A * 0.8 * Math.sin(2 * Math.PI * f * t);
   }
+
+  function getValueAtTimeAgo(timeDelta) {
+    if (state === 'manual') {
+      const deltaIndex = Math.floor(timeDelta / timeStep + timeStep / 10);
+      return data[index - deltaIndex - 1];
+    }
+    const timeToGet = timeKeeper.now() - timeDelta;
+    if (state === 'pulse') {
+      if (startTime.length === 0) {
+        return 0;
+      }
+      if (startTime[0] > timeToGet) {
+        return 0;
+      }
+      let closestPastStartTime = null;
+      for (let i = 0; i < startTime.length; i += 1) {
+        const s = startTime[i];
+        if (timeToGet >= s) {
+          closestPastStartTime = s;
+        }
+      }
+      if (closestPastStartTime == null) {
+        return 0;
+      }
+      const t = timeToGet - closestPastStartTime;
+      return getPulse(t);
+    }
+    if (state === 'sine') {
+      if (startTime == null) {
+        return 0;
+      }
+      // const timeToGet = timeKeeper.now() - timeDelta;
+      if (startTime > timeToGet) {
+        return 0;
+      }
+      const t = timeToGet - startTime;
+      return getSine(t);
+    }
+    return 0;
+  }
+
+  function setF(newFreq) {
+    f = newFreq;
+  }
+
   reset();
 
   function getIndex() {
@@ -164,19 +262,33 @@ function Recorder(duration) {
     return data;
   }
 
-  function pulse(t) {
+  function pulse() {
+    timeKeeper.step();
+    if (state !== 'pulse') {
+      reset();
+    }
     state = 'pulse';
     if (startTime == null) {
       startTime = [];
     }
-    startTime.push(t);
+    startTime.push(timeKeeper.now());
   }
 
-  function pulse(t) {
-    if (startTime == null) {
-      startTime = [];
+  function sine() {
+    timeKeeper.step();
+    if (state !== 'sine') {
+      reset();
     }
-    startTime.push(t);
+    state = 'sine';
+    startTime.push(timeKeeper.now());
+  }
+
+  function getState() {
+    return state;
+  }
+
+  function getStartTime() {
+    return startTime;
   }
 
   return {
@@ -189,5 +301,12 @@ function Recorder(duration) {
     decodeData,
     getIndex,
     getData,
+    setF,
+    pulse,
+    sine,
+    getState,
+    setManual,
+    isStationary,
+    getStartTime,
   };
 }

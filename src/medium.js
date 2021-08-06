@@ -6,6 +6,14 @@ minVelocity, maxTimeReached, unpause, Transform, range
 function addMedium(
   stringName, length, maxValue, A, defaultPosition, yAxisTitle, ballSize, ballSpace, recorder,
 ) {
+  let t = performance.now()
+  let newT = performance.now()
+  const stamp = (message) => {
+    newT = performance.now();
+    console.log(message, Fig.round(newT - t));
+    t = newT;
+  }
+  stamp('medium 1')
   // Particle creater
   const ball = (x, index, radius, sides = 20) => ({
     name: `ball${index}`,
@@ -33,6 +41,7 @@ function addMedium(
     width: 0.05,
     color: color1,
   });
+  stamp('medium 2')
   figure.add({
     name: stringName,
     make: 'collection',
@@ -184,25 +193,6 @@ function addMedium(
         p2: [3, -3.7],
         color: colorPositionText,
       },
-      // {
-      //   name: 'sixArrow',
-      //   make: 'collections.line',
-      //   options: {
-      //     width: 0.05,
-      //     color: colorLight,
-      //     arrow: 'barb',
-      //     label: {
-      //       text: '6',
-      //       offset: 0.04,
-      //       location: 'bottom',
-      //       scale: 4,
-      //       font: { color: colorPositionText },
-      //     },
-      //     p1: [0, -1],
-      //     p2: [6 * maxValue / length, -1],
-      //     align: 'center',
-      //   },
-      // },
       arrow('vArrow', '6', [0, -1], [3 / maxValue * length, -1], colorPositionText),
       arrow('v2Arrow', '12', [0, -1], [6 / maxValue * length, -1], colorPositionText),
       {
@@ -312,6 +302,7 @@ function addMedium(
       },
     },
   });
+  stamp('medium 3')
   const medium = figure.getElement(stringName);
   const axis = medium.getElement('xAxis');
   // const ballSize = 0.02;
@@ -320,12 +311,14 @@ function addMedium(
 
   const balls = medium.getElement('balls');
   // const toFront = [];
+  const ta = performance.now()
   xValues.forEach((x, index) => {
     balls.add(ball(x, index, ballSize * (x === 0 ? 1 : 1)));
     const b = balls.getElement(`ball${index}`);
     b.custom.x = x;
     b.custom.drawX = axis.valueToDraw(x);
   });
+  stamp('medium 4')
   const highlights = xValues.map((x, i) => x % 2 === 0 && x > 0 ? i : -1).filter(i => i > -1).map(i => `ball${i}`);
   balls.toFront(highlights);
   // const tracker = medium.add(ball(0, 'Tracker', ballSize * 2 ));
@@ -344,6 +337,7 @@ function addMedium(
   const xDashLineG = medium.getElement('xDashLineG');
   let lastEnvelope = [];
   let lastEnvelopeNumVertices = 0;
+  stamp('medium 5')
   medium.custom = {
     f: 0.2,   // Current frequency of sine wave for medium
     c: 1,     // Propagation velocity of medium
@@ -362,10 +356,18 @@ function addMedium(
     // updates all the particles with their current displacement.
     update: (deltaTime) => {
       // Get movePad displacement
-      const y = movePad.transform.t().y;
-      firstBall.setPosition(0, y);
+      // const y = movePad.transform.t().y;
+      let y;
+      
       // Record the displacement
-      medium.custom.recording.record(y, deltaTime);
+      if (medium.custom.recording.getState() === 'manual') {
+        y = movePad.transform.t().y;
+        medium.custom.recording.record(y, deltaTime);
+      } else {
+        y = medium.custom.recording.getValueAtTimeAgo(0);
+        movePad.transform.updateTranslation(0, y);
+      }
+      firstBall.setPosition(0, y);
       // Calculate the displacement of each particle and set it
       const envelopePoints = [];
       if (balls.isShown) {
@@ -525,6 +527,7 @@ function addMedium(
     },
     movePad,
   };
+  stamp('medium 6')
   medium.backupState = medium._state;
   medium._state = (options) => {
     medium.customState.recorder = medium.custom.recording.encodeData();
@@ -577,7 +580,11 @@ function addMedium(
     if (movePad.state.isBeingMoved && movePad.isAnimating()) {
       medium.custom.stop();
     }
+    
+    // const y = movePad.getPosition().y;
+    //   medium.custom.recording.record(y, time.step());
     unpause();
+    medium.custom.recording.setManual();
   });
   const movePadEnv = medium.get('movePadEnv');
   movePadEnv.notifications.add('setTransform', (t) => {
@@ -636,6 +643,7 @@ function addMedium(
       // .dissolveIn({ element: 'label' })
       .start();
   });
+  stamp('medium 7')
 
   // const a6 = medium._sixArrow;
   // figure.fnMap.global.add('grow6', () => {

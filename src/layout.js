@@ -1,5 +1,12 @@
 
 function addFigureElements() {
+  let t = performance.now()
+  let newT = performance.now()
+  const stamp = (message) => {
+    newT = performance.now();
+    console.log(message, Fig.round(newT - t));
+    t = newT;
+  }
   figure.add({
     name: 'highlighter',
     make: 'collections.rectangle',
@@ -56,7 +63,9 @@ function addFigureElements() {
     //   'slow',
     // ]),
   ]);
+  stamp(1)
   addDefsEquation('defs');
+  stamp(2)
   // figure.add({
   //   name: 'waveDefinition',
   //   make: 'textLines',
@@ -79,28 +88,31 @@ function addFigureElements() {
   //     Transverse: { font: { color: colorGText } },
   //   },
   // });
-  const recorder = new Recorder(10);
+  const recorder = new Recorder(10, time);
   const m1 = addMedium('m1', 13, 10, 2.5, [5.5, 6], false, 0.12, 0.125, recorder);
   m1.setPosition(0.1, 0);
+  stamp('medium')
   const timePlot1 = addTimePlot(
     'timePlot1', 6.5, 10.5, m1.custom.recording, 2.5 * 13 / 10, [1, 6],
   );
+  stamp('timePlot')
   const pressurePlot = addPressureMedium('p1', 18, 2, 0.1, 0.4, recorder);
+  stamp('pressure')
   addOceanMedium('ocean', 24, 4, 0.07, 0.4);
-  // addSineEquation('eqnSine');
-  addSineTEquation('eqnSineT');
-  // addSineXEquation('eqnSineX');
-  addSinXEquation('eqnSinX');
-  addSinTEquation('eqnSinT');
-  addVLFEquation('eqnVLF');
-  addDiffEquation('eqnDiff');
-  addMaxwellEquation('eqnMaxwell');
-  addTimeWave('eqnGenT');
+  stamp('ocean')
+  // addSineTEquation('eqnSineT');
+  // addSinXEquation('eqnSinX');
+  // addSinTEquation('eqnSinT');
+  // addVLFEquation('eqnVLF');
+  // addDiffEquation('eqnDiff');
+  // addMaxwellEquation('eqnMaxwell');
+  // addTimeWave('eqnGenT');
+  stamp('equations')
   // addTitle(2.88 * 4, 1.44 * 4, 0.1);
   addTitle(8, 4, 0.05, recorder);
-  addIntro(24, 4, 0.1);
+  // addIntro(24, 4, 0.1);
   addExamples();
-
+  stamp('titles')
   figure.showTouchBorders = () => {
     const elements = figure.elements.getAllElements();
     const colors = [
