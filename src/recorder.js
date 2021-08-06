@@ -17,6 +17,14 @@ function Recorder(duration) {
   let buffered = false;
   let index;
   let data;
+  // state = 'pulse' | 'sin' | 'manual'
+  // f
+  // startTime = Array<number> | number
+  // convert to manual
+  let state = 'manual';
+  let f = 1;
+  let startTime = null;
+
   const time = Array(num);
   for (let i = 0; i < num; i += 1) {
     time[i] = i * timeStep;
@@ -143,6 +151,8 @@ function Recorder(duration) {
     }
     buffered = false;
     index = num;
+    startTime = null;
+    state = 'pulse';
   }
   reset();
 
@@ -152,6 +162,21 @@ function Recorder(duration) {
 
   function getData() {
     return data;
+  }
+
+  function pulse(t) {
+    state = 'pulse';
+    if (startTime == null) {
+      startTime = [];
+    }
+    startTime.push(t);
+  }
+
+  function pulse(t) {
+    if (startTime == null) {
+      startTime = [];
+    }
+    startTime.push(t);
   }
 
   return {
