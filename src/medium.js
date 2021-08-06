@@ -469,8 +469,8 @@ function addMedium(
         // If the tracker is within the axis, then position it appropriately,
         // otherwise position it way off
         const xValue = Math.max(t * medium.custom.c, 0);
-        const x = axis.valueToDraw(xValue - 0.1);
-        if (t > 0 && axis.inAxis(xValue + 0.2)) {
+        const x = axis.valueToDraw(xValue);
+        if (t > 0 && axis.inAxis(xValue) && x < length) {
           // const by = medium.custom.recording.getValueAtTimeAgo(t);
           tracker.setPosition(x, -0.2);
         } else {

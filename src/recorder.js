@@ -24,7 +24,8 @@ function Recorder(duration, timeKeeper) {
   // f
   // startTime = Array<number> | number
   // convert to manual
-  let state = 'manual';
+  let state = {};
+  // let state = 'manual';
   let f = 0.2;
   let startTime = null;
 
@@ -54,9 +55,12 @@ function Recorder(duration, timeKeeper) {
     buffered = false;
     index = num;
     startTime = [];
-    state = 'pulse';
-    lastManualValue = 0;
-    lastManualTime = null;
+    state = {
+      mode: 'pulse',
+      startTime: [],
+      lastManualValue: 0,
+      lastManualTime: null,
+    },
   }
 
   let lastDelta = 0;

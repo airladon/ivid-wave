@@ -81,7 +81,7 @@ let maxTimeReached = false;
 */
 let t = performance.now()
 addFigureElements();
-console.log(performance.now() - t)
+// console.log(performance.now() - t)
 
 const m1 = figure.get('m1');
 const p1 = figure.get('p1');
@@ -166,7 +166,7 @@ function update(override = false) {
     pause();
     // resetButton.pulse({ scale: 1.1, duration: 10000, frequency: 1.5 });
   }
-  console.log(m1.custom.recording.isStationary())
+  // console.log(m1.custom.recording.isStationary())
   if (
     (time.isPaused() || m1.custom.recording.isStationary())
     && override === false
@@ -478,10 +478,10 @@ figure.shortcuts = {
 // figure.addFrameRate(10, { font: { color: [1, 0, 0, 1 ]} });
 time.setTimeSpeed(1);
 nav.loadSlides([
-  {
-    scenario: 'default',
-    showCommon: ['m1.grid', 'm1.balls', 'm1.firstBall', 'm1.movePad', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'slowTimeButton', 'slowTimeLabel', 'sineButton', 'pulseButton', 'velocityButton'],
-  },
+  // {
+  //   scenario: 'default',
+  //   showCommon: ['m1.grid', 'm1.balls', 'm1.firstBall', 'm1.movePad', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'slowTimeButton', 'slowTimeLabel', 'sineButton', 'pulseButton', 'velocityButton', 'm1.ballTracker'],
+  // },
   // {
   //   scenario: ['default', 'properties'],
   //   show: ['eqnProps', 'eqnNewton', 'arrow1', 'arrow2'],
@@ -529,11 +529,12 @@ nav.loadSlides([
     time: '1:02',
     enterState: () => {
       // p1._particles.drawingObject.uniforms.u_highlight.value = [0];
-      eqnSineT.showForm('summaryPage')
-      eqnSineT.dim();
+      // eqnSineT.showForm('summaryPage')
+      // eqnSineT.dim();
       eqnVLF.dim();
       eqnVLF.showForm('vlf');
       eqnDiff.showForm('diffMono');
+      reset();
       // eqnDiff.dim();
     },
     transition: [
@@ -548,17 +549,17 @@ nav.loadSlides([
         { in: 'eqnVLF.lambda', delay: dd(), duration: 0.3 },
         { in: 'eqnVLF.f', delay: dd(), duration: 0.3 },
       ],
-      [
-        { in: 'eqnSineT.y_2', delay: dd(true), duration: 0.3 },
-        { in: 'eqnSineT.equals2', delay: dd(), duration: 0.3 },
-        { in: 'eqnSineT.g_2', delay: dd(), duration: 0.3 },
-        { in: 'eqnSineT.lb5', delay: dd(), duration: 0.3 },
-        { in: 'eqnSineT.x_5', delay: dd(), duration: 0.3 },
-        { in: 'eqnSineT.min_x', delay: dd(), duration: 0.3 },
-        { in: 'eqnSineT.v_x', delay: dd(), duration: 0.3 },
-        { in: 'eqnSineT.t_x', delay: dd(), duration: 0.3 },
-        { in: 'eqnSineT.rb5', delay: dd(), duration: 0.3 },
-      ],
+      // [
+      //   { in: 'eqnSineT.y_2', delay: dd(true), duration: 0.3 },
+      //   { in: 'eqnSineT.equals2', delay: dd(), duration: 0.3 },
+      //   { in: 'eqnSineT.g_2', delay: dd(), duration: 0.3 },
+      //   { in: 'eqnSineT.lb5', delay: dd(), duration: 0.3 },
+      //   { in: 'eqnSineT.x_5', delay: dd(), duration: 0.3 },
+      //   { in: 'eqnSineT.min_x', delay: dd(), duration: 0.3 },
+      //   { in: 'eqnSineT.v_x', delay: dd(), duration: 0.3 },
+      //   { in: 'eqnSineT.t_x', delay: dd(), duration: 0.3 },
+      //   { in: 'eqnSineT.rb5', delay: dd(), duration: 0.3 },
+      // ],
       [
         { in: 'eqnDiff.d2', delay: dd(true), duration: 0.3 },
         { in: 'eqnDiff._2_2', delay: dd(), duration: 0.3 },
@@ -584,7 +585,7 @@ nav.loadSlides([
     ],
     leaveState: () => {
       // p1._particles.drawingObject.uniforms.u_highlight.value = [1];
-      eqnSineT.undim();
+      // eqnSineT.undim();
       eqnVLF.undim();
       // eqnDiff.undim();
     },
@@ -602,8 +603,8 @@ nav.loadSlides([
   {
     enterState: () => {
       // p1._particles.drawingObject.uniforms.u_highlight.value = [0];
-      eqnSineT.showForm('summaryPage')
-      eqnSineT.dim();
+      // eqnSineT.showForm('summaryPage')
+      // eqnSineT.dim();
       eqnVLF.dim();
       eqnVLF.showForm('vlf');
       eqnDiff.showForm('diffMono');
@@ -621,7 +622,7 @@ nav.loadSlides([
         .dissolveOut({
           // elements: ['p1.particles', 'p1.diaphram', 'p1.movePad', eqnSineT, eqnVLF, eqnDiff, 'm1.balls', 'm1.firstBall', 'm1.movePad'
           // ],
-          elements: [eqnSineT, eqnVLF, eqnDiff, 'm1.balls', 'm1.firstBall', 'm1.movePad'
+          elements: [eqnVLF, eqnDiff, 'm1.balls', 'm1.firstBall', 'm1.movePad'
           ],
           duration: 0.5
         })
@@ -635,13 +636,13 @@ nav.loadSlides([
       m1.setScenario('default');
       m1.show(['grid', 'balls', 'firstBall', 'movePad']);
       p1.hide();
-      eqnSineT.hide();
+      // eqnSineT.hide();
       eqnVLF.hide();
       eqnDiff.hide();
     },
     form: [null, null, null],
     leaveState: () => {
-      eqnSineT.undim();
+      // eqnSineT.undim();
       eqnVLF.undim();
     },
   },
@@ -1330,7 +1331,7 @@ nav.loadSlides([
     enterState: () => {
       eqnDiff.showForm('diffSoln');
       diffExplanation.showForm('soln');
-      console.log('asdf')
+      // console.log('asdf')
     },
     transition: [
       [
@@ -1647,7 +1648,7 @@ nav.loadSlides([
 
 
 figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.mp3'));
-// figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
+figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
 // figure.recorder.loadAudioTrack(new Audio('http://10.0.1.95:8080/src/audio-track.mp3'));
 // figure.recorder.loadVideoTrack('http://10.0.1.95:8080/src/video-track.json');
 figure.recorder.notifications.add('stateSet', () => pause());
@@ -1660,43 +1661,43 @@ m1._movePad.notifications.add('onClick', () => unpause());
 p1._movePad.notifications.add('onClick', () => unpause());
 
 
-(function (document) {
-    var width;
-    var body = document.body;
+// (function (document) {
+//     var width;
+//     var body = document.body;
   
-    var container = document.createElement('span');
-    container.innerHTML = Array(100).join('wi');
-    container.style.cssText = [
-      'position:absolute',
-      'width:auto',
-      'font-size:128px',
-      'left:-99999px'
-    ].join(' !important;');
+//     var container = document.createElement('span');
+//     container.innerHTML = Array(100).join('wi');
+//     container.style.cssText = [
+//       'position:absolute',
+//       'width:auto',
+//       'font-size:128px',
+//       'left:-99999px'
+//     ].join(' !important;');
   
-    var getWidth = function (fontFamily) {
-      container.style.fontFamily = fontFamily;
+//     var getWidth = function (fontFamily) {
+//       container.style.fontFamily = fontFamily;
   
-      body.appendChild(container);
-      width = container.clientWidth;
-      body.removeChild(container);
+//       body.appendChild(container);
+//       width = container.clientWidth;
+//       body.removeChild(container);
   
-      return width;
-    };
+//       return width;
+//     };
   
-    // Pre compute the widths of monospace, serif & sans-serif
-    // to improve performance.
-    var monoWidth  = getWidth('monospace');
-    var serifWidth = getWidth('serif');
-    var sansWidth  = getWidth('sans-serif');
+//     // Pre compute the widths of monospace, serif & sans-serif
+//     // to improve performance.
+//     var monoWidth  = getWidth('monospace');
+//     var serifWidth = getWidth('serif');
+//     var sansWidth  = getWidth('sans-serif');
   
-    window.isFontAvailable = function (font) {
-      return monoWidth !== getWidth(font + ',monospace') ||
-        sansWidth !== getWidth(font + ',sans-serif') ||
-        serifWidth !== getWidth(font + ',serif');
-    };
-  })(document);
+//     window.isFontAvailable = function (font) {
+//       return monoWidth !== getWidth(font + ',monospace') ||
+//         sansWidth !== getWidth(font + ',sans-serif') ||
+//         serifWidth !== getWidth(font + ',serif');
+//     };
+//   })(document);
 
-  console.log(isFontAvailable('Times New Roman'))
+//   console.log(isFontAvailable('Times New Roman'))
 
   r = title.custom.recording
   // reset();

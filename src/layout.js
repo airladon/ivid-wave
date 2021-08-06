@@ -103,8 +103,8 @@ function addFigureElements() {
   // addSineTEquation('eqnSineT');
   // addSinXEquation('eqnSinX');
   // addSinTEquation('eqnSinT');
-  // addVLFEquation('eqnVLF');
-  // addDiffEquation('eqnDiff');
+  addVLFEquation('eqnVLF');
+  addDiffEquation('eqnDiff');
   // addMaxwellEquation('eqnMaxwell');
   // addTimeWave('eqnGenT');
   stamp('equations')
