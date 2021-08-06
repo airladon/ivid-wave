@@ -78,21 +78,21 @@ function addMedium(
       {
         name: 'envelope2',
         make: 'polyline',
-        width: 0.1,
+        width: 0.15,
         color: colorPositionText,
         simple: true,
       },
       {
         name: 'envelope',
         make: 'polyline',
-        width: 0.1,
+        width: 0.15,
         color: colorGText,
         simple: true,
       },
       {
         name: 'periodicEnvelope',
         make: 'polyline',
-        width: 0.1,
+        width: 0.15,
         color: colorGText,
         simple: true,
       },
@@ -605,6 +605,14 @@ function addMedium(
   });
   // const velocity = medium._velocity;
   figure.fnMap.global.add('growV', () => {
+    velocity.showAll();
+    velocity._label.hide();
+    velocity.animations.new()
+      .length({ start: 0.5, target: 5, duration: 3 })
+      .dissolveIn({ element: 'label' })
+      .start();
+  });
+  figure.fnMap.global.add('growV2', () => {
     velocity.showAll();
     velocity._label.hide();
     velocity.animations.new()
