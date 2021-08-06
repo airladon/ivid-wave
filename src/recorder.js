@@ -25,7 +25,7 @@ function Recorder(duration) {
   function incrementIndex() {
     index += 1;
     if (index === num * 2) {
-      console.log('incrementing');
+      // console.log('incrementing');
       data = [...data.slice(num), ...Array(num)];
       index = num;
       buffered = true;

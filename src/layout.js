@@ -97,10 +97,11 @@ function addFigureElements() {
   addMaxwellEquation('eqnMaxwell');
   addTimeWave('eqnGenT');
   // addTitle(2.88 * 4, 1.44 * 4, 0.1);
-  addTitle(8, 4, 0.1, recorder);
+  addTitle(8, 4, 0.05, recorder);
   addIntro(24, 4, 0.1);
   addExamples();
   
+  // figure.addFrameRate(10, { color: [1, 1, 1, 1 ]} );
 
   figure.showTouchBorders = () => {
     const elements = figure.elements.getAllElements();

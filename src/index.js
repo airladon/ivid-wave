@@ -201,15 +201,22 @@ figure.fnMap.global.add('softReset', () => {
 // };
 
 // Update function for everytime we want to update the particles
-function update() {
+// let lastTime = time.now();
+function update(override = false) {
   if (maxTime > 0 && time.now() > maxTime) {
     maxTimeReached = true;
     pause();
     // resetButton.pulse({ scale: 1.1, duration: 10000, frequency: 1.5 });
   }
-  if (time.isPaused()) {
+  if (time.isPaused() && !override) {
     return;
   }
+  // const t = time.now();
+  // if (t- lastTime > 0.04) {
+  //   console.log(Fig.round(t - lastTime, 3));
+  // }
+  // lastTime = t;
+
 
   const deltaTime = time.step();
   if (m1.isShown) { m1.custom.update(deltaTime); }
@@ -504,8 +511,8 @@ nav.loadSlides([
     transition: [
       { in: ['m1.balls', 'm1.firstBall', 'm1.movePad'] },
       { trigger: () => sineWave(m1, 0) },
-      { in: ['p1.particles', 'p1.diaphram', 'p1.movePad'], delay: 1 },
-      { trigger: () => sineWave(p1, 0) },
+      // { in: ['p1.particles', 'p1.diaphram', 'p1.movePad'], delay: 1 },
+      // { trigger: () => sineWave(p1, 0) },
       { delay: 1 },
       [
         { in: 'eqnVLF.v', delay: dd(true), duration: 0.3 },
@@ -576,15 +583,17 @@ nav.loadSlides([
     time: '1:20',
     scenario: 'summary',
     transition: (done) => {
-      p1._particles.showAll();
-      p1._diaphram.showAll();
-      p1._movePad.showAll();
+      // p1._particles.showAll();
+      // p1._diaphram.showAll();
+      // p1._movePad.showAll();
       m1._balls.showAll();
       m1._firstBall.showAll();
       m1._movePad.showAll();
       figure.animations.new()
         .dissolveOut({
-          elements: ['p1.particles', 'p1.diaphram', 'p1.movePad', eqnSineT, eqnVLF, eqnDiff, 'm1.balls', 'm1.firstBall', 'm1.movePad'
+          // elements: ['p1.particles', 'p1.diaphram', 'p1.movePad', eqnSineT, eqnVLF, eqnDiff, 'm1.balls', 'm1.firstBall', 'm1.movePad'
+          // ],
+          elements: [eqnSineT, eqnVLF, eqnDiff, 'm1.balls', 'm1.firstBall', 'm1.movePad'
           ],
           duration: 0.5
         })
@@ -1609,8 +1618,10 @@ nav.loadSlides([
 ]);
 
 
-figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.mp3'));
+// figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.mp3'));
 // figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
+figure.recorder.loadAudioTrack(new Audio('http://10.0.1.95:8080/src/audio-track.mp3'));
+figure.recorder.loadVideoTrack('http://10.0.1.95:8080/src/video-track.json');
 figure.recorder.notifications.add('stateSet', () => pause());
 figure.recorder.notifications.add('seek', () => pause())
 figure.recorder.notifications.add('playbackStopped', () => pause());
