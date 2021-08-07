@@ -143,21 +143,6 @@ function Recorder(duration, timeKeeper) {
     return true;
   }
 
-  function getRecording(fullBuffer = false, timeDuration = 5) {
-    const n = timeDuration / timeStep;
-    const i = index - num;
-    if (fullBuffer || buffered || i > n) {
-      return {
-        time: time.slice(0, n),
-        data: data.slice(index - n, index),
-      };
-    }
-    return {
-      time: time.slice(0, i + 1),
-      data: data.slice(num, num + i),
-    };
-  }
-
 
   function encodeData(precision = 2) {
     const getZerosNum = (i, dataIn) => {
@@ -310,6 +295,76 @@ function Recorder(duration, timeKeeper) {
   function setState(s) {
     state = s;
   }
+
+  function getRecording(fullBuffer = false, timeDuration = 5) {
+    if (state.mode === 'manual') {
+      const n = timeDuration / timeStep;
+      const i = index - num;
+      if (fullBuffer || buffered || i > n) {
+        return {
+          time: time.slice(0, n),
+          data: data.slice(index - n, index),
+        };
+      }
+      return {
+        time: time.slice(0, i + 1),
+        data: data.slice(num, num + i),
+      };
+    }
+
+    if (state.mode === 'pulse') {
+      if (state.startTime.length === 0) {
+        return {
+          time: [0],
+          data: [0],
+        };
+      }
+      const now = timeKeeper.now();
+      const out = Array(num).fill(0);
+      let sIndex = state.startTime.length - 1;
+      let tIndex = 0;
+      while (tIndex < num && sIndex > -1) {
+        const tt = now - tIndex * timeStep;
+        if (tt < state.startTime[sIndex]) {
+          sIndex -= 1;
+        } else {
+          out[num - 1 - tIndex] = getPulse(tt - state.startTime[sIndex]);
+          tIndex += 1;
+        }
+      }
+      return {
+        time: time.slice(0, tIndex),
+        data: out.slice(num - 1 - tIndex),
+      };
+    }
+    if (state.startTime == null) {
+      return {
+        time: [0],
+        data: [0],
+      };
+    }
+    const now = timeKeeper.now();
+    const out = Array(num).fill(0);
+    let tIndex = 0;
+    let beforeStart = false;
+    while (tIndex < num && beforeStart === false) {
+      const tt = now - tIndex * timeStep;
+      if (tt < state.startTime) {
+        beforeStart = true;
+      } else {
+        out[num - 1 - tIndex] = getSine(tt - state.startTime);
+        tIndex += 1;
+      }
+    }
+    if (tIndex === num) {
+      tIndex -= 1;
+    }
+    return {
+      time: time.slice(0, tIndex),
+      data: out.slice(num - 1 - tIndex),
+    };
+  }
+
 
   // function getStartTime() {
   //   return startTime;
