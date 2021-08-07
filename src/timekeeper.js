@@ -35,6 +35,11 @@ function TimeKeeper() {
     internalPaused = false;
   }
 
+  function setDeltaTime(deltaTime) {
+    lastTime += deltaTime;
+    time += deltaTime;
+  }
+
   // Update the current time and return the change in time from the last step
   function step(delta = null) {
     if (delta === null && internalPaused) {
@@ -56,6 +61,21 @@ function TimeKeeper() {
     if ((paused || blurred) && !internalPaused) {
       internalPaused = true;
     }
+  }
+
+  function getState() {
+    return {
+      time, timeSpeed, targetSpeed, internalPaused, paused, blurred, lastTime,
+    };
+  }
+  function setState(state) {
+    time = state.time;
+    timeSpeed = state.timeSpeed;
+    targetSpeed = state.targetSpeed;
+    internalPaused = state.internalPaused;
+    paused = state.paused;
+    blurred = state.blurred;
+    lastTime = state.lastTime;
   }
 
   function unpauseTime() {
@@ -85,6 +105,6 @@ function TimeKeeper() {
   function getTimeSpeed() { return timeSpeed; }
 
   return {
-    reset, now, step, pause, unpause, isPaused, setTimeSpeed, getTimeSpeed, setGetNow,
+    reset, now, step, pause, unpause, isPaused, setTimeSpeed, getTimeSpeed, setGetNow, getState, setState, setDeltaTime,
   };
 }

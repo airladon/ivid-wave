@@ -255,6 +255,11 @@ figure.notifications.add('afterDraw', () => {
   }
 });
 
+figure.notifications.add('setState', (deltaTime) => {
+  m1.custom.recording.setDeltaTime(deltaTime);
+  time.setDeltaTime(deltaTime);
+});
+
 /*
 .########..##.....##.########.########..#######..##....##..######.
 .##.....##.##.....##....##.......##....##.....##.###...##.##....##
@@ -1702,3 +1707,7 @@ p1._movePad.notifications.add('onClick', () => unpause());
   r = title.custom.recording
   // reset();
   update(true);
+
+  figure.recorder.notifications.add('seek', () => {
+    update(true);
+  });

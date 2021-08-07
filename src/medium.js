@@ -531,29 +531,39 @@ function addMedium(
   medium.backupState = medium._state;
   medium._state = (options) => {
     medium.customState.recorder = medium.custom.recording.encodeData();
+    medium.customState.recorderState = medium.custom.recording.getState();
+    medium.customState.timeState = time.getState();
     return medium.backupState(options);
   };
   medium.backupStateSet = medium.stateSet;
   medium.stateSet = () => {
     medium.backupStateSet();
     if (medium.customState.recorder != null) {
-      medium.custom.recording.loadEncodedData(medium.customState.recorder[0], medium.customState.recorder[1]);
+      medium.custom.recording.loadEncodedData(
+        medium.customState.recorder[0], medium.customState.recorder[1],
+      );
     }
-  }
+    if (medium.customState.recorderState != null) {
+      medium.custom.recording.setState(medium.customState.recorderState);
+    }
+    if (medium.customState.timeState != null) {
+      time.setState(medium.customState.timeState);
+    }
+  };
   figure.fnMap.global.add('showEnvelope', () => {
     envelope.show();
     envelope.stop();
-      envelope.animations.new()
-        .custom({
-          callback: (p) => {
-            envelope.pointsToDraw = Math.floor(envelope.drawingObject.numVertices / 6 * p) * 6;
-          },
-          duration: 2,
-        })
-        .start();
+    envelope.animations.new()
+      .custom({
+        callback: (p) => {
+          envelope.pointsToDraw = Math.floor(envelope.drawingObject.numVertices / 6 * p) * 6;
+        },
+        duration: 2,
+      })
+      .start();
   });
   figure.fnMap.global.add('copyEnvelope', () => {
-    console.log('copied')
+    // console.log('copied')
     medium._envelope2.custom.updatePoints({ points: lastEnvelope });
     medium._envelope2.pointsToDraw = lastEnvelopeNumVertices;
     movePadEnv.custom.x = 0;

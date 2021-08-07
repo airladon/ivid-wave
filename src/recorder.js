@@ -18,8 +18,8 @@ function Recorder(duration, timeKeeper) {
   let buffered = false;
   let index;
   let data;
-  let lastManualValue;
-  let lastManualTime;
+  // let lastManualValue;
+  // let lastManualTime;
   // state = 'pulse' | 'sin' | 'manual'
   // f
   // startTime = Array<number> | number
@@ -60,19 +60,34 @@ function Recorder(duration, timeKeeper) {
       startTime: [],
       lastManualValue: 0,
       lastManualTime: null,
-    },
+    };
   }
 
   let lastDelta = 0;
   function setManual() {
-    if (state !== 'manual') {
+    if (state.mode !== 'manual') {
       reset();
-      state = 'manual';
+      state.mode = 'manual';
+      state.lastManualValue = 0;
+      state.lastManualTime = timeKeeper.now();
     }
-    lastManualTime = timeKeeper.now();
+    // lastManualTime = timeKeeper.now();
     // if (timeKeeper.now() - lastManualTime > duration) {
     //   lastManualTime = timeKeeper.now();
     // }
+  }
+
+  function setDeltaTime(delta) {
+    // console.log(delta)
+    if (state.lastManualTime != null) {
+      state.lastManualTime += delta;
+    }
+    if (typeof state.startTime === 'number') {
+      state.startTime += delta;
+    }
+    if (Array.isArray(state.startTime)) {
+      state.startTime = state.startTime.map(st => st + delta);
+    }
   }
   // Add a value to the recording, and the amount of time that has ellapsed
   // since the last record. If the ellapsed time is longer than `timeStep`, then
@@ -80,11 +95,12 @@ function Recorder(duration, timeKeeper) {
 
   function record(value, deltaTimeIn) {
     // let deltaTimeIn = timeKeeper.step();
-    if (state !== 'manual') {
+    if (state.mode !== 'manual') {
       reset();
+      setManual();
       // deltaTimeIn = 0;
     }
-    state = 'manual';
+    // state = 'manual';
     const deltaTime = deltaTimeIn + lastDelta;
     if (deltaTime < timeStep) {
       lastDelta = deltaTime;
@@ -100,27 +116,27 @@ function Recorder(duration, timeKeeper) {
       data[index] = lastValue + deltaValue * (i + 1);
       incrementIndex();
     }
-    if (value !== lastManualValue) {
-      lastManualValue = value;
-      lastManualTime = timeKeeper.now();
+    if (value !== state.lastManualValue) {
+      state.lastManualValue = value;
+      state.lastManualTime = timeKeeper.now();
     }
   }
 
   function isStationary() {
     const t = timeKeeper.now();
-    if (state === 'pulse') {
+    if (state.mode === 'pulse') {
       if (startTime.length === 0) {
         return true;
       }
-      if (t - startTime.slice(-1)[0] < duration + 4) {
+      if (t - state.startTime.slice(-1)[0] < duration + 4) {
         return false;
       }
     }
-    if (state === 'sine') {
+    if (state.mode === 'sine') {
       return false;
     }
-    if (state === 'manual') {
-      if (lastManualTime == null || t - lastManualTime < duration) {
+    if (state.mode === 'manual') {
+      if (state.lastManualTime == null || t - state.lastManualTime < duration) {
         return false;
       }
     }
@@ -213,21 +229,21 @@ function Recorder(duration, timeKeeper) {
   }
 
   function getValueAtTimeAgo(timeDelta) {
-    if (state === 'manual') {
+    if (state.mode === 'manual') {
       const deltaIndex = Math.floor(timeDelta / timeStep + timeStep / 10);
       return data[index - deltaIndex - 1];
     }
     const timeToGet = timeKeeper.now() - timeDelta;
-    if (state === 'pulse') {
-      if (startTime.length === 0) {
+    if (state.mode === 'pulse') {
+      if (state.startTime.length === 0) {
         return 0;
       }
-      if (startTime[0] > timeToGet) {
+      if (state.startTime[0] > timeToGet) {
         return 0;
       }
       let closestPastStartTime = null;
-      for (let i = 0; i < startTime.length; i += 1) {
-        const s = startTime[i];
+      for (let i = 0; i < state.startTime.length; i += 1) {
+        const s = state.startTime[i];
         if (timeToGet >= s) {
           closestPastStartTime = s;
         }
@@ -238,12 +254,12 @@ function Recorder(duration, timeKeeper) {
       const t = timeToGet - closestPastStartTime;
       return getPulse(t);
     }
-    if (state === 'sine') {
-      if (startTime == null) {
+    if (state.mode === 'sine') {
+      if (state.startTime == null) {
         return 0;
       }
       // const timeToGet = timeKeeper.now() - timeDelta;
-      if (startTime > timeToGet) {
+      if (state.startTime > timeToGet) {
         return 0;
       }
       const t = timeToGet - startTime;
@@ -268,32 +284,36 @@ function Recorder(duration, timeKeeper) {
 
   function pulse() {
     timeKeeper.step();
-    if (state !== 'pulse') {
+    if (state.mode !== 'pulse') {
       reset();
     }
-    state = 'pulse';
-    if (startTime == null) {
-      startTime = [];
+    state.mode = 'pulse';
+    if (state.startTime == null) {
+      state.startTime = [];
     }
-    startTime.push(timeKeeper.now());
+    state.startTime.push(timeKeeper.now());
   }
 
   function sine() {
     timeKeeper.step();
-    if (state !== 'sine') {
+    if (state.mode !== 'sine') {
       reset();
     }
-    state = 'sine';
-    startTime.push(timeKeeper.now());
+    state.mode = 'sine';
+    state.startTime.push(timeKeeper.now());
   }
 
   function getState() {
     return state;
   }
 
-  function getStartTime() {
-    return startTime;
+  function setState(s) {
+    state = s;
   }
+
+  // function getStartTime() {
+  //   return startTime;
+  // }
 
   return {
     record,
@@ -311,6 +331,8 @@ function Recorder(duration, timeKeeper) {
     getState,
     setManual,
     isStationary,
-    getStartTime,
+    // getStartTime,
+    setDeltaTime,
+    setState,
   };
 }
