@@ -125,7 +125,7 @@ function Recorder(duration, timeKeeper) {
   function isStationary() {
     const t = timeKeeper.now();
     if (state.mode === 'pulse') {
-      if (startTime.length === 0) {
+      if (state.startTime.length === 0) {
         return true;
       }
       if (t - state.startTime.slice(-1)[0] < duration + 4) {

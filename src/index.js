@@ -295,7 +295,7 @@ velocityButton.notifications.add('onClick', () => {
 });
 
 pulseButton.onClick = () => {
-  if (m1.custom.recording.getState() !== 'pulse') {
+  if (m1.custom.recording.getState().mode !== 'pulse') {
     reset();
   }
   unpause();
@@ -623,15 +623,16 @@ nav.loadSlides([
       m1._balls.showAll();
       m1._firstBall.showAll();
       m1._movePad.showAll();
+      // update(true);
       figure.animations.new()
         .dissolveOut({
           // elements: ['p1.particles', 'p1.diaphram', 'p1.movePad', eqnSineT, eqnVLF, eqnDiff, 'm1.balls', 'm1.firstBall', 'm1.movePad'
           // ],
           elements: [eqnVLF, eqnDiff, 'm1.balls', 'm1.firstBall', 'm1.movePad'
           ],
-          duration: 0.5
+          duration: 0.5,
         })
-        .scenarios({ target: 'default', duration: 0.01 })
+        .scenarios({ target: 'default', duration: 0 })
         .trigger({ callback: 'softReset' })
         .dissolveIn({ elements: ['m1.grid', 'm1.firstBall', 'm1.movePad', 'm1.balls', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel'], duration: 0.5 })
         .whenFinished(done)
@@ -1653,7 +1654,7 @@ nav.loadSlides([
 
 
 figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.mp3'));
-figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
+// figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
 // figure.recorder.loadAudioTrack(new Audio('http://10.0.1.95:8080/src/audio-track.mp3'));
 // figure.recorder.loadVideoTrack('http://10.0.1.95:8080/src/video-track.json');
 figure.recorder.notifications.add('stateSet', () => pause());

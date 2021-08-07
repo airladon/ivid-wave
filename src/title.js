@@ -110,7 +110,6 @@ void main() {
       title.custom.recording.record(y, deltaTime);
       title._title.drawingObject.uniforms.u_time.value = [t];
       const envelopePoints = [];
-      console.log('here')
       for (let i = 0; i < xValues.length; i += 1) {
         const x = xValues[i];
         const y1 = title.custom.recording.getValueAtTimeAgo(x / title.custom.c);
@@ -139,11 +138,12 @@ void main() {
   // //   title.customState.recorder = title.custom.recording.encodeData();
   // //   return title.backupState(options);
   // // };
-  title.notifications.add('setState', () => {
-    if (title.customState.recorder != null) {
-      title.custom.recording.loadEncodedData(title.customState.recorder[0], title.customState.recorder[1]);
-    }
-  });
+  
+  // title.notifications.add('setState', () => {
+  //   if (title.customState.recorder != null) {
+  //     title.custom.recording.loadEncodedData(title.customState.recorder[0], title.customState.recorder[1]);
+  //   }
+  // });
 
 
   // title.backupStateSet = title.stateSet;
