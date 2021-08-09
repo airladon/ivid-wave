@@ -22,6 +22,27 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
           color: colorTimeText,
         },
       },
+      {
+        name: 'marker',
+        make: 'rectangle',
+        options: {
+          width: 0.05,
+          color: colorHighlight,
+          height: A * 2,
+        },
+        mods: {
+          scenarios: { default: { position: [length / 2, 0] } },
+          isMovable: true,
+          touchBorder: 0.5,
+          move: {
+            bounds: {
+              translation: {
+                left: 0, right: length, bottom: 0, top: 0,
+              },
+            },
+          },
+        },
+      },
       // {
       //   name: 'widthArrow',
       //   make: 'collections.line',
@@ -99,6 +120,14 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
     }
     trace.custom.updatePoints({ points });
   };
+  const marker = timePlot._marker;
+  timePlot.custom.updateMarker = (p) => {
+    marker.transform.updateTranslation(p * length, 0);
+  };
+  marker.notifications.add('setTransform', () => {
+    const p = marker.getPosition('local').x / length;
+    figure.get('m1').custom.updateMarker(p);
+  });
   // const T = timePlot._widthArrow;
   // figure.fnMap.global.add('growT', () => {
   //   T.showAll();

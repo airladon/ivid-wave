@@ -153,6 +153,27 @@ function addMedium(
           },
         },
       },
+      {
+        name: 'marker',
+        make: 'rectangle',
+        options: {
+          width: 0.05,
+          color: colorHighlight,
+          height: A * length / maxValue * 2,
+        },
+        mods: {
+          scenarios: { default: { position: [length / 2, 0] } },
+          isMovable: true,
+          touchBorder: 0.5,
+          move: {
+            bounds: {
+              translation: {
+                left: 0, right: length, bottom: 0, top: 0,
+              },
+            },
+          },
+        },
+      },
       // Arrowed line showing a wavelength of a sine wave
       {
         name: 'wavelength',
@@ -688,6 +709,32 @@ function addMedium(
       .start();
   });
   stamp('medium 7');
+
+  const marker = medium._marker;
+  medium.custom.updateMarker = (p) => {
+    const initialDisturbance = time.now() - medium.custom.trackingTime;
+    const initialDisturbanceDistance = initialDisturbance / 10 * length;
+    if (initialDisturbance < 10) {
+      marker.transform.updateTranslation(
+        Math.max(initialDisturbanceDistance - p * length, 0),
+        0,
+      );
+    } else {
+      marker.transform.updateTranslation(10 - p * length, 0);
+    }
+  };
+  marker.notifications.add('setTransform', () => {
+    const initialDisturbance = time.now() - medium.custom.trackingTime;
+    const initialDisturbanceDistance = initialDisturbance / 10 * length;
+    let p;
+    const x = marker.getPosition('local').x;
+    if (initialDisturbance < 10) {
+      p = Math.max((initialDisturbanceDistance - x) / length, 0);
+    } else {
+      p = 1 - (marker.getPosition('local').x / length);
+    }
+    figure.get('timePlot1').custom.updateMarker(p);
+  });
 
   // const a6 = medium._sixArrow;
   // figure.fnMap.global.add('grow6', () => {

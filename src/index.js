@@ -42,6 +42,7 @@ const color4 = [0.7, 0.7, 0.7, 1];
 const colorOn = [0, 0.8, 0, 1];
 const colorOff = [0.4, 0.4, 0.4, 1];
 const colorBackground = [0, 0, 0, 1];
+const colorHighlight = colorCyan;
 const colorDisturbance = colorRed;
 const colorDisturbanceText = colorRedText;
 const colorPositionText = colorBlueText;
@@ -665,7 +666,13 @@ nav.loadSlides([
       },
     ],
   },
-
+  {
+    time: '1:50.5',
+    scenarioCommon: ['default', 'right'],
+    transition: [
+      { in: ['m1.marker', 'timePlot1.marker'] },
+    ],
+  },
   {
     scenario: ['default', 'right'],
     time: '2:00',
