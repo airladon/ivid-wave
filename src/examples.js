@@ -17,10 +17,10 @@ function addExamples() {
     name: 'examples',
     make: 'collection',
     elements: [
-      text('ocean', 'Ocean Waves', 1.2 * s, [18, 9]),
-      text('sound', 'Sound', 1.2 * s, [11, 2]),
       text('light', 'Light', 1.2 * s, [2.5, 5]),
+      text('sound', 'Sound', 1.2 * s, [11, 2]),
       text('wifi', 'WiFi Signals', 1.2 * s, [21, 4.5]),
+      text('ocean', 'Ocean Waves', 0.6 * s, [18, 9]),
       text('seismic', 'Seismic Waves', 0.6 * s, [11, 9.5]),
       text('shock', 'Shock Waves', 0.6 * s, [2, 11]),
       text('gravity', 'Gravity Waves', 0.6 * s, [19, 0.7]),
@@ -38,17 +38,17 @@ function addExamples() {
       text('uv', 'UV Radiation', 0.6 * s, [15, 10.6]),
     ],
   });
-  const d = 0.5;
-  const delay = 0.15;
+  const d = 0.4;
+  const delay = 0;
   figure.fnMap.global.add('showExamples', () => {
     examples.show();
     examples.hideAll();
     examples.animations.new()
-      .dissolveIn({ element: 'ocean', duration: d })
-      .dissolveIn({ element: 'sound', duration: d, delay: 1.5 })
-      .dissolveIn({ element: 'light', duration: d, delay: 1.9 })
-      .dissolveIn({ element: 'wifi', duration: d, delay: 0.3 })
-      .dissolveIn({ element: 'seismic', duration: d, delay: 2.5 })
+      .dissolveIn({ element: 'light', duration: d })
+      .dissolveIn({ element: 'sound', duration: d, delay: 2.5 })
+      .dissolveIn({ element: 'wifi', duration: d, delay: 2.3 })
+      .dissolveIn({ element: 'ocean', duration: d, delay: 2 })
+      .dissolveIn({ element: 'seismic', duration: d, delay })
       .dissolveIn({ element: 'shock', duration: d, delay })
       .dissolveIn({ element: 'gravity', duration: d, delay })
       .dissolveIn({ element: 'ultrasound', duration: d, delay })

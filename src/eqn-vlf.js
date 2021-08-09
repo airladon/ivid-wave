@@ -25,6 +25,7 @@ function addVLFEquation(name) {
     elements: {
       equals: { text: ' = ', color: colorLight },
       lambda: { text: '\u03bb', color: colorPositionText },
+      lambda_1: '\u03bb',
       arrow1: { symbol: 'line', width: 0.04, arrow: { start: { head: 'triangle' } } },
       vin: { symbol: 'vinculum', lineWidth: 0.05 },
       v: { color: colorVelocityText },
@@ -40,9 +41,9 @@ function addVLFEquation(name) {
     },
     formDefaults: {
       translation: {
-          lambda: ['linear'],
-          v: ['linear'],
-        },
+        lambda: ['linear'],
+        v: ['linear'],
+      },
     },
     forms: {
       vlf: {
@@ -51,6 +52,9 @@ function addVLFEquation(name) {
           lambda: ['curved', 'down', 0.8],
           v: ['curved', 'up', 0.5],
         },
+      },
+      vlfSummary: {
+        content: ['v_1', 'equals', 'lambda_1', ' ', 'f_1'],
       },
       wAlone: { content: 'w' },
       we: { content: ['w', 'equals'] },

@@ -105,6 +105,7 @@ function addFigureElements() {
   // addSinTEquation('eqnSinT');
   addVLFEquation('eqnVLF');
   addDiffEquation('eqnDiff');
+  addTravellingWaveEquation('eqnWave');
   // addMaxwellEquation('eqnMaxwell');
   // addTimeWave('eqnGenT');
   stamp('equations')

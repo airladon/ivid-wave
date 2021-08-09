@@ -299,7 +299,7 @@ function addMedium(
     mods: {
       scenarios: {
         default: { position: defaultPosition, scale: 1 },
-        summary: { position: [2, 8], scale: 0.8 },
+        summary: { position: [2, 6], scale: 0.85 },
         right: { position: [9.5, 6], scale: 1 },
         top: { position: [10, 8.4], scale: 0.7 },
         mathx: { position: [7.5, 8.4], scale: 0.7 },
@@ -567,12 +567,15 @@ function addMedium(
   figure.fnMap.global.add('showEnvelope', () => {
     envelope.show();
     envelope.stop();
+    medium.custom.update(0);
+    // console.log('showEnvelope');
     envelope.animations.new()
       .custom({
         callback: (p) => {
           envelope.pointsToDraw = Math.floor(envelope.drawingObject.numVertices / 6 * p) * 6;
+          // console.log(p, envelope.pointsToDraw)
         },
-        duration: 2,
+        duration: 1,
       })
       .start();
   });
