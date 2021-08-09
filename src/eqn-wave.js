@@ -114,7 +114,7 @@ function addTravellingWaveEquation(name) {
           lines: {
             content: [
               ['The ', t('disturbance', 1), '_ at ', t(['any position'], 2), '_ and ', t(['any time'], 3)],
-              ['is the', '  ', t('disturbance at some initial time', 4)],
+              ['is the', '  ', t('disturbance at an initial time', 4)],
               [t(['shifted by the distance the wave has propogated since the initial time'], 5), '_.'],
             ],
             baselineSpace: 1.2,

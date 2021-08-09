@@ -12,7 +12,7 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
         line: { width: 0.03 },
       },
       xAxis('xAxis', 't', '', length, maxValue),
-      yAxis('yAxis', 'y', 'x = 0', A, false),
+      yAxis('yAxis', 'y', 'x = 0', A, false, colorDisturbanceText),
       {
         name: 'trace',
         make: 'polyline',
@@ -82,9 +82,9 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
       scenarios: {
         default: { position: defaultPosition, scale: 1 },
         // right: { position: [1.5, 6], scale: 1 },
-        top: { position: [4.5, 8.4], scale: 0.7 },
-        bottom: { position: [5, 3], scale: 0.6 },
-        rightSmall: { position: [2, 7], scale: 0.9 },
+        // top: { position: [4.5, 8.4], scale: 0.7 },
+        // bottom: { position: [5, 3], scale: 0.6 },
+        // rightSmall: { position: [2, 7], scale: 0.9 },
       },
     },
   });

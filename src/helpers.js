@@ -25,7 +25,7 @@ const xAxis = (name, title, units, xLength, XMaxValue) => ({
   },
 });
 
-const yAxis = (name, title, units, AValue, yAxisTitleSide) => ({
+const yAxis = (name, title, units, AValue, yAxisTitleSide, color = colorLight) => ({
   name: 'yAxis',
   make: 'collections.axis',
   options: {
@@ -37,7 +37,7 @@ const yAxis = (name, title, units, AValue, yAxisTitleSide) => ({
     line: { width: 0.032, arrow: 'barb' },
     position: [0, -AValue - 0.5],
     title: {
-      font: { style: 'italic', family: 'TeXGyreTermes', size: 0.18 * 4, color: colorLight, },
+      font: { style: 'italic', family: 'TeXGyreTermes', size: 0.18 * 4, color, },
       text: {
         text: `${title}|unitsText|`,
       },
@@ -47,7 +47,7 @@ const yAxis = (name, title, units, AValue, yAxisTitleSide) => ({
       xAlign: 'left',
       rotation: 0,
       offset: yAxisTitleSide ? [0, AValue - 0.24] : [0.4, AValue + 0.6],
-      color: colorLight,
+      color,
     },
   },
 });

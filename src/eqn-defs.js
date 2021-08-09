@@ -11,7 +11,7 @@ function addDefsEquation(name) {
     mods: {
       scenarios: {
         default: { position: [12, 1] },
-        top: { position: [12, 8] },
+        top: { position: [12, 10.5] },
       },
     },
     elements: {

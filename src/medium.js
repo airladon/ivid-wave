@@ -229,6 +229,17 @@ function addMedium(
         },
       },
       {
+        name: 'propogation',
+        make: 'collections.line',
+        options: {
+          width: 0.05,
+          color: colorOne,
+          arrow: { end: 'barb' },
+          p1: [5, 3],
+          p2: [7, 3],
+        },
+      },
+      {
         name: 'x0',
         make: 'collections.line',
         width: 0.05,
@@ -301,7 +312,7 @@ function addMedium(
         default: { position: defaultPosition, scale: 1 },
         summary: { position: [2, 6], scale: 0.85 },
         right: { position: [9.5, 6], scale: 1 },
-        top: { position: [10, 8.4], scale: 0.7 },
+        eqn: { position: [10, 8.4], scale: 0.7 },
         mathx: { position: [7.5, 8.4], scale: 0.7 },
         bottom: { position: [10, 3], scale: 0.6 },
         rightSmall: { position: [10, 7], scale: 0.9 },
@@ -341,6 +352,7 @@ function addMedium(
   const xDashLine = medium.getElement('xDashLine');
   const xDashLineG = medium.getElement('xDashLineG');
   const movePadEnv = medium.get('movePadEnv');
+  const propogation = medium.get('propogation');
   let lastEnvelope = [];
   let lastEnvelopeNumVertices = 0;
   stamp('medium 5');
@@ -665,6 +677,13 @@ function addMedium(
     widthArrow.showAll();
     widthArrow.animations.new()
       .length({ start: 0.5, target: 3.9, duration: 1 })
+      // .dissolveIn({ element: 'label' })
+      .start();
+  });
+  figure.fnMap.global.add('growPropagation', () => {
+    propogation.showAll();
+    propogation.animations.new()
+      .length({ start: 0.5, target: 3, duration: 2 })
       // .dissolveIn({ element: 'label' })
       .start();
   });
