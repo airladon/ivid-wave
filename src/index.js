@@ -669,22 +669,65 @@ nav.loadSlides([
   {
     time: '1:50.5',
     scenarioCommon: ['default', 'right'],
+    show: '_cursor_.up',
     transition: [
       { in: ['m1.marker', 'timePlot1.marker'] },
+      { out: ['m1.marker', 'timePlot1.marker'], delay: 6.3 },
     ],
   },
   {
-    scenario: ['default', 'right'],
-    time: '2:00',
+    time: '1:57',
     transition: [
-      { trigger: 'showEnvelope', duration: 4 },
+      {
+        out: [
+          'm1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'sineButton',
+        ],
+      },
+      { trigger: 'growTimeTrace', duration: 1 },
+      { trigger: 'showEnvelope', duration: 1, delay: 2 },
     ],
     steadyState: () => {
       m1._envelope.pointsToDraw = Math.floor(m1._envelope.drawingObject.numVertices / 6) * 6;
       m1._envelope.show();
     },
+    leaveState: () => {
+      m1._envelope.pointsToDraw = Math.floor(m1._envelope.drawingObject.numVertices / 6) * 6;
+    },
   },
-    
+  {
+    time: '2:04.5',
+    show: 'm1.envelope',
+    hide: ['m1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'sineButton',
+    ],
+    transition: [
+      {
+        pulse: 'timePlot1.trace', translation: 0.15, min: -0.15, angle: Math.PI / 2, frequency: 2,
+      },
+      { delay: 4.3 },
+      {
+        pulse: ['m1.balls', 'm1.envelope'], translation: 0.15, min: -0.15, angle: Math.PI / 2, frequency: 2,
+      },
+    ],
+  },
+  {
+    time: '2:15',
+    transition: [
+      {
+        out: 'm1.envelope',
+      },
+      {
+        in: [
+          'm1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'sineButton',
+        ],
+      },
+    ],
+  },
+  {
+    time: '2:20',
+    transition: [
+      { in: 'm1.velocity' },
+    ],
+  },
 
   /*
   .########..########.########..####..#######..########..####..######.

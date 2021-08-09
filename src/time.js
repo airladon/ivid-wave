@@ -161,5 +161,18 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
     S.showAll();
     S.setEndPoints(S.custom.endPoints[0], S.custom.endPoints[1]);
   });
+
+  figure.fnMap.global.add('growTimeTrace', () => {
+    trace.show();
+    trace.stop();
+    trace.animations.new()
+      .custom({
+        callback: (p) => {
+          trace.pointsToDraw = Math.floor(trace.drawingObject.numVertices / 6 * p) * 6;
+        },
+        duration: 1,
+      })
+      .start();
+  });
   return timePlot;
 }
