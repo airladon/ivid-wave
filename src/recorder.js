@@ -132,6 +132,14 @@ function Recorder(duration, timeKeeper) {
         return false;
       }
     }
+    if (state.mode === 'pulse2') {
+      if (state.startTime.length === 0) {
+        return true;
+      }
+      if (t - state.startTime.slice(-1)[0] < duration + 8) {
+        return false;
+      }
+    }
     if (state.mode === 'sine') {
       return false;
     }
@@ -205,7 +213,22 @@ function Recorder(duration, timeKeeper) {
   function getPulse(t) {
     const amplitude = 1;
     const A = 1.5;
-    return 1.5 * A * amplitude * Math.exp(-(((t / 2 - 0.6) * 4 - t / 2) ** 2));
+    return 1.5 * A * amplitude * Math.exp(-(((t / 2 - 0.6) * 4 - t / 2 - 0.1) ** 2));
+  }
+
+  function getPulse2(t) {
+    const A = 4;
+    // const t = time.now() - startTime;
+    let scaler = 4;
+    let amp = 0.6;
+    if (t < 2.7) {
+      if (t - 0.65 > 0) {
+        scaler = (4 - (t - 0.65) * 2);
+        amp = 0.6 - (t - 0.65) * 0.2;
+      }
+      return A * amp * Math.exp(-(((t - 0.6) * scaler - t) ** 2));
+    }
+    return -A * 0.4 * Math.exp(-(((t * 3 - 10.2)) ** 2));
   }
 
   function getSine(t) {
@@ -238,6 +261,26 @@ function Recorder(duration, timeKeeper) {
       }
       const t = timeToGet - closestPastStartTime;
       return getPulse(t);
+    }
+    if (state.mode === 'pulse2') {
+      if (state.startTime.length === 0) {
+        return 0;
+      }
+      if (state.startTime[0] > timeToGet) {
+        return 0;
+      }
+      let closestPastStartTime = null;
+      for (let i = 0; i < state.startTime.length; i += 1) {
+        const s = state.startTime[i];
+        if (timeToGet >= s) {
+          closestPastStartTime = s;
+        }
+      }
+      if (closestPastStartTime == null) {
+        return 0;
+      }
+      const t = timeToGet - closestPastStartTime;
+      return getPulse2(t);
     }
     if (state.mode === 'sine') {
       if (state.startTime == null) {
@@ -273,6 +316,18 @@ function Recorder(duration, timeKeeper) {
       reset();
     }
     state.mode = 'pulse';
+    if (state.startTime == null) {
+      state.startTime = [];
+    }
+    state.startTime.push(timeKeeper.now());
+  }
+
+  function pulse2() {
+    timeKeeper.step();
+    if (state.mode !== 'pulse2') {
+      reset();
+    }
+    state.mode = 'pulse2';
     if (state.startTime == null) {
       state.startTime = [];
     }
@@ -337,6 +392,31 @@ function Recorder(duration, timeKeeper) {
         data: out.slice(num - 1 - tIndex),
       };
     }
+    if (state.mode === 'pulse2') {
+      if (state.startTime.length === 0) {
+        return {
+          time: [0],
+          data: [0],
+        };
+      }
+      const now = timeKeeper.now();
+      const out = Array(num).fill(0);
+      let sIndex = state.startTime.length - 1;
+      let tIndex = 0;
+      while (tIndex < num && sIndex > -1) {
+        const tt = now - tIndex * timeStep;
+        if (tt < state.startTime[sIndex]) {
+          sIndex -= 1;
+        } else {
+          out[num - 1 - tIndex] = getPulse2(tt - state.startTime[sIndex]);
+          tIndex += 1;
+        }
+      }
+      return {
+        time: time.slice(0, tIndex),
+        data: out.slice(num - 1 - tIndex),
+      };
+    }
     if (state.startTime == null) {
       return {
         time: [0],
@@ -382,6 +462,7 @@ function Recorder(duration, timeKeeper) {
     getData,
     setF,
     pulse,
+    pulse2,
     sine,
     getState,
     setManual,

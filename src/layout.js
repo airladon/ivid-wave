@@ -28,7 +28,7 @@ function addFigureElements() {
   });
   figure.add([
     button('pulseButton', [1.2, 0.8], 'Pulse'),
-    // button('pulseButton2', [2.1, 0.15], 'Pulse 2'),
+    button('pulseButton2', [4.8, 0.8], 'Pulse 2'),
     button('sineButton', [3, 0.8], 'Sine'),
     button('sine2fButton', [4.8, 0.8], 'Sine 2|f|', { f: { font: { style: 'italic' } } }),
     button('resetButton', [22.8, 0.8], 'Reset'),

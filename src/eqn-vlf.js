@@ -38,6 +38,7 @@ function addVLFEquation(name) {
       onF: { frac: {
         numerator: '_1', denominator: 'f', symbol: 'vin', scale: 0.5,
       } },
+      lambdaWave: bc('lambda', 'wavelength', null, 0.03, 0.03, 0.5),
     },
     formDefaults: {
       translation: {
@@ -60,9 +61,14 @@ function addVLFEquation(name) {
       we: { content: ['w', 'equals'] },
       wvt: { content: ['w', 'equals', 'v', ' ', 'T'] },
       wvt1: ['w', 'equals', 'v', ' ', 'T'],
-      wavelengthwvt: [bot('w', [bot('lambda', { scale: ['wavelength', 0.6] }, '', 0.03)], 'arrow1'), 'equals', 'v', ' ', 'T'],
+      // wavelengthwvt: [bot('w', [bot('lambda', { scale: ['wavelength', 0.6] }, '', 0.03)], 'arrow1'), 'equals', 'v', ' ', 'T'],
+      wavelength: { content: 'lambdaWave', alignment: { xAlign: 'center' } },
+      // wavelengthLambda: { content: bot('wavelength', { scale: ['lambda', 0.8] }), alignment: { xAlign: 'center' } },
+      lambda: { content: 'lambda', alignment: { xAlign: 'center' } },
+      // wavelengthlambdavt: [bot('wavelength', 'lambda', 'arrow1'), 'equals', 'v', ' ', 'T'],
+      // wavelengthvt: [bot('lambda', { scale: ['wavelength', 0.6] }, 'arrow1'), 'equals', 'v', ' ', 'T'],
       lwvt: [bot('w', 'lambda', 'arrow1'), 'equals', 'v', ' ', 'T'],
-      lvt: ['lambda', 'equals', 'v', ' ', 'T'],
+      lvt: { content: ['lambdaWave', '  ', 'equals', ' ', 'v', ' ', 'T'], alignment: { xAlign: 'center' } },
       lvtf: ['lambda', 'equals', 'v', ' ', bot('T', 'onF', 'arrow1', 0.15)],
       lvf: ['lambda', 'equals', { frac: { numerator: 'v', symbol: 'vin', denominator: 'f', scale: 0.8, numeratorSpace: 0.02, denominatorSpace: 0.02 } }],
       l: { content: 'lambda', alignment: { xAlign: -0.6 } },
@@ -77,7 +83,7 @@ function addVLFEquation(name) {
         default: { position: [12, 6], scale: 1 },
         summary: { position: [18, 8], scale: 1 },
         right: { position: [13, 4.1], scale: 1 },
-        wavelength: { position: [10.5, 4], scale: 1 },
+        wavelength: { position: [14, 2.5], scale: 1 },
         center: { position: [10, 6], scale: 1.5 },
         topRight: { position: [15, 10.4], scale: 1 },
       },

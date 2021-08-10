@@ -52,7 +52,7 @@ function addTravellingWaveEquation(name) {
       equals: ' = ',
       min: '  \u2212  ',
       min_c: { text: '  \u2212  ', color: colorPositionText },
-      xDash: 'x\'',
+      // xDash: 'x\'',
       comma: ' , ',
       arrow1: { symbol: 'line', width: 0.04, arrow: { start: { head: 'triangle' } } },
       tBox1: tBox([0.5, 0.5, 0.5, 0.5]),
@@ -60,12 +60,20 @@ function addTravellingWaveEquation(name) {
       tBox3: tBox([0.1, 0.5, 0.5, 0.5]),
       tBox4: tBox([0.5, 0.5, 0.5, 0.5]),
       tBox5: tBox([0, 0.5, 0, 0.5]),
+      shift: 'shift',
+      shift_1: { color: colorYellowText },
     },
     phrases: {
     },
     forms: {
-      yxt: ['y', brac(['x', 'comma', 't'], 1), 'equals', 'g', brac(['x_1', 'min', 'xdash'], 2)],
-      subVT: ['y', brac(['x', 'comma', 't'], 1), 'equals', 'g', brac(['x_1', 'min', tc('xdash', ['v', 't'], 'arrow1', 0.15, 0.15)], 2)],
+      shiftedG_0: [sub('g_1', 'shifted'), 'equals'],
+      shiftedG_1: [sub('g_1', 'shifted'), 'equals', 'g'],
+      shiftedG_2: [sub('g_1', 'shifted'), 'equals', 'g', brac(['x_1', 'min', 'shift'], 2)],
+      shiftedG_3: [sub('g_1', 'shifted'), 'equals', 'g', brac(['x_1', 'min', tc([under('shift'), 'shift_1'], 'depends on propogation velocity and time', 'arrow1', 0.15, 0.15)], 2)],
+      shiftedG_4: [sub('g_1', 'shifted'), 'equals', 'g', brac(['x_1', 'min', tc([under('shift'), 'shift_1'], ['v', 't_1'], 'arrow1', 0.15, 0.15)], 2)],
+      shiftedG_5: [sub('g_1', 'shifted'), 'equals', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)],
+      // yxt: ['y', brac(['x', 'comma', 't'], 1), 'equals', 'g', brac(['x_1', 'min', 'shift'], 2)],
+      // subVT: ['y', brac(['x', 'comma', 't'], 1), 'equals', 'g', brac(['x_1', 'min', tc('shift', ['v', 't'], 'arrow1', 0.15, 0.15)], 2)],
       final: ['y', brac(['x', 'comma', 't'], 1), 'equals', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)],
       highlighted: [
         {

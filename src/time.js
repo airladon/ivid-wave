@@ -19,7 +19,7 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
         options: {
           simple: true,
           width: 0.08,
-          color: colorTimeText,
+          color: colorDisturbanceText,
         },
       },
       {
@@ -64,6 +64,7 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
       // },
       arrow('TArrow', 'T', [0, -1], [2, -1], colorTimeText),
       arrow('secondsArrow', '3', [0, -1], [2, -1], colorTimeText),
+      arrow('periodArrow', 'T', [2.25, -2.5], [5.45, -2.5], colorTimeText),
       // {
       //   name: 'secondsArrow',
       //   make: 'collections.line',
