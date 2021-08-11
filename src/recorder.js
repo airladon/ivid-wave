@@ -387,6 +387,9 @@ function Recorder(duration, timeKeeper) {
           tIndex += 1;
         }
       }
+      if (tIndex === num) {
+        tIndex -= 1;
+      }
       return {
         time: time.slice(0, tIndex),
         data: out.slice(num - 1 - tIndex),
@@ -411,6 +414,9 @@ function Recorder(duration, timeKeeper) {
           out[num - 1 - tIndex] = getPulse2(tt - state.startTime[sIndex]);
           tIndex += 1;
         }
+      }
+      if (tIndex === num) {
+        tIndex -= 1;
       }
       return {
         time: time.slice(0, tIndex),
