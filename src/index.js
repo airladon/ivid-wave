@@ -1051,7 +1051,7 @@ nav.loadSlides([
   {
     form: 'highlight',
     time: '5:18',
-    scenario: ['default', 'high'],
+    scenarioCommon: ['default', 'high'],
     transition: [
       [
         { goToForm: eqnWave, target: 'highlight' },
@@ -1060,18 +1060,33 @@ nav.loadSlides([
     ],
   },
   {
-    form: 'final',
-    time: '5:34',
-    scenario: ['default', 'high'],
+    form: 'sinInput',
+    time: '5:38',
+    // scenarioCommon: ['default', 'high'],
     transition: [
       [
         { goToForm: eqnWave, target: 'final' },
         { out: 'eqnWaveDescription' },
-        { goToForm: eqnWave, target: 'sinInput' },
       ],
+      { goToForm: eqnWave, target: 'sinInput' },
     ],
   },
-  // { form: 'shiftedG_1' },
+  { form: 'sinInput_1', time: '5:40' },
+  { form: 'sinInput_2', time: '5:42' },
+  { form: 'sinInput_3', time: '5:43.5' },
+  { form: 'sinInput_4', time: '5:46' },
+  { form: 'sinInput_5', time: '5:47.5' },
+  { form: 'sinInput_6', time: '5:52' },
+  // {
+  //   form: 'sinInput_5',
+  //   time: '5:46.5',
+  //   transition: [
+  //     [
+  //       { scenario: eqnWave, target: 'default' },
+  //       { goToForm: eqnWave, target: 'sinInput_5' },
+  //     ],
+  //   ],
+  // },
 
 
   /*
