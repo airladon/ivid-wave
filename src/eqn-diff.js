@@ -96,10 +96,14 @@ function addDiffEquation(name) {
       plus1: { text: '  +  ', color: colorPositionText },
       plus2_: '  +  ',
       plus2: { text: '  +  ', color: colorGText },
+      box1: { symbol: 'box', lineWidth: 0.04 },
+      box2: { symbol: 'box', lineWidth: 0.04 },
     },
     phrases: {
       d2ydx2_: frac([d2(1), 'y_1'], 1, ['d3', sq('x', 3)], 1, 0.02, 0.05, 0.01),
+      d2dx2_: frac([d2(1)], 1, ['d3', sq('x', 3)], 1, 0.02, 0.05, 0.01),
       d2ydt2_: frac([d2(2), 'y_2'], 2, ['d4', sq('t', 4)], 1, 0.02, 0.05, 0.01),
+      d2dt2_: frac([d2(2)], 2, ['d4', sq('t', 4)], 1, 0.02, 0.05, 0.01),
       d2ydx2: t(3, frac([d2(5), 'y_3'], 3, ['d7', sq('x_1', 7)], 1, 0.02, 0.05, 0.01), 'dxBox'),
       d2ydt2: t(1, frac([d2(6), 'y_4'], 4, ['d8', sq('t_1', 8)], 1, 0.02, 0.05, 0.01), 'dtBox'),
       vSq: t(2, sq('v_1', 10), 'vBox'),
@@ -132,6 +136,23 @@ function addDiffEquation(name) {
         alignment: { xAlign: 'center' },
       },
       diffSolnMono: {
+        content: {
+          lines: {
+            content: [
+              scale([
+                'd2ydt2_', 'equals', 'vSq_', '  ', 'd2ydx2_',
+              ], 0.8),
+              ['',
+                // 'y_5_', 'equals2', 'b_', brac(['x_2_', 'min1_', 'v_2_', 't_2_'], 4), 'plus1_', 'c_', brac(['x_3_', 'plus2_', 'v_3_', 't_3_'], 5),
+              ],
+            ],
+            baselineSpace: 3.7,
+            justify: 'center',
+          },
+        },
+        alignment: { xAlign: 'center' },
+      },
+      diffSolnMono1: {
         content: {
           lines: {
             content: [
@@ -183,6 +204,10 @@ function addDiffEquation(name) {
         content: ['d2ydt2_', 'equals', 'vSq_', '  ', 'd2ydx2_'],
         alignment: { xAlign: 'center' },
       },
+      diffSeparate: {
+        content: [box(scale('d2dt2_', 0.8), 'box1'), '    ', 'y_2', 'equals', 'vSq_', '    ', box(scale('d2dx2_', 0.8), 'box2'), '    ', 'y_1'],
+        alignment: { xAlign: 'center' },
+      },
       diffMonoSmall: {
         content: scale(['d2ydt2_', 'equals', 'vSq_', '  ', 'd2ydx2_'], 0.8),
         alignment: { xAlign: 'center' },
@@ -194,7 +219,7 @@ function addDiffEquation(name) {
         high: { position: [12, 8], scale: 1 },
         summary: { position: [19, 3], scale: 0.7 },
         props: { position: [19.5, 6], scale: 0.7 },
-        right: { position: [19.5, 10], scale: 0.7 },
+        // right: { position: [19.5, 10], scale: 0.7 },
       },
     },
   });
@@ -202,9 +227,13 @@ function addDiffEquation(name) {
     name: 'diffExplanation',
     make: 'equation',
     color: colorLight,
-    font: { family: 'TeXGyreTermes' },
-    textFont: { family: 'TeXGyreTermes', style: 'normal' },
-    scale: 4,
+    // font: { family: 'TeXGyreTermes' },
+    // textFont: { family: 'TeXGyreTermes', style: 'normal' },
+    // font: { family: 'Open Sans' },
+    // textFont: { family: 'Open Sans', style: 'normal' },
+    font: { family: 'Open Sans' },
+    textFont: { family: 'Open Sans', style: 'normal' },
+    scale: 4.4,
     position: [12, 3],
     formDefaults: { alignment: { xAlign: 'center' } },
     elements: {
@@ -216,9 +245,9 @@ function addDiffEquation(name) {
       tBox6: tBox([0.1, 0.1, 0.1, 0.1]),
       tBox7: tBox([0.1, 0.1, 0.1, 0.1]),
       disturbance: { color: colorDisturbanceText },
-      'disturbance curvature in time': { color: colorTimeText },
+      'shape of the disturbance in time': { color: colorTimeText },
       'proportional': { color: colorVelocityText },
-      'disturbance curvature in space': { color: colorPositionText },
+      'shape of the disturbance in space': { color: colorPositionText },
       'positive travelling wave': { color: colorFText },
       'negative travelling wave': { color: colorGText },
       superimposed: { color: colorPositionText },
@@ -228,8 +257,8 @@ function addDiffEquation(name) {
     },
     forms: {
       diff: lines([
-        ['The ', t(1, 'disturbance curvature in time'), '_ is ', t(2, 'proportional'), '_ to the'],
-        [t(3, 'disturbance curvature in space')]
+        ['The ', t(1, 'shape of the disturbance in time'), '_ is ', t(2, 'proportional'),],
+        ['to the ', t(3, 'shape of the disturbance in space')],
       ], 1.2),
       soln: lines([
         ['The ', t(4, 'disturbance'), '_ is equal to a ', t(6, 'positive travelling wave'), ],
@@ -321,9 +350,9 @@ function addDiffEquation(name) {
   });
   const d = description;
   const e = eqn;
-  highlightN(1, d, e, [0.1, 0.2, 0.1, 0.2], 0.1, 1.1, 1.1);
-  highlightN(2, d, e, [0.1, 0.2, 0.1, 0.2], 0.1, 1.3, 1.1);
-  highlightN(3, d, e, [0.1, 0.2, 0.1, 0.2], 0.1, 1.1, 1.1);
+  highlightN(1, d, e, [0.1, 0.2, 0.1, 0.2], [0.1, 0.1, 0.1, 0.2], 1.1, 1.1);
+  highlightN(2, d, e, [0.1, 0.2, 0.1, 0.2], [0.1, 0.1, 0.1, 0.2], 1.3, 1.1);
+  highlightN(3, d, e, [0.1, 0.2, 0.1, 0.2], [0.1, 0.1, 0.1, 0.2], 1.1, 1.1);
   highlightN(4, d, e, [0.3, 0.1, 0.1, 0.2], 0.1, 1.3, 1.1);
   highlightN(5, d, e, [-0.1, 0.2, -0.1, 0.2], 0.1, 1.3, 1.1);
   highlightN(6, d, e, [0.1, 0.2, 0.1, 0.2], 0.1, 1.3, 1.1);

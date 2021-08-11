@@ -1059,6 +1059,16 @@ nav.loadSlides([
       ],
     ],
   },
+
+  /*
+  ..######..####.##....##
+  .##....##..##..###...##
+  .##........##..####..##
+  ..######...##..##.##.##
+  .......##..##..##..####
+  .##....##..##..##...###
+  ..######..####.##....##
+  */
   {
     form: 'sinInput',
     time: '5:38',
@@ -1082,16 +1092,22 @@ nav.loadSlides([
     transition: { scenario: eqnWave, start: 'high', target: 'highSmall' },
   },
   { form: ['sinInput_5', null, null, 'single3'], time: '5:51.5' },
-  // { form: ['sinInput_5', null, null, 'single2'], time: '5:52.3' },
-  // { form: ['sinInput_5', null, null, 'single3'], time: '5:52.9' },
+
+  /*
+  .########..####.########.########
+  .##.....##..##..##.......##......
+  .##.....##..##..##.......##......
+  .##.....##..##..######...######..
+  .##.....##..##..##.......##......
+  .##.....##..##..##.......##......
+  .########..####.##.......##......
+  */
   {
     fromForm: ['sinInput_5', null, null, 'single3'],
     form: [null, null, null, 'single3'],
     time: '5:56.5',
   },
   { form: [null, null, null, 'multi'], time: '5:57.3' },
-  // { form: [null, null, null, null], time: '6:06' },
-  // { form: [null, null, 'diffMono', null], time: '6:08' },
   {
     // scenario: 'summary',
     time: '6:06.5',
@@ -1138,17 +1154,162 @@ nav.loadSlides([
       ],
     ],
   },
-  // {
-  //   form: 'sinInput_5',
-  //   time: '5:46.5',
-  //   transition: [
-  //     [
-  //       { scenario: eqnWave, target: 'default' },
-  //       { goToForm: eqnWave, target: 'sinInput_5' },
-  //     ],
-  //   ],
-  // },
+  {
+    time: '6:25',
+    scenario: 'high',
+    form: [null, null, 'diffSolnMono1', null],
+    enterState: () => {
+      eqnDiff.showForm('diffSolnMono1');
+      // eqnDiff.hide();
+    },
+    transition: [
+      { in: 'eqnDiff.y_5_' },
+      { delay: 1 },
+      [
+        { in: 'eqnDiff.equals2' },
+        { in: 'eqnDiff.plus1_' },
+      ],
+      { in: { eqnDiff: ['b_', 'lb4', 'x_2_', 'min1_', 'v_2_', 't_2_', 'rb4'] }, delay: 1.8 },
+      { in: { eqnDiff: ['c_', 'lb5', 'x_3_', 'plus2_', 'v_3_', 't_3_', 'rb5'] }, delay: 1.5 },
+    ],
+  },
+  {
+    time: '6:45',
+    scenario: 'high',
+    form: [null, null, 'diffMono', null],
+    enterState: () => {
+      eqnDiff.showForm('diffSolnMono1');
+      // eqnDiff.hide();
+    },
+    transition: [
+      { out: { eqnDiff: ['y_5_', 'equals2', 'plus1_', 'b_', 'lb4', 'x_2_', 'min1_', 'v_2_', 't_2_', 'rb4', 'c_', 'lb5', 'x_3_', 'plus2_', 'v_3_', 't_3_', 'rb5'] } },
+      [
+        { goToForm: eqnDiff, target: 'diffMono' },
+        { scenario: eqnDiff, target: 'default' },
+      ],
+    ],
+  },
+  { time: '6:50', scenarioCommon: ['default', 'wave'], form: [null, null, 'diffSeparate', null] },
+  { time: '7:08', form: [null, null, 'diffSeparate', 'derivative'] },
 
+  /*
+  ..######..##.....##....###....########..########
+  .##....##.##.....##...##.##...##.....##.##......
+  .##.......##.....##..##...##..##.....##.##......
+  ..######..#########.##.....##.########..######..
+  .......##.##.....##.#########.##........##......
+  .##....##.##.....##.##.....##.##........##......
+  ..######..##.....##.##.....##.##........########
+  */
+  {
+    time: '7:12',
+    form: [null, null, 'diff', null],
+    enterState: () => {
+      diffExplanation.showForm('diffExplanation');
+    },
+    transition: [
+      { out: defs },
+      { goToForm: eqnDiff, start: 'diffSeparate', target: 'diff' },
+      { in: diffExplanation },
+    ],
+  },
+  {
+    time: '7:27',
+    scenario: 'right',
+    enterState: 'reset',
+    form: [null, null, null, null],
+    transition: [
+      { out: ['diffExplanation', 'eqnDiff'] },
+      { in: ['m1.xAxis', 'm1.yAxis', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2', 'm1.grid', 'timePlot1.grid'] },
+    ],
+  },
+
+  /*
+  .########.##....##.########..########..######.
+  ....##.....##..##..##.....##.##.......##....##
+  ....##......####...##.....##.##.......##......
+  ....##.......##....########..######....######.
+  ....##.......##....##........##.............##
+  ....##.......##....##........##.......##....##
+  ....##.......##....##........########..######.
+  */
+  {
+    time: '8:00',
+    // enterState: 'reset',
+    show: ['m1.xAxis', 'm1.yAxis', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2', 'm1.grid', 'timePlot1.grid'],
+    scenarioCommon: ['default', 'definition'],
+    scenario: 'right',
+    transition: [
+      { out: ['timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'timePlot1.grid'] },
+      { scenario: 'm1', start: 'right', target: 'default' },
+      { in: 'm1.disturbanceLines', delay: 6 },
+    ],
+  },
+  {
+    time: '8:10',
+    show: ['m1.xAxis', 'm1.yAxis', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2', 'm1.grid', 'm1.disturbanceLines'],
+    fromForm: [null, null, null, 'transverseWave'],
+    form: [null, null, null, 'transverseDef'],
+    transition: [
+      { in: defs },
+      { goToForm: defs, target: 'transverseDef', delay: 1 },
+    ],
+  },
+  {
+    // time: '2:00',
+    show: ['resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2'],
+    form: [null, null, null, null],
+    transition: [
+      { out: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', defs, 'm1.disturbanceLines', 'm1.xAxis', 'm1.yAxis'] },
+      { trigger: 'softReset' },
+      { in: 'p1' },
+      // { in: ['pulseButton', 'sineButton', 'resetButton'] },
+    ],
+  },
+  {
+    // time: '2:27',
+    form: [null, null, null, 'longWave'],
+    // hide: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'],
+    show: ['pulseButton', 'sineButton', 'resetButton', 'p1'],
+  },
+  {
+    // time: '2:30.5',
+    form: [null, null, null, 'longDef'],
+    // hide: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'],
+    show: ['pulseButton', 'sineButton', 'resetButton', 'p1'],
+  },
+  {
+    // time: '2:42.5',
+    hide: 'm1',
+    form: [null, null, null, null],
+    transition: [
+      { out: ['pulseButton', 'sineButton', 'resetButton', 'p1', defs] },
+      { in: { ocean: ['h1', 'h2', 'h3', 'h4', 'particles', 'grid'] } },
+    ],
+    leaveState: 'softReset',
+  },
+  {
+    // time: '2:48',
+    hide: 'm1',
+    show: 'ocean',
+    fromForm: [null, null, null, 'ocean'],
+    form: [null, null, null, 'ocean'],
+    transition: [
+      // { in: { ocean: ['h1', 'h2', 'h3', 'h4'] } },
+      { in: { ocean: ['c1', 'c2', 'c3', 'c4'] } },
+      { in: defs },
+    ],
+  },
+
+  /*
+  .########.##....##.########.
+  .##.......###...##.##.....##
+  .##.......####..##.##.....##
+  .######...##.##.##.##.....##
+  .##.......##..####.##.....##
+  .##.......##...###.##.....##
+  .########.##....##.########.
+  */
 
   /*
   .########..########.########..####..#######..########..####..######.

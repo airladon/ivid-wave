@@ -42,7 +42,7 @@ function addMedium(
     p2: [xPos / maxValue * length, A / 2],
     arrow: 'barb',
     width: 0.05,
-    color: color1,
+    color: colorYellowText,
   });
   stamp('medium 2');
   figure.add({
