@@ -27,8 +27,9 @@ function addTravellingWaveEquation(name) {
     textFont: { family: 'TeXGyreTermes' },
     mods: {
       scenarios: {
-        default: { position: [8, 5], scale: 1 },
+        default: { position: [10, 5], scale: 1.3 },
         summary: { position: [15.12, 5.7], scale: 1 },
+        high: { position: [10, 7], scale: 1.3 },
       },
     },
     elements: {
@@ -42,47 +43,52 @@ function addTravellingWaveEquation(name) {
       t: 't',
       g: 'g',
       v: 'v',
+      t_1: 't',
       y_c: { color: colorDisturbanceText },
       x_c: { color: colorPositionText },
-      x_c1: { color: colorPositionText },
+      x_c1: { color: colorPurpleText },
       t_c: { color: colorTimeText },
-      g_c: { color: colorGText },
-      v_c: { color: colorPositionText },
-      t_c1: { color: colorPositionText },
-      equals: ' = ',
+      g_c: { color: colorGreenText },
+      v_c: { color: colorPurpleText },
+      t_c1: { color: colorPurpleText },
+      equals: '  =  ',
+      equals1: '  =  ',
       min: '  \u2212  ',
-      min_c: { text: '  \u2212  ', color: colorPositionText },
+      min_c: { text: '  \u2212  ', color: colorPurpleText },
       // xDash: 'x\'',
       comma: ' , ',
       arrow1: { symbol: 'line', width: 0.04, arrow: { start: { head: 'triangle' } } },
-      tBox1: tBox([0.5, 0.5, 0.5, 0.5]),
-      tBox2: tBox([0.5, 0.7, 0.2, 0.7]),
-      tBox3: tBox([0.1, 0.5, 0.5, 0.5]),
-      tBox4: tBox([0.5, 0.5, 0.5, 0.5]),
-      tBox5: tBox([0, 0.5, 0, 0.5]),
+      tBox1: tBox([0.5, 0.5, 0.3, 0.5]),
+      tBox2: tBox([0.3, 0.7, 0.3, 0.5]),
+      tBox3: tBox([0.3, 0.5, 0.5, 0.5]),
+      tBox4: tBox([0.5, 0.5, 0.2, 0.5]),
+      tBox5: tBox([0.2, 0.5, 0.5, 0.5]),
       shift: 'shift',
       shift_1: { color: colorYellowText },
     },
     phrases: {
     },
+    formDefaults: { alignment: { fixTo: 'equals' } },
     forms: {
       shiftedG_0: [sub('g_1', 'shifted'), 'equals'],
       shiftedG_1: [sub('g_1', 'shifted'), 'equals', 'g'],
       shiftedG_2: [sub('g_1', 'shifted'), 'equals', 'g', brac(['x_1', 'min', 'shift'], 2)],
-      shiftedG_3: [sub('g_1', 'shifted'), 'equals', 'g', brac(['x_1', 'min', tc([under('shift'), 'shift_1'], 'depends on propogation velocity and time', 'arrow1', 0.15, 0.15)], 2)],
-      shiftedG_4: [sub('g_1', 'shifted'), 'equals', 'g', brac(['x_1', 'min', tc([under('shift'), 'shift_1'], ['v', 't_1'], 'arrow1', 0.15, 0.15)], 2)],
-      shiftedG_5: [sub('g_1', 'shifted'), 'equals', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)],
+      shiftedG_3: [sub('g_1', 'shifted'), 'equals', 'g', brac(['x_1', 'min', tc([under('shift'), 'shift_1'], '', 'arrow1', 0.15, 0.15)], 2)],
+      shiftedG_4: [sub('g_1', 'shifted'), 'equals', 'g', brac(['x_1', 'min', tc([under('shift'), 'shift_1'], scale(lines([['propogation ', 'v', 'elocity']], 1), 0.8, 'center'), 'arrow1', 0.15, 0.15)], 2)],
+      shiftedG_5: [sub('g_1', 'shifted'), 'equals', 'g', brac(['x_1', 'min', tc([under('shift'), 'shift_1'], scale(lines([['propogation ', 'v', 'elocity'], ['propogation _1', 't_1', 'ime']], 1), 0.8), 'arrow1', 0.15, 0.15)], 2)],
+      shiftedG_6: [sub('g_1', 'shifted'), 'equals', 'g', brac(['x_1', 'min', tc([under('shift'), 'shift_1'], ['v', 't_1'], 'arrow1', 0.15, 0.15)], 2)],
+      shiftedG_7: [sub('g_1', 'shifted'), 'equals', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)],
       // yxt: ['y', brac(['x', 'comma', 't'], 1), 'equals', 'g', brac(['x_1', 'min', 'shift'], 2)],
       // subVT: ['y', brac(['x', 'comma', 't'], 1), 'equals', 'g', brac(['x_1', 'min', tc('shift', ['v', 't'], 'arrow1', 0.15, 0.15)], 2)],
       final: ['y', brac(['x', 'comma', 't'], 1), 'equals', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)],
-      highlighted: [
+      highlight: [
         {
           container: {
-            content: [['y', brac(['x', 'comma', 't'], 1), 'equals', 'g', brac(['x_1', 'min', 'v', 't'], 2)]],
+            content: [['y', brac(['x', 'comma', 't'], 1), 'equals', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)]],
             inSize: false,
           },
         },
-        [t('y_c', 1), brac([t('x_c', 2), 'comma', t('t_c', 3)], 1), 'equals', t('g_c', 4), brac(t(['x_c1', 'min_c', 'v_c', 't_c1'], 5), 2)],
+        [t('y_c', 1), brac([t('x_c', 2), 'comma', t('t_c', 3)], 1), 'equals1', t('g_c', 4), brac(t(['x_c1', 'min_c', 'v_c', 't_c1'], 5), 2)],
       ],
     },
   });
@@ -93,7 +99,7 @@ function addTravellingWaveEquation(name) {
     // textFont: { style: 'normal' },
     font: { family: 'TeXGyreTermes' },
     textFont: { family: 'TeXGyreTermes', style: 'normal' },
-    scale: 3.7,
+    scale: 4.5,
     position: [2, 2],
     mods: {
       scenarios: {
@@ -105,8 +111,8 @@ function addTravellingWaveEquation(name) {
       disturbance: { color: colorDisturbanceText },
       'any position': { color: colorPositionText },
       'any time': { color: colorTimeText },
-      'disturbance at some initial time': { color: colorGText },
-      'shifted by the distance the wave has propogated since the initial time': { color: colorPositionText },
+      'disturbance at an initial time': { color: colorGreenText },
+      'shifted by the distance the wave has propogated since the initial time': { color: colorPurpleText },
       tBox1: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.5, 0.2], isTouchable: true },
       tBox2: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0.2], isTouchable: true },
       tBox3: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.2, 0.2], isTouchable: true },
@@ -188,6 +194,6 @@ function addTravellingWaveEquation(name) {
   highlightN(2, d, e, [0.1, 0.2, 0.1, 0.2], 0.1, 1.3, 1.1);
   highlightN(3, d, e, [0.1, 0.2, 0.1, 0.2], 0.1, 1.1, 1.1);
   highlightN(4, d, e, [0.3, 0.1, 0.1, 0.2], 0.1, 1.3, 1.1);
-  highlightN(5, d, e, [-0.1, 0.2, -0.1, 0.2], 0.1, 1.3, 1.1);
+  highlightN(5, d, e, [0.2, 0.2, 0.2, 0.2], 0.1, 1.3, 1.1);
 }
 

@@ -1028,15 +1028,37 @@ nav.loadSlides([
     showCommon: [],
     transition: [
       { out: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.envelope', 'm1.eqn', 'm1.envelope2', 'm1.eqn1'] },
-      { in: eqnWave },
+      { in: eqnWave, delay: 0.5 },
     ],
   },
   { form: 'shiftedG_1', time: '4:49', enterStateCommon: null },
-  { form: 'shiftedG_2', time: '4:52' },
-  { form: 'shiftedG_3', time: '4:57' },
-  { form: 'shiftedG_4', time: '5:07' },
-  { form: 'shiftedG_5', time: '5:10' },
-  { form: 'final', time: '5:13' },
+  { form: 'shiftedG_2', time: '4:51' },
+  { form: 'shiftedG_3', time: '4:56.5' },
+  { form: 'shiftedG_4', time: '4:58' },
+  { form: 'shiftedG_5', time: '4:59.5' },
+  { form: 'shiftedG_6', time: '5:07.5' },
+  { form: 'shiftedG_7', time: '5:10.5' },
+  {
+    form: 'final',
+    time: '5:13',
+    transition: [
+      [
+        { scenario: eqnWave, target: 'high' },
+        { goToForm: eqnWave, target: 'final' },
+      ],
+    ],
+  },
+  {
+    form: 'highlight',
+    time: '5:18',
+    scenario: ['default', 'high'],
+    transition: [
+      [
+        { goToForm: eqnWave, target: 'highlight' },
+        { in: 'eqnWaveDescription' },
+      ],
+    ],
+  },
   // { form: 'shiftedG_1' },
 
 
