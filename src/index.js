@@ -173,12 +173,15 @@ function update(override = false) {
   }
   // console.log(m1.custom.recording.isStationary())
   if (
-    (time.isPaused() || m1.custom.recording.isStationary())
-    && override === false
-    && m1.custom.updateFlag === false
+    !ocean.isShown && (
+      (time.isPaused() || m1.custom.recording.isStationary())
+      && override === false
+      && m1.custom.updateFlag === false
+    )
   ) {
     return;
   }
+  // console.log('updating');
   // const t = time.now();
   // if (t- lastTime > 0.04) {
   //   console.log(Fig.round(t - lastTime, 3));
@@ -583,7 +586,7 @@ nav.loadSlides([
         { in: 'eqnWave.comma', delay: dd(), duration: 0.3 },
         { in: 'eqnWave.t', delay: dd(), duration: 0.3 },
         { in: 'eqnWave.rb1', delay: dd(), duration: 0.3 },
-        { in: 'eqnWave.equals', delay: dd(), duration: 0.3 },
+        { in: 'eqnWave.equals1', delay: dd(), duration: 0.3 },
         { in: 'eqnWave.g', delay: dd(), duration: 0.3 },
         { in: 'eqnWave.lb2', delay: dd(), duration: 0.3 },
         { in: 'eqnWave.x_1', delay: dd(), duration: 0.3 },
@@ -1257,7 +1260,7 @@ nav.loadSlides([
   },
   {
     // time: '2:00',
-    show: ['resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2'],
+    showCommon: ['resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2'],
     form: [null, null, null, null],
     transition: [
       { out: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', defs, 'm1.disturbanceLines', 'm1.xAxis', 'm1.yAxis'] },
@@ -1281,12 +1284,14 @@ nav.loadSlides([
   {
     // time: '2:42.5',
     hide: 'm1',
+    showCommon: [],
     form: [null, null, null, null],
+    enterState: 'unpause',
     transition: [
       { out: ['pulseButton', 'sineButton', 'resetButton', 'p1', defs] },
       { in: { ocean: ['h1', 'h2', 'h3', 'h4', 'particles', 'grid'] } },
     ],
-    leaveState: 'softReset',
+    // leaveState: 'softReset',
   },
   {
     // time: '2:48',
@@ -1294,6 +1299,7 @@ nav.loadSlides([
     show: 'ocean',
     fromForm: [null, null, null, 'ocean'],
     form: [null, null, null, 'ocean'],
+    enterState: 'unpause',
     transition: [
       // { in: { ocean: ['h1', 'h2', 'h3', 'h4'] } },
       { in: { ocean: ['c1', 'c2', 'c3', 'c4'] } },

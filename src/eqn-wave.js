@@ -28,7 +28,7 @@ function addTravellingWaveEquation(name) {
     mods: {
       scenarios: {
         default: { position: [10, 5], scale: 1.3 },
-        summary: { position: [15.12, 5.7], scale: 1 },
+        summary: { position: [17.7, 6], scale: 1 },
         high: { position: [10, 8.5], scale: 1.3 },
         highSmall: { position: [10, 9.2], scale: 1 },
       },

@@ -217,7 +217,7 @@ function addDiffEquation(name) {
       scenarios: {
         default: { position: [12, 6], scale: 1 },
         high: { position: [12, 8], scale: 1 },
-        summary: { position: [19, 3], scale: 0.7 },
+        summary: { position: [19, 3], scale: 0.75 },
         props: { position: [19.5, 6], scale: 0.7 },
         // right: { position: [19.5, 10], scale: 0.7 },
       },

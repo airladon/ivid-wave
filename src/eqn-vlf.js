@@ -81,7 +81,7 @@ function addVLFEquation(name) {
     mods: {
       scenarios: {
         default: { position: [12, 6], scale: 1 },
-        summary: { position: [18, 8], scale: 1 },
+        summary: { position: [18, 8.8], scale: 1 },
         right: { position: [13, 4.1], scale: 1 },
         wavelength: { position: [14, 2.5], scale: 1 },
         center: { position: [10, 6], scale: 1.5 },
