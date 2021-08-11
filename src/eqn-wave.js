@@ -30,6 +30,7 @@ function addTravellingWaveEquation(name) {
         default: { position: [10, 5], scale: 1.3 },
         summary: { position: [15.12, 5.7], scale: 1 },
         high: { position: [10, 8.5], scale: 1.3 },
+        highSmall: { position: [10, 9.2], scale: 1 },
       },
     },
     elements: {
@@ -157,10 +158,6 @@ function addTravellingWaveEquation(name) {
       sinInput_5: lines([
         line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'sin', brac(['k', ' ', 'x_3', 'min2', 'w', ' ', 't_3'], 4)], 1),
       ], 2.5, 'element'),
-      sinInput_6: lines([
-        line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'sin', brac(['k', ' ', 'x_3', 'min2', 'w', ' ', 't_3'], 4)], 1),
-        'single traveling wave',
-      ], 3, 'element'),
     },
   });
   const description = figure.add({

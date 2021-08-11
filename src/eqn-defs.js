@@ -3,8 +3,10 @@ function addDefsEquation(name) {
     name,
     make: 'equation',
     color: colorLight,
-    font: { family: 'TeXGyreTermes' },
-    textFont: { family: 'TeXGyreTermes', style: 'normal' },
+    // font: { family: 'TeXGyreTermes' },
+    // textFont: { family: 'TeXGyreTermes', style: 'normal' },
+    font: { family: 'Open Sans' },
+    textFont: { family: 'Open Sans', style: 'normal' },
     scale: 4.7,
     position: [12, 1],
     formDefaults: { alignment: { xAlign: 'center' } },
@@ -12,6 +14,8 @@ function addDefsEquation(name) {
       scenarios: {
         default: { position: [12, 1] },
         top: { position: [12, 10.5] },
+        highSmall: { position: [12.5, 5.5], scale: 1.4 },
+        wave: { position: [11.5, 2.5], scale: 1.4 },
       },
     },
     elements: {
@@ -23,6 +27,9 @@ function addDefsEquation(name) {
       adjective: { text: '(adjective)', style: 'italic' },
       long: { text: 'Longitudinal', color: colorWave },
       along: 'lengthwise or along',
+      Single: { color: colorYellowText },
+      Multiple: { color: colorYellowText },
+      'Wave Equation': { color: colorYellowText },
     },
     forms: {
       waveDef: ['Wave', 'colon', 'propDisturb'],
@@ -36,6 +43,12 @@ function addDefsEquation(name) {
         content: ['long', 'colon', 'along'],
         alignment: { yAlign: -0.4 },
       },
+      single1: ['Single', '  ', cont('', 4), '  ', cont('', 2.2)],
+      single2: ['Single', '  ', cont('travelling', 4), '  ', cont('', 2.2)],
+      single3: ['Single', '  ', cont('travelling', 4), '  ', cont('wave', 2.2)],
+      multi: ['Multiple', '  ', cont('wave', 2.2), 's'],
+      waveEqn: 'Wave Equation',
+      waveEqn1: bc('Wave Equation', '(One dimension)', '', 0.04, 0.04, 0.5),
       // initialSpace: ['Disturbance g(x) at an initial time'],
       // both: {
       //   lines: {
