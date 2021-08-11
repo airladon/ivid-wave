@@ -29,7 +29,7 @@ function addTravellingWaveEquation(name) {
       scenarios: {
         default: { position: [10, 5], scale: 1.3 },
         summary: { position: [15.12, 5.7], scale: 1 },
-        high: { position: [10, 7], scale: 1.3 },
+        high: { position: [10, 8.5], scale: 1.3 },
       },
     },
     elements: {
@@ -46,7 +46,7 @@ function addTravellingWaveEquation(name) {
       t_1: 't',
       y_c: { color: colorDisturbanceText },
       x_c: { color: colorPositionText },
-      x_c1: { color: colorPurpleText },
+      x_c1: { color: colorGreenText },
       t_c: { color: colorTimeText },
       g_c: { color: colorGreenText },
       v_c: { color: colorPurpleText },
@@ -54,15 +54,16 @@ function addTravellingWaveEquation(name) {
       equals: '  =  ',
       equals1: '  =  ',
       min: '  \u2212  ',
-      min_c: { text: '  \u2212  ', color: colorPurpleText },
+      min_c: { text: '  \u2212  ', color: colorCyanText },
       // xDash: 'x\'',
       comma: ' , ',
       arrow1: { symbol: 'line', width: 0.04, arrow: { start: { head: 'triangle' } } },
-      tBox1: tBox([0.5, 0.5, 0.3, 0.5]),
-      tBox2: tBox([0.3, 0.7, 0.3, 0.5]),
+      tBox1: tBox([0.5, 0.5, 0.25, 0.5]),
+      tBox2: tBox([0.2, 0.7, 0.3, 0.5]),
       tBox3: tBox([0.3, 0.5, 0.5, 0.5]),
-      tBox4: tBox([0.5, 0.5, 0.2, 0.5]),
-      tBox5: tBox([0.2, 0.5, 0.5, 0.5]),
+      tBox4: tBox([0.5, 0.5, 1.1, 0.7]),
+      tBox5: tBox([-0.2, 0.5, -0.2, 0.5]),
+      tBox6: tBox([0.2, 0.5, 0.5, 0.5]),
       shift: 'shift',
       shift_1: { color: colorYellowText },
     },
@@ -78,8 +79,6 @@ function addTravellingWaveEquation(name) {
       shiftedG_5: [sub('g_1', 'shifted'), 'equals', 'g', brac(['x_1', 'min', tc([under('shift'), 'shift_1'], scale(lines([['propogation ', 'v', 'elocity'], ['propogation _1', 't_1', 'ime']], 1), 0.8), 'arrow1', 0.15, 0.15)], 2)],
       shiftedG_6: [sub('g_1', 'shifted'), 'equals', 'g', brac(['x_1', 'min', tc([under('shift'), 'shift_1'], ['v', 't_1'], 'arrow1', 0.15, 0.15)], 2)],
       shiftedG_7: [sub('g_1', 'shifted'), 'equals', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)],
-      // yxt: ['y', brac(['x', 'comma', 't'], 1), 'equals', 'g', brac(['x_1', 'min', 'shift'], 2)],
-      // subVT: ['y', brac(['x', 'comma', 't'], 1), 'equals', 'g', brac(['x_1', 'min', tc('shift', ['v', 't'], 'arrow1', 0.15, 0.15)], 2)],
       final: ['y', brac(['x', 'comma', 't'], 1), 'equals', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)],
       highlight: [
         {
@@ -88,7 +87,7 @@ function addTravellingWaveEquation(name) {
             inSize: false,
           },
         },
-        [t('y_c', 1), brac([t('x_c', 2), 'comma', t('t_c', 3)], 1), 'equals1', t('g_c', 4), brac(t(['x_c1', 'min_c', 'v_c', 't_c1'], 5), 2)],
+        [t('y_c', 1), brac([t('x_c', 2), 'comma', t('t_c', 3)], 1), 'equals1', t('g_c', 4), brac(['x_c1', t('min_c', 5), t(['v_c', 't_c1'], 6)], 2)],
       ],
     },
   });
@@ -103,7 +102,7 @@ function addTravellingWaveEquation(name) {
     position: [2, 2],
     mods: {
       scenarios: {
-        default: { position: [12, 4] },
+        default: { position: [12, 5] },
         mathx: { position: [1, 2] },
       },
     },
@@ -112,12 +111,19 @@ function addTravellingWaveEquation(name) {
       'any position': { color: colorPositionText },
       'any time': { color: colorTimeText },
       'disturbance at an initial time': { color: colorGreenText },
-      'shifted by the distance the wave has propogated since the initial time': { color: colorPurpleText },
-      tBox1: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.5, 0.2], isTouchable: true },
-      tBox2: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0.2], isTouchable: true },
-      tBox3: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.2, 0.2], isTouchable: true },
-      tBox4: { symbol: 'tBox', touchBorder: [0.05, 0.2, 0.05, 0.2], isTouchable: true },
-      tBox5: { symbol: 'tBox', touchBorder: [0.2, 0.1, 0.5, 0.2], isTouchable: true },
+      'shifted by': { color: colorCyanText },
+      'distance the wave has propogated since the initial time': { color: colorPurpleText },
+      tBox1: tBox([0.5, 0.2, 0.5, 0.2]),
+      tBox2: tBox([0.5, 0, 0.5, 0.2]),
+      tBox3: tBox([0.5, 0.2, 0.2, 0.2]),
+      tBox4: tBox([0.5, 0.2, 0.2, 0.2]),
+      tBox5: tBox([0.05, 0.2, 0.05, 0.2]),
+      tBox6: tBox([0.2, 0.1, 0.5, 0.2]),
+      // tBox1: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.5, 0.2], isTouchable: true },
+      // tBox2: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0.2], isTouchable: true },
+      // tBox3: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.2, 0.2], isTouchable: true },
+      // tBox4: { symbol: 'tBox', touchBorder: [0.05, 0.2, 0.05, 0.2], isTouchable: true },
+      // tBox5: { symbol: 'tBox', touchBorder: [0.2, 0.1, 0.5, 0.2], isTouchable: true },
     },
     phrases: {
     },
@@ -128,8 +134,8 @@ function addTravellingWaveEquation(name) {
           lines: {
             content: [
               ['The ', t('disturbance', 1), '_ at ', t(['any position'], 2), '_ and ', t(['any time'], 3)],
-              ['is the', '  ', t('disturbance at an initial time', 4)],
-              [t(['shifted by the distance the wave has propogated since the initial time'], 5), '_.'],
+              ['is the', '  ', t('disturbance at an initial time', 4), '  ', t('shifted by', 5), '_ the'],
+              [t(['distance the wave has propogated since the initial time'], 6), '_.'],
             ],
             baselineSpace: 1.2,
             justify: 'center',
@@ -190,10 +196,11 @@ function addTravellingWaveEquation(name) {
   // highlight(16, d, e, ['g_2'], ['disturbance at time ', 't_g1', '_0_g1'], [0.2, 0.1, 0.1, 0.2], [0.1, 0.1, 0.1, 0.1], 1.3, 1.1);
   // highlight(17, d, e, ['x_5', 'v_x', 't_x'], ['shifted', 't_g2', '_0_g2'], [0.1, 0.2, 0.1, 0.1], [0.1, 0.1, 0.1, 0.1], 1.3, 1.1);
   // // highlight(12, d, e, ['t_2'], 'functionOfTime_1', [0.1, 0.1, 0.1, 0.1], 0.1, 1.3, 1.1);
-  highlightN(1, d, e, [0.1, 0.2, 0.1, 0.2], 0.1, 1.1, 1.1);
+  highlightN(1, d, e, [0.2, 0.15, 0.1, 0.2], 0.1, 1.1, 1.1);
   highlightN(2, d, e, [0.1, 0.2, 0.1, 0.2], 0.1, 1.3, 1.1);
-  highlightN(3, d, e, [0.1, 0.2, 0.1, 0.2], 0.1, 1.1, 1.1);
-  highlightN(4, d, e, [0.3, 0.1, 0.1, 0.2], 0.1, 1.3, 1.1);
-  highlightN(5, d, e, [0.2, 0.2, 0.2, 0.2], 0.1, 1.3, 1.1);
+  highlightN(3, d, e, [0.1, 0.2, 0.15, 0.1], 0.1, 1.1, 1.1);
+  highlightN(4, d, e, [0.3, 0.2, 1.4, 0.7], 0.1, 1.3, 1.1);
+  highlightN(5, d, e, [-0.4, 0.2, -0.4, 0.1], 0.1, 1.3, 1.1);
+  highlightN(6, d, e, [0.2, 0.2, 0.2, 0.1], 0.1, 1.3, 1.1);
 }
 

@@ -1059,6 +1059,18 @@ nav.loadSlides([
       ],
     ],
   },
+  {
+    form: 'final',
+    time: '5:34',
+    scenario: ['default', 'high'],
+    transition: [
+      [
+        { goToForm: eqnWave, target: 'final' },
+        { out: 'eqnWaveDescription' },
+        { goToForm: eqnWave, target: 'sinInput' },
+      ],
+    ],
+  },
   // { form: 'shiftedG_1' },
 
 
