@@ -11,7 +11,7 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
         yStep: A / 5,
         line: { width: 0.03 },
       },
-      xAxis('xAxis', 't', '', length, maxValue),
+      xAxis('xAxis', 't', '', length, maxValue * 0.95),
       yAxis('yAxis', 'y', 'x = 0', A, false, colorDisturbanceText),
       {
         name: 'trace',
