@@ -88,14 +88,14 @@ addFigureElements();
 const m1 = figure.get('m1');
 const p1 = figure.get('p1');
 const ocean = figure.get('ocean');
-const examples = figure.get('examples');
+// const examples = figure.get('examples');
 // const intro = figure.get('intro');
 const timePlot1 = figure.get('timePlot1');
 // const eqnSine = figure.get('eqnSine');
 const defs = figure.get('defs');
 // const eqnSineT = figure.get('eqnSineT');
 const eqnWave = figure.get('eqnWave');
-const eqnWaveDescription = figure.get('eqnWaveDescription');
+// const eqnWaveDescription = figure.get('eqnWaveDescription');
 // const eqnGenT = figure.get('eqnGenT');
 // const eqnSinT = figure.get('eqnSinT');
 // const eqnSinX = figure.get('eqnSinX');
@@ -109,14 +109,14 @@ const pulseButton = figure.get('pulseButton');
 const pulseButton2 = figure.get('pulseButton2');
 // const pulseButton2 = figure.get('pulseButton2');
 const sineButton = figure.get('sineButton');
-const sine2fButton = figure.get('sine2fButton');
+// const sine2fButton = figure.get('sine2fButton');
 const freezeButton = figure.get('freezeTimeButton');
 const slowTimeButton = figure.get('slowTimeButton');
 const velocityButton = figure.get('velocityButton');
-const timeWaveSelector = figure.get('timeWaveSelector');
-const sinSpaceSelector = figure.get('sinSpaceSelector');
-const sinTimeSelector = figure.get('sinTimeSelector');
-const highlighter3 = figure.get('highlighter3');
+// const timeWaveSelector = figure.get('timeWaveSelector');
+// const sinSpaceSelector = figure.get('sinSpaceSelector');
+// const sinTimeSelector = figure.get('sinTimeSelector');
+// const highlighter3 = figure.get('highlighter3');
 const diffExplanation = figure.get('diffExplanation');
 // const velocityButton2 = figure.get('velocityButton2');
 // const freqButton1 = figure.get('freqButton1');
@@ -171,14 +171,11 @@ figure.recorder.notifications.add('seek', () => {
   pause();
 });
 // Update function for everytime we want to update the particles
-// let lastTime = time.now();
 function update(override = false) {
   if (maxTime > 0 && time.now() > maxTime) {
     maxTimeReached = true;
     pause();
-    // resetButton.pulse({ scale: 1.1, duration: 10000, frequency: 1.5 });
   }
-  // console.log(m1.custom.recording.isStationary())
   if (
     !ocean.isShown && (
       (time.isPaused() || m1.custom.recording.isStationary())
@@ -188,12 +185,6 @@ function update(override = false) {
   ) {
     return;
   }
-  // console.log('updating');
-  // const t = time.now();
-  // if (t- lastTime > 0.04) {
-  //   console.log(Fig.round(t - lastTime, 3));
-  // }
-  // lastTime = t;
 
   m1.custom.updateFlag = false;
   const deltaTime = time.step();
@@ -206,10 +197,6 @@ function update(override = false) {
   if (p1.isShown) { p1.custom.update(deltaTime); return; }
   if (m1.isShown) { m1.custom.update(deltaTime); }
   if (timePlot1.isShown) { timePlot1.custom.update(); }
-  // if (medium1.isShown) { medium1.custom.update(deltaTime); }
-  // if (medium2.isShown) { medium2.custom.update(deltaTime); }
-  // if (intro.isShown) { intro.custom.update(deltaTime); }
-  // if (timePlot2.isShown) { timePlot2.custom.update(); }
 }
 
 figure.fnMap.global.add('pause', () => pause());
@@ -351,52 +338,36 @@ pulseButton2.onClick = () => {
     reset();
   }
   unpause();
-  // time.step();
   m1.custom.recording.pulse2();
   update(true);
-  // if (m1.isShown) {
-  //   // pulse(m1, 1);
-  // }
-  // if (p1.isShown) {
-  //   // pulse(p1, 1);
-  // }
 };
 
 sineButton.onClick = () => {
   reset();
   unpause();
-  // if (m1.isShown) {
-  //   m1.custom.f = 0.2;
-  //   sineWave(m1, 0);
-  // }
-  // if (p1.isShown) {
-  //   p1.custom.f = 0.4;
-  //   sineWave(p1, 0);
-  // }
-  // time.step();
   m1.custom.recording.sine();
   update(true);
 };
-sine2fButton.onClick = () => {
-  reset();
-  m1.customState.f = 0.4;
-  sineWave(m1, 0);
-};
+// sine2fButton.onClick = () => {
+//   reset();
+//   m1.customState.f = 0.4;
+//   sineWave(m1, 0);
+// };
 
-const selector = (selector, show, hide1, hide2, surroundBorder) => {
-  highlighter3.stop();
-  highlighter3.showAll();
-  highlighter3.surround(selector, surroundBorder);
-  highlighter3.pulse({ scale: 1.04, duration: 0.3 });
-  if (show.isShown) {
-    return;
-  }
-  hide1.hide();
-  hide2.hide();
-  show.showAll();
-  show._nav.goToSlide(0);
-  show.animations.new().dissolveIn(0.3).start();
-}
+// const selector = (selector, show, hide1, hide2, surroundBorder) => {
+//   highlighter3.stop();
+//   highlighter3.showAll();
+//   highlighter3.surround(selector, surroundBorder);
+//   highlighter3.pulse({ scale: 1.04, duration: 0.3 });
+//   if (show.isShown) {
+//     return;
+//   }
+//   hide1.hide();
+//   hide2.hide();
+//   show.showAll();
+//   show._nav.goToSlide(0);
+//   show.animations.new().dissolveIn(0.3).start();
+// };
 // timeWaveSelector.onClick = () => selector(
 //   timeWaveSelector, eqnGenT, eqnSinT, eqnSinX, [0.4, 0.35, 0.6, 0.4],
 // );
@@ -443,7 +414,7 @@ const selector = (selector, show, hide1, hide2, surroundBorder) => {
 ..######..########.####.########..########..######.
 */
 figure.fnMap.global.add('startSineWave', () => {
-  reset();
+  softReset();
   unpause();
   m1.custom.recording.sine();
   update(true);
@@ -460,26 +431,6 @@ figure.fnMap.global.add('fixedSine', () => {
   update(true);
 });
 
-// figure.fnMap.global.add('showVLF', () => {
-//   eqnVLF.showForm('vlf');
-//   eqnVLF.animations.new().dissolveIn(0.5).start();
-// });
-// figure.fnMap.global.add('hideVLF', () => {
-//   eqnVLF.animations.new().dissolveOut(0.5).start();
-// });
-
-
-// figure.fnMap.global.add('showSine', () => {
-//   eqnSine.showForm('yxewK');
-//   eqnSine.animations.new().dissolveIn(0.5).start();
-// });
-// figure.fnMap.global.add('hideSine', () => {
-//   eqnSine.animations.new().dissolveOut(0.5).start();
-// });
-// figure.fnMap.global.add('showWaveEqn', () => {
-//   eqnDiff.showForm('d1');
-//   eqnDiff.animations.new().dissolveIn(0.5).start();
-// });
 
 figure.addCursor({ width: 0.1, color: [0.5, 1, 1, 1], radius: 0.4 });
 
@@ -497,68 +448,6 @@ const nav = figure.addSlideNavigator({
   //   eqnSineT, sineTExplanation,
   // },
 });
-
-// const eqnTransition = (eqns, dim = []) => {
-//   // const eqns = Object.keys(eqnOptions);
-//   // const forms = Object.values(eqnOptions);
-//   return {
-//     enterState: () => {
-//       eqns.forEach(( e => {
-//         [eqn, fromForm] = e;
-//         eqn.showForm(fromForm);
-//       }));
-//     },
-//     transition: (done) => {
-//       eqns.forEach(((e, i) => {
-//         [eqn, , toForm] = e;
-//         eqn.animations.new()
-//           .delay(i)
-//           .goToForm({ target: toForm, animate: 'move', duration: 1.5})
-//           .whenFinished(i == eqns.length - 1 ? done : null)
-//           .start();
-//       }));
-//     },
-//     steadyState: () => {
-//       eqns.forEach(((e) => {
-//         [eqn, , toForm] = e;
-//         eqn.showForm(toForm);
-//         eqn.undim();
-//       if (dim.length > 0) {
-//         dim.forEach(((e) => {
-//           if (e.name.startsWith('tBox')) {
-//             return;
-//           }
-//           e.dim();
-//         }));
-//       }
-//     }
-//   }
-// }
-
-// const twoEqn = (eqn1, eqn2, form1, form2, dim = []) => ({
-//   enterState: () => {
-//     eqn1.showForm(form1);
-//     eqn2.showForm(form1);
-//     dim.forEach(e => e.dim());
-//   },
-//   transition: [
-//     { goToForm: eqn1, target: form2 },
-//     { goToForm: eqn2, target: form2 },
-//   ],
-//   steadyState: () => {
-//     eqn1.showForm(form2);
-//     eqn2.showForm(form2);
-//   },
-//   leaveState: () => {
-//     eqn1.undim();
-//     eqn2.undim();
-//   },
-// });
-
-// figure.shortcuts = {
-//   1: 'grow3',
-// };
-// figure.addFrameRate(10, { font: { color: [1, 0, 0, 1 ]} });
 time.setTimeSpeed(1);
 nav.loadSlides([
   // {
