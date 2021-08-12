@@ -223,7 +223,7 @@ const reset = () => {
   stop();
   // setInAnimation(false);
   maxTimeReached = false;
-  m1.custom.trackingTime = 0;
+  m1.customState.trackingTime = 0;
   m1.custom.reset();
   p1.custom.reset();
   time.reset();
@@ -234,7 +234,7 @@ const reset = () => {
   update(true);
 };
 const softReset = () => {
-  m1.custom.trackingTime = 0;
+  m1.customState.trackingTime = 0;
   m1.custom.reset();
   p1.custom.reset();
   time.reset();
@@ -299,26 +299,39 @@ slowTimeButton.notifications.add('onClick', () => {
 velocityButton.notifications.add('onClick', () => {
   reset();
   if (velocityButton.custom.state) {
-    m1.custom.setVelocity(1.88);
+    m1.custom.setVelocity(2);
   } else {
-    m1.custom.setVelocity(0.94);
+    m1.custom.setVelocity(1);
   }
 });
+
+const setVelocityToggle = (on) => {
+  if (on) {
+    velocityButton.custom.on();
+    m1.custom.setVelocity(2);
+  } else {
+    velocityButton.custom.off();
+    m1.custom.setVelocity(1);
+  }
+};
+
+const setSlowTimeToggle = (on) => {
+  if (on) {
+    slowTimeButton.custom.on();
+    time.setTimeSpeed(0.3);
+  } else {
+    slowTimeButton.custom.off();
+    time.setTimeSpeed(1);
+  }
+};
 
 pulseButton.onClick = () => {
   if (m1.custom.recording.getState().mode !== 'pulse') {
     reset();
   }
   unpause();
-  // time.step();
   m1.custom.recording.pulse();
   update(true);
-  // if (m1.isShown) {
-  //   // pulse(m1, 1);
-  // }
-  // if (p1.isShown) {
-  //   // pulse(p1, 1);
-  // }
 };
 
 pulseButton2.onClick = () => {
@@ -354,7 +367,7 @@ sineButton.onClick = () => {
 };
 sine2fButton.onClick = () => {
   reset();
-  m1.custom.f = 0.4;
+  m1.customState.f = 0.4;
   sineWave(m1, 0);
 };
 
@@ -419,7 +432,7 @@ const selector = (selector, show, hide1, hide2, surroundBorder) => {
 */
 figure.fnMap.global.add('startSineWave', () => {
   reset();
-  m1.custom.f = 0.3;
+  m1.customState.f = 0.3;
   m1.custom.setVelocity(1.5);
   sineWave(m1, 0);
 });
@@ -666,6 +679,10 @@ nav.loadSlides([
   */
   {
     time: '1:31',
+    enterStateCommon: () => {
+      setVelocityToggle(false);
+      setSlowTimeToggle(false);
+    },
     scenario: ['default', 'top'],
     showCommon: [
       'm1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton',
@@ -716,6 +733,7 @@ nav.loadSlides([
     },
     leaveState: () => {
       m1._envelope.pointsToDraw = Math.floor(m1._envelope.drawingObject.numVertices / 6) * 6;
+      timePlot1._trace.pointsToDraw = -1;
     },
   },
   {
@@ -765,10 +783,13 @@ nav.loadSlides([
   {
     time: '2:45',
     show: ['velocityButton', 'velocity', 'm1.ballTracker'],
+    enterState: () => {
+      m1._ballTracker.setPosition(100, 0);
+    },
     transition: [
       [
         { in: ['velocityButton', 'velocity'] },
-        { pulse: ['velocityButton', 'velocity'] },
+        { pulse: ['velocityButton', 'velocity'], centerOn: [16, 0.5], scale: 1.3 },
       ],
     ],
   },
@@ -806,6 +827,7 @@ nav.loadSlides([
     show: ['velocityButton', 'velocity', 'm1.ballTracker'],
     // show: '_cursor_',
     enterState: () => {
+      setVelocityToggle(true);
       figure.fnMap.exec('setArrow', 'timePlot1.secondsArrow');
     },
     transition: [
@@ -827,6 +849,7 @@ nav.loadSlides([
     hide: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton',
       'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton'],
     enterState: () => {
+      setVelocityToggle(true);
       figure.fnMap.exec('setArrow', 'm1.v2Arrow');
       figure.fnMap.exec('setArrow', 'timePlot1.TArrow');
       figure.fnMap.exec('setArrow', 'timePlot1.secondsArrow');
@@ -875,7 +898,7 @@ nav.loadSlides([
       // timePlot1._secondsArrow.hide();
       m1._v2Arrow._label.hide();
       figure.fnMap.exec('setArrow', 'timePlot1.TArrow');
-      m1.custom.setVelocity(0.94);
+      m1.custom.setVelocity(1);
       velocityButton.custom.off();
     },
     transition: [
@@ -934,15 +957,15 @@ nav.loadSlides([
   {
     time: '3:48',
     scenario: ['default', 'right', 'wavelength'],
-    enterState: () => {
-      m1.custom.recording.setState({
-        mode: 'sine',
-        startTime: -20,
-        lastManualValue: 0,
-        lastManualTime: null,
-      });
-      update(true);
-    },
+    // enterState: () => {
+    //   m1.custom.recording.setState({
+    //     mode: 'sine',
+    //     startTime: -20,
+    //     lastManualValue: 0,
+    //     lastManualTime: null,
+    //   });
+    //   update(true);
+    // },
     form: [null, null, null],
     show: ['timePlot1.periodArrow', 'm1.lambdaArrow'],
     transition: [
@@ -968,7 +991,19 @@ nav.loadSlides([
         lastManualValue: 0,
         lastManualTime: null,
       });
-      m1._movePadEnv.customState.x = 2.58;
+      m1._envelope.showAll();
+      m1.custom.update();
+      figure.fnMap.global.exec('copyEnvelope');
+      m1._envelope2.showAll();
+      // m1._movePadEnv.setPosition(0, 0);
+      update(true);
+      m1.custom.updateEqn1();
+      setVelocityToggle(false);
+      setSlowTimeToggle(false);
+    },
+    enterState: () => {
+      // m1._movePadEnv.customState.x = 2.58;
+      m1._movePadEnv.customState.x = 0;
       m1._envelope.showAll();
       m1.custom.update();
       figure.fnMap.global.exec('copyEnvelope');
@@ -988,6 +1023,17 @@ nav.loadSlides([
   {
     time: '4:24',
     showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv', 'm1.eqn'],
+    enterState: () => {
+      m1._movePadEnv.customState.x = 2.58;
+      // m1._movePadEnv.customState.x = 0;
+      m1._envelope.showAll();
+      m1.custom.update();
+      figure.fnMap.global.exec('copyEnvelope');
+      m1._envelope2.showAll();
+      // m1._movePadEnv.setPosition(0, 0);
+      update(true);
+      m1.custom.updateEqn1();
+    },
     transition: (done) => {
       m1.animations.new()
         .dissolveOut({ element: 'movePadEnv' })
@@ -1026,6 +1072,8 @@ nav.loadSlides([
       // m1._movePadEnv.setPosition(0, 0);
       update(true);
       m1.custom.updateEqn1();
+      setVelocityToggle(false);
+      setSlowTimeToggle(false);
     },
     // showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.envelope', 'm1.eqn'],
     showCommon: [],
@@ -1034,7 +1082,14 @@ nav.loadSlides([
       { in: eqnWave, delay: 0.5 },
     ],
   },
-  { form: 'shiftedG_1', time: '4:49', enterStateCommon: null },
+  {
+    form: 'shiftedG_1',
+    time: '4:49',
+    enterStateCommon: () => {
+      setVelocityToggle(false);
+      setSlowTimeToggle(false);
+    },
+  },
   { form: 'shiftedG_2', time: '4:51' },
   { form: 'shiftedG_3', time: '4:56.5' },
   { form: 'shiftedG_4', time: '4:58' },
@@ -1192,8 +1247,8 @@ nav.loadSlides([
       ],
     ],
   },
-  { time: '6:50', scenarioCommon: ['default', 'wave'], form: [null, null, 'diffSeparate', null] },
-  { time: '7:08', form: [null, null, 'diffSeparate', 'derivative'] },
+  { time: '7:07', scenarioCommon: ['default', 'wave'], form: [null, null, 'diffSeparate', null] },
+  { time: '7:08.5', form: [null, null, 'diffSeparate', 'derivative'] },
 
   /*
   ..######..##.....##....###....########..########
@@ -1205,7 +1260,7 @@ nav.loadSlides([
   ..######..##.....##.##.....##.##........########
   */
   {
-    time: '7:12',
+    time: '7:10.5',
     form: [null, null, 'diff', null],
     enterState: () => {
       diffExplanation.showForm('diffExplanation');
@@ -1259,7 +1314,7 @@ nav.loadSlides([
     ],
   },
   {
-    // time: '2:00',
+    time: '8:27.5',
     showCommon: ['resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2'],
     form: [null, null, null, null],
     transition: [
@@ -1317,945 +1372,945 @@ nav.loadSlides([
   .########.##....##.########.
   */
 
-  /*
-  .########..########.########..####..#######..########..####..######.
-  .##.....##.##.......##.....##..##..##.....##.##.....##..##..##....##
-  .##.....##.##.......##.....##..##..##.....##.##.....##..##..##......
-  .########..######...########...##..##.....##.##.....##..##..##......
-  .##........##.......##...##....##..##.....##.##.....##..##..##......
-  .##........##.......##....##...##..##.....##.##.....##..##..##....##
-  .##........########.##.....##.####..#######..########..####..######.
-  */
-  {
-    // time: '2:11',
-    showCommon: ['m1.grid', 'm1.balls', 'm1.firstBall', 'm1.movePad', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton'],
-    form: [null, null, null],
-    transition: [
-      { out: ['m1.envelope', defs] },
-      { in: ['pulseButton', 'sineButton'] },
-    ],
-  },
-  {
-    // time: '2:27.5',
-    form: [null, null, null],
-    transition: [
-      { out: ['m1.firstBall', 'm1.movePad', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton'] },
-      { in: 'm1.periodicEnvelope' },
-    ],
-  },
-  {
-    // time: '2:30.8',
-    form: [null, null, null],
-    transition: [
-      { out: 'm1.periodicEnvelope' },
-      { in: ['m1.firstBall', 'm1.movePad', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton'] },
-    ],
-  },
-
-
-  /*
-  .##.....##.########.##........#######...######..####.########.##....##
-  .##.....##.##.......##.......##.....##.##....##..##.....##.....##..##.
-  .##.....##.##.......##.......##.....##.##........##.....##......####..
-  .##.....##.######...##.......##.....##.##........##.....##.......##...
-  ..##...##..##.......##.......##.....##.##........##.....##.......##...
-  ...##.##...##.......##.......##.....##.##....##..##.....##.......##...
-  ....###....########.########..#######...######..####....##.......##...
-  */
-  {
-    // time: '2:59',
-    show: ['pulseButton', 'sineButton', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'slowTimeLabel', 'slowTimeButton'],
-    transition: [
-      { trigger: 'growV', duration: 13 },
-      { out: 'm1.velocity' },
-    ],
-  },
-  {
-    // time: '3:19',
-    show: ['pulseButton', 'sineButton', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'slowTimeLabel', 'slowTimeButton', '_cursor_'],
-    transition: [
-      { in: ['slowTimeLabel', 'slowTimeButton'] },
-    ],
-  },
-  {
-    // time: '3:47',
-    show: ['pulseButton', 'sineButton', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'slowTimeLabel', 'slowTimeButton'],
-    transition: { in: ['velocityButton', 'velocity'] },
-  },
-  {
-    // time: '3:51',
-    showCommon: [
-      'm1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton',
-      'slowTimeLabel', 'slowTimeButton', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'timePlot1.grid', 'pulseButton', 'sineButton', 'm1.xAxis', 'm1.yAxis',
-      'velocityButton', 'velocity', 'm1.ballTracker',
-    ],
-    transition: [
-      { scenario: 'm1', target: 'right', duration: 2 },
-      [
-        { trigger: 'softReset' },
-        { in: ['m1.xAxis', 'm1.yAxis'] },
-        { in: { timePlot1: ['xAxis', 'yAxis', 'grid', 'trace'] } },
-      ],
-      { pulse: 'timePlot1.yAxis.title', delay: 1.2, yAlign: 'bottom' },
-      { pulse: 'timePlot1.xAxis.title', delay: 1.5, xAlign: 'left', yAlign: 'top', scale: 2 },
-      { in: 'm1.ballTracker', delay: 18 },
-      { pulse: 'm1.ballTracker', delay: 1, scale: 2 },
-    ],
-  },
-
-  // Show v width
-  {
-    // time: '4:12.5',
-    scenarioCommon: ['default', 'right'],
-    transition: [
-      { out: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton',
-      'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton'] },
-      { trigger: 'growArrow', payload: ['timePlot1._secondsArrow', 1], duration: 1.5 },
-      { trigger: 'growArrow', payload: ['m1._vArrow', 1], duration: 1.5, delay: 1.5 },
-    ],
-    steadyState: () => {
-      figure.fnMap.exec('setArrow', 'm1.vArrow');
-      figure.fnMap.exec('setArrow', 'timePlot1.secondsArrow');
-    },
-  },
-  {
-    // time: '4:20.5',
-    enterState: () => {
-      figure.fnMap.exec('setArrow', 'm1.vArrow');
-      figure.fnMap.exec('setArrow', 'timePlot1.secondsArrow');
-      pause();
-    },
-    transition: [
-      { out: ['m1.vArrow', 'timePlot1.secondsArrow'] },
-      { in: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton',
-      'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton'] },
-    ],
-  },
-  // Show 2v width
-  {
-    // time: '4:28',
-    show: '_cursor_',
-    transition: [
-      { out: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton',
-      'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton'] },
-      { trigger: 'growArrow', payload: ['timePlot1._secondsArrow', 1], duration: 1.5 },
-      { trigger: 'growArrow', payload: ['m1._v2Arrow', 1], duration: 1.5, delay: 1 },
-    ],
-    steadyState: () => {
-      figure.fnMap.exec('setArrow', 'm1.v2Arrow');
-      figure.fnMap.exec('setArrow', 'timePlot1.secondsArrow');
-    },
-  },
-  
-  // Show width
-  {
-    // time: '4:44',
-    hide: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton',
-      'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton'],
-    enterState: () => {
-      figure.fnMap.exec('setArrow', 'm1.v2Arrow');
-      figure.fnMap.exec('setArrow', 'timePlot1.TArrow');
-      figure.fnMap.exec('setArrow', 'timePlot1.secondsArrow');
-      pause();
-    },
-    fromForm: [null, 'wAlone'],
-    form: [null, 'wvt'],
-    transition: [
-      { out: ['m1.v2Arrow.label'] },
-      { in: eqnVLF },
-      // { goToForm: eqnVLF, target: 'wAlone', delay: 1 },
-      { trigger: 'growV2', duration: 1.5, delay: 2},
-      { delay: 2.5 },
-      { out: ['timePlot1.secondsArrow'] },
-      [
-        // [
-          { in: ['timePlot1.TArrow.label' ] },
-          { pulse: 'timePlot1.TArrow.label' },
-        // ],
-        { goToForm: eqnVLF, target: 'wvt', delay: 1 },
-      ],
-    ],
-    steadyState: () => {
-      m1._velocity.showAll();
-      figure.fnMap.exec('setArrow', 'm1.v2Arrow');
-      timePlot1._secondsArrow.hide();
-      m1._v2Arrow._label.hide();
-      figure.fnMap.exec('setArrow', 'timePlot1.TArrow');
-    },
-  },
-
-  
-
+  // /*
+  // .########..########.########..####..#######..########..####..######.
+  // .##.....##.##.......##.....##..##..##.....##.##.....##..##..##....##
+  // .##.....##.##.......##.....##..##..##.....##.##.....##..##..##......
+  // .########..######...########...##..##.....##.##.....##..##..##......
+  // .##........##.......##...##....##..##.....##.##.....##..##..##......
+  // .##........##.......##....##...##..##.....##.##.....##..##..##....##
+  // .##........########.##.....##.####..#######..########..####..######.
+  // */
   // {
-  //   scenarioCommon: ['default', 'right'],
-  //   showCommon: [
-  //     'm1.balls', 'm1.grid', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'm1.xAxis', 'm1.yAxis', 'timePlot1.grid',
+  //   // time: '2:11',
+  //   showCommon: ['m1.grid', 'm1.balls', 'm1.firstBall', 'm1.movePad', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton'],
+  //   form: [null, null, null],
+  //   transition: [
+  //     { out: ['m1.envelope', defs] },
+  //     { in: ['pulseButton', 'sineButton'] },
   //   ],
-  //   enterState: () => {
-  //     m1.custom.setWidthArrow(0, 6, -1);
-  //   },
-  //   fromForm: [null, 'wAlone'],
-  //   form: [null, 'wvt'],
-  //   show: { timePlot1: ['xAxis', 'yAxis', 'grid', 'trace'] },
+  // },
+  // {
+  //   // time: '2:27.5',
+  //   form: [null, null, null],
+  //   transition: [
+  //     { out: ['m1.firstBall', 'm1.movePad', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton'] },
+  //     { in: 'm1.periodicEnvelope' },
+  //   ],
+  // },
+  // {
+  //   // time: '2:30.8',
+  //   form: [null, null, null],
+  //   transition: [
+  //     { out: 'm1.periodicEnvelope' },
+  //     { in: ['m1.firstBall', 'm1.movePad', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton'] },
+  //   ],
+  // },
+
+
+  // /*
+  // .##.....##.########.##........#######...######..####.########.##....##
+  // .##.....##.##.......##.......##.....##.##....##..##.....##.....##..##.
+  // .##.....##.##.......##.......##.....##.##........##.....##......####..
+  // .##.....##.######...##.......##.....##.##........##.....##.......##...
+  // ..##...##..##.......##.......##.....##.##........##.....##.......##...
+  // ...##.##...##.......##.......##.....##.##....##..##.....##.......##...
+  // ....###....########.########..#######...######..####....##.......##...
+  // */
+  // {
+  //   // time: '2:59',
+  //   show: ['pulseButton', 'sineButton', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'slowTimeLabel', 'slowTimeButton'],
+  //   transition: [
+  //     { trigger: 'growV', duration: 13 },
+  //     { out: 'm1.velocity' },
+  //   ],
+  // },
+  // {
+  //   // time: '3:19',
+  //   show: ['pulseButton', 'sineButton', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'slowTimeLabel', 'slowTimeButton', '_cursor_'],
+  //   transition: [
+  //     { in: ['slowTimeLabel', 'slowTimeButton'] },
+  //   ],
+  // },
+  // {
+  //   // time: '3:47',
+  //   show: ['pulseButton', 'sineButton', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'slowTimeLabel', 'slowTimeButton'],
+  //   transition: { in: ['velocityButton', 'velocity'] },
+  // },
+  // {
+  //   // time: '3:51',
+  //   showCommon: [
+  //     'm1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton',
+  //     'slowTimeLabel', 'slowTimeButton', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'timePlot1.grid', 'pulseButton', 'sineButton', 'm1.xAxis', 'm1.yAxis',
+  //     'velocityButton', 'velocity', 'm1.ballTracker',
+  //   ],
+  //   transition: [
+  //     { scenario: 'm1', target: 'right', duration: 2 },
+  //     [
+  //       { trigger: 'softReset' },
+  //       { in: ['m1.xAxis', 'm1.yAxis'] },
+  //       { in: { timePlot1: ['xAxis', 'yAxis', 'grid', 'trace'] } },
+  //     ],
+  //     { pulse: 'timePlot1.yAxis.title', delay: 1.2, yAlign: 'bottom' },
+  //     { pulse: 'timePlot1.xAxis.title', delay: 1.5, xAlign: 'left', yAlign: 'top', scale: 2 },
+  //     { in: 'm1.ballTracker', delay: 18 },
+  //     { pulse: 'm1.ballTracker', delay: 1, scale: 2 },
+  //   ],
+  // },
+
+  // // Show v width
+  // {
+  //   // time: '4:12.5',
+  //   scenarioCommon: ['default', 'right'],
   //   transition: [
   //     { out: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton',
   //     'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton'] },
-  //     { trigger: 'growT', duration: 1, delay: 1 },
-  //     { trigger: 'growV', duration: 1, delay: 1 },
-  //     { trigger: 'growWA', duration: 1, delay: 1 },
+  //     { trigger: 'growArrow', payload: ['timePlot1._secondsArrow', 1], duration: 1.5 },
+  //     { trigger: 'growArrow', payload: ['m1._vArrow', 1], duration: 1.5, delay: 1.5 },
+  //   ],
+  //   steadyState: () => {
+  //     figure.fnMap.exec('setArrow', 'm1.vArrow');
+  //     figure.fnMap.exec('setArrow', 'timePlot1.secondsArrow');
+  //   },
+  // },
+  // {
+  //   // time: '4:20.5',
+  //   enterState: () => {
+  //     figure.fnMap.exec('setArrow', 'm1.vArrow');
+  //     figure.fnMap.exec('setArrow', 'timePlot1.secondsArrow');
+  //     pause();
+  //   },
+  //   transition: [
+  //     { out: ['m1.vArrow', 'timePlot1.secondsArrow'] },
+  //     { in: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton',
+  //     'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton'] },
+  //   ],
+  // },
+  // // Show 2v width
+  // {
+  //   // time: '4:28',
+  //   show: '_cursor_',
+  //   transition: [
+  //     { out: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton',
+  //     'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton'] },
+  //     { trigger: 'growArrow', payload: ['timePlot1._secondsArrow', 1], duration: 1.5 },
+  //     { trigger: 'growArrow', payload: ['m1._v2Arrow', 1], duration: 1.5, delay: 1 },
+  //   ],
+  //   steadyState: () => {
+  //     figure.fnMap.exec('setArrow', 'm1.v2Arrow');
+  //     figure.fnMap.exec('setArrow', 'timePlot1.secondsArrow');
+  //   },
+  // },
+  
+  // // Show width
+  // {
+  //   // time: '4:44',
+  //   hide: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton',
+  //     'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton'],
+  //   enterState: () => {
+  //     figure.fnMap.exec('setArrow', 'm1.v2Arrow');
+  //     figure.fnMap.exec('setArrow', 'timePlot1.TArrow');
+  //     figure.fnMap.exec('setArrow', 'timePlot1.secondsArrow');
+  //     pause();
+  //   },
+  //   fromForm: [null, 'wAlone'],
+  //   form: [null, 'wvt'],
+  //   transition: [
+  //     { out: ['m1.v2Arrow.label'] },
   //     { in: eqnVLF },
-  //     { goToForm: eqnVLF, target: 'we' },
-  //     { goToForm: eqnVLF, target: 'wvt' },
+  //     // { goToForm: eqnVLF, target: 'wAlone', delay: 1 },
+  //     { trigger: 'growV2', duration: 1.5, delay: 2},
+  //     { delay: 2.5 },
+  //     { out: ['timePlot1.secondsArrow'] },
+  //     [
+  //       // [
+  //         { in: ['timePlot1.TArrow.label' ] },
+  //         { pulse: 'timePlot1.TArrow.label' },
+  //       // ],
+  //       { goToForm: eqnVLF, target: 'wvt', delay: 1 },
+  //     ],
+  //   ],
+  //   steadyState: () => {
+  //     m1._velocity.showAll();
+  //     figure.fnMap.exec('setArrow', 'm1.v2Arrow');
+  //     timePlot1._secondsArrow.hide();
+  //     m1._v2Arrow._label.hide();
+  //     figure.fnMap.exec('setArrow', 'timePlot1.TArrow');
+  //   },
+  // },
+
+  
+
+  // // {
+  // //   scenarioCommon: ['default', 'right'],
+  // //   showCommon: [
+  // //     'm1.balls', 'm1.grid', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'm1.xAxis', 'm1.yAxis', 'timePlot1.grid',
+  // //   ],
+  // //   enterState: () => {
+  // //     m1.custom.setWidthArrow(0, 6, -1);
+  // //   },
+  // //   fromForm: [null, 'wAlone'],
+  // //   form: [null, 'wvt'],
+  // //   show: { timePlot1: ['xAxis', 'yAxis', 'grid', 'trace'] },
+  // //   transition: [
+  // //     { out: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton',
+  // //     'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton'] },
+  // //     { trigger: 'growT', duration: 1, delay: 1 },
+  // //     { trigger: 'growV', duration: 1, delay: 1 },
+  // //     { trigger: 'growWA', duration: 1, delay: 1 },
+  // //     { in: eqnVLF },
+  // //     { goToForm: eqnVLF, target: 'we' },
+  // //     { goToForm: eqnVLF, target: 'wvt' },
+  // //   ],
+  // //   steadyState: () => {
+  // //     m1._widthArrow.showAll();
+  // //     timePlot1._widthArrow.showAll();
+  // //     m1._velocity.showAll();
+  // //     m1._widthArrow.setLength(7.8);
+  // //     m1.custom.setWidthArrow(0, 6, -1);
+  // //     timePlot1._widthArrow.setLength(2);
+  // //   },
+  // // },
+  
+  // /*
+  // .##.....##.............##.......########
+  // .##.....##.............##.......##......
+  // .##.....##....#####....##.......##......
+  // .##.....##.............##.......######..
+  // ..##...##.....#####....##.......##......
+  // ...##.##...............##.......##......
+  // ....###................########.##......
+  // */
+  // {
+  //   // time: '4:57',
+  //   enterState: () => {
+  //     m1._velocity.showAll();
+  //     figure.fnMap.exec('setArrow', 'm1.v2Arrow');
+  //     m1._v2Arrow._label.hide();
+  //     figure.fnMap.exec('setArrow', 'timePlot1.TArrow');
+  //   },
+  //   showCommon: [
+  //     'm1.balls', 'm1.grid', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.grid', 'timePlot1.trace', 'm1.xAxis', 'm1.yAxis', 'timePlot.grid',
+  //   ],
+  //   transition: [
+  //     { out: ['m1.v2Arrow.line', 'm1.v2Arrow.arrow1', 'm1.v2Arrow.arrow2', 'timePlot1.TArrow', eqnVLF, 'm1.velocity'] },
+  //     { in: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton',
+  //     'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton'] },
+  //   ],
+  // },
+  // {
+  //   // time: '5:11.5',
+  //   scenarioCommon: ['default', 'right', 'wavelength'],
+  //   fromForm: [null, 'l'],
+  //   form: [null, 'l'],
+  //   show: { timePlot1: ['xAxis', 'yAxis', 'grid', 'trace'] },
+  //   enterStateCommon: () => {
+  //     m1.custom.setWidthArrow(0, 3, -1);
+  //     m1._widthArrow.showAll();
+  //   },
+  //   enterState: () => {
+  //     m1._widthArrow.hide();
+  //   },
+  //   transition: [
+  //     { out: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton',
+  //     'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton'] },
+  //     { trigger: 'growWASmall', duration: 1 },
+  //     { in: eqnVLF },
   //   ],
   //   steadyState: () => {
   //     m1._widthArrow.showAll();
-  //     timePlot1._widthArrow.showAll();
-  //     m1._velocity.showAll();
-  //     m1._widthArrow.setLength(7.8);
-  //     m1.custom.setWidthArrow(0, 6, -1);
-  //     timePlot1._widthArrow.setLength(2);
+  //     m1.custom.setWidthArrow(0, 3, -1);
+  //     m1._widthArrow.setLength(3.9);
   //   },
+  // },
+  // // { form: [null, 'wavelengthwvt'] },
+  // // { time: '5:15', form: [null, 'lvt'] },
+  // { form: [null, 'lvtf'] },
+  // { form: [null, 'lvf'] },
+  // {
+  //   transition: [
+  //     { out: ['m1.balls', 'm1.grid', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.grid', 'timePlot1.trace', 'm1.xAxis', 'm1.yAxis', 'timePlot.grid', 'm1.widthArrow'] },
+  //     { scenario: eqnVLF, target: 'center' },
+  //   ],
+  // },
+  // {
+  //   enterStateCommon: null,
+  //   scenario: 'center',
+  //   hide: ['m1.balls', 'm1.grid', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.grid', 'timePlot1.trace', 'm1.xAxis', 'm1.yAxis', 'timePlot.grid', 'm1.widthArrow'],
+  //   form: [null, 'vlf']
+  // },
+  // {
+  //   enterState: 'softReset',
+  //   transition: [
+  //     { scenario: eqnVLF, start: 'center', target: 'topRight' },
+  //     { in: ['m1.balls', 'm1.grid', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.grid', 'timePlot1.trace', 'm1.xAxis', 'm1.yAxis', 'timePlot.grid', 'm1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton',
+  //     'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton', 'sine2fButton'] },
+  //   ],
   // },
   
-  /*
-  .##.....##.............##.......########
-  .##.....##.............##.......##......
-  .##.....##....#####....##.......##......
-  .##.....##.............##.......######..
-  ..##...##.....#####....##.......##......
-  ...##.##...............##.......##......
-  ....###................########.##......
-  */
-  {
-    // time: '4:57',
-    enterState: () => {
-      m1._velocity.showAll();
-      figure.fnMap.exec('setArrow', 'm1.v2Arrow');
-      m1._v2Arrow._label.hide();
-      figure.fnMap.exec('setArrow', 'timePlot1.TArrow');
-    },
-    showCommon: [
-      'm1.balls', 'm1.grid', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.grid', 'timePlot1.trace', 'm1.xAxis', 'm1.yAxis', 'timePlot.grid',
-    ],
-    transition: [
-      { out: ['m1.v2Arrow.line', 'm1.v2Arrow.arrow1', 'm1.v2Arrow.arrow2', 'timePlot1.TArrow', eqnVLF, 'm1.velocity'] },
-      { in: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton',
-      'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton'] },
-    ],
-  },
-  {
-    // time: '5:11.5',
-    scenarioCommon: ['default', 'right', 'wavelength'],
-    fromForm: [null, 'l'],
-    form: [null, 'l'],
-    show: { timePlot1: ['xAxis', 'yAxis', 'grid', 'trace'] },
-    enterStateCommon: () => {
-      m1.custom.setWidthArrow(0, 3, -1);
-      m1._widthArrow.showAll();
-    },
-    enterState: () => {
-      m1._widthArrow.hide();
-    },
-    transition: [
-      { out: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton',
-      'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton'] },
-      { trigger: 'growWASmall', duration: 1 },
-      { in: eqnVLF },
-    ],
-    steadyState: () => {
-      m1._widthArrow.showAll();
-      m1.custom.setWidthArrow(0, 3, -1);
-      m1._widthArrow.setLength(3.9);
-    },
-  },
-  // { form: [null, 'wavelengthwvt'] },
-  // { time: '5:15', form: [null, 'lvt'] },
-  { form: [null, 'lvtf'] },
-  { form: [null, 'lvf'] },
-  {
-    transition: [
-      { out: ['m1.balls', 'm1.grid', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.grid', 'timePlot1.trace', 'm1.xAxis', 'm1.yAxis', 'timePlot.grid', 'm1.widthArrow'] },
-      { scenario: eqnVLF, target: 'center' },
-    ],
-  },
-  {
-    enterStateCommon: null,
-    scenario: 'center',
-    hide: ['m1.balls', 'm1.grid', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.grid', 'timePlot1.trace', 'm1.xAxis', 'm1.yAxis', 'timePlot.grid', 'm1.widthArrow'],
-    form: [null, 'vlf']
-  },
-  {
-    enterState: 'softReset',
-    transition: [
-      { scenario: eqnVLF, start: 'center', target: 'topRight' },
-      { in: ['m1.balls', 'm1.grid', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.grid', 'timePlot1.trace', 'm1.xAxis', 'm1.yAxis', 'timePlot.grid', 'm1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton',
-      'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton', 'sine2fButton'] },
-    ],
-  },
-  
 
-  /*
-  .##.....##....###....########.##.....##....########
-  .###...###...##.##......##....##.....##.......##...
-  .####.####..##...##.....##....##.....##.......##...
-  .##.###.##.##.....##....##....#########.......##...
-  .##.....##.#########....##....##.....##.......##...
-  .##.....##.##.....##....##....##.....##.......##...
-  .##.....##.##.....##....##....##.....##.......##...
-  */
-  // {
-  //   showCommon: [
-  //     'm1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton',
-  //     'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'timePlot1.grid', 'm1.xAxis', 'm1.yAxis',
-  //     'timePlot1.eqn',
-  //   ],
-  //   scenario: 'topRight',
-  //   form: [null, null],
-  //   hideCommon: [],
-  //   hide: 'timePlot1.eqn',
-  //   transition: [
-  //     { out: ['pulseButton', 'sineButton', 'slowTimeButton', 'slowTimeLabel', 'velocityButton', 'velocity', eqnVLF] },
-  //   ],
-  // },
-  // {
-  //   transition: { in: 'timePlot1.eqn' },
-  // },
-  // {
-  //   show: ['sineTExplanation'],
-  //   enterState: () => {
-  //     sineTExplanation.showForm('yx0t');
-  //   },
-  //   transition: [
-  //     { scenario: ['m1', 'timePlot1'],  target: 'top' },
-  //     { in: sineTExplanation },
-  //   ],
-  // },
-  // {
-  //   scenarioCommon: ['default', 'top'],
-  //   show: ['eqnSineT', 'sineTExplanation'],
-  //   form: 'yx0t',
-  //   enterState: () => {
-  //     sineTExplanation.showForm('yx0t');
-  //   },
-  // },
-  // {
-  //   enterState: () => {
-  //     sineTExplanation.showForm('yx0t');
-  //   },
-  //   transition: [
-  //     { out: sineTExplanation },
-  //     // { dim: eqnSineT.getPhraseElements('yx0tequalsF') },
-  //     { in: 'm1.x0' },
-  //   ],
-  // },
-  // {
-  //   form: 'yx1t_0',
-  //   show: 'm1.x0',
-  //   // enterStateCommon: () => {
-  //   //   eqnSineT.getPhraseElements('yx0tequalsF').forEach(e => e.dim());
-  //   // }
-  // },
-  // { form: 'yx1t_1', show: 'm1.x0' },
-  // { form: 'yx1t_2', show: 'm1.x0' },
-  // { form: 'yx1t_3', show: 'm1.x0' },
-  // { form: 'yx1t_4', show: 'm1.x0' },
-  // { form: 'yx1t_5', show: 'm1.x0' },
-  // { transition: { out: 'm1.x0' } },
-  // {
-  //   enterState: () => {
-  //     sineTExplanation.showForm('summary_1');
-  //   },
-  //   transition: [
-  //     { in: sineTExplanation },
-  //   ],
-  //   steadyState: () => {
-  //     sineTExplanation.showForm('summary_1');
-  //   },
-  // },
+  // /*
+  // .##.....##....###....########.##.....##....########
+  // .###...###...##.##......##....##.....##.......##...
+  // .####.####..##...##.....##....##.....##.......##...
+  // .##.###.##.##.....##....##....#########.......##...
+  // .##.....##.#########....##....##.....##.......##...
+  // .##.....##.##.....##....##....##.....##.......##...
+  // .##.....##.##.....##....##....##.....##.......##...
+  // */
+  // // {
+  // //   showCommon: [
+  // //     'm1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton',
+  // //     'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'timePlot1.grid', 'm1.xAxis', 'm1.yAxis',
+  // //     'timePlot1.eqn',
+  // //   ],
+  // //   scenario: 'topRight',
+  // //   form: [null, null],
+  // //   hideCommon: [],
+  // //   hide: 'timePlot1.eqn',
+  // //   transition: [
+  // //     { out: ['pulseButton', 'sineButton', 'slowTimeButton', 'slowTimeLabel', 'velocityButton', 'velocity', eqnVLF] },
+  // //   ],
+  // // },
+  // // {
+  // //   transition: { in: 'timePlot1.eqn' },
+  // // },
+  // // {
+  // //   show: ['sineTExplanation'],
+  // //   enterState: () => {
+  // //     sineTExplanation.showForm('yx0t');
+  // //   },
+  // //   transition: [
+  // //     { scenario: ['m1', 'timePlot1'],  target: 'top' },
+  // //     { in: sineTExplanation },
+  // //   ],
+  // // },
+  // // {
+  // //   scenarioCommon: ['default', 'top'],
+  // //   show: ['eqnSineT', 'sineTExplanation'],
+  // //   form: 'yx0t',
+  // //   enterState: () => {
+  // //     sineTExplanation.showForm('yx0t');
+  // //   },
+  // // },
+  // // {
+  // //   enterState: () => {
+  // //     sineTExplanation.showForm('yx0t');
+  // //   },
+  // //   transition: [
+  // //     { out: sineTExplanation },
+  // //     // { dim: eqnSineT.getPhraseElements('yx0tequalsF') },
+  // //     { in: 'm1.x0' },
+  // //   ],
+  // // },
+  // // {
+  // //   form: 'yx1t_0',
+  // //   show: 'm1.x0',
+  // //   // enterStateCommon: () => {
+  // //   //   eqnSineT.getPhraseElements('yx0tequalsF').forEach(e => e.dim());
+  // //   // }
+  // // },
+  // // { form: 'yx1t_1', show: 'm1.x0' },
+  // // { form: 'yx1t_2', show: 'm1.x0' },
+  // // { form: 'yx1t_3', show: 'm1.x0' },
+  // // { form: 'yx1t_4', show: 'm1.x0' },
+  // // { form: 'yx1t_5', show: 'm1.x0' },
+  // // { transition: { out: 'm1.x0' } },
+  // // {
+  // //   enterState: () => {
+  // //     sineTExplanation.showForm('summary_1');
+  // //   },
+  // //   transition: [
+  // //     { in: sineTExplanation },
+  // //   ],
+  // //   steadyState: () => {
+  // //     sineTExplanation.showForm('summary_1');
+  // //   },
+  // // },
 
-  /*
-  .##.....##....###....########.##.....##....##.....##
-  .###...###...##.##......##....##.....##.....##...##.
-  .####.####..##...##.....##....##.....##......##.##..
-  .##.###.##.##.....##....##....#########.......###...
-  .##.....##.#########....##....##.....##......##.##..
-  .##.....##.##.....##....##....##.....##.....##...##.
-  .##.....##.##.....##....##....##.....##....##.....##
-  */
+  // /*
+  // .##.....##....###....########.##.....##....##.....##
+  // .###...###...##.##......##....##.....##.....##...##.
+  // .####.####..##...##.....##....##.....##......##.##..
+  // .##.###.##.##.....##....##....#########.......###...
+  // .##.....##.#########....##....##.....##......##.##..
+  // .##.....##.##.....##....##....##.....##.....##...##.
+  // .##.....##.##.....##....##....##.....##....##.....##
+  // */
+  // // {
+  // //   enterStateCommon: () => {},
+  // //   enterState: () => {
+  // //     eqnSineT.showForm('yx1t_5');
+  // //     sineTExplanation.showForm('summary_1');
+  // //   },
+  // //   form: null,
+  // //   transition: [
+  // //     [
+  // //       { out: [sineTExplanation, eqnSineT, 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'timePlot1.grid', 'timePlot1.eqn'] },
+  // //       { scenario: 'm1', target: 'default' },
+  // //     ],
+  // //   ],
+  // // },
   // {
   //   enterStateCommon: () => {},
   //   enterState: () => {
-  //     eqnSineT.showForm('yx1t_5');
-  //     sineTExplanation.showForm('summary_1');
+  //     eqnVLF.showForm('vlf');
   //   },
-  //   form: null,
+  //   showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton', 'sineButton', 'pulseButton', 'slowTimeButton', 'slowTimeLabel'],
+  //   form: [null, null, null],
+  //   scenario: 'topRight',
   //   transition: [
   //     [
-  //       { out: [sineTExplanation, eqnSineT, 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'timePlot1.grid', 'timePlot1.eqn'] },
+  //       { out: ['timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'timePlot1.grid', eqnVLF] },
   //       { scenario: 'm1', target: 'default' },
+  //       { in: ['m1.firstBall', 'm1.movePad', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton', 'sineButton', 'pulseButton', 'slowTimeButton', 'slowTimeLabel'] },
   //     ],
   //   ],
   // },
-  {
-    enterStateCommon: () => {},
-    enterState: () => {
-      eqnVLF.showForm('vlf');
-    },
-    showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton', 'sineButton', 'pulseButton', 'slowTimeButton', 'slowTimeLabel'],
-    form: [null, null, null],
-    scenario: 'topRight',
-    transition: [
-      [
-        { out: ['timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'timePlot1.grid', eqnVLF] },
-        { scenario: 'm1', target: 'default' },
-        { in: ['m1.firstBall', 'm1.movePad', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton', 'sineButton', 'pulseButton', 'slowTimeButton', 'slowTimeLabel'] },
-      ],
-    ],
-  },
-  {
-    scenario: 'default',
-    showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'm1.eqn', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton', 'm1.movePadEnv'],
-    transition: [
-      { trigger: 'showEnvelope', duration: 2 },
-      { out: 'm1.balls' },
-      { in: 'm1.eqn' },
-      { trigger: 'copyEnvelope' },
-      { in: 'm1.envelope2', duration: 0 },
-    ],
-  },
-  {
-    scenario: 'default',
-    showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'm1.eqn', 'm1.eqn1', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton'],
-    transition: [
-      { out: ['m1.movePad', 'm1.firstBall', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton'] },
-      { in: 'm1.xDashLine' },
-      { in: 'm1.xDashLineG' },
-      { in: 'm1.eqn1' },
-    ],
-  },
-  {
-    scenario: 'default',
-    showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.eqn', 'm1.eqn1', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv'],
-    transition: [
-      [
-        { out: 'm1.xDashLine' },
-        { out: 'm1.xDashLineG' },
-        { out: 'm1.eqn1' },
-      ],
-      // { in: ['m1.movePad', 'm1.firstBall', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton'] },
-      { position: 'movePadEnv', delta: 0.001, duration: 0 },
-      // { trigger: 'update' },
-      [
-        { in: 'm1.eqn1' },
-      ],
-    ],
-  },
-  {
-    scenarioCommon: ['default', 'mathx'],
-    enterState: () => {
-      eqnWave.showForm('yxt0');
-    },
-    form: 'yxt0',
-    transition: [
-      { scenario: 'm1', start: 'default', target: 'mathx' },
-      { in: eqnWave },
-    ],
-  },
-  { form: 'yxt1_0' },
-  { form: 'yxt1_1' },
-  { form: 'yxt1_2' },
-  { form: 'yxt1_3' },
-  {
-    enterState: () => {
-      eqnWaveDescription.showForm('summary_2');
-    },
-    transition: { in: eqnWaveDescription },
-    steadyState: () => {
-      eqnWaveDescription.showForm('summary_2');
-    },
-  },
-
-  /*
-  ..######..########.##.......########
-  .##....##.##.......##.......##......
-  .##.......##.......##.......##......
-  ..######..######...##.......######..
-  .......##.##.......##.......##......
-  .##....##.##.......##.......##......
-  ..######..########.########.##......
-  */
-  {
-    // scenario: 'default',
-    clear: true,
-    hide: 'm1',
-    enterState: () => {
-      eqnWaveDescription.showForm('summary_2');
-    },
-    transition: [
-      { out: [eqnWave, eqnWaveDescription, 'm1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.eqn', 'm1.eqn1', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv'] },
-      {
-        in: ['timeWaveSelector', 'sinSpaceSelector', 'sinTimeSelector'],
-      }
-    ],
-  },
-
-  /*
-  ..######...########.##....##.########.########.....###....##......
-  .##....##..##.......###...##.##.......##.....##...##.##...##......
-  .##........##.......####..##.##.......##.....##..##...##..##......
-  .##...####.######...##.##.##.######...########..##.....##.##......
-  .##....##..##.......##..####.##.......##...##...#########.##......
-  .##....##..##.......##...###.##.......##....##..##.....##.##......
-  ..######...########.##....##.########.##.....##.##.....##.########
-  */
-  {
-    showCommon: [],
-    fromForm: null,
-    form: null,
-    scenario: ['default', 'props'],
-    enterState: () => {
-      eqnDiff.showForm('results');
-    },
-    transition: [
-      { out: ['timeWaveSelector', 'sinSpaceSelector', 'sinTimeSelector'] },
-      { delay: 1 },
-      [
-        { in: 'eqnProps.mass', delay: dd(), duration: 0.3 },
-        { in: 'eqnProps.acceleration', delay: dd(), duration: 0.3 },
-        { in: 'eqnProps.force', delay: dd(), duration: 0.3 },
-        { in: 'eqnProps.length', delay: dd(), duration: 0.3 },
-        { in: 'eqnProps.spring constant', delay: dd(), duration: 0.3 },
-        { in: 'eqnProps.time', delay: dd(), duration: 0.3 },
-        { in: 'eqnProps.disturbance', delay: dd(), duration: 0.3 },
-      ],
-      { in: 'arrow1', delay: 1 },
-      { delay: 1 },
-      [
-        { in: 'eqnNewton.F', delay: dd(true), duration: 0.3 },
-        { in: 'eqnNewton.equals', delay: dd(), duration: 0.3 },
-        { in: 'eqnNewton.m', delay: dd(), duration: 0.3 },
-        { in: 'eqnNewton.a', delay: dd(), duration: 0.3 },
-      ],
-      [
-        { in: 'eqnNewton.F_1', delay: dd(true), duration: 0.3 },
-        { in: 'eqnNewton.equals1', delay: dd(), duration: 0.3 },
-        { in: 'eqnNewton.k', delay: dd(), duration: 0.3 },
-        { in: 'eqnNewton.x', delay: dd(), duration: 0.3 },
-      ],
-      { in: 'arrow2', delay: 1 },
-      { delay: 1 },
-      [
-        { in: 'eqnDiff.v_4', delay: dd(true), duration: 0.3 },
-        { in: 'eqnDiff._2_11', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.equals2', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.k', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.vin5', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.L', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff._2_12', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.m', delay: dd(), duration: 0.3 },
-      ],
-      [
-        { in: 'eqnDiff.d2', delay: dd(true), duration: 0.3 },
-        { in: 'eqnDiff._2_2', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.y_2', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.vin2', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.d4', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.t', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff._2_4', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.equals', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.v', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff._2_9', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.d1', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff._2_1', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.y_1', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.vin1', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.d3', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.x', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff._2_3', delay: dd(), duration: 0.3 },
-      ],
-      [
-        { in: 'eqnDiff.y_6', delay: dd(true), duration: 0.3 },
-        { in: 'eqnDiff.equals1', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.b_1', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.lb3', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.x_4', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.min2', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.v_5', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.t_4', delay: dd(), duration: 0.3 },
-        { in: 'eqnDiff.rb3', delay: dd(), duration: 0.3 },
-      ],
-    ],
-    steadyState: () => {
-      eqnDiff.showForm('results');
-    },
-  },
-  {
-    scenario: 'props',
-    enterState: () => {
-      eqnDiff.showForm('results');
-    },
-    transition: [
-      { goToForm: eqnDiff, target: 'diffMono' },
-      { scenario: eqnDiff, target: 'default' },
-    ],
-    steadyState: () => {
-      eqnDiff.showForm('diffMono');
-    },
-  },
-  {
-    scenario: 'default',
-    enterState: () => {
-      eqnDiff.showForm('diffMono');
-    },
-    transition: [
-      [
-        { scenario: eqnDiff, target: 'high' },
-        { goToForm: eqnDiff, target: 'diffMonoSmall' },
-      ],
-      { goToForm: eqnDiff, target: 'diffSolnMono' },
-    ],
-    steadyState: () => {
-      eqnDiff.showForm('diffSolnMono');
-    }
-  },
   // {
-  //   // scenario: 'props',
+  //   scenario: 'default',
+  //   showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'm1.eqn', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton', 'm1.movePadEnv'],
+  //   transition: [
+  //     { trigger: 'showEnvelope', duration: 2 },
+  //     { out: 'm1.balls' },
+  //     { in: 'm1.eqn' },
+  //     { trigger: 'copyEnvelope' },
+  //     { in: 'm1.envelope2', duration: 0 },
+  //   ],
+  // },
+  // {
+  //   scenario: 'default',
+  //   showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'm1.eqn', 'm1.eqn1', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton'],
+  //   transition: [
+  //     { out: ['m1.movePad', 'm1.firstBall', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton'] },
+  //     { in: 'm1.xDashLine' },
+  //     { in: 'm1.xDashLineG' },
+  //     { in: 'm1.eqn1' },
+  //   ],
+  // },
+  // {
+  //   scenario: 'default',
+  //   showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.eqn', 'm1.eqn1', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv'],
+  //   transition: [
+  //     [
+  //       { out: 'm1.xDashLine' },
+  //       { out: 'm1.xDashLineG' },
+  //       { out: 'm1.eqn1' },
+  //     ],
+  //     // { in: ['m1.movePad', 'm1.firstBall', 'freezeTimeLabel', 'freezeTimeButton', 'resetButton'] },
+  //     { position: 'movePadEnv', delta: 0.001, duration: 0 },
+  //     // { trigger: 'update' },
+  //     [
+  //       { in: 'm1.eqn1' },
+  //     ],
+  //   ],
+  // },
+  // {
+  //   scenarioCommon: ['default', 'mathx'],
+  //   enterState: () => {
+  //     eqnWave.showForm('yxt0');
+  //   },
+  //   form: 'yxt0',
+  //   transition: [
+  //     { scenario: 'm1', start: 'default', target: 'mathx' },
+  //     { in: eqnWave },
+  //   ],
+  // },
+  // { form: 'yxt1_0' },
+  // { form: 'yxt1_1' },
+  // { form: 'yxt1_2' },
+  // { form: 'yxt1_3' },
+  // {
+  //   enterState: () => {
+  //     eqnWaveDescription.showForm('summary_2');
+  //   },
+  //   transition: { in: eqnWaveDescription },
+  //   steadyState: () => {
+  //     eqnWaveDescription.showForm('summary_2');
+  //   },
+  // },
+
+  // /*
+  // ..######..########.##.......########
+  // .##....##.##.......##.......##......
+  // .##.......##.......##.......##......
+  // ..######..######...##.......######..
+  // .......##.##.......##.......##......
+  // .##....##.##.......##.......##......
+  // ..######..########.########.##......
+  // */
+  // {
+  //   // scenario: 'default',
+  //   clear: true,
+  //   hide: 'm1',
+  //   enterState: () => {
+  //     eqnWaveDescription.showForm('summary_2');
+  //   },
+  //   transition: [
+  //     { out: [eqnWave, eqnWaveDescription, 'm1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.eqn', 'm1.eqn1', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv'] },
+  //     {
+  //       in: ['timeWaveSelector', 'sinSpaceSelector', 'sinTimeSelector'],
+  //     }
+  //   ],
+  // },
+
+  // /*
+  // ..######...########.##....##.########.########.....###....##......
+  // .##....##..##.......###...##.##.......##.....##...##.##...##......
+  // .##........##.......####..##.##.......##.....##..##...##..##......
+  // .##...####.######...##.##.##.######...########..##.....##.##......
+  // .##....##..##.......##..####.##.......##...##...#########.##......
+  // .##....##..##.......##...###.##.......##....##..##.....##.##......
+  // ..######...########.##....##.########.##.....##.##.....##.########
+  // */
+  // {
+  //   showCommon: [],
+  //   fromForm: null,
+  //   form: null,
+  //   scenario: ['default', 'props'],
+  //   enterState: () => {
+  //     eqnDiff.showForm('results');
+  //   },
+  //   transition: [
+  //     { out: ['timeWaveSelector', 'sinSpaceSelector', 'sinTimeSelector'] },
+  //     { delay: 1 },
+  //     [
+  //       { in: 'eqnProps.mass', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnProps.acceleration', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnProps.force', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnProps.length', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnProps.spring constant', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnProps.time', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnProps.disturbance', delay: dd(), duration: 0.3 },
+  //     ],
+  //     { in: 'arrow1', delay: 1 },
+  //     { delay: 1 },
+  //     [
+  //       { in: 'eqnNewton.F', delay: dd(true), duration: 0.3 },
+  //       { in: 'eqnNewton.equals', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnNewton.m', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnNewton.a', delay: dd(), duration: 0.3 },
+  //     ],
+  //     [
+  //       { in: 'eqnNewton.F_1', delay: dd(true), duration: 0.3 },
+  //       { in: 'eqnNewton.equals1', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnNewton.k', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnNewton.x', delay: dd(), duration: 0.3 },
+  //     ],
+  //     { in: 'arrow2', delay: 1 },
+  //     { delay: 1 },
+  //     [
+  //       { in: 'eqnDiff.v_4', delay: dd(true), duration: 0.3 },
+  //       { in: 'eqnDiff._2_11', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.equals2', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.k', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.vin5', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.L', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff._2_12', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.m', delay: dd(), duration: 0.3 },
+  //     ],
+  //     [
+  //       { in: 'eqnDiff.d2', delay: dd(true), duration: 0.3 },
+  //       { in: 'eqnDiff._2_2', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.y_2', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.vin2', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.d4', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.t', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff._2_4', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.equals', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.v', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff._2_9', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.d1', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff._2_1', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.y_1', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.vin1', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.d3', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.x', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff._2_3', delay: dd(), duration: 0.3 },
+  //     ],
+  //     [
+  //       { in: 'eqnDiff.y_6', delay: dd(true), duration: 0.3 },
+  //       { in: 'eqnDiff.equals1', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.b_1', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.lb3', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.x_4', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.min2', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.v_5', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.t_4', delay: dd(), duration: 0.3 },
+  //       { in: 'eqnDiff.rb3', delay: dd(), duration: 0.3 },
+  //     ],
+  //   ],
+  //   steadyState: () => {
+  //     eqnDiff.showForm('results');
+  //   },
+  // },
+  // {
+  //   scenario: 'props',
+  //   enterState: () => {
+  //     eqnDiff.showForm('results');
+  //   },
+  //   transition: [
+  //     { goToForm: eqnDiff, target: 'diffMono' },
+  //     { scenario: eqnDiff, target: 'default' },
+  //   ],
+  //   steadyState: () => {
+  //     eqnDiff.showForm('diffMono');
+  //   },
+  // },
+  // {
+  //   scenario: 'default',
   //   enterState: () => {
   //     eqnDiff.showForm('diffMono');
   //   },
-  //   transition: { scenario: eqnDiff, target: 'high' },
+  //   transition: [
+  //     [
+  //       { scenario: eqnDiff, target: 'high' },
+  //       { goToForm: eqnDiff, target: 'diffMonoSmall' },
+  //     ],
+  //     { goToForm: eqnDiff, target: 'diffSolnMono' },
+  //   ],
+  //   steadyState: () => {
+  //     eqnDiff.showForm('diffSolnMono');
+  //   }
   // },
-  {
-    scenario: 'high',
-    enterState: () => {
-      eqnDiff.showForm('diffSolnMono');
-      diffExplanation.showForm('soln');
-    },
-    transition: [
-      [
-        { goToForm: eqnDiff, target: 'diffSoln' },
-        { in: diffExplanation },
-      ],
-      // // { scenario: eqnDiff, target: 'high' },
-      // { in: 'eqnDiff.y_5', delay: 1, duration: 0.3 },
-      // { in: 'eqnDiff.equals2', delay: 1, duration: 0.3 },
-      // { delay: 0.5 },
-      // [
-      //   { in: 'eqnDiff.a', delay: dd(true), duration: 0.3 },
-      //   { in: 'eqnDiff.lb1', delay: dd(true), duration: 0.3 },
-      //   { in: 'eqnDiff.x_2', delay: dd(true), duration: 0.3 },
-      //   { in: 'eqnDiff.min1', delay: dd(true), duration: 0.3 },
-      //   { in: 'eqnDiff.v_2', delay: dd(true), duration: 0.3 },
-      //   { in: 'eqnDiff.t_2', delay: dd(true), duration: 0.3 },
-      //   { in: 'eqnDiff.rb1', delay: dd(true), duration: 0.3 },
-      // ],
-      // { in: 'eqnDiff.plus1', delay: 0.5, duration: 0.3 },
-      // { delay: 0.5 },
-      // [
-      //   { in: 'eqnDiff.b', delay: dd(true), duration: 0.3 },
-      //   { in: 'eqnDiff.lb2', delay: dd(true), duration: 0.3 },
-      //   { in: 'eqnDiff.x_3', delay: dd(true), duration: 0.3 },
-      //   { in: 'eqnDiff.plus2', delay: dd(true), duration: 0.3 },
-      //   { in: 'eqnDiff.v_3', delay: dd(true), duration: 0.3 },
-      //   { in: 'eqnDiff.t_3', delay: dd(true), duration: 0.3 },
-      //   { in: 'eqnDiff.rb2', delay: dd(true), duration: 0.3 },
-      // ],
-    ],
-    steadyState: () => {
-      eqnDiff.showForm('diffSoln');
-      diffExplanation.showForm('soln');
-    },
-  },
+  // // {
+  // //   // scenario: 'props',
+  // //   enterState: () => {
+  // //     eqnDiff.showForm('diffMono');
+  // //   },
+  // //   transition: { scenario: eqnDiff, target: 'high' },
+  // // },
+  // {
+  //   scenario: 'high',
+  //   enterState: () => {
+  //     eqnDiff.showForm('diffSolnMono');
+  //     diffExplanation.showForm('soln');
+  //   },
+  //   transition: [
+  //     [
+  //       { goToForm: eqnDiff, target: 'diffSoln' },
+  //       { in: diffExplanation },
+  //     ],
+  //     // // { scenario: eqnDiff, target: 'high' },
+  //     // { in: 'eqnDiff.y_5', delay: 1, duration: 0.3 },
+  //     // { in: 'eqnDiff.equals2', delay: 1, duration: 0.3 },
+  //     // { delay: 0.5 },
+  //     // [
+  //     //   { in: 'eqnDiff.a', delay: dd(true), duration: 0.3 },
+  //     //   { in: 'eqnDiff.lb1', delay: dd(true), duration: 0.3 },
+  //     //   { in: 'eqnDiff.x_2', delay: dd(true), duration: 0.3 },
+  //     //   { in: 'eqnDiff.min1', delay: dd(true), duration: 0.3 },
+  //     //   { in: 'eqnDiff.v_2', delay: dd(true), duration: 0.3 },
+  //     //   { in: 'eqnDiff.t_2', delay: dd(true), duration: 0.3 },
+  //     //   { in: 'eqnDiff.rb1', delay: dd(true), duration: 0.3 },
+  //     // ],
+  //     // { in: 'eqnDiff.plus1', delay: 0.5, duration: 0.3 },
+  //     // { delay: 0.5 },
+  //     // [
+  //     //   { in: 'eqnDiff.b', delay: dd(true), duration: 0.3 },
+  //     //   { in: 'eqnDiff.lb2', delay: dd(true), duration: 0.3 },
+  //     //   { in: 'eqnDiff.x_3', delay: dd(true), duration: 0.3 },
+  //     //   { in: 'eqnDiff.plus2', delay: dd(true), duration: 0.3 },
+  //     //   { in: 'eqnDiff.v_3', delay: dd(true), duration: 0.3 },
+  //     //   { in: 'eqnDiff.t_3', delay: dd(true), duration: 0.3 },
+  //     //   { in: 'eqnDiff.rb2', delay: dd(true), duration: 0.3 },
+  //     // ],
+  //   ],
+  //   steadyState: () => {
+  //     eqnDiff.showForm('diffSoln');
+  //     diffExplanation.showForm('soln');
+  //   },
+  // },
+  // // {
+  // //   scenario: 'high',
+  // //   show: ['diffExplanation'],
+  // //   enterState: () => {
+  // //     eqnDiff.showForm('diffSoln');
+  // //     diffExplanation.showForm('soln');
+  // //   },
+  // //   transition: [
+  // //     { in: diffExplanation },
+  // //   ],
+  // // },
   // {
   //   scenario: 'high',
   //   show: ['diffExplanation'],
   //   enterState: () => {
   //     eqnDiff.showForm('diffSoln');
   //     diffExplanation.showForm('soln');
+  //     // console.log('asdf')
   //   },
   //   transition: [
+  //     [
+  //       { out: diffExplanation },
+  //       { out: { eqnDiff: ['y_5', 'equals2', 'a', 'x_2', 'min1', 'v_2', 't_2', 'plus1', 'b', 'x_3', 'plus2', 'v_3', 't_3', 'lb1', 'rb1', 'lb2', 'rb2'] } }
+  //     ],
+  //     [
+  //       { goToForm: eqnDiff, target: 'diff' },
+  //       { scenario: eqnDiff, target: 'default' },
+  //     ],
+  //     { trigger: () => diffExplanation.showForm('diff') },
   //     { in: diffExplanation },
   //   ],
+  //   steadyState: () => {
+  //     eqnDiff.showForm('diff');
+  //     diffExplanation.showForm('diff');
+  //   },
   // },
-  {
-    scenario: 'high',
-    show: ['diffExplanation'],
-    enterState: () => {
-      eqnDiff.showForm('diffSoln');
-      diffExplanation.showForm('soln');
-      // console.log('asdf')
-    },
-    transition: [
-      [
-        { out: diffExplanation },
-        { out: { eqnDiff: ['y_5', 'equals2', 'a', 'x_2', 'min1', 'v_2', 't_2', 'plus1', 'b', 'x_3', 'plus2', 'v_3', 't_3', 'lb1', 'rb1', 'lb2', 'rb2'] } }
-      ],
-      [
-        { goToForm: eqnDiff, target: 'diff' },
-        { scenario: eqnDiff, target: 'default' },
-      ],
-      { trigger: () => diffExplanation.showForm('diff') },
-      { in: diffExplanation },
-    ],
-    steadyState: () => {
-      eqnDiff.showForm('diff');
-      diffExplanation.showForm('diff');
-    },
-  },
 
-  {
-    scenario: 'right',
-    enterState: () => {
-      eqnDiff.showForm('diff');
-      diffExplanation.showForm('diff');
-    },
-    transition: [
-      [
-        { out: diffExplanation },
-        { scenario: eqnDiff, start: 'default', target: 'right' },
-      ],
-      { trigger: 'softReset' },
-      { in: ['m1.xAxis', 'm1.yAxis', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'sine2fButton', 'slowTimeButton', 'slowTimeLabel'] },
-    ],
-  },
+  // {
+  //   scenario: 'right',
+  //   enterState: () => {
+  //     eqnDiff.showForm('diff');
+  //     diffExplanation.showForm('diff');
+  //   },
+  //   transition: [
+  //     [
+  //       { out: diffExplanation },
+  //       { scenario: eqnDiff, start: 'default', target: 'right' },
+  //     ],
+  //     { trigger: 'softReset' },
+  //     { in: ['m1.xAxis', 'm1.yAxis', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'sine2fButton', 'slowTimeButton', 'slowTimeLabel'] },
+  //   ],
+  // },
+  // // /*
+  // // .##.....##....###....########.##.....##....########.
+  // // .###...###...##.##......##....##.....##....##.....##
+  // // .####.####..##...##.....##....##.....##....##.....##
+  // // .##.###.##.##.....##....##....#########....########.
+  // // .##.....##.#########....##....##.....##....##.......
+  // // .##.....##.##.....##....##....##.....##....##.......
+  // // .##.....##.##.....##....##....##.....##....##.......
+  // // */
+  // // {
+  // //   showCommon: [],
+  // //   scenarioCommon: 'center',
+  // //   transition: [
+  // //     { out: ['m1.xAxis', 'm1.yAxis', 'm1.envelope', 'm1.envelope2', 'm1.eqn1', 'm1.eqn', 'm1.grid'] },
+  // //     { scenario: eqnSineT, target: 'center' },
+  // //   ],
+  // // },
+  // // { form: 'yxt1_3gP' },
+  // // { form: 'yxt1_3gPSub' },
+  // // { form: 'yxt1_3gPSubDone' },
+  // // { form: 'ysin_01' },
+
+
+
   // /*
-  // .##.....##....###....########.##.....##....########.
-  // .###...###...##.##......##....##.....##....##.....##
-  // .####.####..##...##.....##....##.....##....##.....##
-  // .##.###.##.##.....##....##....#########....########.
-  // .##.....##.#########....##....##.....##....##.......
-  // .##.....##.##.....##....##....##.....##....##.......
-  // .##.....##.##.....##....##....##.....##....##.......
+  // .########.##....##.########..########..######.
+  // ....##.....##..##..##.....##.##.......##....##
+  // ....##......####...##.....##.##.......##......
+  // ....##.......##....########..######....######.
+  // ....##.......##....##........##.............##
+  // ....##.......##....##........##.......##....##
+  // ....##.......##....##........########..######.
   // */
   // {
-  //   showCommon: [],
-  //   scenarioCommon: 'center',
-  //   transition: [
-  //     { out: ['m1.xAxis', 'm1.yAxis', 'm1.envelope', 'm1.envelope2', 'm1.eqn1', 'm1.eqn', 'm1.grid'] },
-  //     { scenario: eqnSineT, target: 'center' },
-  //   ],
+  //   // time: '1:38',
+  //   form: [null, null, null],
+  //   transition: { out: ['m1.envelope', defs] },
   // },
-  // { form: 'yxt1_3gP' },
-  // { form: 'yxt1_3gPSub' },
-  // { form: 'yxt1_3gPSubDone' },
-  // { form: 'ysin_01' },
-
-
-
-  /*
-  .########.##....##.########..########..######.
-  ....##.....##..##..##.....##.##.......##....##
-  ....##......####...##.....##.##.......##......
-  ....##.......##....########..######....######.
-  ....##.......##....##........##.............##
-  ....##.......##....##........##.......##....##
-  ....##.......##....##........########..######.
-  */
-  {
-    // time: '1:38',
-    form: [null, null, null],
-    transition: { out: ['m1.envelope', defs] },
-  },
-  {
-    // time: '1:40.5',
-    fromForm: [null, null, 'transverseWave'],
-    form: [null, null, 'transverseDef'],
-    enterState: () => {
-      m1._balls.get(m1.custom.highlights).map(e => e.setScenario('highlight'));
-    },
-    show: '_cursor_',
-    transition: [
-      { pulse: { 'm1.balls': m1.custom.highlights }, scale: 3 },
-      { in: 'm1.disturbanceLines' },
-      { in: defs, delay: 6 },
-      { goToForm: defs, target: 'transverseDef', delay: 1 }
-    ],
-    leaveState: () => {
-      m1._balls.undim();
-    },
-  },
-  {
-    // time: '2:00',
-    form: [null, null, null],
-    transition: [
-      { out: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', defs] },
-      { trigger: 'softReset' },
-      { in: 'p1' },
-      { in: ['pulseButton', 'sineButton', 'resetButton'] },
-    ],
-  },
-  {
-    // time: '2:27',
-    form: [null, null, 'longWave'],
-    hide: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'],
-    show: ['pulseButton', 'sineButton', 'resetButton', 'p1'],
-  },
-  {
-    // time: '2:30.5',
-    form: [null, null, 'longDef'],
-    hide: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'],
-    show: ['pulseButton', 'sineButton', 'resetButton', 'p1'],
-  },
-  {
-    // time: '2:42.5',
-    hide: 'm1',
-    form: [null, null, null],
-    transition: [
-      { out: ['pulseButton', 'sineButton', 'resetButton', 'p1', defs] },
-      { in: { ocean: ['h1', 'h2', 'h3', 'h4', 'particles', 'grid'] } },
-    ],
-    leaveState: 'softReset',
-  },
-  {
-    // time: '2:48',
-    hide: 'm1',
-    show: 'ocean',
-    transition: [
-      // { in: { ocean: ['h1', 'h2', 'h3', 'h4'] } },
-      { in: { ocean: ['c1', 'c2', 'c3', 'c4'] } },
-    ],
-  },
-
-  /*
-  .########..#######..##....##..######.
-  .##.......##.....##.###...##.##....##
-  .##.......##.....##.####..##.##......
-  .######...##.....##.##.##.##..######.
-  .##.......##..##.##.##..####.......##
-  .##.......##....##..##...###.##....##
-  .########..#####.##.##....##..######.
-  */
   // {
-  //   form: 'summaryClean',
+  //   // time: '1:40.5',
+  //   fromForm: [null, null, 'transverseWave'],
+  //   form: [null, null, 'transverseDef'],
+  //   enterState: () => {
+  //     m1._balls.get(m1.custom.highlights).map(e => e.setScenario('highlight'));
+  //   },
+  //   show: '_cursor_',
   //   transition: [
-  //       { out: [{ m1: ['xAxis', 'yAxis', 'envelope', 'envelope2', 'eqn', 'eqn1', 'firstBall', 'grid'] }, 'freezeTimeLabel', 'freezeTimeButton', 'resetButton'] },
-  //       [
-  //         { scenario: eqnSineT, target: 'center' },
-  //         { goToForm: eqnSineT, target: 'summary1' },
-  //       ],
-  //       { goToForm: eqnSineT, target: 'summary' },
-  //       { goToForm: eqnSineT, target: 'summaryClean', delay: 1 },
+  //     { pulse: { 'm1.balls': m1.custom.highlights }, scale: 3 },
+  //     { in: 'm1.disturbanceLines' },
+  //     { in: defs, delay: 6 },
+  //     { goToForm: defs, target: 'transverseDef', delay: 1 }
   //   ],
+  //   leaveState: () => {
+  //     m1._balls.undim();
+  //   },
   // },
-
-
-
-
-
-  {
-    show: ['diffExplanation2'],
-    steadyState: () => {
-      eqnDiff.showForm('d1');
-    },
-  },
   // {
-  //   scenarioCommon: 'default',
-  //   show: ['title'],
-  //   exec: [
-  //     ['0:30', 'showExamples'],
-  //     ['0:50', 'outTitle'],
-  //     ['0:50', 'outExamples'],
+  //   // time: '2:00',
+  //   form: [null, null, null],
+  //   transition: [
+  //     { out: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', defs] },
+  //     { trigger: 'softReset' },
+  //     { in: 'p1' },
+  //     { in: ['pulseButton', 'sineButton', 'resetButton'] },
   //   ],
-  //   // exec: [
-  //   //   ['0:05', 'pause'],
-  //   //   ['0:05', 'showEnvelope'],
-  //   //   ['0:07', 'unpause'],
-  //   // ],
   // },
+  // {
+  //   // time: '2:27',
+  //   form: [null, null, 'longWave'],
+  //   hide: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'],
+  //   show: ['pulseButton', 'sineButton', 'resetButton', 'p1'],
+  // },
+  // {
+  //   // time: '2:30.5',
+  //   form: [null, null, 'longDef'],
+  //   hide: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'],
+  //   show: ['pulseButton', 'sineButton', 'resetButton', 'p1'],
+  // },
+  // {
+  //   // time: '2:42.5',
+  //   hide: 'm1',
+  //   form: [null, null, null],
+  //   transition: [
+  //     { out: ['pulseButton', 'sineButton', 'resetButton', 'p1', defs] },
+  //     { in: { ocean: ['h1', 'h2', 'h3', 'h4', 'particles', 'grid'] } },
+  //   ],
+  //   leaveState: 'softReset',
+  // },
+  // {
+  //   // time: '2:48',
+  //   hide: 'm1',
+  //   show: 'ocean',
+  //   transition: [
+  //     // { in: { ocean: ['h1', 'h2', 'h3', 'h4'] } },
+  //     { in: { ocean: ['c1', 'c2', 'c3', 'c4'] } },
+  //   ],
+  // },
+
+  // /*
+  // .########..#######..##....##..######.
+  // .##.......##.....##.###...##.##....##
+  // .##.......##.....##.####..##.##......
+  // .######...##.....##.##.##.##..######.
+  // .##.......##..##.##.##..####.......##
+  // .##.......##....##..##...###.##....##
+  // .########..#####.##.##....##..######.
+  // */
+  // // {
+  // //   form: 'summaryClean',
+  // //   transition: [
+  // //       { out: [{ m1: ['xAxis', 'yAxis', 'envelope', 'envelope2', 'eqn', 'eqn1', 'firstBall', 'grid'] }, 'freezeTimeLabel', 'freezeTimeButton', 'resetButton'] },
+  // //       [
+  // //         { scenario: eqnSineT, target: 'center' },
+  // //         { goToForm: eqnSineT, target: 'summary1' },
+  // //       ],
+  // //       { goToForm: eqnSineT, target: 'summary' },
+  // //       { goToForm: eqnSineT, target: 'summaryClean', delay: 1 },
+  // //   ],
+  // // },
+
+
+
+
+
+  // {
+  //   show: ['diffExplanation2'],
+  //   steadyState: () => {
+  //     eqnDiff.showForm('d1');
+  //   },
+  // },
+  // // {
+  // //   scenarioCommon: 'default',
+  // //   show: ['title'],
+  // //   exec: [
+  // //     ['0:30', 'showExamples'],
+  // //     ['0:50', 'outTitle'],
+  // //     ['0:50', 'outExamples'],
+  // //   ],
+  // //   // exec: [
+  // //   //   ['0:05', 'pause'],
+  // //   //   ['0:05', 'showEnvelope'],
+  // //   //   ['0:07', 'unpause'],
+  // //   // ],
+  // // },
+  
+  // // {
+  // //   scenario: 'summary',
+  // //   show: ['m1'],
+  // //   hide: ['m1.ballTracker', 'm1.envelope', 'm1.grid', 'm1.velocity'],
+  // //   // time: '0:50.5',
+  // //   // steadyState: () => {
+  // //   //   eqnVLF.showForm('vlf');
+  // //   // },
+  // //   // time: '0:50.5',
+  // //   transition: [
+  // //     { in: ['m1.grid', 'm1.balls', 'm1.grid', 'm1.yAxis', 'm1.xAxis']}
+  // //   ],
+  // //   execDelta: [
+  // //     [1, 'startSineWave'],
+  // //     [7, 'pause'],
+  // //     [7, 'showVelocity'],
+  // //     [8, 'showWavelength'],
+  // //     [9, 'showVLF'],
+  // //     [10, 'hideWavelength'],
+  // //     [10, 'hideVelocity'],
+  // //     [10, 'hideVLF'],
+  // //     [11, 'unpause'],
+  // //     [14, 'showSine'],
+  // //     [15, 'hideSine'],
+  // //     [16, 'showWaveEqn'],
+  // //   ],
+  // // },
   
   // {
-  //   scenario: 'summary',
-  //   show: ['m1'],
-  //   hide: ['m1.ballTracker', 'm1.envelope', 'm1.grid', 'm1.velocity'],
-  //   // time: '0:50.5',
-  //   // steadyState: () => {
-  //   //   eqnVLF.showForm('vlf');
-  //   // },
-  //   // time: '0:50.5',
+  //   showCommon: ['m1'],
+  //   hide: ['m1.xAxis', 'm1.yAxis', 'm1.ballTracker', 'm1.envelope', 'm1.velocity'],
+  // },
+  // {
+  //   enterStateCommon: () => {
+  //     m1._balls.get(m1.custom.highlights).map(e => e.setScenario('highlight'));
+  //   },
   //   transition: [
-  //     { in: ['m1.grid', 'm1.balls', 'm1.grid', 'm1.yAxis', 'm1.xAxis']}
-  //   ],
-  //   execDelta: [
-  //     [1, 'startSineWave'],
-  //     [7, 'pause'],
-  //     [7, 'showVelocity'],
-  //     [8, 'showWavelength'],
-  //     [9, 'showVLF'],
-  //     [10, 'hideWavelength'],
-  //     [10, 'hideVelocity'],
-  //     [10, 'hideVLF'],
-  //     [11, 'unpause'],
-  //     [14, 'showSine'],
-  //     [15, 'hideSine'],
-  //     [16, 'showWaveEqn'],
+  //     { pulse: { 'm1.balls': m1.custom.highlights }, scale: 3 },
   //   ],
   // },
-  
-  {
-    showCommon: ['m1'],
-    hide: ['m1.xAxis', 'm1.yAxis', 'm1.ballTracker', 'm1.envelope', 'm1.velocity'],
-  },
-  {
-    enterStateCommon: () => {
-      m1._balls.get(m1.custom.highlights).map(e => e.setScenario('highlight'));
-    },
-    transition: [
-      { pulse: { 'm1.balls': m1.custom.highlights }, scale: 3 },
-    ],
-  },
-  {
-    transition: [
-      { out: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall',] },
-      { in: 'p1' },
-      { in: ['pulseButton', 'sineButton'] },
-    ],
-  },
-  {
-    hide: ['m1'],
-    transition: [
-      { out: ['pulseButton', 'sineButton', 'p1'] },
-      { in: ['ocean'] },
-    ],
-  },
-  {
-    transition: [
-      { out: 'ocean' },
-      { in: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'] },
-    ],
-  },
-  {
-    transition: [
-      { in: ['slowTimeLabel', 'slowTimeButton'] },
-      { in: ['freezeTimeButton', 'freezeTimeLabel'] },
-      { in: 'resetButton' },
-    ],
-  },
-  {    
-    showCommon: [
-      'm1', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton',
-      'slowTimeLabel', 'slowTimeButton', 'timePlot1',
-    ],
-    hideCommon: [],
-    transition: [
-      { scenario: 'm1', target: 'right', duration: 2 },
-      [
-        { in: ['m1.xAxis', 'm1.yAxis'] },
-        { in: 'timePlot1' },
-      ],
-    ],
-  },
-  {
-    scenarioCommon: 'right',
-    transition: { in: ['velocityButton', 'velocity'] },
-  },
-  {
-    show: ['velocityButton', 'velocity'],
-    transition: { in: ['pulseButton'] },
-  },
-  {
-    show: ['velocityButton', 'velocity', 'pulseButton'],
-    transition: { in: ['sineButton', 'sine2fButton'] },
-  },
+  // {
+  //   transition: [
+  //     { out: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall',] },
+  //     { in: 'p1' },
+  //     { in: ['pulseButton', 'sineButton'] },
+  //   ],
+  // },
+  // {
+  //   hide: ['m1'],
+  //   transition: [
+  //     { out: ['pulseButton', 'sineButton', 'p1'] },
+  //     { in: ['ocean'] },
+  //   ],
+  // },
+  // {
+  //   transition: [
+  //     { out: 'ocean' },
+  //     { in: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'] },
+  //   ],
+  // },
+  // {
+  //   transition: [
+  //     { in: ['slowTimeLabel', 'slowTimeButton'] },
+  //     { in: ['freezeTimeButton', 'freezeTimeLabel'] },
+  //     { in: 'resetButton' },
+  //   ],
+  // },
+  // {    
+  //   showCommon: [
+  //     'm1', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton',
+  //     'slowTimeLabel', 'slowTimeButton', 'timePlot1',
+  //   ],
+  //   hideCommon: [],
+  //   transition: [
+  //     { scenario: 'm1', target: 'right', duration: 2 },
+  //     [
+  //       { in: ['m1.xAxis', 'm1.yAxis'] },
+  //       { in: 'timePlot1' },
+  //     ],
+  //   ],
+  // },
+  // {
+  //   scenarioCommon: 'right',
+  //   transition: { in: ['velocityButton', 'velocity'] },
+  // },
+  // {
+  //   show: ['velocityButton', 'velocity'],
+  //   transition: { in: ['pulseButton'] },
+  // },
+  // {
+  //   show: ['velocityButton', 'velocity', 'pulseButton'],
+  //   transition: { in: ['sineButton', 'sine2fButton'] },
+  // },
   // {
   //   enterState: () => {
   //     m1.setPosition([5, 6]);

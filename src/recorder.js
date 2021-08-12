@@ -213,7 +213,7 @@ function Recorder(duration, timeKeeper) {
   function getPulse(t) {
     const amplitude = 1;
     const A = 1.5;
-    return 1.5 * A * amplitude * Math.exp(-(((t / 2 - 0.6) * 4 - t / 2 - 0.1) ** 2));
+    return 1.5 * A * amplitude * Math.exp(-(((t / 2 - 0.6) * 4.4 - t / 2 + 0.05) ** 2));
   }
 
   function getPulse2(t) {

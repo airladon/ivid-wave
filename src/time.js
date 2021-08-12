@@ -1,3 +1,8 @@
+/* globals figure, colorDisturbanceText, xAxis, yAxis, colorHighlight,
+   arrow, colorTimeText, colorFText, Fig */
+/* eslint-disable object-curly-newline, camelcase */
+
+// eslint-disable-next-line no-unused-vars
 function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
   figure.add({
     name,
@@ -64,7 +69,7 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
       // },
       arrow('TArrow', 'T', [0, -1], [2, -1], colorTimeText),
       arrow('secondsArrow', '3', [0, -1], [2, -1], colorTimeText),
-      arrow('periodArrow', 'T', [2.25, -2.5], [5.45, -2.5], colorTimeText),
+      arrow('periodArrow', 'T', [2.35, -2.5], [5.75, -2.5], colorTimeText),
       // {
       //   name: 'secondsArrow',
       //   make: 'collections.line',
@@ -98,7 +103,7 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
           0: ['f', ' ', { brac: ['lb', 't_1', 'rb'] }],
         },
         position: [4, -1],
-      }
+      },
     ],
     mods: {
       scenarios: {
@@ -117,8 +122,9 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
     const recorded = recording.getRecording(false, 10);
     const points = Array(recorded.time.length);
     for (let i = 0; i < points.length; i += 1) {
-      points[i] = new Point(axis.valueToDraw(recorded.time[i]), recorded.data[i]);
+      points[i] = new Fig.Point(axis.valueToDraw(recorded.time[i]), recorded.data[i]);
     }
+    trace.pointsToDraw = -1;
     trace.custom.updatePoints({ points });
   };
   const marker = timePlot._marker;
@@ -148,8 +154,8 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
   //     .start();
   // });
   figure.fnMap.global.add('growArrow', (payload) => {
-    const [name, duration] = payload;
-    const S = figure.get(name);
+    const [n, duration] = payload;
+    const S = figure.get(n);
     S.showAll();
     S._label.hide();
     S.animations.new()
@@ -157,8 +163,8 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
       .dissolveIn({ element: 'label' })
       .start();
   });
-  figure.fnMap.global.add('setArrow', (name) => {
-    const S = figure.get(name);
+  figure.fnMap.global.add('setArrow', (n) => {
+    const S = figure.get(n);
     S.showAll();
     S.setEndPoints(S.custom.endPoints[0], S.custom.endPoints[1]);
   });
@@ -172,6 +178,9 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
           trace.pointsToDraw = Math.floor(trace.drawingObject.numVertices / 6 * p) * 6;
         },
         duration: 1,
+      })
+      .whenFinished(() => {
+        trace.pointsToDraw = -1;
       })
       .start();
   });

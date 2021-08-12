@@ -227,7 +227,7 @@ function addMedium(
       },
       arrow('vArrow', '6', [0, -1], [3 / maxValue * length, -1], colorPositionText),
       arrow('v2Arrow', '12', [0, -1], [6 / maxValue * length, -1], colorPositionText),
-      arrow('lambdaArrow', '', [1.2 / maxValue * length, -2.5], [5.9 / maxValue * length, -2.5], colorPositionText),
+      arrow('lambdaArrow', '', [1.2 / maxValue * length, -2.5], [6.3 / maxValue * length, -2.5], colorPositionText),
       {
         name: 'widthArrow',
         make: 'collections.line',
@@ -387,16 +387,17 @@ function addMedium(
   let lastEnvelope = [];
   let lastEnvelopeNumVertices = 0;
   stamp('medium 5');
-  medium.custom = {
+  medium.customState = {
     f: 0.2,   // Current frequency of sine wave for medium
     c: 1,     // Propagation velocity of medium
+    trackingTime: -10000,
+  };
+  medium.custom = {
     A,        // Amplitude of pulse or sine wave for medium
     axis,     // Make some elements easily available
     balls,
     tracker,
     wavelength,
-    updateFlag: false,
-    trackingTime: -10000,
     ball0: balls.getElement('ball0'),
     // recording: new Recorder(maxValue / minVelocity),
     recording: recorder,
@@ -431,13 +432,13 @@ function addMedium(
       if (balls.isShown) {
         for (let i = 0; i < xValues.length; i += 1) {
           const b = balls[`_ball${i}`];
-          const by = medium.custom.recording.getValueAtTimeAgo((b.custom.x) / medium.custom.c);
+          const by = medium.custom.recording.getValueAtTimeAgo((b.custom.x) / medium.customState.c);
           b.setPosition(b.custom.drawX, by);
-          if (Math.abs(by) > 0.007) {
-            b.setColor([1, 0, 0, 1]);
-          } else {
-            b.setColor(colorLight)
-          }
+          // if (Math.abs(by) > 0.003) {
+          //   b.setColor([1, 0, 0, 1]);
+          // } else {
+          //   b.setColor(colorLight)
+          // }
           // if (envelope.isShown || periodicEnvelope.isShown) {
           //   envelopePoints.push([b.custom.drawX, by]);
           // }
@@ -448,7 +449,7 @@ function addMedium(
         for (let i = 0; i < xValuesSmall.length; i += 1) {
           envelopePoints.push([
             xValuesSmall[i] / maxValue * length,
-            medium.custom.recording.getValueAtTimeAgo(xValuesSmall[i] / medium.custom.c),
+            medium.custom.recording.getValueAtTimeAgo(xValuesSmall[i] / medium.customState.c),
           ]);
         }
         // if (envelope.isShown) {
@@ -516,8 +517,8 @@ function addMedium(
       if (envelope2.isShown) {
         const envelope2Points = [];
         for (let i = 0; i < xValuesSmall.length; i += 1) {
-          const tAgo = xValuesSmall[i] / medium.custom.c
-            - movePadEnv.customState.x / length * maxValue / medium.custom.c;
+          const tAgo = xValuesSmall[i] / medium.customState.c
+            - movePadEnv.customState.x / length * maxValue / medium.customState.c;
           const yVal = medium.custom.recording.getValueAtTimeAgo(Math.max(tAgo, 0));
           envelope2Points.push([xValuesSmall[i] / maxValue * length, yVal]);
         }
@@ -526,7 +527,7 @@ function addMedium(
         medium._envelope2.custom.updatePoints({ points: envelope2Points });
       }
       if (periodicEnvelope.isShown) {
-        const threeSLength = medium.custom.c * 3;
+        const threeSLength = medium.customState.c * 3;
         const numParticles = threeSLength / ballSpace;
         periodicEnvelope.custom.updatePoints({
           points: envelopePoints.slice(numParticles, numParticles * 2),
@@ -538,17 +539,17 @@ function addMedium(
       // place it there
       if (tracker.isShown) {
         // The space between particles in seconds (from the velocity)
-        // const ballSpaceTime = axis.drawToValue(ballSize * 2) / medium.custom.c;
+        // const ballSpaceTime = axis.drawToValue(ballSize * 2) / medium.customState.c;
         // Quantize the space so the tracker particle can only exist on an
         // existing particle and not between
         // const t = Math.floor(
         //   (time.now() + medium.custom.trackingTime) / ballSpaceTime,
         // ) * ballSpaceTime;
-        const tt = time.now() + medium.custom.trackingTime;
+        const tt = time.now() + medium.customState.trackingTime;
         // console.log(time.now(), t)
         // If the tracker is within the axis, then position it appropriately,
         // otherwise position it way off
-        const xValue = Math.max(tt * medium.custom.c, 0);
+        const xValue = Math.max(tt * medium.customState.c, 0);
         const x = axis.valueToDraw(xValue); //) * 0.94;
         if (tt > 0.1 && axis.inAxis(xValue) && x < length) {
           // const by = medium.custom.recording.getValueAtTimeAgo(t);
@@ -582,10 +583,10 @@ function addMedium(
       }
     },
     setVelocity: (v) => {
-      medium.custom.c = v;
+      medium.customState.c = v;
     },
     setFrequency: (frequency) => {
-      medium.custom.f = frequency;
+      medium.customState.f = frequency;
     },
     // drawEnvelope: () => {
     //   envelope.stop();
@@ -602,8 +603,8 @@ function addMedium(
     // wavelength arrow annotation to align with it.
     setWavelengthPosition: (deltaX = 0) => {
       // const t = time.now();
-      const x0Phase = (2 * Math.PI * medium.custom.f * time.now()) % (2 * Math.PI);
-      const lambda = medium.custom.c / medium.custom.f;
+      const x0Phase = (2 * Math.PI * medium.customState.f * time.now()) % (2 * Math.PI);
+      const lambda = medium.customState.c / medium.customState.f;
       const wavelengthDraw = axis.valueToDraw(lambda);
       const wavelengthStartPhase = Math.PI / 2;
       let deltaPhase = Math.PI * 2 - (wavelengthStartPhase - x0Phase);
@@ -705,7 +706,7 @@ function addMedium(
       movePadEnv.customState.x += x;
       // const envelopePoints = [];
       // for (let i = 0; i < xValuesSmall.length; i += 1) {
-      //   const tAgo = xValuesSmall[i] / medium.custom.c - movePadEnv.customState.x / length * maxValue / medium.custom.c;
+      //   const tAgo = xValuesSmall[i] / medium.customState.c - movePadEnv.customState.x / length * maxValue / medium.customState.c;
       //   const y = medium.custom.recording.getValueAtTimeAgo(Math.max(tAgo, 0));
       //   envelopePoints.push([xValuesSmall[i] / maxValue * length, y]);
       // }
@@ -768,7 +769,7 @@ function addMedium(
 
   const marker = medium._marker;
   medium.custom.updateMarker = (p) => {
-    const initialDisturbance = time.now() - medium.custom.trackingTime;
+    const initialDisturbance = time.now() - medium.customState.trackingTime;
     const initialDisturbanceDistance = initialDisturbance / 10 * length;
     if (initialDisturbance < 10) {
       marker.transform.updateTranslation(
@@ -780,7 +781,7 @@ function addMedium(
     }
   };
   marker.notifications.add('setTransform', () => {
-    const initialDisturbance = time.now() - medium.custom.trackingTime;
+    const initialDisturbance = time.now() - medium.customState.trackingTime;
     const initialDisturbanceDistance = initialDisturbance / 10 * length;
     let p;
     const x = marker.getPosition('local').x;
