@@ -427,6 +427,7 @@ function addMedium(
         y = medium.custom.recording.getValueAtTimeAgo(0);
         movePad.transform.updateTranslation(0, y);
       }
+      // console.log(y, medium.custom.recording.getState().mode)
       firstBall.setPosition(0, y);
       // Calculate the displacement of each particle and set it
       const envelopePoints = [];

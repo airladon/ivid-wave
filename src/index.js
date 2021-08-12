@@ -190,13 +190,13 @@ function update(override = false) {
 
   m1.custom.updateFlag = false;
   const deltaTime = time.step();
+  if (ocean.isShown) { ocean.custom.update(deltaTime); return; }
+  if (title.isShown) { title.custom.update(deltaTime); return; }
+  if (p1.isShown) { p1.custom.update(deltaTime); return; }
   if (m1.isShown) { m1.custom.update(deltaTime); }
-  if (p1.isShown) { p1.custom.update(deltaTime); }
+  if (timePlot1.isShown) { timePlot1.custom.update(); }
   // if (medium1.isShown) { medium1.custom.update(deltaTime); }
   // if (medium2.isShown) { medium2.custom.update(deltaTime); }
-  if (timePlot1.isShown) { timePlot1.custom.update(); }
-  if (ocean.isShown) { ocean.custom.update(deltaTime); }
-  if (title.isShown) { title.custom.update(deltaTime); }
   // if (intro.isShown) { intro.custom.update(deltaTime); }
   // if (timePlot2.isShown) { timePlot2.custom.update(); }
 }
@@ -432,9 +432,9 @@ const selector = (selector, show, hide1, hide2, surroundBorder) => {
 */
 figure.fnMap.global.add('startSineWave', () => {
   reset();
-  m1.customState.f = 0.3;
-  m1.custom.setVelocity(1.5);
-  sineWave(m1, 0);
+  unpause();
+  m1.custom.recording.sine();
+  update(true);
 });
 
 figure.fnMap.global.add('showVLF', () => {
@@ -583,7 +583,7 @@ nav.loadSlides([
     transition: [
       { out: ['examples', 'title'] },
       { in: ['m1.balls', 'm1.firstBall', 'm1.movePad'] },
-      { trigger: () => sineWave(m1, 0) },
+      { trigger: 'startSineWave' },
       { delay: 2 },
       [
         { in: 'eqnVLF.v_1', delay: dd(true), duration: 0.3 },
@@ -1360,8 +1360,10 @@ nav.loadSlides([
     time: '8:21.5',
     showCommon: ['resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2'],
     form: [null, null, null, null],
+    hide: 'm1',
     transition: [
       { out: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', defs, 'm1.disturbanceLines', 'm1.xAxis', 'm1.yAxis'] },
+      // { out: 'm1', duration: 0 },
       { trigger: 'softReset' },
       { in: 'p1' },
       // { in: ['pulseButton', 'sineButton', 'resetButton'] },

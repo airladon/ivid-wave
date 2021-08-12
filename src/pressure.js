@@ -158,25 +158,36 @@ void main() {
   const c1 = medium.get('c1');
   const c6 = medium.get('c6');
   // const c3 = medium.get('c3');
-  medium.custom = {
+  medium.customState = {
     c: 2,
+  };
+  medium.custom = {
+    // c: 2,
     A: 0.5,
     f: 0.2,
     movePad,
     recording: recorder,
     update: (deltaTime) => {
       const newOffsets = Array(offsets.length);
-      const x = movePad.transform.t().x;
+      // const x = movePad.transform.t().x;
+      let x;
+      if (medium.custom.recording.getState().mode === 'manual') {
+        x = movePad.transform.t().x;
+        medium.custom.recording.record(x, deltaTime);
+      } else {
+        x = medium.custom.recording.getValueAtTimeAgo(0) / 3;
+        movePad.transform.updateTranslation(x, 0);
+      }
       medium._diaphram.setPosition(x, 0);
-      medium.custom.recording.record(x, deltaTime);
+      // medium.custom.recording.record(x, deltaTime);
       for (let i = 0; i < xLocations.length; i += 1) {
-        const xOffset = medium.custom.recording.getValueAtTimeAgo(xLocations[i] / medium.custom.c);
+        const xOffset = medium.custom.recording.getValueAtTimeAgo(xLocations[i] / medium.customState.c) / 3;
         newOffsets[i * 3] = xOffset;
         newOffsets[i * 3 + 1] = xOffset;
         newOffsets[i * 3 + 2] = xOffset;
       }
       if (c1.isShown) {
-        const xOffset = medium.custom.recording.getValueAtTimeAgo(10.8 / medium.custom.c);
+        const xOffset = medium.custom.recording.getValueAtTimeAgo(10.8 / medium.customState.c) / 3;
         c1.setPosition(centers[0].add(xOffset, 0));
         c6.setPosition(centers[1].add(xOffset, 0));
         // c3.setPosition(centers[2].add(xOffset, 0));
@@ -193,7 +204,7 @@ void main() {
       medium.custom.recording.reset(0);
     },
     setVelocity: (velocity) => {
-      medium.custom.c = velocity;
+      medium.customState.c = velocity;
     },
     setFrequency: (frequency) => {
       medium.custom.f = frequency;
@@ -209,6 +220,7 @@ void main() {
       medium.custom.stop();
     }
     unpause();
+    medium.custom.recording.setManual();
     // medium.custom.update();
   });
 
