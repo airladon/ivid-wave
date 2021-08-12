@@ -15,7 +15,7 @@ of times arrays need to be copied.
 function Recorder(duration, timeKeeper) {
   const timeStep = 0.016;
   const num = duration / timeStep;
-  let buffered = false;
+  // let buffered = false;
   let index;
   let data;
   // let lastManualValue;
@@ -40,7 +40,7 @@ function Recorder(duration, timeKeeper) {
       // console.log('incrementing');
       data = [...data.slice(num), ...Array(num)];
       index = num;
-      buffered = true;
+      state.buffered = true;
     }
   }
 
@@ -52,7 +52,6 @@ function Recorder(duration, timeKeeper) {
     } else {
       data = [...initialValueOrCallback(timeStep, num), ...Array(num)];
     }
-    buffered = false;
     index = num;
     startTime = [];
     state = {
@@ -60,6 +59,7 @@ function Recorder(duration, timeKeeper) {
       startTime: [],
       lastManualValue: 0,
       lastManualTime: null,
+      buffered: false,
     };
   }
 
@@ -163,6 +163,13 @@ function Recorder(duration, timeKeeper) {
       }
       return counter;
     };
+    // let d;
+    // if (state.buffered) {
+    //   d = data.slice(index - num, index);
+    // } else {
+    //   d = data.slice(num, index);
+    // }
+    // const rounded = d.map(n => Fig.tools.math.roundNum(n, precision));
     const rounded = data.slice(index - num, index).map(n => Fig.tools.math.roundNum(n, precision));
     const deltaValues = [];
     deltaValues[0] = 0;
@@ -206,9 +213,9 @@ function Recorder(duration, timeKeeper) {
 
   function loadEncodedData(firstValue, dataIn, precision = 2) {
     const decoded = decodeData(firstValue, dataIn, precision);
-    data = [...decoded.slice(), ...Array(num)];
-    buffered = false;
-    index = num;
+    data = [...Array(num).fill(0), ...decoded.slice(), ...Array(num - decoded.length)];
+    // state.buffered = false;
+    index = num + decoded.length;
   }
 
   function getPulse(t) {
@@ -357,9 +364,10 @@ function Recorder(duration, timeKeeper) {
 
   function getRecording(fullBuffer = false, timeDuration = 5) {
     if (state.mode === 'manual') {
-      const n = timeDuration / timeStep;
+      const n = Math.floor(timeDuration / timeStep);
       const i = index - num;
-      if (fullBuffer || buffered || i > n) {
+      console.log(n, fullBuffer, state.buffered, i, index, num)
+      if (fullBuffer || state.buffered || i > n) {
         return {
           time: time.slice(0, n),
           data: data.slice(index - n, index),
