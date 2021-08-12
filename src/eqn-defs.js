@@ -58,12 +58,13 @@ function addDefsEquation(name) {
       //   alignment: { yAlign: -0.4 },
       // },
       single1: ['Single', '  ', cont('', 4), '  ', cont('', 2.2)],
-      single2: ['Single', '  ', cont('travelling', 4), '  ', cont('', 2.2)],
-      single3: ['Single', '  ', cont('travelling', 4), '  ', cont('wave', 2.2)],
-      multi: ['Multiple', '  ', cont('wave', 2.2), 's'],
+      single2: ['Single', '  ', cont('travelling', 3.9), '  ', cont('', 2.1)],
+      single3: ['Single', '  ', cont('travelling', 3.9), '  ', cont('wave', 2.1)],
+      multi: ['Multiple', ' ', cont('wave', 2), 's'],
       waveEqn: 'Wave Equation',
-      waveEqn1: bc('Wave Equation', '(One dimension)', '', 0.04, 0.04, 0.5),
-      derivative: scale(['Second Derivative: ', 'Curvature or Shape'], 0.7),
+      waveEqn1: bc('Wave Equation', '(For one dimension)', '', 0.04, 0.04, 0.5),
+      derivative1: scale(['Second Derivative: ', cont('', 5.5)], 0.7),
+      derivative2: scale(['Second Derivative: ', cont('Curvature or Shape', 5.5)], 0.7),
       // initialSpace: ['Disturbance g(x) at an initial time'],
       // both: {
       //   lines: {

@@ -987,7 +987,7 @@ nav.loadSlides([
       reset();
       m1.custom.recording.setState({
         mode: 'pulse2',
-        startTime: [-4.615],
+        startTime: [-4.7],
         lastManualValue: 0,
         lastManualTime: null,
       });
@@ -1060,7 +1060,7 @@ nav.loadSlides([
       reset();
       m1.custom.recording.setState({
         mode: 'pulse2',
-        startTime: [-4.615],
+        startTime: [-4.7],
         lastManualValue: 0,
         lastManualTime: null,
       });
@@ -1247,8 +1247,9 @@ nav.loadSlides([
       ],
     ],
   },
-  { time: '7:07', scenarioCommon: ['default', 'wave'], form: [null, null, 'diffSeparate', null] },
-  { time: '7:08.5', form: [null, null, 'diffSeparate', 'derivative'] },
+  { time: '7:05', scenarioCommon: ['default', 'wave'], form: [null, null, 'diffSeparate', null] },
+  { time: '7:06.5', form: [null, null, 'diffSeparate', 'derivative1'] },
+  { time: '7:08.5', form: [null, null, 'diffSeparate', 'derivative2'] },
 
   /*
   ..######..##.....##....###....########..########
@@ -1260,7 +1261,7 @@ nav.loadSlides([
   ..######..##.....##.##.....##.##........########
   */
   {
-    time: '7:10.5',
+    time: '7:11.5',
     form: [null, null, 'diff', null],
     enterState: () => {
       diffExplanation.showForm('diffExplanation');
@@ -1282,6 +1283,25 @@ nav.loadSlides([
     ],
   },
 
+  {
+    time: '7:35',
+    scenario: 'right',
+    show: ['m1.xAxis', 'm1.yAxis', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2', 'm1.grid', 'timePlot1.grid'],
+    transition: [
+      { out: ['pulseButton', 'sineButton', 'pulseButton2', 'freezeTimeButton', 'freezeTimeLabel', 'slowTimeButton', 'slowTimeLabel'] },
+      [
+        { position: 'timePlot1.trace', target: [14.2, 0], duration: 4.5 },
+        { scale: 'timePlot1.trace', target: [-2, 1], duration: 4.5 },
+      ],
+      { delay: 2 },
+      [
+        { position: 'timePlot1.trace', target: [0, 0] },
+        { scale: 'timePlot1.trace', target: [1, 1] },
+      ],
+      { in: ['pulseButton', 'sineButton', 'pulseButton2', 'freezeTimeButton', 'freezeTimeLabel', 'slowTimeButton', 'slowTimeLabel'] },
+    ],
+  },
+
   /*
   .########.##....##.########..########..######.
   ....##.....##..##..##.....##.##.......##....##
@@ -1292,7 +1312,7 @@ nav.loadSlides([
   ....##.......##....##........########..######.
   */
   {
-    time: '8:00',
+    time: '7:51',
     // enterState: 'reset',
     show: ['m1.xAxis', 'm1.yAxis', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2', 'm1.grid', 'timePlot1.grid'],
     scenarioCommon: ['default', 'definition'],
@@ -1300,21 +1320,44 @@ nav.loadSlides([
     transition: [
       { out: ['timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'timePlot1.grid'] },
       { scenario: 'm1', start: 'right', target: 'default' },
-      { in: 'm1.disturbanceLines', delay: 6 },
+      // { in: 'm1.disturbanceLines', delay: 12 },
     ],
   },
   {
-    time: '8:10',
+    time: '8:04',
+    enterState: () => {
+      setSlowTimeToggle(true);
+    },
+    show: ['m1.xAxis', 'm1.yAxis', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2', 'm1.grid', 'm1.disturbanceLines'],
+    transition: [
+      { in: 'm1.disturbanceLines' },
+    ],
+  },
+  {
+    time: '8:14',
+    enterState: () => {
+      setSlowTimeToggle(true);
+    },
     show: ['m1.xAxis', 'm1.yAxis', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2', 'm1.grid', 'm1.disturbanceLines'],
     fromForm: [null, null, null, 'transverseWave'],
     form: [null, null, null, 'transverseDef'],
     transition: [
       { in: defs },
-      { goToForm: defs, target: 'transverseDef', delay: 1 },
+      { goToForm: defs, target: 'transverseDef', delay: 0.5 },
     ],
   },
+
+  /*
+  ..######...#######..##.....##.##....##.########.
+  .##....##.##.....##.##.....##.###...##.##.....##
+  .##.......##.....##.##.....##.####..##.##.....##
+  ..######..##.....##.##.....##.##.##.##.##.....##
+  .......##.##.....##.##.....##.##..####.##.....##
+  .##....##.##.....##.##.....##.##...###.##.....##
+  ..######...#######...#######..##....##.########.
+  */
   {
-    time: '8:27.5',
+    time: '8:21.5',
     showCommon: ['resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2'],
     form: [null, null, null, null],
     transition: [
@@ -1325,19 +1368,19 @@ nav.loadSlides([
     ],
   },
   {
-    // time: '2:27',
+    time: '8:39',
     form: [null, null, null, 'longWave'],
     // hide: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'],
     show: ['pulseButton', 'sineButton', 'resetButton', 'p1'],
   },
   {
-    // time: '2:30.5',
+    time: '8:39.5',
     form: [null, null, null, 'longDef'],
     // hide: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'],
     show: ['pulseButton', 'sineButton', 'resetButton', 'p1'],
   },
   {
-    // time: '2:42.5',
+    time: '8:41',
     hide: 'm1',
     showCommon: [],
     form: [null, null, null, null],
@@ -1349,7 +1392,7 @@ nav.loadSlides([
     // leaveState: 'softReset',
   },
   {
-    // time: '2:48',
+    time: '8:50',
     hide: 'm1',
     show: 'ocean',
     fromForm: [null, null, null, 'ocean'],
@@ -1358,7 +1401,7 @@ nav.loadSlides([
     transition: [
       // { in: { ocean: ['h1', 'h2', 'h3', 'h4'] } },
       { in: { ocean: ['c1', 'c2', 'c3', 'c4'] } },
-      { in: defs },
+      { in: defs, delay: 4.5 },
     ],
   },
 

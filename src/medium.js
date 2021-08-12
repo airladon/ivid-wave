@@ -1,7 +1,7 @@
 /*
 globals figure, color1, colorPositionText, time, colorGText,
 colorLight, maxTimeReached, unpause, Transform, range, xAxis, yAxis,
-arrow, colorOne, Fig,
+arrow, colorOne, Fig, colorYellowText,
 */
 
 /* eslint-disable camelcase, object-curly-newline */
@@ -38,8 +38,8 @@ function addMedium(
   });
   const makeVertLine = xPos => ({
     make: 'line',
-    p1: [xPos / maxValue * length, -A / 2],
-    p2: [xPos / maxValue * length, A / 2],
+    p1: [xPos / maxValue * length, -A],
+    p2: [xPos / maxValue * length, A],
     arrow: 'barb',
     width: 0.05,
     color: colorYellowText,
@@ -72,11 +72,12 @@ function addMedium(
         name: 'disturbanceLines',
         make: 'collection',
         elements: [
-          makeVertLine(2),
-          makeVertLine(4),
-          makeVertLine(6),
-          makeVertLine(8),
-          makeVertLine(10),
+          // makeVertLine(2),
+          // makeVertLine(4),
+          // makeVertLine(6),
+          // makeVertLine(8),
+          // makeVertLine(10),
+          makeVertLine(5),
         ],
       },
       {
@@ -91,14 +92,14 @@ function addMedium(
         name: 'envelope2',
         make: 'polyline',
         width: 0.15,
-        color: colorPositionText,
+        color: colorYellowText,
         simple: true,
       },
       {
         name: 'envelope',
         make: 'polyline',
         width: 0.15,
-        color: colorGText,
+        color: colorLight,
         simple: true,
       },
       {
@@ -198,8 +199,8 @@ function addMedium(
         make: 'collections.line',
         width: 0.06,
         // dash: [0.2, 0.1],
-        p1: [4.15, -1.8],
-        p2: [4.15, -3.7],
+        p1: [4.29, -1.8],
+        p2: [4.29, -3.7],
         color: colorLight,
         arrow: { start: { head: 'barb' } },
         label: {
@@ -215,12 +216,12 @@ function addMedium(
         width: 0.06,
         // dash: [0.2, 0.1],
         arrow: { start: { head: 'barb' } },
-        p1: [1.55, -1.8],
-        p2: [1.55, -3.7],
+        p1: [1.69, -1.8],
+        p2: [1.69, -3.7],
         label: {
           text: 'x\' \u2212 4',
           location: 'end',
-          scale: 4,
+          scale: 3.8,
           font: { color: colorLight },
         },
         color: colorLight,
@@ -286,7 +287,7 @@ function addMedium(
       {
         name: 'eqn',
         make: 'equation',
-        color: colorGText,
+        color: colorLight,
         scale: 4,
         elements: {
           lb: {
@@ -308,7 +309,7 @@ function addMedium(
       {
         name: 'eqn1',
         make: 'equation',
-        color: colorPositionText,
+        color: colorYellowText,
         scale: 4,
         elements: {
           lb: { symbol: 'bracket', side: 'left', lineWidth: 0.07, width: 0.16 },
