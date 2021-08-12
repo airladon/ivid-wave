@@ -163,6 +163,12 @@ const unpause = () => {
     m1._envelope2.setOpacity(0);
   }
 };
+figure.recorder.notifications.add('playbackStopped', () => {
+  pause();
+});
+figure.recorder.notifications.add('seek', () => {
+  pause();
+});
 // Update function for everytime we want to update the particles
 // let lastTime = time.now();
 function update(override = false) {
@@ -2415,7 +2421,7 @@ nav.loadSlides([
 
 
 figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.mp3'));
-// figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
+figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
 // figure.recorder.loadAudioTrack(new Audio('http://10.0.1.95:8080/src/audio-track.mp3'));
 // figure.recorder.loadVideoTrack('http://10.0.1.95:8080/src/video-track.json');
 figure.recorder.notifications.add('stateSet', () => pause());

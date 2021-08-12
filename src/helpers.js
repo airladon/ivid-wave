@@ -337,28 +337,29 @@ const highlight = (index, description, eqn, e1, e2, s1, s2, p1, p2) => {
     d.onClick = onclick;
     e.onClick = onclick;
   }
+
 const highlightN = (index, description, eqn, s1, s2, p1, p2) => {
-    const d = description.get(`tBox${index}`);
-    const e = eqn.get(`tBox${index}`);
-    const onclick = () => {
-      if (eqn.isShown === false || description.isShown === false) {
-        return;
-      }
-      const h1 = figure.get('highlighter');
-      const h2 = figure.get('highlighter2');
-      if (h1.isShown && h2.isShown && description.custom.selected === index) {
-        h1.hide();
-        h2.hide();
-        return;
-      }
-      description.custom.selected = index;
-      h1.showAll();
-      h2.showAll();
-      h1.surround(e, s1);
-      h2.surround(d, s2);
-      h1.pulse({ scale: p1 });
-      h2.pulse({ scale: p2 });
-    };
-    d.onClick = onclick;
-    e.onClick = onclick;
-  }
+  const d = description.get(`tBox${index}`);
+  const e = eqn.get(`tBox${index}`);
+  const onclick = () => {
+    if (eqn.isShown === false || description.isShown === false) {
+      return;
+    }
+    const h1 = figure.get('highlighter');
+    const h2 = figure.get('highlighter2');
+    if (h1.isShown && h2.isShown && description.custom.selected === index) {
+      h1.hide();
+      h2.hide();
+      return;
+    }
+    description.custom.selected = index;
+    h1.showAll();
+    h2.showAll();
+    h1.surround(e, s1);
+    h2.surround(d, s2);
+    h1.pulse({ scale: p1 });
+    h2.pulse({ scale: p2 });
+  };
+  d.onClick = onclick;
+  e.onClick = onclick;
+}

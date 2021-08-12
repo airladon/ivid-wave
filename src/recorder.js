@@ -79,10 +79,11 @@ function Recorder(duration, timeKeeper) {
 
   function setDeltaTime(delta) {
     // console.log(delta)
-    if (state.lastManualTime != null) {
+    if (state.mode === 'manual') {
       state.lastManualTime += delta;
+      return;
     }
-    if (typeof state.startTime === 'number') {
+    if (state.mode === 'sine') {
       state.startTime += delta;
     }
     if (Array.isArray(state.startTime)) {
@@ -290,7 +291,10 @@ function Recorder(duration, timeKeeper) {
       if (state.startTime > timeToGet) {
         return 0;
       }
-      const t = timeToGet - startTime;
+      const t = timeToGet - state.startTime;
+      // if (timeDelta === 0) {
+      //   console.log(t);
+      // }
       return getSine(t);
     }
     return 0;
@@ -340,7 +344,7 @@ function Recorder(duration, timeKeeper) {
       reset();
     }
     state.mode = 'sine';
-    state.startTime.push(timeKeeper.now());
+    state.startTime = timeKeeper.now();
   }
 
   function getState() {
