@@ -926,6 +926,7 @@ nav.loadSlides([
         {
           delay: 0.05,
           trigger: 'fixedSine',
+        },
       ],
       { in: ['m1.lambdaArrow'], delay: 2 },
       { in: eqnVLF, delay: 1.3 },
