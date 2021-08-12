@@ -16,7 +16,7 @@ function Recorder(duration, timeKeeper) {
   const timeStep = 0.016;
   const num = duration / timeStep;
   // let buffered = false;
-  let index;
+  // let index;
   let data;
   // let lastManualValue;
   // let lastManualTime;
@@ -27,7 +27,7 @@ function Recorder(duration, timeKeeper) {
   let state = {};
   // let state = 'manual';
   let f = 0.2;
-  let startTime = null;
+  // let startTime = null;
 
   const time = Array(num);
   for (let i = 0; i < num; i += 1) {
@@ -35,11 +35,11 @@ function Recorder(duration, timeKeeper) {
   }
 
   function incrementIndex() {
-    index += 1;
-    if (index === num * 2) {
+    state.index += 1;
+    if (state.index === num * 2) {
       // console.log('incrementing');
       data = [...data.slice(num), ...Array(num)];
-      index = num;
+      state.index = num;
       state.buffered = true;
     }
   }
@@ -52,9 +52,8 @@ function Recorder(duration, timeKeeper) {
     } else {
       data = [...initialValueOrCallback(timeStep, num), ...Array(num)];
     }
-    index = num;
-    startTime = [];
     state = {
+      index: num,
       mode: 'pulse',
       startTime: [],
       lastManualValue: 0,
@@ -111,10 +110,10 @@ function Recorder(duration, timeKeeper) {
     const count = Math.floor(deltaTime / timeStep);
     lastDelta = deltaTime - count * timeStep;
 
-    const lastValue = data[index - 1];
+    const lastValue = data[state.index - 1];
     const deltaValue = (value - lastValue) / count;
     for (let i = 0; i < count; i += 1) {
-      data[index] = lastValue + deltaValue * (i + 1);
+      data[state.index] = lastValue + deltaValue * (i + 1);
       incrementIndex();
     }
     if (value !== state.lastManualValue) {
@@ -170,7 +169,7 @@ function Recorder(duration, timeKeeper) {
     //   d = data.slice(num, index);
     // }
     // const rounded = d.map(n => Fig.tools.math.roundNum(n, precision));
-    const rounded = data.slice(index - num, index).map(n => Fig.tools.math.roundNum(n, precision));
+    const rounded = data.slice(state.index - num, state.index).map(n => Fig.tools.math.roundNum(n, precision));
     const deltaValues = [];
     deltaValues[0] = 0;
     for (let i = 1; i < rounded.length; i += 1) {
@@ -213,9 +212,10 @@ function Recorder(duration, timeKeeper) {
 
   function loadEncodedData(firstValue, dataIn, precision = 2) {
     const decoded = decodeData(firstValue, dataIn, precision);
-    data = [...Array(num).fill(0), ...decoded.slice(), ...Array(num - decoded.length)];
+    data = [
+      ...Array(state.index - num).fill(0), ...decoded.slice(), ...Array(2 * num - state.index)];
     // state.buffered = false;
-    index = num + decoded.length;
+    // state.index = num + decoded.length;
   }
 
   function getPulse(t) {
@@ -247,7 +247,7 @@ function Recorder(duration, timeKeeper) {
   function getValueAtTimeAgo(timeDelta) {
     if (state.mode === 'manual') {
       const deltaIndex = Math.floor(timeDelta / timeStep + timeStep / 10);
-      return data[index - deltaIndex - 1];
+      return data[state.index - deltaIndex - 1];
     }
     const timeToGet = timeKeeper.now() - timeDelta;
     if (state.mode === 'pulse') {
@@ -314,7 +314,7 @@ function Recorder(duration, timeKeeper) {
   reset();
 
   function getIndex() {
-    return index;
+    return state.index;
   }
 
   function getData() {
@@ -365,12 +365,11 @@ function Recorder(duration, timeKeeper) {
   function getRecording(fullBuffer = false, timeDuration = 5) {
     if (state.mode === 'manual') {
       const n = Math.floor(timeDuration / timeStep);
-      const i = index - num;
-      console.log(n, fullBuffer, state.buffered, i, index, num)
+      const i = state.index - num;
       if (fullBuffer || state.buffered || i > n) {
         return {
           time: time.slice(0, n),
-          data: data.slice(index - n, index),
+          data: data.slice(state.index - n, state.index),
         };
       }
       return {

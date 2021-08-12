@@ -67,6 +67,7 @@ const { Transform, Point } = Fig;
 const { range, rand, randSign } = Fig.tools.math;
 const minVelocity = 0.05;
 const time = new TimeKeeper();
+const recorder = new Recorder(10, time);
 let maxTime = 0;
 let maxTimeReached = false;
 
@@ -279,6 +280,7 @@ figure.notifications.add('afterDraw', () => {
 figure.notifications.add('setState', (deltaTime) => {
   m1.custom.recording.setDeltaTime(deltaTime);
   time.setDeltaTime(deltaTime);
+  m1.customState.trackingTime += deltaTime;
 });
 
 /*

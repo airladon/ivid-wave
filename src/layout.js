@@ -88,7 +88,7 @@ function addFigureElements() {
   //     Transverse: { font: { color: colorGText } },
   //   },
   // });
-  const recorder = new Recorder(10, time);
+  // const recorder = new Recorder(10, time);
   const m1 = addMedium('m1', 13, 10, 2.5, [5.5, 6], false, 0.12, 0.125, recorder);
   m1.setPosition(0.1, 0);
   stamp('medium')

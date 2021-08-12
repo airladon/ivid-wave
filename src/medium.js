@@ -635,16 +635,16 @@ function addMedium(
   medium.backupStateSet = medium.stateSet;
   medium.stateSet = () => {
     medium.backupStateSet();
-    if (medium.customState.recorder != null) {
-      medium.custom.recording.loadEncodedData(
-        medium.customState.recorder[0], medium.customState.recorder[1],
-      );
-    }
     if (medium.customState.recorderState != null) {
       medium.custom.recording.setState(medium.customState.recorderState);
     }
     if (medium.customState.timeState != null) {
       time.setState(medium.customState.timeState);
+    }
+    if (medium.customState.recorder != null) {
+      medium.custom.recording.loadEncodedData(
+        medium.customState.recorder[0], medium.customState.recorder[1],
+      );
     }
   };
   figure.fnMap.global.add('showEnvelope', () => {
