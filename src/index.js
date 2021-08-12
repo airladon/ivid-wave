@@ -190,7 +190,11 @@ function update(override = false) {
 
   m1.custom.updateFlag = false;
   const deltaTime = time.step();
-  if (ocean.isShown) { ocean.custom.update(deltaTime); return; }
+  if (ocean.isShown) {
+    ocean.custom.update(deltaTime);
+    figure.animateNextFrame();
+    return;
+  }
   if (title.isShown) { title.custom.update(deltaTime); return; }
   if (p1.isShown) { p1.custom.update(deltaTime); return; }
   if (m1.isShown) { m1.custom.update(deltaTime); }
@@ -437,13 +441,24 @@ figure.fnMap.global.add('startSineWave', () => {
   update(true);
 });
 
-figure.fnMap.global.add('showVLF', () => {
-  eqnVLF.showForm('vlf');
-  eqnVLF.animations.new().dissolveIn(0.5).start();
+figure.fnMap.global.add('fixedSine', () => {
+  softReset();
+  m1.custom.recording.setState({
+    mode: 'sine',
+    startTime: -20,
+    lastManualValue: 0,
+    lastManualTime: null,
+  });
+  update(true);
 });
-figure.fnMap.global.add('hideVLF', () => {
-  eqnVLF.animations.new().dissolveOut(0.5).start();
-});
+
+// figure.fnMap.global.add('showVLF', () => {
+//   eqnVLF.showForm('vlf');
+//   eqnVLF.animations.new().dissolveIn(0.5).start();
+// });
+// figure.fnMap.global.add('hideVLF', () => {
+//   eqnVLF.animations.new().dissolveOut(0.5).start();
+// });
 
 
 // figure.fnMap.global.add('showSine', () => {
@@ -453,10 +468,10 @@ figure.fnMap.global.add('hideVLF', () => {
 // figure.fnMap.global.add('hideSine', () => {
 //   eqnSine.animations.new().dissolveOut(0.5).start();
 // });
-figure.fnMap.global.add('showWaveEqn', () => {
-  eqnDiff.showForm('d1');
-  eqnDiff.animations.new().dissolveIn(0.5).start();
-});
+// figure.fnMap.global.add('showWaveEqn', () => {
+//   eqnDiff.showForm('d1');
+//   eqnDiff.animations.new().dissolveIn(0.5).start();
+// });
 
 figure.addCursor({ width: 0.1, color: [0.5, 1, 1, 1], radius: 0.4 });
 
@@ -910,18 +925,7 @@ nav.loadSlides([
         { in: ['m1.balls', 'timePlot1.trace'] },
         {
           delay: 0.05,
-          trigger: () => {
-            softReset();
-            m1.custom.recording.setState({
-              mode: 'sine',
-              startTime: -20,
-              lastManualValue: 0,
-              lastManualTime: null,
-            });
-            update(true);
-            // console.log('heh')
-          },
-        },
+          trigger: 'fixedSine',
       ],
       { in: ['m1.lambdaArrow'], delay: 2 },
       { in: eqnVLF, delay: 1.3 },
@@ -1343,7 +1347,7 @@ nav.loadSlides([
     form: [null, null, null, 'transverseDef'],
     transition: [
       { in: defs },
-      { goToForm: defs, target: 'transverseDef', delay: 0.5 },
+      { goToForm: defs, target: 'transverseDef' },
     ],
   },
 
@@ -1362,7 +1366,7 @@ nav.loadSlides([
     form: [null, null, null, null],
     hide: 'm1',
     transition: [
-      { out: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', defs, 'm1.disturbanceLines', 'm1.xAxis', 'm1.yAxis'] },
+      { out: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', defs, 'm1.disturbanceLines', 'm1.xAxis', 'm1.yAxis', 'pulseButton2'] },
       // { out: 'm1', duration: 0 },
       { trigger: 'softReset' },
       { in: 'p1' },
@@ -1381,6 +1385,16 @@ nav.loadSlides([
     // hide: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'],
     show: ['pulseButton', 'sineButton', 'resetButton', 'p1'],
   },
+
+  /*
+  ..#######...######..########....###....##....##
+  .##.....##.##....##.##.........##.##...###...##
+  .##.....##.##.......##........##...##..####..##
+  .##.....##.##.......######...##.....##.##.##.##
+  .##.....##.##.......##.......#########.##..####
+  .##.....##.##....##.##.......##.....##.##...###
+  ..#######...######..########.##.....##.##....##
+  */
   {
     time: '8:41',
     hide: 'm1',
@@ -1389,20 +1403,20 @@ nav.loadSlides([
     enterState: 'unpause',
     transition: [
       { out: ['pulseButton', 'sineButton', 'resetButton', 'p1', defs] },
-      { in: { ocean: ['h1', 'h2', 'h3', 'h4', 'particles', 'grid'] } },
+      { in: { ocean: ['particles', 'grid'] } },
     ],
     // leaveState: 'softReset',
   },
   {
-    time: '8:50',
+    time: '8:49.5',
     hide: 'm1',
     show: 'ocean',
     fromForm: [null, null, null, 'ocean'],
     form: [null, null, null, 'ocean'],
     enterState: 'unpause',
     transition: [
-      // { in: { ocean: ['h1', 'h2', 'h3', 'h4'] } },
-      { in: { ocean: ['c1', 'c2', 'c3', 'c4'] } },
+      { in: { ocean: ['h1', 'h2', 'h3', 'h4'] } },
+      { in: { ocean: ['c1', 'c2', 'c3', 'c4'] }, delay: 0.5 },
       { in: defs, delay: 4.5 },
     ],
   },

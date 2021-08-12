@@ -75,11 +75,12 @@ void main() {
   const medium = figure.add({
     name,
     make: 'collection',
+    position: [0, -2],
     elements: [
       {
         name: 'grid',
         make: 'grid',
-        bounds: [0, -height, length, height * 2],
+        bounds: [0, -length / 20 * 2.5, length, length / 20 * 5],
         line: { width: 0.03 },
         xStep: length / 20,
         yStep: length / 20,
