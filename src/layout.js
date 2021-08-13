@@ -114,6 +114,8 @@ function addFigureElements() {
   // addIntro(24, 4, 0.1);
   addExamples();
   stamp('titles')
+  addWaveInterference('waveInterference', 20);
+  stamp('waveInterference');
   figure.showTouchBorders = () => {
     const elements = figure.elements.getAllElements();
     const colors = [
