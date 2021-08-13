@@ -101,6 +101,9 @@ function addMedium(
         width: 0.15,
         color: colorDisturbanceText,
         simple: true,
+        mods: {
+          dimColor: colorLight,
+        },
       },
       {
         name: 'periodicEnvelope',
@@ -287,7 +290,8 @@ function addMedium(
       {
         name: 'eqn',
         make: 'equation',
-        color: colorLight,
+        color: colorDisturbanceText,
+        dimColor: colorLight,
         scale: 4,
         elements: {
           lb: {
@@ -347,6 +351,7 @@ function addMedium(
         mathx: { position: [7.5, 8.4], scale: 0.7 },
         bottom: { position: [10, 3], scale: 0.6 },
         rightSmall: { position: [10, 7], scale: 0.9 },
+        one: { position: [7, 4], scale: 0.75 },
       },
     },
   });
@@ -486,7 +491,7 @@ function addMedium(
           }
           const newX = x + movePadEnv.customState.x / maxValue * length;
           const minX = Math.min(Math.max(0, x), length);
-          const minNewX = Math.min(Math.max(0, newX), length);
+          const minNewX = Math.min(Math.max(0, newX / length * maxValue), length);
           if (minValue < 0) {
             // if (xDashLineG.isShown) {
             //   eqn1.setPosition(
@@ -498,6 +503,11 @@ function addMedium(
               minNewX,
               minValue - 1,
             );
+            const a2 = figure.get('arrow2');
+            if (a2.isShown) {
+              a2.setPosition(eqn1._sign.getPositionInBounds('figure', 'center', 'bottom').sub(0, 0.7));
+              a2.setRotation(Math.PI / 2);
+            }
             // }
             eqn1.setOpacity(1);
           } else {

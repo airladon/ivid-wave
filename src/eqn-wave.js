@@ -69,6 +69,7 @@ function addTravellingWaveEquation(name) {
       min2: '  \u2212  ',
       // xDash: 'x\'',
       comma: ' , ',
+      comma2: ' , ',
       arrow1: { symbol: 'line', width: 0.04, arrow: { start: { head: 'triangle' } } },
       arrow2: { symbol: 'line', width: 0.04, arrow: { start: { head: 'triangle' } } },
       tBox1: tBox([0.5, 0.5, 0.25, 0.5]),
@@ -123,6 +124,10 @@ function addTravellingWaveEquation(name) {
         },
         [t('y_c', 1), brac([t('x_c', 2), 'comma', t('t_c', 3)], 1), 'equals2', t('g_c', 4), brac(['x_c1', t('min_c', 5), t(['v_c', 't_c1'], 6)], 2)],
       ],
+      sinInput_g: lines([
+        line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
+        line(['g_2', brac('x_2', 3), 'equals2'], 2),
+      ], 2.5, 'element'),
       sinInput: lines([
         line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
         line(['g_2', brac('x_2', 3), 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3'], 4)], 2),
@@ -155,8 +160,12 @@ function addTravellingWaveEquation(name) {
         line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
         line(['g_2', brac(['x_2', 'min1', 'v_2', 't_2'], 3), 'equals2', 'sin', brac(['k', ' ', 'x_3', 'min2', 'w', ' ', 't_3'], 4)], 2),
       ], 2.5, 'element'),
+      // sinInput_5: lines([
+      //   line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'sin', brac(['k', ' ', 'x_3', 'min2', 'w', ' ', 't_3'], 4)], 1),
+      // ], 2.5, 'element'),
       sinInput_5: lines([
-        line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'sin', brac(['k', ' ', 'x_3', 'min2', 'w', ' ', 't_3'], 4)], 1),
+        line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
+        line(['y_1', brac(['x_2', 'comma2', 't_2'], 3), 'equals2', 'sin', brac(['k', ' ', 'x_3', 'min2', 'w', ' ', 't_3'], 4)], 2),
       ], 2.5, 'element'),
     },
   });

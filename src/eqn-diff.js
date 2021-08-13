@@ -346,7 +346,7 @@ function addDiffEquation(name) {
     align: 'mid',
     position: [8, 6],
     line: { width: 0.05 },
-    color: colorLight,
+    color: colorYellowText,
   });
   figure.add({
     name: 'arrow2',
@@ -360,7 +360,7 @@ function addDiffEquation(name) {
     align: 'mid',
     position: [15, 6],
     line: { width: 0.05 },
-    color: colorLight,
+    color: colorYellowText,
   });
   const d = description;
   const e = eqn;

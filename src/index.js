@@ -93,6 +93,8 @@ const ocean = figure.get('ocean');
 const timePlot1 = figure.get('timePlot1');
 // const eqnSine = figure.get('eqnSine');
 const defs = figure.get('defs');
+const arrow1 = figure.get('arrow1');
+const arrow2 = figure.get('arrow2');
 // const eqnSineT = figure.get('eqnSineT');
 const eqnWave = figure.get('eqnWave');
 // const eqnWaveDescription = figure.get('eqnWaveDescription');
@@ -270,6 +272,22 @@ figure.notifications.add('setState', (deltaTime) => {
   m1.customState.trackingTime += deltaTime;
 });
 
+
+const pointTo = (index, element, minus, startOrLength, vertical = true) => {
+  const p = element.getPosition('figure');
+  let s = p._dup();
+  if (typeof startOrLength === 'number') {
+    if (vertical) { s.y -= startOrLength } else { s.x -= startOrLength }
+  } else {
+    s = Fig.getPoint(startOrLength);
+  }
+  const a = figure.get(`pointer${index}`);
+  const l = new Fig.Line(s, p);
+  a.setEndPoints(s, l.pointAtPercent(1 - minus / l.length));
+};
+figure.fnMap.global.add('pointToEqn1Sign', () => {
+  pointTo(1, m1._eqn1._sign, 0.5, [14, 6]);
+});
 /*
 .########..##.....##.########.########..#######..##....##..######.
 .##.....##.##.....##....##.......##....##.....##.###...##.##....##
@@ -920,7 +938,7 @@ nav.loadSlides([
   ..######..##.....##.####.##..........##...
   */
   {
-    time: '5:03.5',
+    time: '4:57',
     scenario: ['default', 'right', 'wavelength'],
     // enterState: () => {
     //   m1.custom.recording.setState({
@@ -942,7 +960,7 @@ nav.loadSlides([
     ],
   },
   {
-    // time: '3:59.5',
+    time: '5:11',
     scenarioCommon: 'default',
     showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.balls', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv'],
     enterStateCommon: () => {
@@ -986,15 +1004,15 @@ nav.loadSlides([
   },
 
   {
-    // time: '4:24',
+    time: '5:37',
     showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv', 'm1.eqn'],
     enterState: () => {
       m1._movePadEnv.customState.x = 2.58;
       // m1._movePadEnv.customState.x = 0;
-      m1._envelope.showAll();
-      m1.custom.update();
-      figure.fnMap.global.exec('copyEnvelope');
-      m1._envelope2.showAll();
+      // m1._envelope.showAll();
+      // m1.custom.update();
+      // figure.fnMap.global.exec('copyEnvelope');
+      // m1._envelope2.showAll();
       // m1._movePadEnv.setPosition(0, 0);
       update(true);
       m1.custom.updateEqn1();
@@ -1016,30 +1034,41 @@ nav.loadSlides([
   },
 
   {
-    // time: '4:46',
+    time: '6:08',
     fromForm: ['shiftedG_0'],
     form: ['shiftedG_0'],
-    enterStateCommon: () => {
-      m1._envelope.showAll();
-      m1.custom.update();
-      figure.fnMap.global.exec('copyEnvelopeReset');
-      reset();
-      m1.custom.recording.setState({
-        mode: 'pulse2',
-        startTime: [-4.7],
-        lastManualValue: 0,
-        lastManualTime: null,
-      });
+    // enterStateCommon: () => {
+    //   m1._envelope.showAll();
+    //   m1.custom.update();
+    //   figure.fnMap.global.exec('copyEnvelopeReset');
+    //   reset();
+    //   m1.custom.recording.setState({
+    //     mode: 'pulse2',
+    //     startTime: [-4.7],
+    //     lastManualValue: 0,
+    //     lastManualTime: null,
+    //   });
+    //   m1._movePadEnv.customState.x = -1.28;
+    //   m1._envelope.showAll();
+    //   m1.custom.update();
+    //   figure.fnMap.global.exec('copyEnvelope');
+    //   m1._envelope2.showAll();
+    //   // m1._movePadEnv.setPosition(0, 0);
+    //   update(true);
+    //   m1.custom.updateEqn1();
+    //   setVelocityToggle(false);
+    //   setSlowTimeToggle(false);
+    // },
+    enterState: () => {
       m1._movePadEnv.customState.x = -1.28;
-      m1._envelope.showAll();
-      m1.custom.update();
-      figure.fnMap.global.exec('copyEnvelope');
-      m1._envelope2.showAll();
+      // m1._movePadEnv.customState.x = 0;
+      // m1._envelope.showAll();
+      // m1.custom.update();
+      // figure.fnMap.global.exec('copyEnvelope');
+      // m1._envelope2.showAll();
       // m1._movePadEnv.setPosition(0, 0);
       update(true);
       m1.custom.updateEqn1();
-      setVelocityToggle(false);
-      setSlowTimeToggle(false);
     },
     // showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.envelope', 'm1.eqn'],
     showCommon: [],
@@ -1050,31 +1079,26 @@ nav.loadSlides([
   },
   {
     form: 'shiftedG_1',
-    // time: '4:49',
+    time: '6:12',
     enterStateCommon: () => {
       setVelocityToggle(false);
       setSlowTimeToggle(false);
     },
   },
-  { form: 'shiftedG_2' }, //'4:51' },
-  { form: 'shiftedG_3' }, //'4:56.5' },
-  { form: 'shiftedG_4' }, //'4:58' },
-  { form: 'shiftedG_5' }, //'4:59.5' },
-  { form: 'shiftedG_6' }, //'5:07.5' },
-  { form: 'shiftedG_7' }, //'5:10.5' },
+  { form: 'shiftedG_2', time: '6:15' },
+  { form: 'shiftedG_3', time: '6:21' }, //'4:56.5' },
+  { form: 'shiftedG_4', time: '6:22.5' }, //'4:58' },
+  { form: 'shiftedG_5', time: '6:24' },
+  { form: 'shiftedG_6', time: '6:34' },
+  { form: 'shiftedG_7', time: '6:37' },
+  { form: 'final', time: '6:40' },
   {
-    form: 'final',
-    // time: '5:13',
-    transition: [
-      [
-        { scenario: eqnWave, target: 'high' },
-        { goToForm: eqnWave, target: 'final' },
-      ],
-    ],
+    time: '6:46.5',
+    transition: { scenario: eqnWave, target: 'high' },
   },
   {
     form: 'highlight',
-    // time: '5:18',
+    time: '6:48',
     scenarioCommon: ['default', 'high'],
     transition: [
       [
@@ -1082,6 +1106,67 @@ nav.loadSlides([
         { in: 'eqnWaveDescription' },
       ],
     ],
+  },
+  {
+    form: 'final',
+    time: '7:07',
+    transition: [
+      [
+        { out: 'eqnWaveDescription' },
+        { goToForm: eqnWave, target: 'final' },
+      ],
+    ],
+  },
+
+  /*
+  ..#######..##....##.########
+  .##.....##.###...##.##......
+  .##.....##.####..##.##......
+  .##.....##.##.##.##.######..
+  .##.....##.##..####.##......
+  .##.....##.##...###.##......
+  ..#######..##....##.########
+  */
+  {
+    time: '7:08',
+    show: ['m1.xAxis', 'm1.yAxis', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv', 'm1.eqn', 'm1.eqn1'],
+    scenario: 'one',
+    enterState: () => {
+      m1._envelope.showAll();
+      m1.custom.update();
+      figure.fnMap.global.exec('copyEnvelopeReset');
+      reset();
+      m1.custom.recording.setState({
+        mode: 'pulse2',
+        startTime: [-4.7],
+        lastManualValue: 0,
+        lastManualTime: null,
+      });
+      m1._movePadEnv.customState.x = 1.28;
+      m1._envelope.showAll();
+      m1.custom.update();
+      figure.fnMap.global.exec('copyEnvelope');
+      m1._envelope2.showAll();
+      update(true);
+      m1.custom.updateEqn1();
+      setVelocityToggle(false);
+      setSlowTimeToggle(false);
+      arrow1.setPosition(eqnWave._min.getPositionInBounds('figure', 'center', 'bottom').sub(0, 0.6));
+      arrow1.setRotation(Math.PI / 2);
+      m1._envelope.dim();
+      m1._eqn.dim();
+    },
+    transition: [
+      [
+        { in: ['m1.xAxis', 'm1.yAxis', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv', 'm1.eqn', 'm1.eqn1'] },
+      ],
+      { in: ['arrow1', 'arrow2'], delay: 6 },
+      { out: ['m1.xAxis', 'm1.yAxis', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv', 'm1.eqn', 'm1.eqn1', 'arrow1', 'arrow2'], delay: 5 },
+    ],
+    leaveState: () => {
+      m1._envelope.undim();
+      m1._eqn.undim();
+    },
   },
 
   /*
@@ -1093,23 +1178,15 @@ nav.loadSlides([
   .##....##..##..##...###
   ..######..####.##....##
   */
-  {
-    form: 'sinInput',
-    // time: '5:38',
-    // scenarioCommon: ['default', 'high'],
-    transition: [
-      [
-        { goToForm: eqnWave, target: 'final' },
-        { out: 'eqnWaveDescription' },
-      ],
-      { goToForm: eqnWave, target: 'sinInput' },
-    ],
-  },
-  { form: 'sinInput_1' }, //'5:40' },
-  { form: 'sinInput_2' }, //'5:42' },
-  { form: 'sinInput_3' }, //'5:43.5' },
-  { form: 'sinInput_4' }, //'5:46' },
-  { form: ['sinInput_5', null, null, null] }, //'5:47.5' },
+  { form: 'sinInput_g', time: '7:24.5' },
+  { form: 'sinInput', time: '7:27' },
+  { form: 'sinInput_1', time: '7:29' },
+  { form: 'sinInput_2', time: '7:31.5' },
+  { form: 'sinInput_3', time: '7:33' },
+  // { form: 'sinInput_4', time: '7:35.5' },
+  { form: 'sinInput_5', time: '7:35' },
+  { form: 'final', time: '7:39' },
+  // { form: ['sinInput_5', null, null, null], time: '7:36.5' }, //'5:47.5' },
   {
     // time: '5:49.5',
     scenarioCommon: ['default', 'highSmall'],
@@ -1213,9 +1290,9 @@ nav.loadSlides([
       ],
     ],
   },
-  { time: '7:05', scenarioCommon: ['default', 'wave'], form: [null, null, 'diffSeparate', null] },
-  { time: '7:06.5', form: [null, null, 'diffSeparate', 'derivative1'] },
-  { time: '7:08.5', form: [null, null, 'diffSeparate', 'derivative2'] },
+  { scenarioCommon: ['default', 'wave'], form: [null, null, 'diffSeparate', null] },
+  { form: [null, null, 'diffSeparate', 'derivative1'] },
+  { form: [null, null, 'diffSeparate', 'derivative2'] },
 
   /*
   ..######..##.....##....###....########..########
