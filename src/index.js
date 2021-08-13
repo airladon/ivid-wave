@@ -1196,21 +1196,45 @@ nav.loadSlides([
   .##.....##..#######..########....##....####.##........########.########
   */
   {
-    form: 'final',
+    form: null,
     time: '7:39',
     transition: [
-      { in: 'waveInterference' },
-      // { trigger: 'animateInterference', duration: 10 },
+      { goToForm: eqnWave, target: 'final' },
+      { trigger: 'calcWave', payload: 0 },
+      [
+        { in: 'waveInterference', delay: 1 },
+        { trigger: 'animateSingleWave', duration: 8 },
+      ],
+      { delay: 0.5 },
+      [
+        { out: 'waveInterference' },
+        { out: eqnWave },
+      ],
     ],
-    steadyState: 'animateInterference',
+    // steadyState: 'animateSingleWave',
+  },
+  {
+    form: null,
+    scenario: ['high', 'center'],
+    time: '7:48.5',
+    transition: [
+      { out: eqnWave },
+      { trigger: 'calcInterference', payload: 0 },
+      [
+        { in: 'waveInterference' },
+        { trigger: 'animateInterference', duration: 7 },
+      ],
+      { out: 'waveInterference' },
+    ],
+    // steadyState: 'animateInterference',
   },
   // { form: ['sinInput_5', null, null, null], time: '7:36.5' }, //'5:47.5' },
-  {
-    // time: '5:49.5',
-    scenarioCommon: ['default', 'highSmall'],
-    transition: { scenario: eqnWave, start: 'high', target: 'highSmall' },
-  },
-  { form: ['sinInput_5', null, null, 'single3'] }, //'5:51.5' },
+  // {
+  //   // time: '5:49.5',
+  //   scenarioCommon: ['default', 'highSmall'],
+  //   transition: { scenario: eqnWave, start: 'high', target: 'highSmall' },
+  // },
+  // { form: ['sinInput_5', null, null, 'single3'] }, //'5:51.5' },
 
   /*
   .########..####.########.########
@@ -1221,23 +1245,24 @@ nav.loadSlides([
   .##.....##..##..##.......##......
   .########..####.##.......##......
   */
-  {
-    fromForm: ['sinInput_5', null, null, 'single3'],
-    form: [null, null, null, 'single3'],
-    // time: '5:56.5',
-  },
-  { form: [null, null, null, 'multi'] }, //'5:57.3' },
+  // {
+  //   fromForm: ['sinInput_5', null, null, 'single3'],
+  //   form: [null, null, null, 'single3'],
+  //   // time: '5:56.5',
+  // },
+  // { form: [null, null, null, 'multi'] }, //'5:57.3' },
   {
     // scenario: 'summary',
-    // time: '6:06.5',
-    fromForm: [null, null, null, 'multi'],
+    scenario: ['default', 'high'],
+    time: '7:57',
+    fromForm: [null, null, 'diffMono', null],
     form: [null, null, 'diffMono', null],
     enterState: () => {
-      eqnDiff.showForm('diffMono');
-      // eqnDiff.hide();
+      // eqnDiff.showForm('diffMono');
+      eqnDiff.setScenario('default');
     },
     transition: [
-      { out: defs },
+      // { out: eqnWave },
       { delay: 0.5 },
       [
         { in: 'eqnDiff.d2', delay: dd(true), duration: 0.3 },
@@ -1260,15 +1285,15 @@ nav.loadSlides([
       ],
     ],
   },
-  { form: [null, null, 'diffMono', 'waveEqn'], scenarioCommon: ['default', 'wave'] }, // time: '6:14' },
-  { form: [null, null, 'diffMono', 'waveEqn1'] }, // time: '6:15.5' },
+  { form: [null, null, 'diffMono', 'waveEqn'], scenarioCommon: ['default', 'wave'], time: '8:05' },
+  { form: [null, null, 'diffMono', 'waveEqn1'], time: '8:06' },
   {
     form: [null, null, 'diffSolnMono', null],
     // time: '6:22',
     transition: [
       { out: 'defs' },
       [
-        { scenario: eqnDiff, target: 'high' },
+        { scenario: eqnDiff, target: 'diffHigh' },
         { goToForm: eqnDiff, target: 'diffSolnMono', delay: 0.5 },
       ],
     ],

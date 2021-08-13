@@ -229,7 +229,7 @@ function addDiffEquation(name) {
     mods: {
       scenarios: {
         default: { position: [12, 6], scale: 1 },
-        high: { position: [12, 8], scale: 1 },
+        diffHigh: { position: [12, 8], scale: 1 },
         summary: { position: [19, 3], scale: 0.75 },
         props: { position: [19.5, 6], scale: 0.7 },
         velocity: { position: [12, 1], scale: 0.6 },
