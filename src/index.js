@@ -757,7 +757,7 @@ nav.loadSlides([
   },
 
   {
-    time: '3:55',
+    time: '3:56',
     show: ['velocityButton', 'velocity', 'm1.ballTracker'],
     enterState: () => {
       figure.fnMap.exec('setArrow', 'm1.vArrow');
@@ -782,7 +782,7 @@ nav.loadSlides([
       { out: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton', 'pulseButton2'] },
       // { trigger: 'growArrow', payload: ['timePlot1._secondsArrow', 1], duration: 1.5 },
       { in: timePlot1._secondsArrow },
-      { trigger: 'growArrow', payload: ['m1._v2Arrow', 1], duration: 1.5, delay: 1 },
+      { trigger: 'growArrow', payload: ['m1._v2Arrow', 1], duration: 1.5, delay: 3 },
     ],
     steadyState: () => {
       figure.fnMap.exec('setArrow', 'm1.v2Arrow');
@@ -790,21 +790,43 @@ nav.loadSlides([
     },
   },
 
-  // Show w = vT
   {
-    // time: '3:22',
+    time: '4:14',
     show: 'm1.ballTracker',
-    hide: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton',
-      'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton'],
-    enterState: () => {
+    scenario: 'velocity',
+    hideCommon: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton',
+      'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton', 'pulseButton2'],
+    enterStateCommon: () => {
       setVelocityToggle(true);
       figure.fnMap.exec('setArrow', 'm1.v2Arrow');
       figure.fnMap.exec('setArrow', 'timePlot1.TArrow');
       figure.fnMap.exec('setArrow', 'timePlot1.secondsArrow');
       pause();
     },
-    fromForm: [null, 'wAlone'],
-    form: [null, 'wvt'],
+    form: [null, null, 'vdt'],
+  },
+  {
+    form: [null, null, 'dvt'],
+    time: '4:16',
+    show: 'm1.ballTracker',
+    scenario: 'velocity',
+    transition: { goToForm: eqnDiff, target: 'dvt', duration: 2 },
+  },
+
+  // Show w = vT
+  {
+    time: '4:21',
+    show: 'm1.ballTracker',
+    scenario: 'velocity',
+    // enterState: () => {
+    //   setVelocityToggle(true);
+    //   figure.fnMap.exec('setArrow', 'm1.v2Arrow');
+    //   figure.fnMap.exec('setArrow', 'timePlot1.TArrow');
+    //   figure.fnMap.exec('setArrow', 'timePlot1.secondsArrow');
+    //   pause();
+    // },
+    fromForm: [null, 'wAlone', 'dvt'],
+    form: [null, 'wvt', 'dvt'],
     transition: [
       { out: ['m1.v2Arrow.label'] },
       [
@@ -836,21 +858,26 @@ nav.loadSlides([
   },
 
   {
-    // time: '3:32',
-    form: [null, 'lvt'],
+    time: '4:31',
+    form: [null, 'lvt', null],
     hide: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton',
-      'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton', 'm1.v2Arrow.label'],
+      'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton', 'm1.v2Arrow.label', 'pulseButton2'],
+    scenario: 'velocity',
+    enterStateCommon: null,
     enterState: () => {
-      m1._velocity.showAll();
+      setVelocityToggle(true);
       figure.fnMap.exec('setArrow', 'm1.v2Arrow');
+      figure.fnMap.exec('setArrow', 'timePlot1.TArrow');
+      pause();
+      m1._velocity.showAll();
       // timePlot1._secondsArrow.hide();
       m1._v2Arrow._label.hide();
-      figure.fnMap.exec('setArrow', 'timePlot1.TArrow');
       m1.custom.setVelocity(1);
       velocityButton.custom.off();
+      // figure.fnMap.exec('setArrow', 'timePlot1.secondsArrow');
     },
     transition: [
-      { out: ['m1.balls', 'm1.ballTracker', 'timePlot1.TArrow', 'timePlot1.trace', 'm1.v2Arrow.line', 'm1.v2Arrow.arrow1', 'm1.v2Arrow.arrow2', eqnVLF] },
+      { out: ['m1.balls', 'm1.ballTracker', 'timePlot1.TArrow', 'timePlot1.trace', 'm1.v2Arrow.line', 'm1.v2Arrow.arrow1', 'm1.v2Arrow.arrow2', eqnVLF, eqnDiff] },
       { scenario: eqnVLF, target: 'wavelength', duration: 0 },
       { goToForm: eqnVLF, target: 'wavelength', duration: 0 },
       { out: eqnVLF, duration: 0 },
@@ -861,7 +888,7 @@ nav.loadSlides([
           trigger: 'fixedSine',
         },
       ],
-      { in: ['m1.lambdaArrow'], delay: 2 },
+      { in: ['m1.lambdaArrow'], delay: 4 },
       { in: eqnVLF, delay: 1.3 },
       { pulse: 'm1.velocity', delay: 3, yAlign: 'bottom', scale: 1.5 },
       { in: ['timePlot1.periodArrow'], delay: 1 },
@@ -893,7 +920,7 @@ nav.loadSlides([
   ..######..##.....##.####.##..........##...
   */
   {
-    // time: '3:48',
+    time: '5:03.5',
     scenario: ['default', 'right', 'wavelength'],
     // enterState: () => {
     //   m1.custom.recording.setState({

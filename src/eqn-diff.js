@@ -98,6 +98,7 @@ function addDiffEquation(name) {
       plus2: { text: '  +  ', color: colorGText },
       box1: { symbol: 'box', lineWidth: 0.04 },
       box2: { symbol: 'box', lineWidth: 0.04 },
+      times: ' \u00d7 ',
     },
     phrases: {
       d2ydx2_: frac([d2(1), 'y_1'], 1, ['d3', sq('x', 3)], 1, 0.02, 0.05, 0.01),
@@ -212,6 +213,18 @@ function addDiffEquation(name) {
         content: scale(['d2ydt2_', 'equals', 'vSq_', '  ', 'd2ydx2_'], 0.8),
         alignment: { xAlign: 'center' },
       },
+      vdt: {
+        content: ['velocity', 'equals', frac('distance', 1, 'time')],
+        alignment: { xAlign: 'center' },
+      },
+      dvt: {
+        content: ['distance', 'equals', 'velocity', 'times', 'time'],
+        translation: {
+          distance: { style: 'curve', direction: 'up', mag: 0.4 },
+          velocity: { style: 'curve', direction: 'down', mag: 0.4 },
+        },
+        alignment: { xAlign: 'center' },
+      },
     },
     mods: {
       scenarios: {
@@ -219,6 +232,7 @@ function addDiffEquation(name) {
         high: { position: [12, 8], scale: 1 },
         summary: { position: [19, 3], scale: 0.75 },
         props: { position: [19.5, 6], scale: 0.7 },
+        velocity: { position: [12, 1], scale: 0.6 },
         // right: { position: [19.5, 10], scale: 0.7 },
       },
     },
