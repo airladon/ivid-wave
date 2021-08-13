@@ -177,7 +177,7 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
         callback: (p) => {
           trace.pointsToDraw = Math.floor(trace.drawingObject.numVertices / 6 * p) * 6;
         },
-        duration: 1,
+        duration: 2,
       })
       .whenFinished(() => {
         trace.pointsToDraw = -1;

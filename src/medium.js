@@ -99,7 +99,7 @@ function addMedium(
         name: 'envelope',
         make: 'polyline',
         width: 0.15,
-        color: colorLight,
+        color: colorDisturbanceText,
         simple: true,
       },
       {
@@ -658,7 +658,7 @@ function addMedium(
           envelope.pointsToDraw = Math.floor(envelope.drawingObject.numVertices / 6 * p) * 6;
           // console.log(p, envelope.pointsToDraw)
         },
-        duration: 1,
+        duration: 2,
       })
       .start();
   });

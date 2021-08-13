@@ -45,8 +45,8 @@ function addExamples() {
     examples.hideAll();
     examples.animations.new()
       .dissolveIn({ element: 'light', duration: d })
-      .dissolveIn({ element: 'sound', duration: d, delay: 2.5 })
-      .dissolveIn({ element: 'wifi', duration: d, delay: 2.3 })
+      .dissolveIn({ element: 'sound', duration: d, delay: 3 })
+      .dissolveIn({ element: 'wifi', duration: d, delay: 3 })
       .dissolveIn({ element: 'ocean', duration: d, delay: 2 })
       .dissolveIn({ element: 'seismic', duration: d, delay })
       .dissolveIn({ element: 'shock', duration: d, delay })

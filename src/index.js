@@ -479,7 +479,7 @@ nav.loadSlides([
     show: ['title'],
   },
   {
-    time: '0:35',
+    time: '0:39.5',
     show: ['title', 'examples'],
     transition: [
       // { pulse: 'title', duration: 1, scale: 1.2 },
@@ -497,7 +497,7 @@ nav.loadSlides([
   */
   {
     scenario: 'summary',
-    time: '0:50.2',
+    time: '0:57',
     fromForm: ['final', 'vlfSummary', 'diffMono'],
     form: ['final', 'vlfSummary', 'diffMono'],
     enterState: 'softReset',
@@ -505,14 +505,14 @@ nav.loadSlides([
       { out: ['examples', 'title'] },
       { in: ['m1.balls', 'm1.firstBall', 'm1.movePad'] },
       { trigger: 'startSineWave' },
-      { delay: 2 },
+      { delay: 5 },
       [
         { in: 'eqnVLF.v_1', delay: dd(true), duration: 0.3 },
         { in: 'eqnVLF.equals', delay: dd(), duration: 0.3 },
         { in: 'eqnVLF.lambda_1', delay: dd(), duration: 0.3 },
         { in: 'eqnVLF.f_1', delay: dd(), duration: 0.3 },
       ],
-      { delay: 1 },
+      { delay: 0.5 },
       [
         { in: 'eqnWave.y', delay: dd(true), duration: 0.3 },
         { in: 'eqnWave.lb1', delay: dd(), duration: 0.3 },
@@ -562,7 +562,7 @@ nav.loadSlides([
   .########..########.##......
   */
   {
-    time: '1:00',
+    time: '1:08.5',
     scenario: 'summary',
     form: [null, null, null],
     transition: [
@@ -570,11 +570,11 @@ nav.loadSlides([
       { scenario: 'm1', target: 'default', duration: 0 },
       { trigger: 'softReset' },
       { in: ['m1.grid', 'm1.firstBall', 'm1.movePad', 'm1.balls', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'slowTimeButton', 'slowTimeLabel', 'pulseButton', 'sineButton'] },
-      { pulse: 'm1.firstBall', delay: 4, scale: 3 },
+      { pulse: 'm1.firstBall', delay: 6.5, scale: 3 },
     ],
   },
   {
-    time: '1:20',
+    time: '1:30',
     scenario: 'default',
     showCommon: ['m1.grid', 'm1.firstBall', 'm1.movePad', 'm1.balls', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'slowTimeButton', 'slowTimeLabel', 'pulseButton', 'sineButton'],
     transition: [
@@ -584,9 +584,15 @@ nav.loadSlides([
   },
   {
     scenario: ['default', 'top'],
-    time: '1:28.5',
+    time: '1:38.5',
     fromForm: [null, null, null, null],
     form: [null, null, null, 'waveDef'],
+  },
+  {
+    scenario: ['default', 'top'],
+    time: '1:43.5',
+    fromForm: [null, null, null, null],
+    form: [null, null, null, null],
   },
 
   /*
@@ -599,7 +605,7 @@ nav.loadSlides([
   .########..####..######......####.##....##
   */
   {
-    time: '1:31',
+    time: '2:05.5',
     enterStateCommon: () => {
       setVelocityToggle(false);
       setSlowTimeToggle(false);
@@ -607,15 +613,15 @@ nav.loadSlides([
     scenario: ['default', 'top'],
     showCommon: [
       'm1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton',
-      'slowTimeLabel', 'slowTimeButton', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'timePlot1.grid', 'pulseButton', 'sineButton', 'm1.xAxis', 'm1.yAxis',
+      'slowTimeLabel', 'slowTimeButton', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'timePlot1.grid', 'pulseButton', 'sineButton', 'm1.xAxis', 'm1.yAxis', 'pulseButton2',
     ],
     form: [null, null, null, null],
     transition: [
-      { out: defs },
+      // { out: defs },
       { scenario: 'm1', target: 'right', duration: 2 },
       [
         { trigger: 'softReset' },
-        { in: ['m1.xAxis', 'm1.yAxis'] },
+        { in: ['m1.xAxis', 'm1.yAxis', 'pulseButton2'] },
         { in: { timePlot1: ['xAxis', 'yAxis', 'grid', 'trace'] } },
       ],
       { delay: 1 },
@@ -624,29 +630,46 @@ nav.loadSlides([
         { pulse: 'm1.firstBall', scale: 3 },
       ],
       {
-        pulse: 'timePlot1.xAxis.title', delay: 1.5, xAlign: 'left', yAlign: 'top', scale: 2,
+        pulse: 'timePlot1.xAxis.title', delay: 0.5, xAlign: 'left', yAlign: 'top', scale: 2,
       },
     ],
   },
   {
-    time: '1:50.5',
+    time: '2:28.6',
     scenarioCommon: ['default', 'right'],
     show: '_cursor_.up',
+    enterStateCommon: () => {
+      // m1._envelope.showAll();
+      softReset();
+      m1.custom.recording.setState({
+        mode: 'pulse2',
+        startTime: [-6.16],
+        lastManualValue: 0,
+        lastManualTime: null,
+      });
+      m1.customState.trackingTime = -6.16;
+      update(true);
+      setVelocityToggle(false);
+      setSlowTimeToggle(false);
+    },
     transition: [
-      { in: ['m1.marker', 'timePlot1.marker'] },
-      { out: ['m1.marker', 'timePlot1.marker'], delay: 6.3 },
+      [
+        { in: ['m1.marker', 'timePlot1.marker'] },
+        { position: 'm1.marker', target: [5, 0], duration: 0 },
+      ],
+      { out: ['m1.marker', 'timePlot1.marker'], delay: 12 },
     ],
   },
   {
-    time: '1:57',
+    time: '2:43.5',
     transition: [
       {
         out: [
-          'm1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'sineButton',
+          'm1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'sineButton', 'pulseButton2',
         ],
       },
-      { trigger: 'growTimeTrace', duration: 1 },
-      { trigger: 'showEnvelope', duration: 1, delay: 2 },
+      { trigger: 'growTimeTrace', duration: 2 },
+      { trigger: 'showEnvelope', duration: 2, delay: 1 },
     ],
     steadyState: () => {
       m1._envelope.pointsToDraw = Math.floor(m1._envelope.drawingObject.numVertices / 6) * 6;
@@ -658,35 +681,36 @@ nav.loadSlides([
     },
   },
   {
-    time: '2:04.5',
+    time: '2:52.5',
     show: 'm1.envelope',
-    hide: ['m1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'sineButton',
+    hide: ['m1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'sineButton', 'pulseButton2',
     ],
     transition: [
       {
         pulse: 'timePlot1.trace', translation: 0.15, min: -0.15, angle: Math.PI / 2, frequency: 2,
       },
-      { delay: 4.3 },
+      { delay: 3.8 },
       {
         pulse: ['m1.balls', 'm1.envelope'], translation: 0.15, min: -0.15, angle: Math.PI / 2, frequency: 2,
       },
     ],
   },
   {
-    time: '2:15',
+    time: '3:03',
     transition: [
       {
         out: 'm1.envelope',
       },
       {
         in: [
-          'm1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'sineButton',
+          'm1.movePad', 'm1.firstBall', 'resetButton', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'sineButton', 'pulseButton2',
         ],
       },
     ],
   },
   {
-    time: '2:20',
+    time: '3:09',
+    enterStateCommon: null,
     transition: [
       { in: 'm1.velocity' },
     ],
@@ -702,24 +726,27 @@ nav.loadSlides([
   ....###....########.########..#######...######..####....##.......##...
   */
   {
-    time: '2:45',
+    time: '3:39',
     show: ['velocityButton', 'velocity', 'm1.ballTracker'],
     enterState: () => {
       m1._ballTracker.setPosition(100, 0);
+      setVelocityToggle(false);
+      setSlowTimeToggle(false);
     },
     transition: [
       [
         { in: ['velocityButton', 'velocity'] },
         { pulse: ['velocityButton', 'velocity'], centerOn: [16, 0.5], scale: 1.3 },
       ],
+      { pulse: 'm1.ballTracker', scale: 2, delay: 5.3, yAlign: 'top', duration: 1.5 },
     ],
   },
   {
-    time: '2:54.8',
+    time: '3:49',
     scenarioCommon: ['default', 'right'],
     show: ['velocityButton', 'velocity', 'm1.ballTracker'],
     transition: [
-      { out: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton'] },
+      { out: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton', 'pulseButton2'] },
       { trigger: 'growArrow', payload: ['timePlot1._secondsArrow', 1], duration: 1.5 },
       { trigger: 'growArrow', payload: ['m1._vArrow', 1], duration: 1.5, delay: 1.5 },
     ],
@@ -730,7 +757,7 @@ nav.loadSlides([
   },
 
   {
-    time: '3:02',
+    time: '3:55',
     show: ['velocityButton', 'velocity', 'm1.ballTracker'],
     enterState: () => {
       figure.fnMap.exec('setArrow', 'm1.vArrow');
@@ -739,12 +766,12 @@ nav.loadSlides([
     },
     transition: [
       { out: ['m1.vArrow', 'timePlot1.secondsArrow'] },
-      { in: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton'] },
+      { in: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton', 'pulseButton2'] },
     ],
   },
   // Show 2v width
   {
-    time: '3:09',
+    time: '4:04',
     show: ['velocityButton', 'velocity', 'm1.ballTracker'],
     // show: '_cursor_',
     enterState: () => {
@@ -752,7 +779,7 @@ nav.loadSlides([
       figure.fnMap.exec('setArrow', 'timePlot1.secondsArrow');
     },
     transition: [
-      { out: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton'] },
+      { out: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton', 'pulseButton2'] },
       // { trigger: 'growArrow', payload: ['timePlot1._secondsArrow', 1], duration: 1.5 },
       { in: timePlot1._secondsArrow },
       { trigger: 'growArrow', payload: ['m1._v2Arrow', 1], duration: 1.5, delay: 1 },
@@ -765,7 +792,7 @@ nav.loadSlides([
 
   // Show w = vT
   {
-    time: '3:22',
+    // time: '3:22',
     show: 'm1.ballTracker',
     hide: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton',
       'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton'],
@@ -809,7 +836,7 @@ nav.loadSlides([
   },
 
   {
-    time: '3:32',
+    // time: '3:32',
     form: [null, 'lvt'],
     hide: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton',
       'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton', 'm1.v2Arrow.label'],
@@ -866,7 +893,7 @@ nav.loadSlides([
   ..######..##.....##.####.##..........##...
   */
   {
-    time: '3:48',
+    // time: '3:48',
     scenario: ['default', 'right', 'wavelength'],
     // enterState: () => {
     //   m1.custom.recording.setState({
@@ -888,7 +915,7 @@ nav.loadSlides([
     ],
   },
   {
-    time: '3:59.5',
+    // time: '3:59.5',
     scenarioCommon: 'default',
     showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.balls', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv'],
     enterStateCommon: () => {
@@ -932,7 +959,7 @@ nav.loadSlides([
   },
 
   {
-    time: '4:24',
+    // time: '4:24',
     showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv', 'm1.eqn'],
     enterState: () => {
       m1._movePadEnv.customState.x = 2.58;
@@ -962,7 +989,7 @@ nav.loadSlides([
   },
 
   {
-    time: '4:46',
+    // time: '4:46',
     fromForm: ['shiftedG_0'],
     form: ['shiftedG_0'],
     enterStateCommon: () => {
@@ -996,21 +1023,21 @@ nav.loadSlides([
   },
   {
     form: 'shiftedG_1',
-    time: '4:49',
+    // time: '4:49',
     enterStateCommon: () => {
       setVelocityToggle(false);
       setSlowTimeToggle(false);
     },
   },
-  { form: 'shiftedG_2', time: '4:51' },
-  { form: 'shiftedG_3', time: '4:56.5' },
-  { form: 'shiftedG_4', time: '4:58' },
-  { form: 'shiftedG_5', time: '4:59.5' },
-  { form: 'shiftedG_6', time: '5:07.5' },
-  { form: 'shiftedG_7', time: '5:10.5' },
+  { form: 'shiftedG_2' }, //'4:51' },
+  { form: 'shiftedG_3' }, //'4:56.5' },
+  { form: 'shiftedG_4' }, //'4:58' },
+  { form: 'shiftedG_5' }, //'4:59.5' },
+  { form: 'shiftedG_6' }, //'5:07.5' },
+  { form: 'shiftedG_7' }, //'5:10.5' },
   {
     form: 'final',
-    time: '5:13',
+    // time: '5:13',
     transition: [
       [
         { scenario: eqnWave, target: 'high' },
@@ -1020,7 +1047,7 @@ nav.loadSlides([
   },
   {
     form: 'highlight',
-    time: '5:18',
+    // time: '5:18',
     scenarioCommon: ['default', 'high'],
     transition: [
       [
@@ -1041,7 +1068,7 @@ nav.loadSlides([
   */
   {
     form: 'sinInput',
-    time: '5:38',
+    // time: '5:38',
     // scenarioCommon: ['default', 'high'],
     transition: [
       [
@@ -1051,17 +1078,17 @@ nav.loadSlides([
       { goToForm: eqnWave, target: 'sinInput' },
     ],
   },
-  { form: 'sinInput_1', time: '5:40' },
-  { form: 'sinInput_2', time: '5:42' },
-  { form: 'sinInput_3', time: '5:43.5' },
-  { form: 'sinInput_4', time: '5:46' },
-  { form: ['sinInput_5', null, null, null], time: '5:47.5' },
+  { form: 'sinInput_1' }, //'5:40' },
+  { form: 'sinInput_2' }, //'5:42' },
+  { form: 'sinInput_3' }, //'5:43.5' },
+  { form: 'sinInput_4' }, //'5:46' },
+  { form: ['sinInput_5', null, null, null] }, //'5:47.5' },
   {
-    time: '5:49.5',
+    // time: '5:49.5',
     scenarioCommon: ['default', 'highSmall'],
     transition: { scenario: eqnWave, start: 'high', target: 'highSmall' },
   },
-  { form: ['sinInput_5', null, null, 'single3'], time: '5:51.5' },
+  { form: ['sinInput_5', null, null, 'single3'] }, //'5:51.5' },
 
   /*
   .########..####.########.########
@@ -1075,12 +1102,12 @@ nav.loadSlides([
   {
     fromForm: ['sinInput_5', null, null, 'single3'],
     form: [null, null, null, 'single3'],
-    time: '5:56.5',
+    // time: '5:56.5',
   },
-  { form: [null, null, null, 'multi'], time: '5:57.3' },
+  { form: [null, null, null, 'multi'] }, //'5:57.3' },
   {
     // scenario: 'summary',
-    time: '6:06.5',
+    // time: '6:06.5',
     fromForm: [null, null, null, 'multi'],
     form: [null, null, 'diffMono', null],
     enterState: () => {
@@ -1111,11 +1138,11 @@ nav.loadSlides([
       ],
     ],
   },
-  { form: [null, null, 'diffMono', 'waveEqn'], time: '6:14', scenarioCommon: ['default', 'wave'] },
-  { form: [null, null, 'diffMono', 'waveEqn1'], time: '6:15.5' },
+  { form: [null, null, 'diffMono', 'waveEqn'], scenarioCommon: ['default', 'wave'] }, // time: '6:14' },
+  { form: [null, null, 'diffMono', 'waveEqn1'] }, // time: '6:15.5' },
   {
     form: [null, null, 'diffSolnMono', null],
-    time: '6:22',
+    // time: '6:22',
     transition: [
       { out: 'defs' },
       [
@@ -1125,7 +1152,7 @@ nav.loadSlides([
     ],
   },
   {
-    time: '6:25',
+    // time: '6:25',
     scenario: 'high',
     form: [null, null, 'diffSolnMono1', null],
     enterState: () => {
@@ -1144,7 +1171,7 @@ nav.loadSlides([
     ],
   },
   {
-    time: '6:45',
+    // time: '6:45',
     scenario: 'high',
     form: [null, null, 'diffMono', null],
     enterState: () => {
@@ -1173,7 +1200,7 @@ nav.loadSlides([
   ..######..##.....##.##.....##.##........########
   */
   {
-    time: '7:11.5',
+    // time: '7:11.5',
     form: [null, null, 'diff', null],
     enterState: () => {
       diffExplanation.showForm('diffExplanation');
@@ -1185,7 +1212,7 @@ nav.loadSlides([
     ],
   },
   {
-    time: '7:27',
+    // time: '7:27',
     scenario: 'right',
     enterState: 'reset',
     form: [null, null, null, null],
@@ -1196,7 +1223,7 @@ nav.loadSlides([
   },
 
   {
-    time: '7:35',
+    // time: '7:35',
     scenario: 'right',
     show: ['m1.xAxis', 'm1.yAxis', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2', 'm1.grid', 'timePlot1.grid'],
     transition: [
@@ -1224,7 +1251,7 @@ nav.loadSlides([
   ....##.......##....##........########..######.
   */
   {
-    time: '7:51',
+    // time: '7:51',
     // enterState: 'reset',
     show: ['m1.xAxis', 'm1.yAxis', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2', 'm1.grid', 'timePlot1.grid'],
     scenarioCommon: ['default', 'definition'],
@@ -1236,7 +1263,7 @@ nav.loadSlides([
     ],
   },
   {
-    time: '8:04',
+    // time: '8:04',
     enterState: () => {
       setSlowTimeToggle(true);
     },
@@ -1246,7 +1273,7 @@ nav.loadSlides([
     ],
   },
   {
-    time: '8:14',
+    // time: '8:14',
     enterState: () => {
       setSlowTimeToggle(true);
     },
@@ -1269,7 +1296,7 @@ nav.loadSlides([
   ..######...#######...#######..##....##.########.
   */
   {
-    time: '8:21.5',
+    // time: '8:21.5',
     showCommon: ['resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton'],
     form: [null, null, null, null],
     hide: 'm1',
@@ -1282,13 +1309,13 @@ nav.loadSlides([
     ],
   },
   {
-    time: '8:39',
+    // time: '8:39',
     form: [null, null, null, 'longWave'],
     // hide: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'],
     show: ['pulseButton', 'sineButton', 'resetButton', 'p1'],
   },
   {
-    time: '8:39.5',
+    // time: '8:39.5',
     form: [null, null, null, 'longDef'],
     // hide: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'],
     show: ['pulseButton', 'sineButton', 'resetButton', 'p1'],
@@ -1304,7 +1331,7 @@ nav.loadSlides([
   ..#######...######..########.##.....##.##....##
   */
   {
-    time: '8:41',
+    // time: '8:41',
     hide: 'm1',
     showCommon: [],
     form: [null, null, null, null],
@@ -1316,7 +1343,7 @@ nav.loadSlides([
     // leaveState: 'softReset',
   },
   {
-    time: '8:49.5',
+    // time: '8:49.5',
     hide: 'm1',
     show: 'ocean',
     fromForm: [null, null, null, 'ocean'],
@@ -1342,7 +1369,7 @@ nav.loadSlides([
 
 
 figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.mp3'));
-figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
+// figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
 // figure.recorder.loadAudioTrack(new Audio('http://10.0.1.95:8080/src/audio-track.mp3'));
 // figure.recorder.loadVideoTrack('http://10.0.1.95:8080/src/video-track.json');
 figure.recorder.notifications.add('stateSet', () => pause());
