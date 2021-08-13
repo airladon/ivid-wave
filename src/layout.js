@@ -26,7 +26,6 @@ function addFigureElements() {
     corner: { radius: 0.2, sides: 5 },
     color: colorLight,
   });
-  
   figure.add([
     button('pulseButton', [1.2, 0.8], 'Pulse'),
     button('pulseButton2', [4.8, 0.8], 'Pulse 2'),
