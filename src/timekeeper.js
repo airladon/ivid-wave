@@ -86,14 +86,14 @@ function TimeKeeper() {
   }
 
   // Automatically pause and unpause time when browser window focus changes
-  window.addEventListener('focus', () => {
-    blurred = false;
-    unpauseTime();
-  });
-  window.addEventListener('blur', () => {
-    blurred = true;
-    pauseTime();
-  });
+  // window.addEventListener('focus', () => {
+  //   blurred = false;
+  //   unpauseTime();
+  // });
+  // window.addEventListener('blur', () => {
+  //   blurred = true;
+  //   pauseTime();
+  // });
 
   function pause() { paused = true; pauseTime(); }
   function unpause() { paused = false; unpauseTime(); }
