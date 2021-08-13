@@ -1218,7 +1218,7 @@ nav.loadSlides([
     scenario: ['high', 'center'],
     time: '7:48.5',
     transition: [
-      { out: eqnWave },
+      // { out: eqnWave },
       { trigger: 'calcInterference', payload: 0 },
       [
         { in: 'waveInterference' },
@@ -1226,15 +1226,7 @@ nav.loadSlides([
       ],
       { out: 'waveInterference' },
     ],
-    // steadyState: 'animateInterference',
   },
-  // { form: ['sinInput_5', null, null, null], time: '7:36.5' }, //'5:47.5' },
-  // {
-  //   // time: '5:49.5',
-  //   scenarioCommon: ['default', 'highSmall'],
-  //   transition: { scenario: eqnWave, start: 'high', target: 'highSmall' },
-  // },
-  // { form: ['sinInput_5', null, null, 'single3'] }, //'5:51.5' },
 
   /*
   .########..####.########.########
@@ -1245,14 +1237,9 @@ nav.loadSlides([
   .##.....##..##..##.......##......
   .########..####.##.......##......
   */
-  // {
-  //   fromForm: ['sinInput_5', null, null, 'single3'],
-  //   form: [null, null, null, 'single3'],
-  //   // time: '5:56.5',
-  // },
-  // { form: [null, null, null, 'multi'] }, //'5:57.3' },
   {
     // scenario: 'summary',
+    scenarioCommon: 'default',
     scenario: ['default', 'high'],
     time: '7:57',
     fromForm: [null, null, 'diffMono', null],
@@ -1286,10 +1273,10 @@ nav.loadSlides([
     ],
   },
   { form: [null, null, 'diffMono', 'waveEqn'], scenarioCommon: ['default', 'wave'], time: '8:05' },
-  { form: [null, null, 'diffMono', 'waveEqn1'], time: '8:06' },
+  { form: [null, null, 'diffMono', 'waveEqn1'], time: '8:07' },
   {
     form: [null, null, 'diffSolnMono', null],
-    // time: '6:22',
+    time: '8:14',
     transition: [
       { out: 'defs' },
       [
@@ -1299,8 +1286,8 @@ nav.loadSlides([
     ],
   },
   {
-    // time: '6:25',
-    scenario: 'high',
+    time: '8:18',
+    scenario: 'diffHigh',
     form: [null, null, 'diffSolnMono1', null],
     enterState: () => {
       eqnDiff.showForm('diffSolnMono1');
@@ -1308,18 +1295,18 @@ nav.loadSlides([
     },
     transition: [
       { in: 'eqnDiff.y_5_' },
-      { delay: 1 },
+      { delay: 1.5 },
       [
         { in: 'eqnDiff.equals2' },
         { in: 'eqnDiff.plus1_' },
       ],
-      { in: { eqnDiff: ['b_', 'lb4', 'x_2_', 'min1_', 'v_2_', 't_2_', 'rb4'] }, delay: 1.8 },
-      { in: { eqnDiff: ['c_', 'lb5', 'x_3_', 'plus2_', 'v_3_', 't_3_', 'rb5'] }, delay: 1.5 },
+      { in: { eqnDiff: ['g_', 'lb4', 'x_2_', 'min1_', 'v_2_', 't_2_', 'rb4'] }, delay: 1.8 },
+      { in: { eqnDiff: ['h_', 'lb5', 'x_3_', 'plus2_', 'v_3_', 't_3_', 'rb5'] }, delay: 8.5 },
     ],
   },
   {
-    // time: '6:45',
-    scenario: 'high',
+    // time: '8:18',
+    scenario: 'diffHigh',
     form: [null, null, 'diffMono', null],
     enterState: () => {
       eqnDiff.showForm('diffSolnMono1');
