@@ -118,7 +118,8 @@ const velocityButton = figure.get('velocityButton');
 // const timeWaveSelector = figure.get('timeWaveSelector');
 // const sinSpaceSelector = figure.get('sinSpaceSelector');
 // const sinTimeSelector = figure.get('sinTimeSelector');
-// const highlighter3 = figure.get('highlighter3');
+const highlighter = figure.get('highlighter');
+const highlighter2 = figure.get('highlighter2');
 const diffExplanation = figure.get('diffExplanation');
 // const velocityButton2 = figure.get('velocityButton2');
 // const freqButton1 = figure.get('freqButton1');
@@ -449,6 +450,10 @@ figure.fnMap.global.add('fixedSine', () => {
   update(true);
 });
 
+figure.fnMap.global.add('hideHighlighters', () => {
+  highlighter.animations.new().dissolveOut(0.5).start();
+  highlighter2.animations.new().dissolveOut(0.5).start();
+});
 
 figure.addCursor({ width: 0.1, color: [0.5, 1, 1, 1], radius: 0.4 });
 
@@ -1198,16 +1203,20 @@ nav.loadSlides([
   {
     form: null,
     time: '7:39',
+    enterState: () => {
+      figure.get('waveInterference').customState.offset = 4;
+      figure.get('waveInterference').customState.v = 1.1;
+    },
     transition: [
       { goToForm: eqnWave, target: 'final' },
       { trigger: 'calcWave', payload: 0 },
       [
-        { in: 'waveInterference', delay: 1 },
+        { in: 'waveInterference.line', delay: 1 },
         { trigger: 'animateSingleWave', duration: 8 },
       ],
       { delay: 0.5 },
       [
-        { out: 'waveInterference' },
+        { out: 'waveInterference.line' },
         { out: eqnWave },
       ],
     ],
@@ -1217,14 +1226,18 @@ nav.loadSlides([
     form: null,
     scenario: ['high', 'center'],
     time: '7:48.5',
+    enterState: () => {
+      figure.get('waveInterference').customState.offset = 4;
+      figure.get('waveInterference').customState.v = 1.1;
+    },
     transition: [
       // { out: eqnWave },
       { trigger: 'calcInterference', payload: 0 },
       [
-        { in: 'waveInterference' },
+        { in: 'waveInterference.line' },
         { trigger: 'animateInterference', duration: 7 },
       ],
-      { out: 'waveInterference' },
+      { out: 'waveInterference.line' },
     ],
   },
 
@@ -1301,28 +1314,58 @@ nav.loadSlides([
         { in: 'eqnDiff.plus1_' },
       ],
       { in: { eqnDiff: ['g_', 'lb4', 'x_2_', 'min1_', 'v_2_', 't_2_', 'rb4'] }, delay: 1.8 },
-      { in: { eqnDiff: ['h_', 'lb5', 'x_3_', 'plus2_', 'v_3_', 't_3_', 'rb5'] }, delay: 8.5 },
+      { in: { eqnDiff: ['h_', 'lb5', 'x_3_', 'plus2_', 'v_3_', 't_3_', 'rb5'] }, delay: 8 },
+      // { trigger: 'calcInterference', payload: 0, delay: 3 },
+      // [
+      //   { in: 'waveInterference' },
+      //   { trigger: 'animateInterference', duration: 7 },
+      // ],
+      // { out: 'waveInterference' },
     ],
   },
   {
-    // time: '8:18',
+    time: '8:34.5',
+    scenario: ['diffHigh', 'waveLow'],
+    form: [null, null, 'diffSolnMono2', null],
+    enterState: () => {
+      figure.get('waveInterference').customState.offset = 10;
+      figure.get('waveInterference').customState.v = 0.5;
+    },
+    transition: [
+      { trigger: 'calcInterference', payload: 0 },
+      { goToForm: eqnDiff, target: 'diffSolnMono2' },
+      [
+        { in: 'waveInterference.line' },
+        { trigger: 'animateInterference', duration: 8.5 },
+        { in: 'waveInterference.g', delay: 2 },
+        { pulse: 'waveInterference.g', delay: 2.1, xAlign: 'left', yAlign: 'top' },
+        { pulse: 'eqnDiff.g_', delay: 2.1, xAlign: 0.8 },
+        { in: 'waveInterference.h', delay: 4 },
+        { pulse: 'waveInterference.h', delay: 4.1, xAlign: 'right', yAlign: 'top' },
+        { pulse: 'eqnDiff.h_', delay: 4.1, xAlign: 0.8 },
+      ],
+      { out: 'waveInterference' },
+    ],
+  },
+  {
+    time: '8:45',
     scenario: 'diffHigh',
     form: [null, null, 'diffMono', null],
     enterState: () => {
-      eqnDiff.showForm('diffSolnMono1');
+      eqnDiff.showForm('diffSolnMono2');
       // eqnDiff.hide();
     },
     transition: [
-      { out: { eqnDiff: ['y_5_', 'equals2', 'plus1_', 'b_', 'lb4', 'x_2_', 'min1_', 'v_2_', 't_2_', 'rb4', 'c_', 'lb5', 'x_3_', 'plus2_', 'v_3_', 't_3_', 'rb5'] } },
+      { out: { eqnDiff: ['y_5_', 'equals2', 'plus1_', 'g_', 'lb4', 'x_2_', 'min1_', 'v_2_', 't_2_', 'rb4', 'h_', 'lb5', 'x_3_', 'plus2_', 'v_3_', 't_3_', 'rb5'] } },
       [
         { goToForm: eqnDiff, target: 'diffMono' },
         { scenario: eqnDiff, target: 'default' },
       ],
     ],
   },
-  { scenarioCommon: ['default', 'wave'], form: [null, null, 'diffSeparate', null] },
-  { form: [null, null, 'diffSeparate', 'derivative1'] },
-  { form: [null, null, 'diffSeparate', 'derivative2'] },
+  { scenarioCommon: ['default', 'wave'], form: [null, null, 'diffSeparate', null], time: '8:56.5' },
+  { form: [null, null, 'diffSeparate', 'derivative1'], time: '8:58.5' },
+  { form: [null, null, 'diffSeparate', 'derivative2'], time: '9:01' },
 
   /*
   ..######..##.....##....###....########..########
@@ -1334,7 +1377,7 @@ nav.loadSlides([
   ..######..##.....##.##.....##.##........########
   */
   {
-    // time: '7:11.5',
+    time: '9:03.5',
     form: [null, null, 'diff', null],
     enterState: () => {
       diffExplanation.showForm('diffExplanation');
@@ -1344,9 +1387,10 @@ nav.loadSlides([
       { goToForm: eqnDiff, start: 'diffSeparate', target: 'diff' },
       { in: diffExplanation },
     ],
+    exec: ['9:14.5', 'hideHighlighters'],
   },
   {
-    // time: '7:27',
+    time: '9:25',
     scenario: 'right',
     enterState: 'reset',
     form: [null, null, null, null],
@@ -1357,16 +1401,16 @@ nav.loadSlides([
   },
 
   {
-    // time: '7:35',
+    time: '9:34',
     scenario: 'right',
     show: ['m1.xAxis', 'm1.yAxis', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2', 'm1.grid', 'timePlot1.grid'],
     transition: [
       { out: ['pulseButton', 'sineButton', 'pulseButton2', 'freezeTimeButton', 'freezeTimeLabel', 'slowTimeButton', 'slowTimeLabel'] },
       [
-        { position: 'timePlot1.trace', target: [14.2, 0], duration: 4.5 },
-        { scale: 'timePlot1.trace', target: [-2, 1], duration: 4.5 },
+        { position: 'timePlot1.trace', target: [14.2, 0], duration: 4 },
+        { scale: 'timePlot1.trace', target: [-2, 1], duration: 4 },
       ],
-      { delay: 2 },
+      { delay: 1.5 },
       [
         { position: 'timePlot1.trace', target: [0, 0] },
         { scale: 'timePlot1.trace', target: [1, 1] },
@@ -1385,7 +1429,7 @@ nav.loadSlides([
   ....##.......##....##........########..######.
   */
   {
-    // time: '7:51',
+    time: '9:48',
     // enterState: 'reset',
     show: ['m1.xAxis', 'm1.yAxis', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2', 'm1.grid', 'timePlot1.grid'],
     scenarioCommon: ['default', 'definition'],
@@ -1397,7 +1441,7 @@ nav.loadSlides([
     ],
   },
   {
-    // time: '8:04',
+    time: '9:58',
     enterState: () => {
       setSlowTimeToggle(true);
     },

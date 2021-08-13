@@ -64,7 +64,7 @@ function addDefsEquation(name) {
       waveEqn: 'Wave Equation',
       waveEqn1: bc('Wave Equation', '(For one dimension)', '', 0.04, 0.04, 0.5),
       derivative1: scale(['Second Derivative: ', cont('', 5.5)], 0.7),
-      derivative2: scale(['Second Derivative: ', cont('Curvature or Shape', 5.5)], 0.7),
+      derivative2: scale(['Second Derivative: ', cont('Shape or Curvature', 5.5)], 0.7),
       // initialSpace: ['Disturbance g(x) at an initial time'],
       // both: {
       //   lines: {

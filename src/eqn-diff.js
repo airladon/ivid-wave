@@ -86,8 +86,8 @@ function addDiffEquation(name) {
       vin4: { symbol: 'vinculum', lineWidth: 0.05, color: colorTimeText },
       vin5: { symbol: 'vinculum', lineWidth: 0.05 },
       tBox1: tBox([0.5, 0.5, 0.5, 0.5]),
-      tBox2: tBox([0.5, 0.7, 0.2, 0.7]),
-      tBox3: tBox([0.1, 0.5, 0.5, 0.5]),
+      tBox2: tBox([0.5, 1.2, 0.2, 1.3]),
+      tBox3: tBox([0.1, 0.6, 0.5, 0.5]),
       tBox4: tBox([0.5, 0.5, 0.5, 0.5]),
       tBox5: tBox([0, 0.5, 0, 0.5]),
       tBox6: tBox([0.5, 0.5, 0, 0.5]),
@@ -165,6 +165,23 @@ function addDiffEquation(name) {
               ],
             ],
             baselineSpace: 3.7,
+            justify: 'center',
+          },
+        },
+        alignment: { xAlign: 'center' },
+      },
+      diffSolnMono2: {
+        content: {
+          lines: {
+            content: [
+              scale([
+                'd2ydt2_', 'equals', 'vSq_', '  ', 'd2ydx2_',
+              ], 0.8),
+              [
+                'y_5_', 'equals2', 'g_', brac(['x_2_', 'min1_', 'v_2_', 't_2_'], 4), 'plus1_', 'h_', brac(['x_3_', 'plus2_', 'v_3_', 't_3_'], 5),
+              ],
+            ],
+            baselineSpace: 3,
             justify: 'center',
           },
         },
@@ -251,9 +268,9 @@ function addDiffEquation(name) {
     position: [12, 3],
     formDefaults: { alignment: { xAlign: 'center' } },
     elements: {
-      tBox1: tBox([0.1, 0.2, 0.1, 0.1]),
-      tBox2: tBox([0.1, 0.1, 0.1, 0.1]),
-      tBox3: tBox([0.1, 0.1, 0.1, 0.1]),
+      tBox1: tBox([0.1, 0.2, 0.1, 0.3]),
+      tBox2: tBox([0.1, 0.1, 0.1, 0.3]),
+      tBox3: tBox([0.1, 0.3, 0.1, 0.1]),
       tBox4: tBox([0.1, 0.2, 0.1, 0.1]),
       tBox5: tBox([0.1, 0.1, 0.1, 0.1]),
       tBox6: tBox([0.1, 0.1, 0.1, 0.1]),

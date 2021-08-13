@@ -8,14 +8,14 @@ function addWaveInterference(
   for (let i = 0; i < x.length; i += 1) {
     points[i] = [x[i], 0];
   }
-  console.log(points)
   const wave = figure.add({
     name,
     make: 'collection',
     mods: {
       scenarios: {
-        default: { position: [12 - length / 2, 4] },
-        center: { position: [12 - length / 2, 6] },
+        default: { position: [12 - length / 2, 4], scale: 1 },
+        center: { position: [12 - length / 2, 6], scale: 1 },
+        waveLow: { position: [12 - length / 2 * 0.7, 2], scale: 0.7 },
       },
     },
     elements: [
@@ -26,17 +26,41 @@ function addWaveInterference(
         width: 0.08,
         color: colorYellowText,
       },
+      {
+        name: 'g',
+        make: 'text',
+        text: 'g',
+        font: { family: 'TeXGyreTermes', size: 1.4, style: 'italic' },
+        color: colorYellowText,
+      },
+      {
+        name: 'h',
+        make: 'text',
+        text: 'h',
+        font: { family: 'TeXGyreTermes', size: 1.4, style: 'italic' },
+        color: colorYellowText,
+      },
     ],
   });
-  const A = 1;
-  const v = 1.1;
-  const lambda = 2;
-  const f = v / lambda;
-  const k = Math.PI * 2 / lambda;
-  const w = Math.PI * 2 * f;
+  wave.customState = {
+    offset: 4,
+    v: 1.1,
+  };
+  // const A = 1;
+  // const v = 1.1;
+  // const lambda = 2;
+  // const f = v / lambda;
+  // const k = Math.PI * 2 / lambda;
+  // const w = Math.PI * 2 * f;
   figure.fnMap.global.add('calcWave', (p) => {
     const newPoints = Array(x.length).fill(0);
-    const t = p * 10 + 8;
+    const t = p * 10 + wave.customState.offset;
+    const A = 1;
+    const { v } = wave.customState;
+    const lambda = 2;
+    const f = v / lambda;
+    const k = Math.PI * 2 / lambda;
+    const w = Math.PI * 2 * f;
     for (let i = 0; i < x.length; i += 1) {
       let forward = 0;
       if (t * v >= x[i] && t * v <= x[i] + lambda * 3) {
@@ -48,7 +72,13 @@ function addWaveInterference(
   });
   figure.fnMap.global.add('calcInterference', (p) => {
     const newPoints = Array(x.length).fill(0);
-    const t = p * 10 + 8;
+    const t = p * 10 + wave.customState.offset;
+    const A = 1;
+    const { v } = wave.customState;
+    const lambda = 2;
+    const f = v / lambda;
+    const k = Math.PI * 2 / lambda;
+    const w = Math.PI * 2 * f;
     for (let i = 0; i < x.length; i += 1) {
       let forward = 0;
       let reverse = 0;
@@ -64,6 +94,12 @@ function addWaveInterference(
         reverse = A * Math.sin(k * xr * 2 + w * t * 2);
       }
       newPoints[i] = [x[i], reverse + forward];
+    }
+    if (wave._g.isShown) {
+      wave._g.setPosition(t * v - 3, A + 0.4);
+    }
+    if (wave._h.isShown) {
+      wave._h.setPosition(length - t * v + 3, A + 0.4);
     }
     wave._line.custom.updatePoints({ points: newPoints });
   });
