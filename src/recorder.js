@@ -24,7 +24,9 @@ function Recorder(duration, timeKeeper) {
   // f
   // startTime = Array<number> | number
   // convert to manual
-  let state = {};
+  let state = {
+    index: 0,
+  };
   // let state = 'manual';
   let f = 0.2;
   // let startTime = null;
@@ -462,6 +464,10 @@ function Recorder(duration, timeKeeper) {
     };
   }
 
+  function getNum() {
+    return num;
+  }
+
 
   // function getStartTime() {
   //   return startTime;
@@ -487,5 +493,6 @@ function Recorder(duration, timeKeeper) {
     // getStartTime,
     setDeltaTime,
     setState,
+    getNum,
   };
 }

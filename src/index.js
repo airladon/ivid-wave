@@ -446,6 +446,7 @@ figure.fnMap.global.add('fixedSine', () => {
     startTime: -20,
     lastManualValue: 0,
     lastManualTime: null,
+    index: m1.custom.recording.getNum(),
   });
   update(true);
 });
@@ -585,6 +586,7 @@ nav.loadSlides([
   .########..########.##......
   */
   {
+    addReference: true,
     time: '1:08.5',
     scenario: 'summary',
     form: [null, null, null],
@@ -669,6 +671,7 @@ nav.loadSlides([
         startTime: [-6.16],
         lastManualValue: 0,
         lastManualTime: null,
+        index: m1.custom.recording.getNum(),
       });
       m1.customState.trackingTime = -6.16;
       update(true);
@@ -749,6 +752,7 @@ nav.loadSlides([
   ....###....########.########..#######...######..####....##.......##...
   */
   {
+    addReference: true,
     time: '3:39',
     show: ['velocityButton', 'velocity', 'm1.ballTracker'],
     enterState: () => {
@@ -928,6 +932,7 @@ nav.loadSlides([
         startTime: -20,
         lastManualValue: 0,
         lastManualTime: null,
+        index: m1.custom.recording.getNum(),
       });
       update(true);
       eqnVLF.showForm('wavelengthvt');
@@ -944,6 +949,7 @@ nav.loadSlides([
   */
   {
     time: '4:57',
+    addReference: true,
     scenario: ['default', 'right', 'wavelength'],
     // enterState: () => {
     //   m1.custom.recording.setState({
@@ -978,6 +984,7 @@ nav.loadSlides([
         startTime: [-4.7],
         lastManualValue: 0,
         lastManualTime: null,
+        index: m1.custom.recording.getNum(),
       });
       m1._envelope.showAll();
       m1.custom.update();
@@ -1133,6 +1140,7 @@ nav.loadSlides([
   ..#######..##....##.########
   */
   {
+    addReference: true,
     time: '7:08',
     show: ['m1.xAxis', 'm1.yAxis', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv', 'm1.eqn', 'm1.eqn1'],
     scenario: 'one',
@@ -1146,6 +1154,7 @@ nav.loadSlides([
         startTime: [-4.7],
         lastManualValue: 0,
         lastManualTime: null,
+        index: m1.custom.recording.getNum(),
       });
       m1._movePadEnv.customState.x = 1.28;
       m1._envelope.showAll();
@@ -1553,7 +1562,7 @@ nav.loadSlides([
 
 
 figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.mp3'));
-// figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
+figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
 // figure.recorder.loadAudioTrack(new Audio('http://10.0.1.95:8080/src/audio-track.mp3'));
 // figure.recorder.loadVideoTrack('http://10.0.1.95:8080/src/video-track.json');
 figure.recorder.notifications.add('stateSet', () => pause());

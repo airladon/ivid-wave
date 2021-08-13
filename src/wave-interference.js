@@ -72,6 +72,8 @@ function addWaveInterference(
   });
   figure.fnMap.global.add('calcInterference', (p) => {
     const newPoints = Array(x.length).fill(0);
+    console.log(p)
+    
     const t = p * 10 + wave.customState.offset;
     const A = 1;
     const { v } = wave.customState;
