@@ -84,12 +84,12 @@ function Recorder(duration, timeKeeper) {
       state.lastManualTime += delta;
       return;
     }
-    if (state.mode === 'sine') {
-      state.startTime += delta;
-    }
-    if (Array.isArray(state.startTime)) {
-      state.startTime = state.startTime.map(st => st + delta);
-    }
+    // if (state.mode === 'sine') {
+    //   state.startTime += delta;
+    // }
+    // if (Array.isArray(state.startTime)) {
+    state.startTime = state.startTime.map(st => st + delta);
+    // }
   }
   // Add a value to the recording, and the amount of time that has ellapsed
   // since the last record. If the ellapsed time is longer than `timeStep`, then
@@ -293,14 +293,14 @@ function Recorder(duration, timeKeeper) {
       return getPulse2(t);
     }
     if (state.mode === 'sine') {
-      if (state.startTime == null) {
+      if (state.startTime.length === 0) {
         return 0;
       }
       // const timeToGet = timeKeeper.now() - timeDelta;
-      if (state.startTime > timeToGet) {
+      if (state.startTime[0] > timeToGet) {
         return 0;
       }
-      const t = timeToGet - state.startTime;
+      const t = timeToGet - state.startTime[0];
       // if (timeDelta === 0) {
       //   console.log(t);
       // }
@@ -353,7 +353,7 @@ function Recorder(duration, timeKeeper) {
       reset();
     }
     state.mode = 'sine';
-    state.startTime = timeKeeper.now();
+    state.startTime = [timeKeeper.now()];
   }
 
   function getState() {
@@ -436,7 +436,7 @@ function Recorder(duration, timeKeeper) {
         data: out.slice(num - 1 - tIndex),
       };
     }
-    if (state.startTime == null) {
+    if (state.startTime.length === 0) {
       return {
         time: [0],
         data: [0],
@@ -448,10 +448,10 @@ function Recorder(duration, timeKeeper) {
     let beforeStart = false;
     while (tIndex < num && beforeStart === false) {
       const tt = now - tIndex * timeStep;
-      if (tt < state.startTime) {
+      if (tt < state.startTime[0]) {
         beforeStart = true;
       } else {
-        out[num - 1 - tIndex] = getSine(tt - state.startTime);
+        out[num - 1 - tIndex] = getSine(tt - state.startTime[0]);
         tIndex += 1;
       }
     }
