@@ -266,7 +266,7 @@ function addDiffEquation(name) {
     textFont: { family: 'Open Sans', style: 'normal' },
     scale: 4.4,
     position: [12, 3],
-    formDefaults: { alignment: { xAlign: 'center' } },
+    formDefaults: { alignment: { xAlign: 'center' }, lazyLayout: true },
     elements: {
       tBox1: tBox([0.1, 0.2, 0.1, 0.3]),
       tBox2: tBox([0.1, 0.1, 0.1, 0.3]),
@@ -331,7 +331,7 @@ function addDiffEquation(name) {
     scale: 4,
     color: colorLight,
     position: [11.5, 6],
-    formDefaults: { alignment: { xAlign: 'center'} },
+    formDefaults: { alignment: { xAlign: 'center'}, lazyLayout: true },
     elements: {
       equals: '  =  ',
       equals1: '  =  ',

@@ -9,7 +9,7 @@ function addDefsEquation(name) {
     textFont: { family: 'Open Sans', style: 'normal' },
     scale: 4.7,
     position: [12, 1],
-    formDefaults: { alignment: { xAlign: 'center' } },
+    formDefaults: { alignment: { xAlign: 'center' }, lazyLayout: true },
     mods: {
       scenarios: {
         default: { position: [12, 1] },

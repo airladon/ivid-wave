@@ -104,6 +104,7 @@ function addTravellingWaveEquation(name) {
         'vin2': { style: 'linear' },
         'lambda_1': { style: 'linear' },
       },
+      lazyLayout: true
     },
     forms: {
       shiftedG_0: [sub('g_1', 'shifted'), 'equals1'],
@@ -184,6 +185,7 @@ function addTravellingWaveEquation(name) {
         mathx: { position: [1, 2] },
       },
     },
+    formDefaults: { lazyLayout: true },
     elements: {
       disturbance: { color: colorDisturbanceText },
       'any position': { color: colorPositionText },
