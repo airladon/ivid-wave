@@ -134,7 +134,7 @@ const diffExplanation = figure.get('diffExplanation');
 .##.....##..##..##....##....##....##.....##.##....##..##.....##
 .########..####..######.....##.....#######..##.....##.########.
 */
-const { pulse, sineWave } = getDisturbances();
+// const { pulse, sineWave } = getDisturbances();
 
 
 /*
@@ -308,7 +308,7 @@ freezeButton.notifications.add('onClick', () => {
 // };
 
 slowTimeButton.notifications.add('onClick', () => {
-  if (slowTimeButton.custom.state) {
+  if (slowTimeButton.customState.state) {
     time.setTimeSpeed(0.3);
   } else {
     time.setTimeSpeed(1);
@@ -317,7 +317,7 @@ slowTimeButton.notifications.add('onClick', () => {
 
 velocityButton.notifications.add('onClick', () => {
   reset();
-  if (velocityButton.custom.state) {
+  if (velocityButton.customState.state) {
     m1.custom.setVelocity(2);
   } else {
     m1.custom.setVelocity(1);
@@ -444,7 +444,7 @@ figure.fnMap.global.add('fixedSine', () => {
   softReset();
   m1.custom.recording.setState({
     mode: 'sine',
-    startTime: -20,
+    startTime: [-20],
     lastManualValue: 0,
     lastManualTime: null,
     index: m1.custom.recording.getNum(),
@@ -930,7 +930,7 @@ nav.loadSlides([
       softReset();
       m1.custom.recording.setState({
         mode: 'sine',
-        startTime: -20,
+        startTime: [-20],
         lastManualValue: 0,
         lastManualTime: null,
         index: m1.custom.recording.getNum(),
