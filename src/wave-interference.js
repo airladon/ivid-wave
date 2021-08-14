@@ -45,6 +45,8 @@ function addWaveInterference(
   wave.customState = {
     offset: 4,
     v: 1.1,
+    lastP: 0,
+    lastFn: 'calcWave',
   };
   // const A = 1;
   // const v = 1.1;
@@ -53,6 +55,8 @@ function addWaveInterference(
   // const k = Math.PI * 2 / lambda;
   // const w = Math.PI * 2 * f;
   figure.fnMap.global.add('calcWave', (p) => {
+    wave.customState.lastP = p;
+    wave.customState.lastFn = 'calcWave';
     const newPoints = Array(x.length).fill(0);
     const t = p * 10 + wave.customState.offset;
     const A = 1;
@@ -71,9 +75,9 @@ function addWaveInterference(
     wave._line.custom.updatePoints({ points: newPoints });
   });
   figure.fnMap.global.add('calcInterference', (p) => {
+    wave.customState.lastP = p;
+    wave.customState.lastFn = 'calcInterference';
     const newPoints = Array(x.length).fill(0);
-    console.log(p)
-    
     const t = p * 10 + wave.customState.offset;
     const A = 1;
     const { v } = wave.customState;
@@ -120,6 +124,12 @@ function addWaveInterference(
         duration: 10,
       })
       .start();
+  });
+  wave.notifications.add('setState', () => {
+    console.log(wave.customState.lastFn, wave.customState.lastP)
+    if (wave.isShown) {
+      wave.fnMap.exec(wave.customState.lastFn, wave.customState.lastP);
+    }
   });
   return wave;
 }
