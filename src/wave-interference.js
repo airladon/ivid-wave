@@ -126,7 +126,6 @@ function addWaveInterference(
       .start();
   });
   wave.notifications.add('setState', () => {
-    console.log(wave.customState.lastFn, wave.customState.lastP)
     if (wave.isShown) {
       wave.fnMap.exec(wave.customState.lastFn, wave.customState.lastP);
     }

@@ -1213,7 +1213,7 @@ nav.loadSlides([
     form: null,
     time: '7:39',
     enterState: () => {
-      figure.get('waveInterference').customState.offset = 4;
+      figure.get('waveInterference').customState.offset = 7;
       figure.get('waveInterference').customState.v = 1.1;
     },
     transition: [
@@ -1236,7 +1236,7 @@ nav.loadSlides([
     scenario: ['high', 'center'],
     time: '7:48.5',
     enterState: () => {
-      figure.get('waveInterference').customState.offset = 4;
+      figure.get('waveInterference').customState.offset = 7.5;
       figure.get('waveInterference').customState.v = 1.1;
     },
     transition: [
