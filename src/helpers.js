@@ -124,24 +124,24 @@ function toggle(name, position, height, onDirectionRight = true)
     touchBorder: 0.2,
     mods: {
       isTouchable: true,
+      customState: { state: false },
       custom: {
-        state: false,
         off: () => {
           const e = figure.get(name);
           e._circ.setPosition(dir * offset, 0)
           e._background.setColor(colorOff);
-          e.custom.state = false;
+          e.customState.state = false;
         },
         on: () => {
           const e = figure.get(name);
           e._circ.setPosition(-dir * offset, 0)
           e._background.setColor(colorOn);
-          e.custom.state = true;
+          e.customState.state = true;
         }
       },
       onClick: () => {
         const e = figure.get(name);
-        if (e.custom.state) {
+        if (e.customState.state) {
           e.custom.off();
         } else {
           e.custom.on();
