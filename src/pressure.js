@@ -144,7 +144,7 @@ void main() {
           move: {
             bounds: {
               translation: {
-                left: -1.5, right: 1.5, bottom:0, top: 0,
+                left: -0.5, right: 0.5, bottom: 0, top: 0,
               },
             },
           },
@@ -181,7 +181,12 @@ void main() {
       medium._diaphram.setPosition(x, 0);
       // medium.custom.recording.record(x, deltaTime);
       for (let i = 0; i < xLocations.length; i += 1) {
-        const xOffset = medium.custom.recording.getValueAtTimeAgo(xLocations[i] / medium.customState.c) / 3;
+        let xOffset = medium.custom.recording.getValueAtTimeAgo(
+          xLocations[i] / medium.customState.c,
+        );
+        if (medium.custom.recording.getState().mode !== 'manual') {
+          xOffset /= 3;
+        }
         newOffsets[i * 3] = xOffset;
         newOffsets[i * 3 + 1] = xOffset;
         newOffsets[i * 3 + 2] = xOffset;
