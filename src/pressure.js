@@ -221,6 +221,7 @@ void main() {
     }
     unpause();
     medium.custom.recording.setManual();
+    figure.fnMap.exec('forceUpdate');
     // medium.custom.update();
   });
 

@@ -201,6 +201,7 @@ function update(override = false) {
   if (m1.isShown) { m1.custom.update(deltaTime); }
   if (timePlot1.isShown) { timePlot1.custom.update(); }
 }
+figure.fnMap.global.add('forceUpdate', () => update(true));
 
 figure.fnMap.global.add('pause', () => pause());
 figure.fnMap.global.add('unpause', () => unpause());

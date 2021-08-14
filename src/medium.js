@@ -711,6 +711,7 @@ function addMedium(
     //   medium.custom.recording.record(y, time.step());
     unpause();
     medium.custom.recording.setManual();
+    figure.fnMap.exec('forceUpdate');
   });
   movePadEnv.notifications.add('setTransform', () => {
     if (time.isPaused()) {

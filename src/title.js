@@ -130,6 +130,11 @@ void main() {
   figure.fnMap.global.add('outTitle', () => {
     title.animations.new().dissolveOut(0.5).start();
   });
+  movePad.notifications.add('setTransform', () => {
+    // unpause();
+    recorder.setManual();
+    figure.fnMap.exec('forceUpdate');
+  });
   // title.notifications.add('getState', () => {
   //   title.customState.recorder = title.custom.recording.encodeData();
   // });
