@@ -51,6 +51,12 @@ void main() {
     name: 'title',
     make: 'collection',
     elements: [
+      // {
+      //   make: 'line',
+      //   p1: [-20, 0],
+      //   p2: [20, 0],
+      //   width: 0.05,
+      // },
       {
         name: 'title',
         make: 'gl',
@@ -82,6 +88,7 @@ void main() {
         radius: 2,
         color: [1, 0, 0, 0],
         sides: 8,
+        position: [0, 0],
         mods: {
           isMovable: true,
           move: {
@@ -105,15 +112,29 @@ void main() {
     c: 2,
     recording: recorder,
     update: (deltaTime) => {
+      let yh;
+      if (title.custom.recording.getState().mode === 'manual') {
+        yh = movePad.transform.t().y;
+        title.custom.recording.record(yh, deltaTime);
+      } else {
+        yh = title.custom.recording.getValueAtTimeAgo(0) / 3;
+        movePad.transform.updateTranslation(0, yh);
+      }
+      // title._diaphram.setPosition(x, 0);
+
       const t = time.now();
-      const y = movePad.transform.t().y;
-      title.custom.recording.record(y, deltaTime);
+      // const y = movePad.transform.t().y;
+      // title.custom.recording.record(y, deltaTime);
       title._title.drawingObject.uniforms.u_time.value = [t];
       const envelopePoints = [];
       for (let i = 0; i < xValues.length; i += 1) {
         const x = xValues[i];
-        const y1 = title.custom.recording.getValueAtTimeAgo(x / title.custom.c);
-        const y2 = title.custom.recording.getValueAtTimeAgo((x + gridStep) / title.custom.c);
+        let y1 = title.custom.recording.getValueAtTimeAgo(x / title.custom.c);
+        let y2 = title.custom.recording.getValueAtTimeAgo((x + gridStep) / title.custom.c);
+        if (title.custom.recording.getState().mode !== 'manual') {
+          y1 /= 3;
+          y2 /= 3;
+        }
         offsets[i * 6] = y1;
         offsets[i * 6 + 1] = y2;
         offsets[i * 6 + 2] = y2;
@@ -122,7 +143,7 @@ void main() {
         offsets[i * 6 + 5] = y2;
         envelopePoints.push([x, y1]);
       }
-      movePadHighlight.setPosition(0, y);
+      movePadHighlight.setPosition(0, yh);
       envelope.custom.updatePoints({ points: envelopePoints });
       title._title.drawingObject.updateBuffer('a_offset', offsets);
     },

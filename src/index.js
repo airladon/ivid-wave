@@ -196,7 +196,7 @@ function update(override = false) {
     figure.animateNextFrame();
     return;
   }
-  if (title.isShown) { title.custom.update(deltaTime); return; }
+  if (title._title.isShown) { title.custom.update(deltaTime); return; }
   if (p1.isShown) { p1.custom.update(deltaTime); return; }
   if (m1.isShown) { m1.custom.update(deltaTime); }
   if (timePlot1.isShown) { timePlot1.custom.update(); }
@@ -368,6 +368,13 @@ sineButton.onClick = () => {
   m1.custom.recording.sine();
   update(true);
 };
+
+figure.fnMap.global.add('pulseTitle', () => {
+  softReset();
+  unpause();
+  m1.custom.recording.pulse();
+  update(true);
+});
 // sine2fButton.onClick = () => {
 //   reset();
 //   m1.customState.f = 0.4;
@@ -502,12 +509,22 @@ nav.loadSlides([
   {
     scenarioCommon: 'default',
     show: ['title'],
+    enterState: () => {
+      recorder.setManual();
+    },
   },
   {
-    time: '0:39.5',
-    show: ['title', 'examples'],
+    // time: '0:39.5',
+    time: '0:33',
+    show: ['title'],
+    // enterState: () => {
+    //   examples.hideAll();
+    //   examples.show();
+    //   recorder.setManual();
+    // },
     transition: [
-      // { pulse: 'title', duration: 1, scale: 1.2 },
+      { out: ['title.movePad', 'title.movePadHighlight', 'title.envelope'] },
+      { trigger: 'pulseTitle', duration: 6.5 },
       { trigger: 'showExamples' },
     ],
   },
@@ -527,7 +544,7 @@ nav.loadSlides([
     form: ['final', 'vlfSummary', 'diffMono'],
     enterState: 'softReset',
     transition: [
-      { out: ['examples', 'title'] },
+      { out: ['examples', 'title.title'] },
       { in: ['m1.balls', 'm1.firstBall', 'm1.movePad'] },
       { trigger: 'startSineWave' },
       { delay: 5 },
@@ -1564,7 +1581,7 @@ nav.loadSlides([
 
 
 figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.mp3'));
-figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
+// figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
 // figure.recorder.loadAudioTrack(new Audio('http://10.0.1.95:8080/src/audio-track.mp3'));
 // figure.recorder.loadVideoTrack('http://10.0.1.95:8080/src/video-track.json');
 figure.recorder.notifications.add('stateSet', () => pause());
