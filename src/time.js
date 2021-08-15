@@ -17,7 +17,7 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
         line: { width: 0.03 },
       },
       xAxis('xAxis', 't', '', length, maxValue * 0.95),
-      yAxis('yAxis', 'y', 'x = 0', A, false, colorDisturbanceText),
+      yAxis('yAxis', 'y', 'x = 0', A, false, colorLight),
       {
         name: 'trace',
         make: 'polyline',
@@ -67,9 +67,9 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
       //     align: 'center',
       //   },
       // },
-      arrow('TArrow', 'T', [0, -1], [2, -1], colorTimeText),
-      arrow('secondsArrow', '3', [0, -1], [2, -1], colorTimeText),
-      arrow('periodArrow', 'T', [2.35, -2.5], [5.75, -2.5], colorTimeText),
+      arrow('TArrow', 'T', [0, -1], [2, -1], colorDisturbanceText),
+      arrow('secondsArrow', '3', [0, -1], [2, -1], colorDisturbanceText),
+      arrow('periodArrow', 'T', [2.35, -2.5], [5.75, -2.5], colorDisturbanceText),
       // {
       //   name: 'secondsArrow',
       //   make: 'collections.line',

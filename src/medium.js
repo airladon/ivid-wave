@@ -229,9 +229,9 @@ function addMedium(
         },
         color: colorLight,
       },
-      arrow('vArrow', '6', [0, -1], [3 / maxValue * length, -1], colorPositionText),
-      arrow('v2Arrow', '12', [0, -1], [6 / maxValue * length, -1], colorPositionText),
-      arrow('lambdaArrow', '', [1.2 / maxValue * length, -2.5], [6.3 / maxValue * length, -2.5], colorPositionText),
+      arrow('vArrow', '6', [0, -1], [3 / maxValue * length, -1], colorLight),
+      arrow('v2Arrow', '12', [0, -1], [6 / maxValue * length, -1], colorLight),
+      arrow('lambdaArrow', '', [1.2 / maxValue * length, -2.5], [6.3 / maxValue * length, -2.5], colorLight),
       {
         name: 'widthArrow',
         make: 'collections.line',
@@ -249,7 +249,7 @@ function addMedium(
         make: 'collections.line',
         options: {
           width: 0.05,
-          color: colorOne,
+          color: colorYellowText,
           arrow: { end: 'barb' },
           label: {
             text: 'v',

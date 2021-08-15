@@ -24,14 +24,14 @@ function addVLFEquation(name) {
     textFont: { family: 'TeXGyreTermes' },
     elements: {
       equals: { text: ' = ', color: colorLight },
-      lambda: { text: '\u03bb', color: colorPositionText },
+      lambda: { text: '\u03bb', color: colorLight },
       lambda_1: '\u03bb',
       arrow1: { symbol: 'line', width: 0.04, arrow: { start: { head: 'triangle' } } },
       vin: { symbol: 'vinculum', lineWidth: 0.05 },
       v: { color: colorVelocityText },
-      T: { color: colorTimeText },
-      w: { color: colorPositionText },
-      wavelength: { color: colorPositionText},
+      T: { color: colorDisturbanceText },
+      w: { color: colorLight },
+      wavelength: { color: colorLight},
       f: { color: colorTimeText },
     },
     phrases: {

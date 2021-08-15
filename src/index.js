@@ -46,9 +46,9 @@ const colorHighlight = colorCyan;
 const colorDisturbance = colorRed;
 const colorDisturbanceText = colorRedText;
 const colorPositionText = colorBlueText;
-const colorTimeText = colorYellowText;
+const colorTimeText = colorRedText;
 const colorPosition = colorBlue;
-const colorTime = colorYellow;
+const colorTime = colorRedText;
 const colorDelay = colorPurpleText;
 const colorOmega = colorCyan;
 const colorK = colorCyan;
@@ -59,7 +59,7 @@ const colorXText = colorPurpleText;
 const colorG = colorRed;
 const colorGText = colorRedText;
 const colorVelocity = colorCyan;
-const colorVelocityText = colorCyanText;
+const colorVelocityText = colorYellowText;
 const colorWave = colorPurpleText;
 
 
@@ -1581,7 +1581,7 @@ nav.loadSlides([
 
 
 figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.mp3'));
-// figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
+figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
 // figure.recorder.loadAudioTrack(new Audio('http://10.0.1.95:8080/src/audio-track.mp3'));
 // figure.recorder.loadVideoTrack('http://10.0.1.95:8080/src/video-track.json');
 figure.recorder.notifications.add('stateSet', () => pause());
