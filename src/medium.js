@@ -32,7 +32,7 @@ function addMedium(
       dimColor: colorLight,
       scenarios: {
         default: { color: colorLight, scale: [1, 1] },
-        highlight: { color: color1, scale: [1.2, 1.2] },
+        highlight: { color: colorWave, scale: [1.2, 1.2] },
       },
     },
   });
@@ -68,18 +68,18 @@ function addMedium(
       },
       xAxis('xAxis', 'x', '', length, maxValue),
       yAxis('yAxis', 'y', '', A * length / maxValue, yAxisTitle),
-      {
-        name: 'disturbanceLines',
-        make: 'collection',
-        elements: [
-          // makeVertLine(2),
-          // makeVertLine(4),
-          // makeVertLine(6),
-          // makeVertLine(8),
-          // makeVertLine(10),
-          makeVertLine(5),
-        ],
-      },
+      // {
+      //   name: 'disturbanceLines',
+      //   make: 'collection',
+      //   elements: [
+      //     // makeVertLine(2),
+      //     // makeVertLine(4),
+      //     // makeVertLine(6),
+      //     // makeVertLine(8),
+      //     // makeVertLine(10),
+      //     makeVertLine(5),
+      //   ],
+      // },
       {
         name: 'balls',
         make: 'collection',
@@ -287,6 +287,8 @@ function addMedium(
         p1: [5, -3],
         p2: [5, -2],
       },
+      arrow('waveDirection', 'wave', [4.5, -A * length / maxValue / 5 * 2], [8.5, -A * length / maxValue / 5 * 2], colorWave, 'end', 'start', { end: 'barb' }, 3),
+      arrow('disturbanceDirection', 'disturbance', [5 / maxValue * length, -A * length / maxValue / 5 * 3], [5 / maxValue * length, A * length / maxValue / 5 * 3], colorWave, 'start', 'center', 'barb', 3),
       {
         name: 'eqn',
         make: 'equation',
@@ -370,6 +372,12 @@ function addMedium(
     b.custom.x = x;
     b.custom.drawX = axis.valueToDraw(x);
   });
+  const ballH = medium.add(ball(5 / maxValue * length, 'h', ballSize * 1.5));
+  ballH.custom.drawX = axis.valueToDraw(5);
+  ballH.scenarios.default.color = colorWave.slice();
+  // ballH.setColor(colorWave);
+  // ballH.setDimColor(colorWave);
+
   stamp('medium 4')
   const highlights = xValues.map((x, i) => ((x % 2 === 0) && (x > 0)) ? i : -1).filter(i => i > -1).map(i => `ball${i}`);
   balls.toFront(highlights);
@@ -451,6 +459,10 @@ function addMedium(
           // }
         }
         // envelope.pointsToDraw = xValues.length * 6;
+      }
+      if (ballH.isShown) {
+        const by = medium.custom.recording.getValueAtTimeAgo(5 / medium.customState.c);
+        ballH.setPosition(ballH.custom.drawX, by);
       }
       if (envelope.isShown) {
         for (let i = 0; i < xValuesSmall.length; i += 1) {

@@ -157,6 +157,7 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
     const [n, duration] = payload;
     const S = figure.get(n);
     S.showAll();
+    S.setEndPoints(S.custom.endPoints[0], S.custom.endPoints[1]);
     S._label.hide();
     S.animations.new()
       .length({ start: 0.5, duration })

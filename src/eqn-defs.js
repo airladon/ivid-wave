@@ -48,7 +48,7 @@ function addDefsEquation(name) {
         ['long', '  ', 'Wave'],
         scale(['long1', '_: (', 'adjective', '_)  extend or direct across'], 0.5),
       ], 0.8, 'center'),
-      ocean: ['Transverse', '_and ', 'long', '_ '],
+      ocean: ['Transverse', '_ and ', 'long', '_ '],
       // longWave: {
       //   content: ['long', '  ', 'Wave'],
       //   alignment: { yAlign: -0.4 },

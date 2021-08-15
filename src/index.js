@@ -60,7 +60,7 @@ const colorG = colorRed;
 const colorGText = colorRedText;
 const colorVelocity = colorCyan;
 const colorVelocityText = colorYellowText;
-const colorWave = colorPurpleText;
+const colorWave = colorYellowText;
 
 
 const { Transform, Point } = Fig;
@@ -180,7 +180,7 @@ function update(override = false) {
     pause();
   }
   if (
-    !ocean.isShown && (
+    (
       (time.isPaused() || m1.custom.recording.isStationary())
       && override === false
       && m1.custom.updateFlag === false
@@ -517,11 +517,6 @@ nav.loadSlides([
     // time: '0:39.5',
     time: '0:33',
     show: ['title'],
-    // enterState: () => {
-    //   examples.hideAll();
-    //   examples.show();
-    //   recorder.setManual();
-    // },
     transition: [
       { out: ['title.movePad', 'title.movePadHighlight', 'title.envelope'] },
       { trigger: 'pulseTitle', duration: 6.5 },
@@ -1433,7 +1428,7 @@ nav.loadSlides([
     scenario: 'right',
     show: ['m1.xAxis', 'm1.yAxis', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'timePlot1.xAxis', 'timePlot1.yAxis', 'timePlot1.trace', 'resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2', 'm1.grid', 'timePlot1.grid'],
     transition: [
-      { out: ['pulseButton', 'sineButton', 'pulseButton2', 'freezeTimeButton', 'freezeTimeLabel', 'slowTimeButton', 'slowTimeLabel'] },
+      { out: ['pulseButton', 'sineButton', 'pulseButton2', 'freezeTimeButton', 'freezeTimeLabel', 'slowTimeButton', 'slowTimeLabel', 'm1.movePad', 'm1.firstBall'] },
       [
         { position: 'timePlot1.trace', target: [14.2, 0], duration: 4 },
         { scale: 'timePlot1.trace', target: [-2, 1], duration: 4 },
@@ -1443,7 +1438,7 @@ nav.loadSlides([
         { position: 'timePlot1.trace', target: [0, 0] },
         { scale: 'timePlot1.trace', target: [1, 1] },
       ],
-      { in: ['pulseButton', 'sineButton', 'pulseButton2', 'freezeTimeButton', 'freezeTimeLabel', 'slowTimeButton', 'slowTimeLabel', 'resetButton'] },
+      { in: ['pulseButton', 'sineButton', 'pulseButton2', 'freezeTimeButton', 'freezeTimeLabel', 'slowTimeButton', 'slowTimeLabel', 'resetButton', 'm1.movePad', 'm1.firstBall'] },
     ],
   },
 
@@ -1471,27 +1466,42 @@ nav.loadSlides([
     ],
   },
   {
-    time: '9:58',
+    time: '9:56.5',
     enterState: () => {
       setSlowTimeToggle(true);
     },
-    show: ['m1.xAxis', 'm1.yAxis', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2', 'm1.grid', 'm1.disturbanceLines'],
+    show: ['m1.xAxis', 'm1.yAxis', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2', 'm1.grid'],
     transition: [
-      { in: 'm1.disturbanceLines' },
+      { in: 'm1.ballh' },
+      // { in: 'm1.disturbanceDirection' },
+      { trigger: 'growArrow', payload: ['m1.disturbanceDirection', 1.5], duration: 2, delay: 0.5 },
+      {
+        trigger: 'growArrow', payload: ['m1.waveDirection', 1.5], duration: 2, delay: 0.5,
+      },
+      // { pulse: 'm1.waveDirection.label', xAlign: 'left', yAlign: 'middle', delay: 1.3 },
+      // { pulse: 'm1.disturbanceDirection.label', xAlign: 'center', yAlign: 'top', delay: 2.2 },
     ],
+    steadyState: () => {
+      figure.fnMap.exec('setArrow', 'm1.disturbanceDirection');
+      figure.fnMap.exec('setArrow', 'm1.waveDirection');
+    },
   },
   {
     time: '10:09',
     enterState: () => {
       setSlowTimeToggle(true);
     },
-    show: ['m1.xAxis', 'm1.yAxis', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2', 'm1.grid', 'm1.disturbanceLines'],
+    show: ['m1.xAxis', 'm1.yAxis', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2', 'm1.grid', 'm1.disturbanceDirection', 'm1.waveDirection', 'm1.ballh'],
     fromForm: [null, null, null, 'transverseWave'],
     form: [null, null, null, 'transverseDef'],
     transition: [
       { in: defs },
       { goToForm: defs, target: 'transverseDef' },
     ],
+    steadyState: () => {
+      figure.fnMap.exec('setArrow', 'm1.disturbanceDirection');
+      figure.fnMap.exec('setArrow', 'm1.waveDirection');
+    },
   },
 
   /*
@@ -1513,12 +1523,29 @@ nav.loadSlides([
       setSlowTimeToggle(false);
     },
     transition: [
-      { out: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', defs, 'm1.disturbanceLines', 'm1.xAxis', 'm1.yAxis', 'pulseButton2'] },
+      { out: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall', defs, 'm1.disturbanceDirection', 'm1.waveDirection', 'm1.xAxis', 'm1.yAxis', 'pulseButton2', 'm1.ballh'] },
       // { out: 'm1', duration: 0 },
       { trigger: 'softReset' },
-      { in: 'p1' },
+      { in: ['p1.grid', 'p1.particles', 'p1.movePad', 'p1.diaphragm'] },
       // { in: ['pulseButton', 'sineButton', 'resetButton'] },
     ],
+  },
+  {
+    time: '10:25',
+    show: ['pulseButton', 'sineButton', 'resetButton', 'p1'],
+    hide: ['p1.waveDirection', 'p1.disturbanceDirection'],
+    transition: [
+      { in: ['p1.c1', 'p1.c6'] },
+      { delay: 1 },
+      [
+        { trigger: 'growArrow', payload: ['p1.waveDirection', 1.5], duration: 2 },
+        { trigger: 'growArrow', payload: ['p1.disturbanceDirection', 1.5], duration: 2 },
+      ],
+    ],
+    steadyState: () => {
+      figure.fnMap.exec('setArrow', 'p1.disturbanceDirection');
+      figure.fnMap.exec('setArrow', 'p1.waveDirection');
+    }
   },
   {
     time: '10:35',
@@ -1550,14 +1577,14 @@ nav.loadSlides([
     enterState: 'unpause',
     transition: [
       { out: ['pulseButton', 'sineButton', 'resetButton', 'p1', defs] },
-      { in: { ocean: ['particles', 'grid'] } },
+      { in: [{ ocean: ['particles', 'grid'] }, 'freezeTimeButton', 'freezeTimeLabel'] },
     ],
     // leaveState: 'softReset',
   },
   {
     time: '10:52',
     hide: 'm1',
-    show: 'ocean',
+    show: ['ocean', 'freezeTimeButton', 'freezeTimeLabel'],
     fromForm: [null, null, null, 'ocean'],
     form: [null, null, null, 'ocean'],
     enterState: 'unpause',

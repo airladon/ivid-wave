@@ -160,18 +160,18 @@ function toggle(name, position, height, onDirectionRight = true)
 .##........##..##...###.##.......##....##
 .########.####.##....##.########..######.
 */
-const arrow = (name, text, p1, p2, color = colorLight, location = 'bottom', align = 'center') => ({
+const arrow = (name, text, p1, p2, color = colorLight, location = 'bottom', align = 'center', arrow = 'barb', scale = 4) => ({
   name,
   make: 'collections.line',
   options: {
     width: 0.05,
     color,
-    arrow: 'barb',
+    arrow,
     label: {
       text,
       location,
       offset: 0.2,
-      scale: 4,
+      scale,
       color,
     },
     p1,

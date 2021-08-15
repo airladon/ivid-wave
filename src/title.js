@@ -120,7 +120,7 @@ void main() {
         yh = title.custom.recording.getValueAtTimeAgo(0) / 3;
         movePad.transform.updateTranslation(0, yh);
       }
-      // title._diaphram.setPosition(x, 0);
+      // title._diaphragm.setPosition(x, 0);
 
       const t = time.now();
       // const y = movePad.transform.t().y;
