@@ -267,10 +267,10 @@ function addMedium(
         make: 'collections.line',
         options: {
           width: 0.05,
-          color: colorOne,
+          color: colorYellowText,
           arrow: { end: 'barb' },
-          p1: [5, 3],
-          p2: [7, 3],
+          p1: [5, 4],
+          p2: [7, 4],
         },
       },
       {
