@@ -829,6 +829,7 @@ nav.loadSlides([
       figure.fnMap.exec('setArrow', 'm1.v2Arrow');
       figure.fnMap.exec('setArrow', 'timePlot1.TArrow');
       figure.fnMap.exec('setArrow', 'timePlot1.secondsArrow');
+      timePlot1._TArrow._label.hide();
       pause();
     },
     form: [null, null, 'vdt'],
