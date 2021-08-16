@@ -97,6 +97,7 @@ const arrow1 = figure.get('arrow1');
 const arrow2 = figure.get('arrow2');
 // const eqnSineT = figure.get('eqnSineT');
 const eqnWave = figure.get('eqnWave');
+const figureOneEqn = figure.get('figureOneEqn');
 // const eqnWaveDescription = figure.get('eqnWaveDescription');
 // const eqnGenT = figure.get('eqnGenT');
 // const eqnSinT = figure.get('eqnSinT');
@@ -1207,7 +1208,7 @@ nav.loadSlides([
   ..######..####.##....##
   */
   { form: 'sinInput_g', time: '7:24.5' },
-  { form: 'sinInput', time: '7:27' },
+  { form: 'sinInput', time: '7:27', show: 'sinMoreButton' },
   { form: 'sinInput_1', time: '7:29' },
   { form: 'sinInput_2', time: '7:31.5' },
   { form: 'sinInput_3', time: '7:33' },
@@ -1604,11 +1605,24 @@ nav.loadSlides([
   .##.......##...###.##.....##
   .########.##....##.########.
   */
+  {
+    time: '11:10',
+    clear: true,
+    enterState: () => {
+      figureOneEqn.showForm('0');
+    },
+    transition: [
+      { out: [defs, 'ocean'] },
+      { in: figureOneEqn },
+      // { goToForm: figureOneEqn, target: '1', delay: 7 },
+      { goToForm: figureOneEqn, target: '2', delay: 2 },
+    ]
+  },
 ]);
 
 
 figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.mp3'));
-figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
+// figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
 // figure.recorder.loadAudioTrack(new Audio('http://10.0.1.95:8080/src/audio-track.mp3'));
 // figure.recorder.loadVideoTrack('http://10.0.1.95:8080/src/video-track.json');
 figure.recorder.notifications.add('stateSet', () => pause());

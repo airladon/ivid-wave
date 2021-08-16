@@ -155,4 +155,31 @@ function addFigureElements() {
     labelButton('sinSpaceSelector', [12, 1], [{ text: 'Initial Disturbance', font: { size: 0.35 } }, 'Periodic Time']),
     labelButton('sinTimeSelector', [20, 1],  [{ text: 'Initial Disturbance', font: { size: 0.35 } }, 'Periodic Space']),
   ]);
+
+  figure.add({
+    name: 'figureOneEqn',
+    make: 'equation',
+    scale: 7,
+    position: [12, 6],
+    color: colorLight,
+    dimColor: colorLight,
+    font: { family: 'TeXGyreTermes' },
+    textFont: { family: 'TeXGyreTermes' },
+    elements: {
+      lb1: { symbol: 'squareBracket', side: 'left', lineWidth: 0.07, width: 0.16 },
+      rb1: { symbol: 'squareBracket', side: 'right', lineWidth: 0.07, width: 0.16 },
+      s: { symbol: 'sum', lineWidth: 0.04 },
+      v: { symbol: 'vinculum', lineWidth: 0.04 },
+      ra: { symbol: 'radical', lineWidth: 0.04 },
+    },
+    formDefaults: {
+      alignment: { xAlign: 'center', yAlign: 'middle' },
+      lazyLayout: true,
+    },
+    forms: {
+      0: ['f', 'i', 'g', 'u', 'r', 'e', 'o', 'n', 'e_'],
+      // 1: [{ frac: [['f', { sumOf: ['s', 'i', 'g', 'u'] }], 'v', ['e', { root: ['ra', 'o'] }, 'n', 'e_']] }],
+      2: { matrix: [[3, 3], 'lb1', ['f', 'u', 'o', 'i', 'r', 'n', 'g', 'e', 'e_'], 'rb1'] },
+    },
+  });
 };
