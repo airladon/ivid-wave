@@ -98,7 +98,7 @@ function addTravellingWaveEquation(name) {
     phrases: {
     },
     formDefaults: {
-      alignment: { fixTo: 'equals1' },
+      alignment: { fixTo: 'equals1', },
       translation: {
         'twoPi_1': { style: 'linear' },
         'vin2': { style: 'linear' },
@@ -133,6 +133,22 @@ function addTravellingWaveEquation(name) {
         line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
         line(['g_2', brac('x_2', 3), 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3'], 4)], 2),
       ], 2.5, 'element'),
+      sinInput_noInput: lines([
+        line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
+        line(['g_2', brac('x_4', 3), 'equals2', 'sin', brac(hide(['twoPi', '  ', frac('x_5', 1, 'lambda', 0.6)]), 4)], 2),
+      ], 2.5, 'element'),
+      sinInput_xOnL: lines([
+        line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
+        line(['g_2', brac('x_4', 3), 'equals2', 'sin', brac(['twoPi', '  ', frac('x_5', 1, 'lambda', 0.6)], 4)], 2),
+      ], 2.5, 'element'),
+      sinInputStart: lines([
+        line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
+        line(['g_2', brac('x_4', 3), 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_5'], 4)], 2),
+      ], 2.5, 'element'),
+      sinInput_subvt: lines([
+        line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
+        line(['g_2', brac(bc('x_4', ['x_2', 'min1', 'v_2', 't_2'], 'arrow1', 0.1, 0.1, 0.7, 0.1, 0.2), 3), 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', bc('x_5', ['x_3', 'min2', 'v_3', 't_3'], 'arrow2', 0.1, 0.1, 0.7, 0.1, 0.2)], 4)], 2),
+      ], 2.5, 'element'),
       // sinInput_1: lines([
       //   line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
       //   line(['g_2', brac('x_2', 3), 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3'], 4)], 2),
@@ -153,10 +169,28 @@ function addTravellingWaveEquation(name) {
           lambda_1: { style: 'curve', mag: 0.8, direction: 'down' },
         },
       },
+      sinInput_2a: {
+        content: lines([
+          line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
+          line(['g_2', brac(['x_2', 'min1', 'v_2', 't_2'], 3), 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', frac(['twoPi_1', ' ', 'v_3'], 2, 'lambda_1', 0.6), '  ', 't_3'], 4)], 2),
+        ], 2.5, 'element'),
+      },
+      sinInput_2b: {
+        content: lines([
+          line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
+          line(['g_2', brac(['x_2', 'min1', 'v_2', 't_2'], 3), 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', 'twoPi_1', '  ', frac('v_3', 2, 'lambda_1', 0.6), '  ', 't_3'], 4)], 2),
+        ], 2.5, 'element'),
+      },
       sinInput_3: lines([
         line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
         line(['g_2', brac(['x_2', 'min1', 'v_2', 't_2'], 3), 'equals2', 'sin', brac([' ', bc(box(frac('twoPi', 1, 'lambda', 0.6), 'box1', 0.02), 'k', 'arrow1', 0.1, 0.1, 0.7, 0.1, 0.2), '  ', 'x_3', 'min2', bc(box([frac('twoPi_1', 2, 'lambda_1', 0.6), ' ', 'v_3'], 'box2', 0.02), 'w', 'arrow2', 0.1, 0.1, 0.7, 0.1, 0.2), '  ', 't_3'], 4)], 2),
       ], 2.5, 'element'),
+      sinInput_3a: {
+        content: lines([
+          line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
+          line(['g_2', brac(['x_2', 'min1', 'v_2', 't_2'], 3), 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', 'twoPi_1', '   ', tc(box(frac('v_3', 2, 'lambda_1', 0.6), 'box'), frac('_1', 3, 'T', 0.6), 'arrow1', 0.1, 0.1, 0.7, 0.1, 0.2), '   ', 't_3'], 4)], 2),
+        ], 2.5, 'element'),
+      },
       sinInput_4: lines([
         line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
         line(['g_2', brac(['x_2', 'min1', 'v_2', 't_2'], 3), 'equals2', 'sin', brac(['k', ' ', 'x_3', 'min2', 'w', ' ', 't_3'], 4)], 2),
@@ -169,6 +203,12 @@ function addTravellingWaveEquation(name) {
         line(['y_1', brac(['x_2', 'comma2', 't_2'], 3), 'equals2', 'sin', brac(['k', ' ', 'x_3', 'min2', 'w', ' ', 't_3'], 4)], 2),
       ], 2.5, 'element'),
     },
+  });
+  eqn.getAllElements().forEach((e) => {
+    e.scenarios.description = { color: colorLight };
+    e.scenarios.highlight1 = { color: colorYellowText };
+    e.scenarios.highlight2 = { color: colorDisturbanceText };
+    e.scenarios.hide = { color: [0, 0, 0, 0] };
   });
   const description = figure.add({
     name: 'eqnWaveDescription',
@@ -283,8 +323,16 @@ function addTravellingWaveEquation(name) {
   highlightN(5, d, e, [-0.4, 0.2, -0.4, 0.1], 0.1, 1.3, 1.1);
   highlightN(6, d, e, [0.2, 0.2, 0.2, 0.1], 0.1, 1.3, 1.1);
 
-  const hl = (elements) => () => {
-    eqn.dim(elements);
+  const hl = (hl1Elements = [], hl2Elements = [], hideElements = []) => () => {
+    let hl1 = hl1Elements;
+    let hl2 = hl2Elements;
+    let hide = hideElements;
+    if (!Array.isArray(hl1)) { hl1 = [hl1]; }
+    if (!Array.isArray(hl2)) { hl2 = [hl2]; }
+    if (!Array.isArray(hide)) { hide = [hide]; }
+    eqn.get(hl1).forEach(element => element.setScenario('highlight1'));
+    eqn.get(hl2).forEach(element => element.setScenario('highlight2'));
+    eqn.get(hide).forEach(element => element.setScenario('hide'));
   };
 
   const [sinMore, desc, sinNav] = figure.add([
@@ -410,68 +458,125 @@ function addTravellingWaveEquation(name) {
       make: 'collections.slideNavigator',
       equation: ['description', 'eqnWave'],
       color: colorLight,
-      position: [12, 2.5],
+      position: [12, 2],
       nextButton: { type: 'arrow', position: [11, 0], width: 2, length: 1,color: colorLight, line: { width: 0.02 }, touchBorder: 0.5 },
       prevButton: { type: 'arrow', position: [-11, 0], width: 2, length: 1, color: colorLight, line: { width: 0.02 }, touchBorder: 0.5 },
       disableOpacity: 0.2,
       text: {
+        defaultAccent: { color: colorYellowText },
         position: [0, 0],
-        font: { size: 0.7, color: colorLight, scale: 1 / 1.152 },
+        font: { size: 0.7, color: colorLight, width: 1 },
         justify: 'center',
         xAlign: 'center',
         yAlign: 'middle',
+        lineSpace: 1.2,
         modifiers: {
-          sin: { font: { family: 'TeXGyreTermes', color: colorYellowText, scale: 1.152 } },
+          sin: { font: { family: 'TeXGyreTermes', color: colorDisturbanceText, size: 0.8 } },
+          twoPi: { text: '2\u03c0', font: { family: 'TeXGyreTermes', style: 'italic', size: 0.8 } },
+          twoPiY: { text: '2\u03c0', font: { family: 'TeXGyreTermes', style: 'italic', size: 0.8 } },
+          lambda: { text: '\u03bb', font: { size: 0.8, family: 'TeXGyreTermes', style: 'italic' } },
+          x: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic' } },
+          g: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic', color: colorYellowText } },
+          vt: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic' } },
+          T: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic' } },
+          lvT: { text: '\u03bb = vT', font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic' } },
+          // 'initial disturbance': { font: { color: colorYellowText } },
         },
       },
       slides: [
         {
+          scenarioCommon: ['default', 'high', 'description'],
           enterStateCommon: () => {
             eqn.undim();
           },
-          form: [null, 'sinInput'],
-          text: 'Use the arrows to progress through the steps',
+          form: [null, 'final'],
+          text: ['Start with the general description for a wave', { text: 'Use the |arrows| to progress through the steps', font: { size: 0.5 }, lineSpace: 1.5 }],
+          steadyState: () => {
+            figure.get('sinNav')._nextButton.setColor(colorYellowText);
+          },
+          leaveState: () => {
+            figure.get('sinNav')._nextButton.setColor(colorLight);
+          },
         },
         {
-          form: [null, 'sinInput'],
-          text: 'The initial disturbance is a sine function',
-          steadyState: hl('g_2'),
+          text: 'Set the |initial disturbance| |g| to a sin function.',
+          steadyState: hl(['g']),
         },
         {
-          form: [null, 'sinInput'],
-          text: ['A |sin| function repeats every time it\'s input is a multiple of 2π.'],
-          steadyState: hl('sin'),
+          form: [null, 'sinInput_noInput'],
+          enterState: hl(['g_2', 'lb3', 'x_4', 'rb3', 'g']),
         },
         {
-          form: ['initial', 'sinInput'],
-          
+          text: [
+            'We want a wave in space repeating every |lambda| in distance.',
+            'Sin repeats when its |input| is an integer multiple of |twoPi|.',
+          ],
+          steadyState: hl(['lb4', 'rb4']),
         },
-        { form: ['0', 'sinInput'], steadyState: hl('g_2') },
-        { form: ['1', 'sinInput'] },
-        { form: ['1', '1'] },
-        { form: ['1a', '1'] },
-        { form: ['2', '1'] },
-        { form: ['2', '2'] },
-        { form: ['2', '3'] },
-        { form: ['3', '3'] },
-        { form: ['3', '4'] },
-        { form: ['3', '5'] },
-        { form: ['4', '5'] },
-        { form: ['4', '6'] },
-        { form: ['4', '7'] },
-        { form: ['5', '7'] },
-        { form: ['5', '8'] },
-        { form: ['5', '9'] },
-        { form: ['6', '9'] },
-        { form: ['6', '10'] },
-        { form: ['6', '11'] },
-        { form: ['6', '12'] },
-        // { form: ['6', '13'] },
-        { form: ['7', '12'] },
-        { form: ['7', '13'] },
-        { form: ['7', '14'] },
-        { form: ['8', '14'] },
-        { form: ['8', '15'] },
+        { form: [null, 'sinInput_xOnL'] },
+        {
+          // form: [null, 'sinInput_xOnL'],
+          text: [
+            'Everytime |x| is an integer multiple of |lambda|, the input to', 'the sin function will be an integer multiple of |twoPi|.'],
+          // steadyState: hl('sin'),
+        },
+        {
+          // form: [null, 'sinInput_xOnL'],
+          text: [
+            'Thus this expression describes a sin disturbance', 'in space that repeats every |lambda|.'],
+          // steadyState: hl('sin'),
+        },
+        {
+          text: ['Rearrange the sine input to separate x.'],
+        },
+        { form: [null, 'sinInputStart'] },
+        {
+          text: ['Lets now shift initial disturbance by |vt|.'],
+        },
+        { form: [null, 'sinInput_subvt'] },
+        { form: [null, 'sinInput_1'] },
+        {
+          text: ['Expand brackets in sin function.'],
+        },
+        { form: [null, 'sinInput_2'] },
+        {
+          text: ['Rearrange order of second term in sin function.'],
+        },
+        { form: [null, 'sinInput_2a'] },
+        { form: [null, 'sinInput_2b'] },
+        {
+          text: ['For a periodic function, we showed earlier that |lvT|', 'where |T| is the period of the repeated wave'],
+        },
+        { form: [null, 'sinInput_3a'] },
+        // {
+        //   form: ['initial', 'sinInput'],
+        // },
+        // { form: ['0', 'sinInput'], steadyState: hl('g_2') },
+        // { form: ['1', 'sinInput'] },
+        // { form: ['1', '1'] },
+        // { form: ['1a', '1'] },
+        // { form: ['2', '1'] },
+        // { form: ['2', '2'] },
+        // { form: ['2', '3'] },
+        // { form: ['3', '3'] },
+        // { form: ['3', '4'] },
+        // { form: ['3', '5'] },
+        // { form: ['4', '5'] },
+        // { form: ['4', '6'] },
+        // { form: ['4', '7'] },
+        // { form: ['5', '7'] },
+        // { form: ['5', '8'] },
+        // { form: ['5', '9'] },
+        // { form: ['6', '9'] },
+        // { form: ['6', '10'] },
+        // { form: ['6', '11'] },
+        // { form: ['6', '12'] },
+        // // { form: ['6', '13'] },
+        // { form: ['7', '12'] },
+        // { form: ['7', '13'] },
+        // { form: ['7', '14'] },
+        // { form: ['8', '14'] },
+        // { form: ['8', '15'] },
         // { form: ['8', '15'] },
         // { form: ['9', '15'] },
         // { form: ['9', '16'] },
@@ -479,9 +584,18 @@ function addTravellingWaveEquation(name) {
     },
   ]);
   sinMore.onClick = () => {
-    sinNav.showAll();
-    sinMore.hide();
     sinNav.goToSlide(0);
+    sinNav.hide();
+    figure.elements.animations.new()
+      .inParallel([
+        sinMore.animations.dissolveOut(0.3),
+        eqn.animations.goToForm({ target: 'final', animate: 'move' }),
+      ])
+      .dissolveIn({ element: sinNav, duration: 0.3 })
+      .start();
+    // sinNav.showAll();
+    // sinMore.hide();
+    // sinNav.goToSlide(0);
   };
 }
 

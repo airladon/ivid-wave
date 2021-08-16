@@ -3,7 +3,9 @@
 const figure = new Fig.Figure({
   limits: [0, 0, 24, 12],
   color: [0.3, 0.3, 0.3, 1],
-  font: { size: 0.1, family: 'Open Sans', style: 'normal' },
+  font: {
+    size: 0.1, family: 'Open Sans', style: 'normal', width: 1.12, midAscent: 1.1, maxAscent: 1.5,
+  },
   backgroundColor: [0, 0, 0, 1],
 });
 
@@ -509,7 +511,7 @@ nav.loadSlides([
   */
   {
     scenarioCommon: 'default',
-    show: ['title'],
+    show: ['title', 'textTester'],
     enterState: () => {
       recorder.setManual();
     },

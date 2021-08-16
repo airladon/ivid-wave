@@ -5,8 +5,8 @@ function addDefsEquation(name) {
     color: colorLight,
     // font: { family: 'TeXGyreTermes' },
     // textFont: { family: 'TeXGyreTermes', style: 'normal' },
-    font: { family: 'Open Sans' },
-    textFont: { family: 'Open Sans', style: 'normal' },
+    font: { family: 'Open Sans', width: 1.12, midAscent: 1.1, maxAscent: 1.5 },
+    textFont: { family: 'Open Sans', style: 'normal', width: 1.12, midAscent: 1.1, maxAscent: 1.5 },
     scale: 4.7,
     position: [12, 1],
     formDefaults: { alignment: { xAlign: 'center' }, lazyLayout: true },
@@ -28,7 +28,7 @@ function addDefsEquation(name) {
       colon: ': ',
       adjective: { text: 'adjective', style: 'italic' },
       long: { text: 'Longitudinal', color: colorYellowText },
-      long1: { text: 'Longitudinal', color: colorYellowText },
+      long1: { text: 'Longitudinal', color: colorYellowText, width: 1.1 },
       along: 'lengthwise or along',
       Single: { color: colorYellowText },
       Multiple: { color: colorYellowText },
@@ -46,7 +46,7 @@ function addDefsEquation(name) {
       longWave: ['long', '  ', 'Wave'],
       longDef: lines([
         ['long', '  ', 'Wave'],
-        scale(['long1', '_: (', 'adjective', '_)  extend or direct across'], 0.5),
+        scale(['long1', '_: ', '(adjective)', '_ extend or direct across'], 0.5),
       ], 0.8, 'center'),
       ocean: ['Transverse', '_ and ', 'long', '_ '],
       // longWave: {

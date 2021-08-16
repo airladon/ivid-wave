@@ -296,6 +296,12 @@ const under = (content, width = null) => ({
   },
 });
 
+const hide = (content, width = null) => ({
+  container: {
+    content, inSize: true, showContent: false, width,
+  },
+});
+
 const bc = (content, comment, symbol, commentSpace = 0.2, contentSpace = 0.2, scale = 1, commentLineSpace = 0.2, contentLineSpace = 0.2) => ({
   bottomComment: {
     content,

@@ -182,4 +182,24 @@ function addFigureElements() {
       2: { matrix: [[3, 3], 'lb1', ['f', 'u', 'o', 'i', 'r', 'n', 'g', 'e', 'e_'], 'rb1'] },
     },
   });
-};
+
+  // figure.add({
+  //   name: 'textTester',
+  //   make: 'equation',
+  //   color: colorLight,
+  //   font: { family: 'Roboto' },
+  //   // textFont: { family: 'Roboto', style: 'normal' },
+  //   // font: { family: 'TeXGyreTermes' },
+  //   // textFont: { family: 'TeXGyreTermes' },
+  //   // font: { family: 'Open Sans' },
+  //   textFont: { family: 'Open Sans', style: 'normal', width: 1.12, midAscent: 1.1, maxAscent: 1.5 },
+  //   position: [1, 4],
+  //   scale: 4,
+  //   elements: {
+  //     box: { symbol: 'box', lineWidth: 0.008, color: [1, 0, 0, 1] },
+  //   },
+  //   forms: {
+  //     0: { box: [['function repeats every time it\'s input is a multiple of '], 'box'] },
+  //   },
+  // });
+}
