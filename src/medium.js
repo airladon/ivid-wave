@@ -1,7 +1,7 @@
 /*
-globals figure, color1, colorPositionText, time, colorGText,
+globals figure, colorPositionText, time, colorGText,
 colorLight, maxTimeReached, unpause, Transform, range, xAxis, yAxis,
-arrow, colorOne, Fig, colorYellowText,
+arrow, Fig, colorYellowText, colorDisturbanceText,
 */
 
 /* eslint-disable camelcase, object-curly-newline */
@@ -341,7 +341,7 @@ function addMedium(
         length: 0.5,
         tail: 0.2,
         tailWidth: 0.2,
-        color: colorPositionText,
+        color: colorDisturbanceText,
       },
     ],
     mods: {
