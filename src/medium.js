@@ -394,8 +394,8 @@ function addMedium(
   const wavelength = medium.getElement('wavelength');
   const velocity = medium.getElement('velocity');
   const widthArrow = medium.getElement('widthArrow');
-  const xDashLine = medium.getElement('xDashLine');
-  const xDashLineG = medium.getElement('xDashLineG');
+  // const xDashLine = medium.getElement('xDashLine');
+  // const xDashLineG = medium.getElement('xDashLineG');
   const movePadEnv = medium.get('movePadEnv');
   const propogation = medium.get('propogation');
   let lastEnvelope = [];
@@ -573,7 +573,7 @@ function addMedium(
         // const t = Math.floor(
         //   (time.now() + medium.custom.trackingTime) / ballSpaceTime,
         // ) * ballSpaceTime;
-        const tt = time.now() + medium.customState.trackingTime;
+        const tt = time.now() - medium.customState.trackingTime;
         // console.log(time.now(), t)
         // If the tracker is within the axis, then position it appropriately,
         // otherwise position it way off
