@@ -1211,11 +1211,11 @@ nav.loadSlides([
   */
   { form: 'sinInput_g', time: '7:24.5' },
   { form: 'sinInput', time: '7:27', show: 'sinMoreButton' },
-  { form: 'sinInput_1', time: '7:29' },
-  { form: 'sinInput_2', time: '7:31.5' },
-  { form: 'sinInput_3', time: '7:33' },
+  { form: 'sinInput_1', time: '7:29', show: 'sinMoreButton' },
+  { form: 'sinInput_2', time: '7:31.5', show: 'sinMoreButton' },
+  { form: 'sinInput_3', time: '7:33', show: 'sinMoreButton' },
   // { form: 'sinInput_4', time: '7:35.5' },
-  { form: 'sinInput_5', time: '7:35' },
+  { form: 'sinInput_5', time: '7:35', show: 'sinMoreButton' },
 
   /*
   .##.....##.##.....##.##.......########.####.########..##.......########

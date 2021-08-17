@@ -1,5 +1,5 @@
 /* eslint-disable camelcase, object-curly-newline, max-len */
-/* globals colorDisturbanceText, colorPositionText, colorDisturbanceText, colorLight, colorTimeText, colorGText, tBox, brac, tc, figure, highlightN, lines, frac */
+/* globals colorDisturbanceText, colorPositionText, colorDisturbanceText, colorLight, colorTimeText, tBox, brac, tc, figure, highlightN, lines, frac, line, bc, colorGreenText, colorPurpleText, colorYellowText, colorCyanText, sub, under, scale, hide, box */
 function addTravellingWaveEquation(name) {
   const t = (content, boxIndex) => ({
     tBox: [content, `tBox${boxIndex}`],
@@ -96,13 +96,15 @@ function addTravellingWaveEquation(name) {
       box2: { symbol: 'box', lineWidth: 0.04 },
     },
     phrases: {
+      general: ['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)],
+      g2: ['g_2', brac(['x_2', 'min1', 'v_2', 't_2'], 3)],
     },
     formDefaults: {
-      alignment: { fixTo: 'equals1', },
+      alignment: { fixTo: 'equals1' },
       translation: {
-        'twoPi_1': { style: 'linear' },
-        'vin2': { style: 'linear' },
-        'lambda_1': { style: 'linear' },
+        twoPi_1: { style: 'linear' },
+        vin2: { style: 'linear' },
+        lambda_1: { style: 'linear' },
       },
       lazyLayout: true,
     },
@@ -126,42 +128,37 @@ function addTravellingWaveEquation(name) {
         [t('y_c', 1), brac([t('x_c', 2), 'comma', t('t_c', 3)], 1), 'equals2', t('g_c', 4), brac(['x_c1', t('min_c', 5), t(['v_c', 't_c1'], 6)], 2)],
       ],
       sinInput_g: lines([
-        line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
+        line('general', 1),
         line(['g_2', brac('x_2', 3), 'equals2'], 2),
       ], 2.5, 'element'),
       sinInput: lines([
-        line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
+        line('general', 1),
         line(['g_2', brac('x_2', 3), 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3'], 4)], 2),
       ], 2.5, 'element'),
       sinInput_noInput: lines([
-        line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
+        line('general', 1),
         line(['g_2', brac('x_4', 3), 'equals2', 'sin', brac(hide(['twoPi', '  ', frac('x_5', 1, 'lambda', 0.6)]), 4)], 2),
       ], 2.5, 'element'),
       sinInput_xOnL: lines([
-        line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
+        line('general', 1),
         line(['g_2', brac('x_4', 3), 'equals2', 'sin', brac(['twoPi', '  ', frac('x_5', 1, 'lambda', 0.6)], 4)], 2),
       ], 2.5, 'element'),
       sinInputStart: lines([
-        line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
+        line('general', 1),
         line(['g_2', brac('x_4', 3), 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_5'], 4)], 2),
       ], 2.5, 'element'),
       sinInput_subvt: lines([
-        line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
+        line('general', 1),
         line(['g_2', brac(bc('x_4', ['x_2', 'min1', 'v_2', 't_2'], 'arrow1', 0.1, 0.1, 0.7, 0.1, 0.2), 3), 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', bc('x_5', ['x_3', 'min2', 'v_3', 't_3'], 'arrow2', 0.1, 0.1, 0.7, 0.1, 0.2)], 4)], 2),
       ], 2.5, 'element'),
-      // sinInput_1: lines([
-      //   line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
-      //   line(['g_2', brac('x_2', 3), 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3'], 4)], 2),
-      //   line(['g_3', brac(['x_4', 'min1', 'v_2', 't_2'], 5), 'equals3', 'sin_1', brac([frac('twoPi_1', 2, 'lambda_1', 0.6), ' ', 'x_5', 'min2', frac('twoPi_2', 3, 'lambda_2', 0.6), ' ', 'v_3', 't_3'], 6)], 3),
-      // ], 2.5, 'element'),
       sinInput_1: lines([
-        line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
-        line(['g_2', brac(['x_2', 'min1', 'v_2', 't_2'], 3), 'equals2', 'sin', brac([under(frac('twoPi', 1, 'lambda', 0.6)), frac('twoPi_1', 2, 'lambda_1', 0.6), ' ', brac(['x_3', 'min2', 'v_3', 't_3'], 5)], 4)], 2),
+        line('general', 1),
+        line(['g2', 'equals2', 'sin', brac([under(frac('twoPi', 1, 'lambda', 0.6)), frac('twoPi_1', 2, 'lambda_1', 0.6), ' ', brac(['x_3', 'min2', 'v_3', 't_3'], 5)], 4)], 2),
       ], 2.5, 'element'),
       sinInput_2: {
         content: lines([
-          line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
-          line(['g_2', brac(['x_2', 'min1', 'v_2', 't_2'], 3), 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', frac('twoPi_1', 2, 'lambda_1', 0.6), ' ', 'v_3', 't_3'], 4)], 2),
+          line('general', 1),
+          line(['g2', 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', frac('twoPi_1', 2, 'lambda_1', 0.6), ' ', 'v_3', 't_3'], 4)], 2),
         ], 2.5, 'element'),
         translation: {
           twoPi_1: { style: 'curve', mag: 0.8, direction: 'down' },
@@ -171,77 +168,93 @@ function addTravellingWaveEquation(name) {
       },
       sinInput_2a: {
         content: lines([
-          line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
-          line(['g_2', brac(['x_2', 'min1', 'v_2', 't_2'], 3), 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', frac(['twoPi_1', ' ', 'v_3'], 2, 'lambda_1', 0.6), '  ', 't_3'], 4)], 2),
+          line('general', 1),
+          line(['g2', 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', frac(['twoPi_1', ' ', 'v_3'], 2, 'lambda_1', 0.6), '  ', 't_3'], 4)], 2),
         ], 2.5, 'element'),
       },
       sinInput_2b: {
         content: lines([
-          line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
-          line(['g_2', brac(['x_2', 'min1', 'v_2', 't_2'], 3), 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', 'twoPi_1', '  ', frac('v_3', 2, 'lambda_1', 0.6), '  ', 't_3'], 4)], 2),
+          line('general', 1),
+          line(['g2', 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', 'twoPi_1', '  ', frac('v_3', 2, 'lambda_1', 0.6), '  ', 't_3'], 4)], 2),
         ], 2.5, 'element'),
       },
       sinInput_3: lines([
-        line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
-        line(['g_2', brac(['x_2', 'min1', 'v_2', 't_2'], 3), 'equals2', 'sin', brac([' ', bc(box(frac('twoPi', 1, 'lambda', 0.6), 'box1', 0.02), 'k', 'arrow1', 0.1, 0.1, 0.7, 0.1, 0.2), '  ', 'x_3', 'min2', bc(box([frac('twoPi_1', 2, 'lambda_1', 0.6), ' ', 'v_3'], 'box2', 0.02), 'w', 'arrow2', 0.1, 0.1, 0.7, 0.1, 0.2), '  ', 't_3'], 4)], 2),
+        line('general', 1),
+        line(['g2', 'equals2', 'sin', brac([' ', bc(box(frac('twoPi', 1, 'lambda', 0.6), 'box1', 0.02), 'k', 'arrow1', 0.1, 0.1, 0.7, 0.1, 0.2), '  ', 'x_3', 'min2', bc(box([frac('twoPi_1', 2, 'lambda_1', 0.6), ' ', 'v_3'], 'box2', 0.02), 'w', 'arrow2', 0.1, 0.1, 0.7, 0.1, 0.2), '  ', 't_3'], 4)], 2),
       ], 2.5, 'element'),
       sinInput_3a: {
         content: lines([
-          line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
-          line(['g_2', brac(['x_2', 'min1', 'v_2', 't_2'], 3), 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', 'twoPi_1', '   ', bc(box(frac('v_3', 2, 'lambda_1', 0.6), 'box1'), frac('_1', 3, 'T', 0.6), 'arrow1', 0.1, 0.1, 0.7, 0.1, 0.3), '   ', 't_3'], 4)], 2),
+          line('general', 1),
+          line(['g2', 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', 'twoPi_1', '   ', bc(box(frac('v_3', 2, 'lambda_1', 0.6), 'box1'), frac('_1', 3, 'T', 0.6), 'arrow1', 0.1, 0.1, 0.7, 0.1, 0.3), '   ', 't_3'], 4)], 2),
         ], 2.5, 'element'),
       },
+      // sinInput_3b: {
+      //   content: lines([
+      //     line('general', 1),
+      //     line(['g2', 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', 'twoPi_1', '   ', bc(box(frac('v_3', 2, 'lambda_1', 0.6), 'box1'), [frac('_1', 3, 'T', 0.6), 'equals3', 'f'], 'arrow1', 0.1, 0.1, 0.7, 0.1, 0.3), '   ', 't_3'], 4)], 2),
+      //   ], 2.5, 'element'),
+      // },
       sinInput_3b: {
         content: lines([
-          line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
-          line(['g_2', brac(['x_2', 'min1', 'v_2', 't_2'], 3), 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', 'twoPi_1', '   ', bc(box(frac('v_3', 2, 'lambda_1', 0.6), 'box1'), [frac('_1', 3, 'T', 0.6), 'equals3', 'f'], 'arrow1', 0.1, 0.1, 0.7, 0.1, 0.3), '   ', 't_3'], 4)], 2),
+          line('general', 1),
+          line(['g2', 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', 'twoPi_1', ' ', frac('_1', 3, 'T', 0.6), ' ', 't_3'], 4)], 2),
         ], 2.5, 'element'),
       },
       sinInput_3c: {
         content: lines([
-          line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
-          line(['g_2', brac(['x_2', 'min1', 'v_2', 't_2'], 3), 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', 'twoPi_1', ' ', 'f', ' ', 't_3'], 4)], 2),
+          line('general', 1),
+          line(['g2', 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', frac('twoPi_1', 3, 'T', 0.6), ' ', 't_3'], 4)], 2),
         ], 2.5, 'element'),
       },
+      // sinInput_3c: {
+      //   content: lines([
+      //     line('general', 1),
+      //     line(['g2', 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', 'twoPi_1', ' ', 'f', ' ', 't_3'], 4)], 2),
+      //   ], 2.5, 'element'),
+      // },
       sinInput_3d: {
         content: lines([
-          line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
-          line(['g_2', brac(['x_2', 'min1', 'v_2', 't_2'], 3), 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', bc(box(['twoPi_1', ' ', 'f'], 'box1'), 'w', 'arrow1', 0.1, 0.1, 0.7, 0.1, 0.3), '   ', 't_3'], 4)], 2),
+          line('general', 1),
+          line(['g2', 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', bc(box([frac('twoPi_1', 3, 'T', 0.6)], 'box1'), 'w', 'arrow1', 0.1, 0.1, 0.7, 0.05, 0.35), '   ', 't_3'], 4)], 2),
         ], 2.5, 'element'),
       },
       sinInput_3e: {
         content: lines([
-          line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
-          line(['g_2', brac(['x_2', 'min1', 'v_2', 't_2'], 3), 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', 'w', ' ', 't_3'], 4)], 2),
+          line('general', 1),
+          line(['g2', 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', 'w', ' ', 't_3'], 4)], 2),
         ], 2.5, 'element'),
       },
       sinInput_3f: {
         content: lines([
-          line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
-          line(['g_2', brac(['x_2', 'min1', 'v_2', 't_2'], 3), 'equals2', 'sin', brac(['  ', bc(box(frac('twoPi', 1, 'lambda', 0.6), 'box1'), 'k', 'arrow1', 0.1, 0.1, 0.7, 0.1, 0.3), '   ', 'x_3', 'min2', 'w', ' ', 't_3'], 4)], 2),
+          line('general', 1),
+          line(['g2', 'equals2', 'sin', brac(['  ', bc(box(frac('twoPi', 1, 'lambda', 0.6), 'box1'), 'k', 'arrow1', 0.1, 0.1, 0.7, 0.1, 0.3), '   ', 'x_3', 'min2', 'w', ' ', 't_3'], 4)], 2),
         ], 2.5, 'element'),
       },
       sinInput_3g: {
         content: lines([
-          line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
-          line(['g_2', brac(['x_2', 'min1', 'v_2', 't_2'], 3), 'equals2', 'sin', brac(['k', ' ', 'x_3', 'min2', 'w', ' ', 't_3'], 4)], 2),
+          line('general', 1),
+          line(['g2', 'equals2', 'sin', brac(['k', ' ', 'x_3', 'min2', 'w', ' ', 't_3'], 4)], 2),
         ], 2.5, 'element'),
       },
       sinInput_4: lines([
-        line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
-        line(['g_2', brac(['x_2', 'min1', 'v_2', 't_2'], 3), 'equals2', 'sin', brac(['k', ' ', 'x_3', 'min2', 'w', ' ', 't_3'], 4)], 2),
+        line('general', 1),
+        line(['g2', 'equals2', 'sin', brac(['k', ' ', 'x_3', 'min2', 'w', ' ', 't_3'], 4)], 2),
       ], 2.5, 'element'),
       sinInput_4a: {
         content: lines([
           line(['y', brac(['x', 'comma', 't'], 1), 'equals1', box(['g', brac(['x_1', 'min', 'v', 't_1'], 2)], 'box1')], 1),
-          line([box(['g_2', brac(['x_2', 'min1', 'v_2', 't_2'], 3)], 'box2'), 'equals2', 'sin', brac(['k', ' ', 'x_3', 'min2', 'w', ' ', 't_3'], 4)], 2),
+          line([bc(box(['g2'], 'box2'), ['y_2', brac(['x_4', 'comma2', 't_4'], 5)], 'arrow1', 0.1, 0.1, 0.7, 0.02, 0.35), 'equals2', 'sin', brac(['k', ' ', 'x_3', 'min2', 'w', ' ', 't_3'], 4)], 2),
         ], 2.5, 'element'),
       },
-      // sinInput_5: lines([
-      //   line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'sin', brac(['k', ' ', 'x_3', 'min2', 'w', ' ', 't_3'], 4)], 1),
-      // ], 2.5, 'element'),
+      sinInput_5a: {
+        content: lines([
+          line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
+          line(['y_2', brac(['x_4', 'comma2', 't_4'], 5), 'equals2', 'sin', brac(['k', ' ', 'x_3', 'min2', 'w', ' ', 't_3'], 4)], 2),
+        ], 2.5, 'element'),
+      },
+
       sinInput_5: lines([
-        line(['y', brac(['x', 'comma', 't'], 1), 'equals1', 'g', brac(['x_1', 'min', 'v', 't_1'], 2)], 1),
+        line('general', 1),
         line(['y_1', brac(['x_2', 'comma2', 't_2'], 3), 'equals2', 'sin', brac(['k', ' ', 'x_3', 'min2', 'w', ' ', 't_3'], 4)], 2),
       ], 2.5, 'element'),
     },
@@ -515,29 +528,38 @@ function addTravellingWaveEquation(name) {
         modifiers: {
           sin: { font: { family: 'TeXGyreTermes', color: colorDisturbanceText, size: 0.8 } },
           twoPi: { text: '2\u03c0', font: { family: 'TeXGyreTermes', style: 'italic', size: 0.8 } },
-          twoPiY: { text: '2\u03c0', font: { family: 'TeXGyreTermes', style: 'italic', size: 0.8 } },
+          twoPiY: { text: '2\u03c0', font: { family: 'TeXGyreTermes', style: 'italic', size: 0.8, color: colorYellowText } },
           lambda: { text: '\u03bb', font: { size: 0.8, family: 'TeXGyreTermes', style: 'italic' } },
-          x: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic' } },
+          lambdaY: { text: '\u03bb', font: { size: 0.8, family: 'TeXGyreTermes', style: 'italic', color: colorYellowText } },
+          x: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic', color: colorYellowText } },
           g: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic', color: colorYellowText } },
-          vt: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic' } },
-          T: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic' } },
-          lvT: { text: '\u03bb = vT', font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic' } },
-          f: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic' } },
-          k: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic' } },
-          w: { text: '\u03c9', font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic' } },
+          vt: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic', color: colorYellowText } },
+          T: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic', color: colorYellowText } },
+          lvT: { text: '\u03bb = vT', font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic', color: colorYellowText } },
+          // f: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic' } },
+          k: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic', color: colorYellowText } },
+          w: { text: '\u03c9', font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic', color: colorYellowText } },
           // 'initial disturbance': { font: { color: colorYellowText } },
         },
       },
       slides: [
+        // {
+        //   scenarioCommon: ['default', 'highSmall', 'description'],
+        //   // enterStateCommon: () => {
+        //   //   eqn.undim();
+        //   // },
+        //   form: 'final',
+        // },
         {
-          scenarioCommon: ['default', 'highSmall', 'description'],
-          enterStateCommon: () => {
-            eqn.undim();
-          },
           form: 'final',
-          text: ['Start with the general description for a wave', { text: 'Use the |arrows| to progress through the steps', font: { size: 0.5 }, lineSpace: 1.5 }],
+          enterStateCommon: () => {
+            eqn.setScenarios('description');
+          },
+          // enterState: hl(['y', 'lb1', 'rb1', 'x', 'comma', 't', 'equals1', 'g', 'lb2', 'rb2', 'x_1', 'min', 'v', 't_1']),
+          text: ['Start with the |general description for a wave|.', { text: 'Use the |arrows| to progress through the steps', font: { size: 0.5 }, lineSpace: 1.5 }],
           steadyState: () => {
             figure.get('sinNav')._nextButton.setColor(colorYellowText);
+            // hl(['y', 'lb1', 'rb1', 'x', 'comma', 't', 'equals1', 'g', 'lb2', 'rb2', 'x_1', 'min', 'v', 't_1'])();
           },
           leaveState: () => {
             figure.get('sinNav')._nextButton.setColor(colorLight);
@@ -553,67 +575,119 @@ function addTravellingWaveEquation(name) {
         },
         {
           text: [
-            'We want a wave in repeating every |lambda| in space.',
+            'We want a wave that repeats every distance |lambda|.',
             'Sin repeats when its |input| is an integer multiple of |twoPi|.',
           ],
-          steadyState: hl(['lb4', 'rb4']),
+          enterState: hl(['lb4', 'rb4']),
         },
-        { form: 'sinInput_xOnL', steadyState: hl(['lb4', 'rb4']), },
+        { form: 'sinInput_xOnL', enterState: hl(['lb4', 'rb4', 'twoPi', 'x_5', 'lambda', 'vin1']) },
         {
+          enterState: hl(['lambda', 'x_5']),
           text: [
-            'Everytime |x| is an integer multiple of |lambda|, the input to', 'the sin function will be an integer multiple of |twoPi|.'],
+            'Everytime |x| is an integer multiple of |lambdaY|, the input to', 'the sin function will be an integer multiple of |twoPi|.'],
         },
         {
+          enterState: hl(['sin', 'lb4', 'rb4', 'twoPi', 'x_5', 'lambda', 'vin1']),
           text: [
-            'Thus this expression describes a sin disturbance', 'in space that repeats every |lambda|.'],
+            'Thus this expression describes a |sin disturbance|', '|in space that repeats every| |lambdaY|.'],
         },
         {
-          text: ['Rearrange the sine input to separate x.'],
+          enterState: hl(['twoPi', 'x_5', 'lambda', 'vin1']),
+          text: ['|Rearrange| the sine input.'],
         },
-        { form: 'sinInputStart' },
+        { form: 'sinInputStart', enterState: hl(['twoPi', 'x_5', 'lambda', 'vin1']) },
         {
-          text: ['Lets now shift initial disturbance by |vt|.'],
+          enterState: hl(['x_4', 'x_5']),
+          text: ['Shift |x| by |vt|.'],
         },
-        { form: 'sinInput_subvt' },
-        { form: 'sinInput_1' },
         {
-          text: ['Expand brackets in sin function.'],
-        },
-        { form: 'sinInput_2' },
+          enterState: hl(['x_4', 'x_2', 'min1', 'v_2', 't_2', 'arrow1', 'x_5', 'x_3', 'min2', 'v_3', 't_3', 'arrow2']),
+          form: 'sinInput_subvt' },
         {
-          text: ['Rearrange order of second term in sin function.'],
+          enterState: hl(['x_4', 'x_2', 'min1', 'v_2', 't_2', 'arrow1', 'x_5', 'x_3', 'min2', 'v_3', 't_3', 'arrow2']),
+          form: 'sinInput_1',
         },
-        { form: 'sinInput_2a' },
-        { form: 'sinInput_2b' },
         {
-          text: ['For a periodic function, we showed earlier that |lvT|', 'where |T| is the period of the repeated wave'],
+          enterState: hl(['x_3', 'min2', 'v_3', 't_3', 'twoPi_1', 'vin2', 'lambda_1', 'lb5', 'rb5']),
+          text: ['|Expand brackets| in sin function.'],
         },
-        { form: 'sinInput_3a' },
         {
-          text: ['Frequency |f| is one over the period T.'],
+          enterState: hl(['twoPi', 'vin1', 'lambda', 'x_3', 'min2', 'v_3', 't_3', 'twoPi_1', 'vin2', 'lambda_1', 'lb5', 'rb5']),
+          form: 'sinInput_2',
         },
-        { form: 'sinInput_3b' },
-        { form: 'sinInput_3c' },
         {
-          text: ['The number of |twoPi| cycles per second is often called', 'the angular frequency |w|.'],
+          enterState: hl(['v_3', 't_3', 'twoPi_1', 'vin2', 'lambda_1']),
+          text: ['|Rearrange| order of second term in sin function.'],
         },
-        { form: 'sinInput_3d' },
-        { form: 'sinInput_3e' },
         {
-          text: ['The number of |twoPi| cycles per wavelength |lambda| is often', 'called the wave number |k|.'],
+          enterState: hl(['v_3', 't_3', 'twoPi_1', 'vin2', 'lambda_1']),
+          form: 'sinInput_2a',
         },
-        { form: 'sinInput_3f' },
-        { form: 'sinInput_3g' },
         {
-          text: ['Both equations are equal to the same term.'],
+          enterState: hl(['v_3', 't_3', 'twoPi_1', 'vin2', 'lambda_1']),
+          form: 'sinInput_2b',
         },
-        { form: 'sinInput_4a' },
-        { form: 'sinInput_5' },
+        {
+          enterState: hl(['v_3', 'lambda_1', 'vin2', 'vin3', '_1', 'T']),
+          text: ['For a periodic function (like sin), we showed earlier', 'that |lvT| where |T| is the period of the repeated wave.'],
+        },
+        {
+          enterState: hl(['v_3', 'lambda_1', 'vin2', 'vin3', '_1', 'T', 'arrow1', 'box1']),
+          form: 'sinInput_3a',
+        },
+        {
+          enterState: hl(['v_3', 'lambda_1', 'vin2', 'vin3', '_1', 'T', 'arrow1', 'box1']),
+          form: 'sinInput_3b',
+        },
+        {
+          enterState: hl(['v_3', 'lambda_1', 'vin2', 'vin3', '_1', 'T', 'arrow1', 'box1']),
+          form: 'sinInput_3c',
+        },
+        {
+          enterState: hl(['twoPi_1', 'vin3', 'T', 'arrow1', 'box1', 'w']),
+          text: ['The number of |twoPiY| |cycles per second| is often called', 'the |angular frequency| |w|.'],
+        },
+        {
+          enterState: hl(['twoPi_1', 'vin3', 'T', 'arrow1', 'box1', 'w']),
+          form: 'sinInput_3d',
+        },
+        {
+          enterState: hl(['twoPi_1', 'vin3', 'T', 'arrow1', 'box1', 'w']),
+          form: 'sinInput_3e',
+        },
+        {
+          enterState: hl(['twoPi', 'vin1', 'lambda', 'arrow1', 'box1', 'k']),
+          text: ['The number of |twoPiY| |cycles per wavelength| |lambdaY| is often', 'called the |wave number| |k|.'],
+        },
+        {
+          enterState: hl(['twoPi', 'vin1', 'lambda', 'arrow1', 'box1', 'k']),
+          form: 'sinInput_3f',
+        },
+        {
+          enterState: hl(['twoPi', 'vin1', 'lambda', 'arrow1', 'box1', 'k']),
+          form: 'sinInput_3g',
+        },
+        {
+          enterState: hl(['g_2', 'lb3', 'rb3', 'x_2', 'min1', 'v_2', 't_2', 'g', 'lb2', 'rb2', 'x_1', 'min', 'v', 't_1', 'box1', 'box2']),
+          text: ['Both equations are |equal|.'],
+        },
+        {
+          enterState: hl(['g_2', 'lb3', 'rb3', 'x_2', 'min1', 'v_2', 't_2', 'g', 'lb2', 'rb2', 'x_1', 'min', 'v', 't_1', 'box1', 'box2', 'arrow1', 'y_2', 'lb5', 'rb5', 'x_4', 'comma2', 't_4']),
+          form: 'sinInput_4a',
+        },
+        {
+          enterState: hl(['g_2', 'lb3', 'rb3', 'x_2', 'min1', 'v_2', 't_2', 'g', 'lb2', 'rb2', 'x_1', 'min', 'v', 't_1', 'box1', 'box2', 'y_2', 'lb5', 'rb5', 'x_4', 'comma2', 't_4', 'arrow1']),
+          form: 'sinInput_5a',
+        },
+        {
+          enterState: hl(['y_2', 'lb5', 'rb5', 'x_4', 'comma2', 't_4', 'equals2', 'sin', 'lb4', 'rb4', 'k', ' ', 'x_3', 'min2', 'w', ' ', 't_3']),
+          text: 'And so we have an expression for a |travelling sine wave|.',
+        },
       ],
     },
   ]);
   sinMore.onClick = () => {
-    sinNav.goToSlide(0);
+    sinNav.goToSlide(20);
     sinNav.hide();
     figure.elements.animations.new()
       .inParallel([
