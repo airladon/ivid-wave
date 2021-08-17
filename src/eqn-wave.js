@@ -253,9 +253,11 @@ function addTravellingWaveEquation(name) {
     make: 'equation',
     color: colorLight,
     // textFont: { style: 'normal' },
-    font: { family: 'TeXGyreTermes' },
-    textFont: { family: 'TeXGyreTermes', style: 'normal' },
-    scale: 4.5,
+    // font: { family: 'TeXGyreTermes' },
+    // textFont: { family: 'TeXGyreTermes', style: 'normal' },
+    font: { family: 'Open Sans', width: 1.13, midAscent: 1.1, maxAscent: 1.5, },
+    textFont: { family: 'Open Sans', style: 'normal', width: 1.13, midAscent: 1.1, maxAscent: 1.5 },
+    scale: 4,
     position: [2, 2],
     mods: {
       scenarios: {
@@ -271,9 +273,9 @@ function addTravellingWaveEquation(name) {
       'disturbance at an initial time': { color: colorGreenText },
       'shifted by': { color: colorCyanText },
       'distance the wave has propogated since the initial time': { color: colorPurpleText },
-      tBox1: tBox([0.5, 0.2, 0.5, 0.2]),
-      tBox2: tBox([0.5, 0, 0.5, 0.2]),
-      tBox3: tBox([0.5, 0.2, 0.2, 0.2]),
+      tBox1: tBox([0.5, 0.3, 0.5, 0.2]),
+      tBox2: tBox([0.5, 0.1, 0.5, 0.2]),
+      tBox3: tBox([0.5, 0.1, 0.2, 0.2]),
       tBox4: tBox([0.5, 0.2, 0.2, 0.2]),
       tBox5: tBox([0.05, 0.2, 0.05, 0.2]),
       tBox6: tBox([0.2, 0.1, 0.5, 0.2]),
@@ -286,7 +288,7 @@ function addTravellingWaveEquation(name) {
         content: {
           lines: {
             content: [
-              ['The ', t('disturbance', 1), '_ at ', t(['any position'], 2), '_ and ', t(['any time'], 3)],
+              ['The ', t('disturbance', 1), ' ', '_ at ', t(['any position'], 2), '_ and ', t(['any time'], 3)],
               ['is the', '  ', t('disturbance at an initial time', 4), '  ', t('shifted by', 5), '_ the'],
               [t(['distance the wave has propogated since the initial time'], 6), '_.'],
             ],
@@ -309,7 +311,7 @@ function addTravellingWaveEquation(name) {
   }
   const d = description;
   const e = eqn;
-  highlightN(1, d, e, [0.2, 0.15, 0.1, 0.2], 0.1, 1.1, 1.1);
+  highlightN(1, d, e, [0.2, 0.15, 0.1, 0.2], [0.1, 0.1, 0.2, 0.1], 1.1, 1.1);
   highlightN(2, d, e, [0.1, 0.2, 0.1, 0.2], 0.1, 1.3, 1.1);
   highlightN(3, d, e, [0.1, 0.2, 0.15, 0.1], 0.1, 1.1, 1.1);
   highlightN(4, d, e, [0.3, 0.2, 1.4, 0.7], 0.1, 1.3, 1.1);
@@ -334,13 +336,13 @@ function addTravellingWaveEquation(name) {
       make: 'collections.rectangle',
       options: {
         button: true,
-        line: { width: 0.04 },
-        label: { text: 'Show All Steps', font: { color: colorYellowText } },
+        line: { width: 0.02, color: colorLight },
+        label: { text: 'Show All Steps' },
         width: 5,
         height: 1.2,
         corner: { radius: 0.2, sides: 3 },
         position: [21, 1],
-        color: colorLight,
+        color: colorYellowText,
       },
       mods: {
         isTouchable: true,
