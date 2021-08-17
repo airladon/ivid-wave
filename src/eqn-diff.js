@@ -268,13 +268,13 @@ function addDiffEquation(name) {
     position: [12, 3],
     formDefaults: { alignment: { xAlign: 'center' }, lazyLayout: true },
     elements: {
-      tBox1: tBox([0.1, 0.2, 0.1, 0.3]),
-      tBox2: tBox([0.1, 0.1, 0.1, 0.3]),
-      tBox3: tBox([0.1, 0.3, 0.1, 0.1]),
-      tBox4: tBox([0.1, 0.2, 0.1, 0.1]),
-      tBox5: tBox([0.1, 0.1, 0.1, 0.1]),
-      tBox6: tBox([0.1, 0.1, 0.1, 0.1]),
-      tBox7: tBox([0.1, 0.1, 0.1, 0.1]),
+      tBox1: tBox([0.1, 0.2, 0.3, 0.3]),
+      tBox2: tBox([0.1, 0.1, 0.2, 0.3]),
+      tBox3: tBox([0.1, 0.3, 0.3, 0.1]),
+      // tBox4: tBox([0.1, 0.2, 0.1, 0.1]),
+      // tBox5: tBox([0.1, 0.1, 0.1, 0.1]),
+      // tBox6: tBox([0.1, 0.1, 0.1, 0.1]),
+      // tBox7: tBox([0.1, 0.1, 0.1, 0.1]),
       disturbance: { color: colorDisturbanceText },
       'shape of the disturbance in time': { color: colorTimeText },
       'proportional': { color: colorVelocityText },
@@ -291,10 +291,10 @@ function addDiffEquation(name) {
         ['The ', t(1, 'shape of the disturbance in time'), '_  is ', t(2, 'proportional')],
         ['to the  ', t(3, 'shape of the disturbance in space')],
       ], 1.2),
-      soln: lines([
-        ['The ', t(4, 'disturbance'), '_ is equal to a ', t(6, 'positive travelling wave'), ],
-        [t(5, 'superimposed'), '_ with a ', t(7, 'negative travelling wave')],
-      ], 1.2),
+      // soln: lines([
+      //   ['The ', t(4, 'disturbance'), '_ is equal to a ', t(6, 'positive travelling wave'), ],
+      //   [t(5, 'superimposed'), '_ with a ', t(7, 'negative travelling wave')],
+      // ], 1.2),
     },
   });
 
@@ -381,12 +381,12 @@ function addDiffEquation(name) {
   });
   const d = description;
   const e = eqn;
-  highlightN(1, d, e, [0.1, 0.2, 0.1, 0.2], [0.1, 0.1, 0.1, 0.2], 1.1, 1.1);
-  highlightN(2, d, e, [0.1, 0.2, 0.1, 0.2], [0.1, 0.1, 0.1, 0.2], 1.3, 1.1);
-  highlightN(3, d, e, [0.1, 0.2, 0.1, 0.2], [0.1, 0.1, 0.1, 0.2], 1.1, 1.1);
-  highlightN(4, d, e, [0.3, 0.1, 0.1, 0.2], 0.1, 1.3, 1.1);
-  highlightN(5, d, e, [-0.1, 0.2, -0.1, 0.2], 0.1, 1.3, 1.1);
-  highlightN(6, d, e, [0.1, 0.2, 0.1, 0.2], 0.1, 1.3, 1.1);
-  highlightN(7, d, e, [0.1, 0.2, 0.1, 0.2], 0.1, 1.3, 1.1);
+  highlightN(1, d, e, [0.1, 0.2, 0.1, 0.2], [0.1, 0.1, 0.4, 0.2], 1.1, 1.1);
+  highlightN(2, d, e, [0.1, 0.2, 0.1, 0.2], [0.1, 0.1, 0.2, 0.2], 1.3, 1.1);
+  highlightN(3, d, e, [0.1, 0.2, 0.1, 0.2], [0.1, 0.1, 0.4, 0.2], 1.1, 1.1);
+  // highlightN(4, d, e, [0.3, 0.1, 0.1, 0.2], 0.1, 1.3, 1.1);
+  // highlightN(5, d, e, [-0.1, 0.2, -0.1, 0.2], 0.1, 1.3, 1.1);
+  // highlightN(6, d, e, [0.1, 0.2, 0.1, 0.2], 0.1, 1.3, 1.1);
+  // highlightN(7, d, e, [0.1, 0.2, 0.1, 0.2], 0.1, 1.3, 1.1);
 }
 
