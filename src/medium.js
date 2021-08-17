@@ -487,7 +487,9 @@ function addMedium(
           }
           if (max > A / 2) {
             eqn.setPosition(x, max + 0.5);
-            eqn.setOpacity(1);
+            if (eqn.opacity === 0) {
+              eqn.setOpacity(1);
+            }
           } else {
             eqn.setOpacity(0);
           }
@@ -521,7 +523,9 @@ function addMedium(
               a2.setRotation(Math.PI / 2);
             }
             // }
-            eqn1.setOpacity(1);
+            if (eqn1.opacity === 0) {
+              eqn1.setOpacity(1);
+            }
           } else {
             eqn1.setOpacity(0);
           }
@@ -686,10 +690,11 @@ function addMedium(
   });
   figure.fnMap.global.add('copyEnvelope', () => {
     // console.log('copied')
-    medium._envelope2.custom.updatePoints({ points: lastEnvelope });
-    medium._envelope2.pointsToDraw = lastEnvelopeNumVertices;
-    // movePadEnv.custom.x = 0;
-    medium._envelope2.custom.lastPoints = lastEnvelope;
+    if (lastEnvelope.length > 0) {
+      medium._envelope2.custom.updatePoints({ points: lastEnvelope });
+      medium._envelope2.pointsToDraw = lastEnvelopeNumVertices;
+      medium._envelope2.custom.lastPoints = lastEnvelope;
+    }
   });
   figure.fnMap.global.add('copyEnvelopeReset', () => {
     // console.log('copied')
@@ -729,25 +734,7 @@ function addMedium(
     if (time.isPaused()) {
       const x = movePadEnv.getPosition().x - length / 2;
       movePadEnv.customState.x += x;
-      // const envelopePoints = [];
-      // for (let i = 0; i < xValuesSmall.length; i += 1) {
-      //   const tAgo = xValuesSmall[i] / medium.customState.c - movePadEnv.customState.x / length * maxValue / medium.customState.c;
-      //   const y = medium.custom.recording.getValueAtTimeAgo(Math.max(tAgo, 0));
-      //   envelopePoints.push([xValuesSmall[i] / maxValue * length, y]);
-      // }
-      // // console.log(movePad)
-      // // const newEnvelope = lastEnvelope.map(p => p.add(movePadEnv.customState.x, 0));
-      // medium._envelope2.custom.updatePoints({ points: envelopePoints });
       movePadEnv.transform.updateTranslation(length / 2, 0);
-      // if (medium._envelope2.isShown) {
-      // const sign = movePadEnv.customState.x > 0 ? '\u2212' : '+';
-      // eqn1.updateElementText({
-      //   value: `${Math.abs(Fig.tools.math.round(movePadEnv.customState.x / length * maxValue * 2, 1)).toFixed(1)}`,
-      //   sign,
-      //   // x_1: xDashLineG.isShown || xDashLineG.opacity < 1 ? 'x\'' : 'x',
-      //   x_1: 'x',
-      // }, 'current');
-      // }
       medium.custom.updateFlag = true;
     }
   });

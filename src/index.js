@@ -157,7 +157,7 @@ const pause = () => {
   freezeButton.custom.on();
   if (m1._envelope2.isShown) {
     figure.fnMap.global.exec('copyEnvelope');
-    m1._envelope2.setOpacity(1);
+    // m1._envelope2.setOpacity(1);
   }
   update(true);
 };
@@ -254,7 +254,6 @@ figure.fnMap.global.add('softReset', () => softReset());
 //   time.setTimeSpeed(timeSpeed);
 //   // slowTimeButton.setLabel(buttonLabel);
 // };
-
 
 
 // Before each draw, update the points
@@ -1624,7 +1623,7 @@ nav.loadSlides([
 
 
 figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.mp3'));
-// figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
+figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
 // figure.recorder.loadAudioTrack(new Audio('http://10.0.1.95:8080/src/audio-track.mp3'));
 // figure.recorder.loadVideoTrack('http://10.0.1.95:8080/src/video-track.json');
 figure.recorder.notifications.add('stateSet', () => pause());
