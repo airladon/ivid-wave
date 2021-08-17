@@ -1,20 +1,10 @@
 /* eslint-disable camelcase, object-curly-newline, max-len */
 /* globals colorDisturbanceText, colorPositionText, colorDisturbanceText, colorLight, colorTimeText, tBox, brac, tc, figure, highlightN, lines, frac, line, bc, colorGreenText, colorPurpleText, colorYellowText, colorCyanText, sub, under, scale, hide, box */
+// eslint-disable-next-line no-unused-vars
 function addTravellingWaveEquation(name) {
   const t = (content, boxIndex) => ({
     tBox: [content, `tBox${boxIndex}`],
   });
-
-  // const getElementMods = (elements, color) => {
-  //   const elementMods = {};
-  //   elements.forEach(e => {
-  //     elementMods[e] = { color: color.slice() };
-  //   });
-  //   return elementMods;
-  // }
-  // const form = (content, elements, color = colorYellow) => ({
-  //     content, elementMods: getElementMods(elements, color),
-  // });
 
   const eqn = figure.add({
     name,
@@ -188,12 +178,6 @@ function addTravellingWaveEquation(name) {
           line(['g2', 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', 'twoPi_1', '   ', bc(box(frac('v_3', 2, 'lambda_1', 0.6), 'box1'), frac('_1', 3, 'T', 0.6), 'arrow1', 0.1, 0.1, 0.7, 0.1, 0.3), '   ', 't_3'], 4)], 2),
         ], 2.5, 'element'),
       },
-      // sinInput_3b: {
-      //   content: lines([
-      //     line('general', 1),
-      //     line(['g2', 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', 'twoPi_1', '   ', bc(box(frac('v_3', 2, 'lambda_1', 0.6), 'box1'), [frac('_1', 3, 'T', 0.6), 'equals3', 'f'], 'arrow1', 0.1, 0.1, 0.7, 0.1, 0.3), '   ', 't_3'], 4)], 2),
-      //   ], 2.5, 'element'),
-      // },
       sinInput_3b: {
         content: lines([
           line('general', 1),
@@ -206,12 +190,6 @@ function addTravellingWaveEquation(name) {
           line(['g2', 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', frac('twoPi_1', 3, 'T', 0.6), ' ', 't_3'], 4)], 2),
         ], 2.5, 'element'),
       },
-      // sinInput_3c: {
-      //   content: lines([
-      //     line('general', 1),
-      //     line(['g2', 'equals2', 'sin', brac([frac('twoPi', 1, 'lambda', 0.6), ' ', 'x_3', 'min2', 'twoPi_1', ' ', 'f', ' ', 't_3'], 4)], 2),
-      //   ], 2.5, 'element'),
-      // },
       sinInput_3d: {
         content: lines([
           line('general', 1),
@@ -259,8 +237,13 @@ function addTravellingWaveEquation(name) {
       ], 2.5, 'element'),
     },
   });
-  eqn.getAllElements().forEach((e) => {
-    e.scenarios.description = { color: colorLight };
+  eqn.getChildren().forEach((e) => {
+    if (e.name.startsWith('tBox') || e.name.endsWith('_c') || e.name.endsWith('_c1') || e.name === 'eqnWave') {
+      return;
+    }
+    // e.scenarios.description = { color: colorLight };
+    e.scenarios.description = { color: e.color.slice() };
+    e.scenarios.mono = { color: colorLight };
     e.scenarios.highlight1 = { color: colorYellowText };
     e.scenarios.highlight2 = { color: colorDisturbanceText };
     e.scenarios.hide = { color: [0, 0, 0, 0] };
@@ -294,11 +277,6 @@ function addTravellingWaveEquation(name) {
       tBox4: tBox([0.5, 0.2, 0.2, 0.2]),
       tBox5: tBox([0.05, 0.2, 0.05, 0.2]),
       tBox6: tBox([0.2, 0.1, 0.5, 0.2]),
-      // tBox1: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.5, 0.2], isTouchable: true },
-      // tBox2: { symbol: 'tBox', touchBorder: [0.5, 0, 0.5, 0.2], isTouchable: true },
-      // tBox3: { symbol: 'tBox', touchBorder: [0.5, 0.2, 0.2, 0.2], isTouchable: true },
-      // tBox4: { symbol: 'tBox', touchBorder: [0.05, 0.2, 0.05, 0.2], isTouchable: true },
-      // tBox5: { symbol: 'tBox', touchBorder: [0.2, 0.1, 0.5, 0.2], isTouchable: true },
     },
     phrases: {
     },
@@ -319,58 +297,18 @@ function addTravellingWaveEquation(name) {
       },
     },
   });
-  for (let i = 1; i <= 5; i += 1) {
+  for (let i = 1; i <= 6; i += 1) {
     const d = description.get(`tBox${i}`);
     const e = eqn.get(`tBox${i}`);
     d.dimColor = [0, 0, 0, 0];
     e.dimColor = [0, 0, 0, 0];
     d.setColor([0, 0, 0, 0]);
     e.setColor([0, 0, 0, 0]);
-    // e.dimColor = [0, 0, 0, 0];
+    // e.scenarios = {};
+    // d.scenarios = {};
   }
-  // const [d1, d2, d3, d4, d5, d6] = description.get(['tBox1', 'tBox2', 'tBox3', 'tBox4', 'tBox5', 'tBox6']);
-  // const [d7, d8, d9, d10, d11, d12] = description.get(['tBox7', 'tBox8', 'tBox9', 'tBox10', 'tBox11', 'tBox12']);
-  // const [e7, e8, e9, d10, d11, d12] = description.get(['tBox7', 'tBox8', 'tBox9', 'tBox10', 'tBox11', 'tBox12']);
-  // const highlight = (index, e1, e2, s1, s2, p1, p2) => {
-  //   const d = description.get(`tBox${index}`);
-  //   const e = eqn.get(`tBox${index}`);
-  //   const onclick = () => {
-  //     if (eqn.isShown === false || description.isShown === false) {
-  //       return;
-  //     }
-  //     const h1 = figure.get('highlighter');
-  //     const h2 = figure.get('highlighter2');
-  //     h1.showAll();
-  //     h2.showAll();
-  //     h1.surround(eqn.get(e1), s1);
-  //     h2.surround(description.get(e2), s2);
-  //     h1.pulse({ scale: p1 });
-  //     h2.pulse({ scale: p2 });
-  //   };
-  //   d.onClick = onclick;
-  //   e.onClick = onclick;
-  // }
   const d = description;
   const e = eqn;
-  // highlight(1, d, e, 'y_2', 'disturbance', [0.2, 0.2, 0.1, 0.2], 0.1, 1.3, 1.1);
-  // highlight(2, d, e, 'x_2', ['any position', 'x_1'], [0.1, 0.2, 0.1, 0.2], 0.1, 1.3, 1.1);
-  // highlight(3, d, e, 't_3', ['any time', 't_1'], [0.1, 0.2, 0.15, 0.05], 0.1, 1.3, 1.1);
-  // highlight(4, d, e, 'equals2', 'is the', [-0.2, 0.2, -0.2, 0.2], 0.1, 1.3, 1.1);
-  // highlight(5, d, e, ['f_2'], ['disturbance that happened at', '_0_f'], [0.3, 0.3, 0.3, 0.1], 0.1, 1.3, 1.05);
-  // highlight(6, d, e, ['t_6', 'vin1', 'v_t', 'x_t'], ['time_1', 'ago', 'x_t', 'v'], [0.1, 0.1, 0.1, 0.1], 0.1, 1.3, 1.1);
-
-  // highlight(7, d, e, 'y_1', 'disturbance', [0.2, 0.1, 0.1, 0.1], 0.1, 1.3, 1.1);
-  // highlight(8, d, e, ['x_1', 'zeroX'], ['position', '_0'], [0.1, 0.1, 0.1, 0.1], 0.1, 1.3, 1.1);
-  // highlight(9, d, e, 't_1', 'functionOfTime', [0.1, 0.1, 0.1, 0.1], 0.1, 1.3, 1.1);
-  // highlight(10, d, e, 'equals1', 'equal', [-0.2, 0.1, -0.2, 0.1], 0.1, 1.3, 1.1);
-  // highlight(11, d, e, ['f_1', 't_2'], ['f'], [0.3, 0.35, 0.5, 0.35], [0.25, 0.3, 0.3, 0.1], 1.3, 1.1);
-  // highlight(12, d, e, ['y_2'], ['disturbance'], [0.2, 0.1, 0.1, 0.2], [0.1, 0.1, 0.1, 0.1], 1.3, 1.1);
-  // highlight(13, d, e, ['x_2'], ['position', 'x_1'], [0.15, 0.2, 0.2, 0.2], [0.1, 0.1, 0.1, 0.1], 1.3, 1.1);
-  // highlight(14, d, e, ['t_3'], ['time', 't_1'], [0.2, 0.2, 0.15, 0.1], [0.1, 0.1, 0.1, 0.1], 1.3, 1.1);
-  // highlight(15, d, e, ['equals2'], ['is the1'], [0.2, 0.1, 0.1, 0.2], [0.1, 0.1, 0.1, 0.1], 1.3, 1.1);
-  // highlight(16, d, e, ['g_2'], ['disturbance at time ', 't_g1', '_0_g1'], [0.2, 0.1, 0.1, 0.2], [0.1, 0.1, 0.1, 0.1], 1.3, 1.1);
-  // highlight(17, d, e, ['x_5', 'v_x', 't_x'], ['shifted', 't_g2', '_0_g2'], [0.1, 0.2, 0.1, 0.1], [0.1, 0.1, 0.1, 0.1], 1.3, 1.1);
-  // // highlight(12, d, e, ['t_2'], 'functionOfTime_1', [0.1, 0.1, 0.1, 0.1], 0.1, 1.3, 1.1);
   highlightN(1, d, e, [0.2, 0.15, 0.1, 0.2], 0.1, 1.1, 1.1);
   highlightN(2, d, e, [0.1, 0.2, 0.1, 0.2], 0.1, 1.3, 1.1);
   highlightN(3, d, e, [0.1, 0.2, 0.15, 0.1], 0.1, 1.1, 1.1);
@@ -514,7 +452,7 @@ function addTravellingWaveEquation(name) {
       equation: 'eqnWave',
       color: colorLight,
       position: [12, 2],
-      nextButton: { type: 'arrow', position: [11, 0], width: 2, length: 1,color: colorLight, line: { width: 0.02 }, touchBorder: 0.5 },
+      nextButton: { type: 'arrow', position: [11, 0], width: 2, length: 1, color: colorLight, line: { width: 0.02 }, touchBorder: 0.5 },
       prevButton: { type: 'arrow', position: [-11, 0], width: 2, length: 1, color: colorLight, line: { width: 0.02 }, touchBorder: 0.5 },
       disableOpacity: 0.2,
       text: {
@@ -687,19 +625,17 @@ function addTravellingWaveEquation(name) {
     },
   ]);
   sinMore.onClick = () => {
-    sinNav.goToSlide(20);
+    sinNav.goToSlide(0);
     sinNav.hide();
+    eqn.showForm('final');
     figure.elements.animations.new()
       .inParallel([
         sinMore.animations.dissolveOut(0.3),
-        eqn.animations.goToForm({ target: 'final', animate: 'move' }),
+        // eqn.animations.goToForm({ target: 'final', animate: 'move' }),
         eqn.animations.scenario({ target: 'highSmall', start: 'high', duration: 1 }),
       ])
       .dissolveIn({ element: sinNav, duration: 0.3 })
       .start();
-    // sinNav.showAll();
-    // sinMore.hide();
-    // sinNav.goToSlide(0);
   };
 }
 

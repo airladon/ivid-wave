@@ -288,8 +288,8 @@ function addDiffEquation(name) {
     },
     forms: {
       diff: lines([
-        ['The ', t(1, 'shape of the disturbance in time'), '_ is ', t(2, 'proportional'),],
-        ['to the ', t(3, 'shape of the disturbance in space')],
+        ['The ', t(1, 'shape of the disturbance in time'), '_  is ', t(2, 'proportional')],
+        ['to the  ', t(3, 'shape of the disturbance in space')],
       ], 1.2),
       soln: lines([
         ['The ', t(4, 'disturbance'), '_ is equal to a ', t(6, 'positive travelling wave'), ],
