@@ -1,5 +1,7 @@
+/* eslint-disable camelcase, object-curly-newline, max-len */
+/* globals colorDisturbanceText, colorDisturbanceText, colorLight, colorTimeText, figure, bc, colorVelocityText */
+// eslint-disable-next-line no-unused-vars
 function addVLFEquation(name) {
-
   const bot = (content, comment, symbol, commentSpace = 0.2, scale = 1) => ({
     bottomComment: {
       content,
@@ -31,7 +33,7 @@ function addVLFEquation(name) {
       v: { color: colorVelocityText },
       T: { color: colorDisturbanceText },
       w: { color: colorLight },
-      wavelength: { color: colorLight},
+      wavelength: { color: colorLight },
       f: { color: colorTimeText },
     },
     phrases: {
@@ -45,6 +47,7 @@ function addVLFEquation(name) {
         lambda: ['linear'],
         v: ['linear'],
       },
+      alignment: { fixTo: 'equals' },
     },
     forms: {
       vlf: {
@@ -75,9 +78,9 @@ function addVLFEquation(name) {
       we6: ['w', 'equals', '_6'],
       we12: ['w', 'equals', '_12'],
     },
-    formDefaults: {
-      alignment: { fixTo: 'equals' },
-    },
+    // formDefaults: {
+    //   alignment: { fixTo: 'equals' },
+    // },
     mods: {
       scenarios: {
         default: { position: [12, 6], scale: 1 },
