@@ -41,12 +41,12 @@ function addDefsEquation(name) {
       // transverseDef: ['Transverse', 'colon', 'across'],
       transverseDef: lines([
         ['Transverse', '  ', 'Wave'],
-        scale(['Transverse_1', '_: (', 'adjective', '_)  extend or direct across'], 0.5),
+        scale(['Transverse_1', '_: ', '(adjective) extended or directed across'], 0.5),
       ], 0.8, 'center'),
       longWave: ['long', '  ', 'Wave'],
       longDef: lines([
         ['long', '  ', 'Wave'],
-        scale(['long1', '_: ', '(adjective)', '_ extend or direct across'], 0.5),
+        scale(['long1', '_: ', '(adjective) placed or running lengthwise'], 0.5),
       ], 0.8, 'center'),
       ocean: ['Transverse', '_ and ', 'long', '_ '],
       // longWave: {

@@ -1498,7 +1498,7 @@ nav.loadSlides([
     form: [null, null, null, 'transverseDef'],
     transition: [
       { in: defs },
-      { goToForm: defs, target: 'transverseDef' },
+      { goToForm: defs, target: 'transverseDef', delay: 2 },
     ],
     steadyState: () => {
       figure.fnMap.exec('setArrow', 'm1.disturbanceDirection');
