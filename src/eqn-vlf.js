@@ -55,7 +55,7 @@ function addVLFEquation(name) {
         },
       },
       vlfSummary: {
-        content: ['v_1', 'equals', 'lambda_1', ' ', 'f_1'],
+        content: ['lambda_1', 'equals', 'v_1', ' ', 'T_1'],
       },
       wAlone: { content: 'w' },
       we: { content: ['w', 'equals'] },

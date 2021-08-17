@@ -546,10 +546,10 @@ nav.loadSlides([
       { trigger: 'startSineWave' },
       { delay: 5 },
       [
-        { in: 'eqnVLF.v_1', delay: dd(true), duration: 0.3 },
+        { in: 'eqnVLF.lambda_1', delay: dd(true), duration: 0.3 },
         { in: 'eqnVLF.equals', delay: dd(), duration: 0.3 },
-        { in: 'eqnVLF.lambda_1', delay: dd(), duration: 0.3 },
-        { in: 'eqnVLF.f_1', delay: dd(), duration: 0.3 },
+        { in: 'eqnVLF.v_1', delay: dd(), duration: 0.3 },
+        { in: 'eqnVLF.T_1', delay: dd(), duration: 0.3 },
       ],
       { delay: 0.5 },
       [
