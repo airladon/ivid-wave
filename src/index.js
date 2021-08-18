@@ -919,7 +919,7 @@ nav.loadSlides([
       m1._velocity.showAll();
       // timePlot1._secondsArrow.hide();
       m1._v2Arrow._label.hide();
-      m1.custom.setVelocity(1);
+      // m1.custom.setVelocity(1);
       velocityButton.custom.off();
       // figure.fnMap.exec('setArrow', 'timePlot1.secondsArrow');
     },
