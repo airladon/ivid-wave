@@ -183,7 +183,7 @@ function addPlayer() {
   // const sideControl = document.getElementById('player-side-control');
   // sideControl.onclick = () => {
   //   existingControlsElement.classList.toggle('in-frame');
-  // }
+  // };
 }
 
 addPlayer();
