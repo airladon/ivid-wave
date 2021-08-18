@@ -8,6 +8,7 @@ rm Dockerfile
 docker run -it --rm \
   -v $PROJECT_PATH/src:/opt/app/src \
   -v $PROJECT_PATH/assets:/opt/app/assets \
+  -v $PROJECT_PATH/test:/opt/app/test \
   -v $PROJECT_PATH/docs:/opt/app/docs \
   -v $PROJECT_PATH/figureone.worker.js:/opt/app/figureone.worker.js \
   -v $PROJECT_PATH/figureone.worker.js.map:/opt/app/figureone.worker.js.map \

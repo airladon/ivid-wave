@@ -3,8 +3,8 @@ const { tester } = require('./ividTester/tester');
 tester({
   title: 'Wave',
   width: 600,
-  height: 300,
-  htmlFile: `http://localhost:8080/src/index.html`,
+  height: 305,
+  htmlFile: `http://localhost:8080/test/index.html`,
   fromTimes: [
     0,
     14,
