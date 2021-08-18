@@ -13,6 +13,7 @@ docker run -it --rm \
   -v $PROJECT_PATH/figureone.worker.js.map:/opt/app/figureone.worker.js.map \
   -v $PROJECT_PATH/index.html:/opt/app/index.html \
   -v $PROJECT_PATH/index.js:/opt/app/index.js \
+  -v $PROJECT_PATH/favicon.ico:/opt/app/favicon.ico \
   -v $PROJECT_PATH/index.js.map:/opt/app/index.js.map \
   -v $PROJECT_PATH/containers/figureone/browser.sh:/opt/app/browser.sh \
   -v $PROJECT_PATH/.dockerignore:/opt/app/.dockerignore \
