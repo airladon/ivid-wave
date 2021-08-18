@@ -1628,8 +1628,10 @@ nav.loadSlides([
 
 // Load audio, states and events data
 // figure.recorder.loadAudioTrack(new Audio(window.location.href.replace(/\/tests.index.html|\/index.html|\/tests\/$|\/$/, '/audio-track.mp3')));
-figure.recorder.loadAudioTrack(new Audio(window.location.href.replace(/\/tests.index.html|\/src.index.html|\/src|\/docs|\/docs.index.html|\/tests\/$|\/$/, '/src/audio-track.mp3')));
-figure.recorder.loadVideoTrack(window.location.href.replace(/\/tests.index.html|\/src.index.html|\/src|\/docs|\/docs.index.html|\/tests\/$|\/$/, '/src/video-track.json'));
+
+figure.recorder.loadAudioTrack(new Audio(window.location.href.replace(/\/index.html|\/src.index.html|\/src|\/docs|\/test.index.html|\/tests\/$|\/$/, '/src/audio-track.mp3')));
+
+figure.recorder.loadVideoTrack(window.location.href.replace(/\/index.html|\/src.index.html|\/src|\/docs|\/test.index.html|\/tests\/$|\/$/, '/src/video-track.json'));
 // figure.recorder.loadVideoTrack(window.location.href.replace(/\/tests.index.html|\/index.html|\/tests\/$|\/$/, '/video-track.json'));
 // figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.mp3'));
 // figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
