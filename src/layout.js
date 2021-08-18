@@ -1,5 +1,12 @@
 
 function addFigureElements() {
+  let t = performance.now()
+  let newT = performance.now()
+  const stamp = (message) => {
+    newT = performance.now();
+    console.log(message, Fig.round(newT - t));
+    t = newT;
+  }
   figure.add({
     name: 'highlighter',
     make: 'collections.rectangle',
@@ -21,7 +28,7 @@ function addFigureElements() {
   });
   figure.add([
     button('pulseButton', [1.2, 0.8], 'Pulse'),
-    // button('pulseButton2', [2.1, 0.15], 'Pulse 2'),
+    button('pulseButton2', [4.8, 0.8], 'Pulse 2'),
     button('sineButton', [3, 0.8], 'Sine'),
     button('sine2fButton', [4.8, 0.8], 'Sine 2|f|', { f: { font: { style: 'italic' } } }),
     button('resetButton', [22.8, 0.8], 'Reset'),
@@ -56,7 +63,9 @@ function addFigureElements() {
     //   'slow',
     // ]),
   ]);
+  stamp(1)
   addDefsEquation('defs');
+  stamp(2)
   // figure.add({
   //   name: 'waveDefinition',
   //   make: 'textLines',
@@ -79,29 +88,34 @@ function addFigureElements() {
   //     Transverse: { font: { color: colorGText } },
   //   },
   // });
-  const recorder = new Recorder(10);
+  // const recorder = new Recorder(10, time);
   const m1 = addMedium('m1', 13, 10, 2.5, [5.5, 6], false, 0.12, 0.125, recorder);
   m1.setPosition(0.1, 0);
+  stamp('medium')
   const timePlot1 = addTimePlot(
     'timePlot1', 6.5, 10.5, m1.custom.recording, 2.5 * 13 / 10, [1, 6],
   );
+  stamp('timePlot')
   const pressurePlot = addPressureMedium('p1', 18, 2, 0.1, 0.4, recorder);
+  stamp('pressure')
   addOceanMedium('ocean', 24, 4, 0.07, 0.4);
-  // addSineEquation('eqnSine');
-  addSineTEquation('eqnSineT');
-  // addSineXEquation('eqnSineX');
-  addSinXEquation('eqnSinX');
-  addSinTEquation('eqnSinT');
+  stamp('ocean')
+  // addSineTEquation('eqnSineT');
+  // addSinXEquation('eqnSinX');
+  // addSinTEquation('eqnSinT');
   addVLFEquation('eqnVLF');
   addDiffEquation('eqnDiff');
-  addMaxwellEquation('eqnMaxwell');
-  addTimeWave('eqnGenT');
+  addTravellingWaveEquation('eqnWave');
+  // addMaxwellEquation('eqnMaxwell');
+  // addTimeWave('eqnGenT');
+  stamp('equations')
   // addTitle(2.88 * 4, 1.44 * 4, 0.1);
-  addTitle(8, 4, 0.1, recorder);
-  addIntro(24, 4, 0.1);
+  addTitle(8, 4, 0.05, recorder);
+  // addIntro(24, 4, 0.1);
   addExamples();
-  
-
+  stamp('titles')
+  addWaveInterference('waveInterference', 20);
+  stamp('waveInterference');
   figure.showTouchBorders = () => {
     const elements = figure.elements.getAllElements();
     const colors = [
@@ -141,4 +155,51 @@ function addFigureElements() {
     labelButton('sinSpaceSelector', [12, 1], [{ text: 'Initial Disturbance', font: { size: 0.35 } }, 'Periodic Time']),
     labelButton('sinTimeSelector', [20, 1],  [{ text: 'Initial Disturbance', font: { size: 0.35 } }, 'Periodic Space']),
   ]);
-};
+
+  figure.add({
+    name: 'figureOneEqn',
+    make: 'equation',
+    scale: 7,
+    position: [12, 6],
+    color: colorLight,
+    dimColor: colorLight,
+    font: { family: 'TeXGyreTermes' },
+    textFont: { family: 'TeXGyreTermes' },
+    elements: {
+      lb1: { symbol: 'squareBracket', side: 'left', lineWidth: 0.07, width: 0.16 },
+      rb1: { symbol: 'squareBracket', side: 'right', lineWidth: 0.07, width: 0.16 },
+      s: { symbol: 'sum', lineWidth: 0.04 },
+      v: { symbol: 'vinculum', lineWidth: 0.04 },
+      ra: { symbol: 'radical', lineWidth: 0.04 },
+    },
+    formDefaults: {
+      alignment: { xAlign: 'center', yAlign: 'middle' },
+      lazyLayout: true,
+    },
+    forms: {
+      0: ['f', 'i', 'g', 'u', 'r', 'e', 'o', 'n', 'e_'],
+      // 1: [{ frac: [['f', { sumOf: ['s', 'i', 'g', 'u'] }], 'v', ['e', { root: ['ra', 'o'] }, 'n', 'e_']] }],
+      2: { matrix: [[3, 3], 'lb1', ['f', 'u', 'o', 'i', 'r', 'n', 'g', 'e', 'e_'], 'rb1'] },
+    },
+  });
+
+  // figure.add({
+  //   name: 'textTester',
+  //   make: 'equation',
+  //   color: colorLight,
+  //   font: { family: 'Roboto' },
+  //   // textFont: { family: 'Roboto', style: 'normal' },
+  //   // font: { family: 'TeXGyreTermes' },
+  //   // textFont: { family: 'TeXGyreTermes' },
+  //   // font: { family: 'Open Sans' },
+  //   textFont: { family: 'Open Sans', style: 'normal', width: 1.12, midAscent: 1.1, maxAscent: 1.5 },
+  //   position: [1, 4],
+  //   scale: 4,
+  //   elements: {
+  //     box: { symbol: 'box', lineWidth: 0.008, color: [1, 0, 0, 1] },
+  //   },
+  //   forms: {
+  //     0: { box: [['function repeats every time it\'s input is a multiple of '], 'box'] },
+  //   },
+  // });
+}

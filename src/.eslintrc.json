@@ -1,0 +1,93 @@
+{
+  "extends": [
+              "plugin:jest/recommended",
+              "airbnb-base"],
+  "rules": {
+      "no-console": "error",
+      "no-underscore-dangle": 0,
+      "operator-linebreak": [
+        "error",
+        "before",
+        {
+          "overrides": {
+            "=": "ignore",
+            "!==": "ignore",
+            "===": "ignore"
+          }
+        }
+      ],
+      "jest/no-standalone-expect": "off",
+      "jest/expect-expect": "off",
+      "jest/no-mocks-import": "off",
+      "max-classes-per-file": "off",
+      "arrow-parens": ["error", "as-needed", { "requireForBlockBody": true }],
+      "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 1 }],
+      "lines-between-class-members": [
+        "error",
+        "always",
+        {
+          "exceptAfterSingleLine": true
+        }
+      ],
+      "camelcase": ["error", {"allow": ["EQN", "OBJ", "CPY", "COL", "SUB"]}],
+      "class-methods-use-this": [
+        "error",
+        { 
+          "exceptMethods": [
+            "setContent",
+            "setTitle",
+            "setModifiers",
+            "setSteadyState",
+            "setEnterState",
+            "setLeaveState",
+            "getState",
+            "setStateMultiOnly",
+            "setSinglePagePrimary",
+            "transitionToNext",
+            "transitionToPrev",
+            "transitionFromPrev",
+            "transitionFromNext",
+            "transitionFromAny",
+            "transitionToAny"
+          ]
+        }
+      ],
+      "no-mixed-operators": [
+        "error",
+        {
+            "groups": [
+                ["&", "|", "^", "~", "<<", ">>", ">>>"],
+                ["==", "!=", "===", "!==", ">", ">=", "<", "<="],
+                ["&&", "||"],
+                ["in", "instanceof"]
+            ],
+            "allowSamePrecedence": true
+        }
+      ],
+      "no-multi-spaces": [
+        "error",
+        {
+          "ignoreEOLComments": true
+        }
+      ]
+    },
+  "plugins": [
+    "jest"
+  ],
+
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js",".jsx"]
+      }
+    },
+    "propWrapperFunctions": [ "forbidExtraProps" ] // The names of any functions used to wrap the
+                                                   // propTypes object, e.g. `forbidExtraProps`.
+                                                   // If this isn't set, any propTypes wrapped in
+                                                   // a function will be skipped.
+  },
+
+  "env": {
+    "browser": true
+  }
+}

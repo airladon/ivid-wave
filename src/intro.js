@@ -148,7 +148,7 @@ void main() {
       // medium._h4.update(t);
       // const newOffsets = Array(offsets.length);
       // const x = movePad.transform.t().x;
-      // medium._diaphram.setPosition(x, 0);
+      // medium._diaphragm.setPosition(x, 0);
       // medium.custom.recording.record(x, deltaTime);
       // for (let i = 0; i < xLocations.length; i += 1) {
       //   const xOffset = medium.custom.recording.getValueAtTimeAgo(xLocations[i] / medium.custom.c);

@@ -15,7 +15,7 @@ void main() {
   gl_Position = vec4((u_matrix * vec3(x, y, 1)).xy, 0, 1);
   v_col = 0.0;
   // if (u_highlight > 0.0) {
-  //   if (mod(a_position.x, 10.8) == 0.0) {
+  //   if (mod(a_position.x, 7.2) == 0.0) {
   //     v_col = 1.0;
   //   }
   // }
@@ -46,7 +46,7 @@ void main() {
   const offsets = [];
   const xLocations = [];
   for (let x = 0; x <= length; x += gridStep) {
-    // const r = (x === 0 || Fig.tools.math.round(x) === 10.8) ? particleSize * 1.6 : particleSize;
+    // const r = (x === 0 || Fig.tools.math.round(x) === 7.2) ? particleSize * 1.6 : particleSize;
     const r = particleSize;
     for (let y = -height / 2; y <= height / 2; y += gridStep) {
       // const x1 = x + Fig.tools.math.rand(-gridStep / 4, gridStep / 4);
@@ -63,11 +63,11 @@ void main() {
     }
   }
   const centers = [
-    new Fig.Point(10.8, height / 2),
-    // new Fig.Point(10.8, height / 2 - gridStep),
-    // new Fig.Point(10.8, height / 2 - gridStep * 2),
-    // new Fig.Point(10.8, height / 2 - gridStep * 4),
-    new Fig.Point(10.8, height / 2 - gridStep * 5),
+    // new Fig.Point(7.2, height / 2),
+    // new Fig.Point(7.2, height / 2 - gridStep),
+    // new Fig.Point(7.2, height / 2 - gridStep * 2),
+    // new Fig.Point(7.2, height / 2 - gridStep * 4),
+    new Fig.Point(7.2, height / 2 - gridStep * 5),
   ];
   const addCircle = (name, index) => {
     const position = Fig.getPoint([centers[index], centers[index + 1]]);
@@ -79,7 +79,7 @@ void main() {
       position,
       radius,
       // line: { width: 0.04 },
-      color: color1,
+      color: colorWave,
     };
   };
   const medium = figure.add({
@@ -100,6 +100,37 @@ void main() {
         xStep: length / 20,
         yStep: length / 20,
       },
+      // {
+      //   name: 'disturbanceDirection',
+      //   make: 'collections.line',
+      //   options: {
+      //     width: 0.05,
+      //     color: colorPositionText,
+      //     arrow: 'barb',
+      //     p1: [6.4, -1.5],
+      //     p2: [8, -1.5],
+      //     align: 'center',
+      //     label: {
+      //       text: 'disturbance',
+      //       location: 'bottom',
+      //     },
+      //   },
+      // },
+      arrow('waveDirection', 'wave', [12, -1.7], [16, -1.7], colorWave, 'bottom', 'start', { end: 'barb' }, 3),
+      arrow('disturbanceDirection', 'disturbance', [5.2, -1.7], [9.2, -1.7], colorWave, 'bottom', 'center', 'barb', 3),
+      // {
+      //   name: 'waveDirection',
+      //   make: 'collections.line',
+      //   options: {
+      //     width: 0.05,
+      //     color: colorWave,
+      //     arrow: { end: 'barb' },
+      //     p1: [12, 1.5],
+      //     p2: [16, 1.5],
+      //     align: 'center',
+      //     label: 'wave',
+      //   },
+      // },
       {
         name: 'particles',
         make: 'gl',
@@ -123,10 +154,10 @@ void main() {
         // position: [10, 5],
         // mods: { state: { isChanging: true } },
       },
-      addCircle('c1', 1),
+      // addCircle('c1', 1),
       addCircle('c6', 6),
       {
-        name: 'diaphram',
+        name: 'diaphragm',
         make: 'rectangle',
         height: height * 1.2,
         width: 0.5,
@@ -144,7 +175,7 @@ void main() {
           move: {
             bounds: {
               translation: {
-                left: -1.5, right: 1.5, bottom:0, top: 0,
+                left: -0.5, right: 0.5, bottom: 0, top: 0,
               },
             },
           },
@@ -155,30 +186,48 @@ void main() {
     // position: [3, 6],
   });
   const movePad = medium._movePad;
-  const c1 = medium.get('c1');
+  // const waveDirection = medium._waveDirection;
+  // const disturbanceDirection = medium._disturbanceDirection;
+  // const c1 = medium.get('c1');
   const c6 = medium.get('c6');
   // const c3 = medium.get('c3');
-  medium.custom = {
+  medium.customState = {
     c: 2,
+  };
+  medium.custom = {
+    // c: 2,
     A: 0.5,
     f: 0.2,
     movePad,
     recording: recorder,
     update: (deltaTime) => {
       const newOffsets = Array(offsets.length);
-      const x = movePad.transform.t().x;
-      medium._diaphram.setPosition(x, 0);
-      medium.custom.recording.record(x, deltaTime);
+      // const x = movePad.transform.t().x;
+      let x;
+      if (medium.custom.recording.getState().mode === 'manual') {
+        x = movePad.transform.t().x;
+        medium.custom.recording.record(x, deltaTime);
+      } else {
+        x = medium.custom.recording.getValueAtTimeAgo(0) / 3;
+        movePad.transform.updateTranslation(x, 0);
+      }
+      medium._diaphragm.setPosition(x, 0);
+      // medium.custom.recording.record(x, deltaTime);
       for (let i = 0; i < xLocations.length; i += 1) {
-        const xOffset = medium.custom.recording.getValueAtTimeAgo(xLocations[i] / medium.custom.c);
+        let xOffset = medium.custom.recording.getValueAtTimeAgo(
+          xLocations[i] / medium.customState.c,
+        );
+        if (medium.custom.recording.getState().mode !== 'manual') {
+          xOffset /= 3;
+        }
         newOffsets[i * 3] = xOffset;
         newOffsets[i * 3 + 1] = xOffset;
         newOffsets[i * 3 + 2] = xOffset;
       }
-      if (c1.isShown) {
-        const xOffset = medium.custom.recording.getValueAtTimeAgo(10.8 / medium.custom.c);
-        c1.setPosition(centers[0].add(xOffset, 0));
-        c6.setPosition(centers[1].add(xOffset, 0));
+      if (c6.isShown) {
+        const xOffset = medium.custom.recording.getValueAtTimeAgo(7.2 / medium.customState.c) / 3;
+        // c1.setPosition(centers[0].add(xOffset, 0));
+        c6.setPosition(centers[0].add(xOffset, 0));
         // c3.setPosition(centers[2].add(xOffset, 0));
       }
       medium._particles.drawingObject.updateBuffer('a_offset', newOffsets);
@@ -193,7 +242,7 @@ void main() {
       medium.custom.recording.reset(0);
     },
     setVelocity: (velocity) => {
-      medium.custom.c = velocity;
+      medium.customState.c = velocity;
     },
     setFrequency: (frequency) => {
       medium.custom.f = frequency;
@@ -209,20 +258,38 @@ void main() {
       medium.custom.stop();
     }
     unpause();
+    medium.custom.recording.setManual();
+    figure.fnMap.exec('forceUpdate');
     // medium.custom.update();
   });
-  medium.backupState = medium._state;
-  medium._state = (options) => {
-    medium.customState.recorder = medium.custom.recording.encodeData();
-    return medium.backupState(options);
-  };
-  medium.backupStateSet = medium.stateSet;
-  medium.stateSet = () => {
-    medium.backupStateSet();
-    if (medium.customState.recorder != null) {
-      medium.custom.recording.loadEncodedData(medium.customState.recorder[0], medium.customState.recorder[1]);
-    }
-  }
+
+  // figure.fnMap.global.add('growPWaveDirection', () => {
+  //   waveDirection.showAll();
+  //   waveDirection.animations.new()
+  //     .length({ start: 0.5, target: 4, duration: 2 })
+  //     .start();
+  // });
+  // figure.fnMap.global.add('growPDisturbanceDirection', () => {
+  //   disturbanceDirection.showAll();
+  //   disturbanceDirection.animations.new()
+  //     .length({ start: 0.5, target: 1.6, duration: 2 })
+  //     .start();
+  // });
+  // medium.backupState = medium._state;
+  // medium._state = (options) => {
+  //   medium.customState.recorder = medium.custom.recording.encodeData();
+  //   return medium.backupState(options);
+  // };
+  // medium.backupStateSet = medium.stateSet;
+  // medium.stateSet = () => {
+  //   medium.backupStateSet();
+  //   if (medium.customState.recorder != null) {
+  //     medium.custom.recording.loadEncodedData(medium.customState.recorder[0], medium.customState.recorder[1]);
+  //   }
+  // }
+
+
+  
   // const element = figure.add({
   //   name,
   //   make: 'gl',

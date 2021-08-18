@@ -77,6 +77,7 @@ function addPlayer() {
   recorder.notifications.add('seek', t => setTime(t[0], false));
   recorder.notifications.add('durationUpdated', () => setTime());
   recorder.notifications.add('recordingStatesComplete', () => setTime(recorder.getCurrentTime(), false));
+  window.addEventListener('resize', () => setTime(recorder.getCurrentTime(), false));
 
   /*
   ..######..########.########.##....##
@@ -178,6 +179,11 @@ function addPlayer() {
   seekContainer.addEventListener('touchstart', e => touchStartHandler(e), supportsPassive() ? { passive: false } : false);
   window.addEventListener('touchend', e => touchEndHandler(e), supportsPassive() ? { passive: false } : false);
   window.addEventListener('touchmove', e => touchMoveHandler(e), supportsPassive() ? { passive: false } : false);
+
+  // const sideControl = document.getElementById('player-side-control');
+  // sideControl.onclick = () => {
+  //   existingControlsElement.classList.toggle('in-frame');
+  // };
 }
 
 addPlayer();

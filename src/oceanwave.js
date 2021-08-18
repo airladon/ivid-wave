@@ -45,7 +45,7 @@ void main() {
       position,
       radius,
       line: { width: 0.03 },
-      color: [1, 1, 0, 1],
+      color: colorWave,
     };
   };
   const addHighlight = (name, index) => {
@@ -56,7 +56,7 @@ void main() {
       sides: 20,
       position,
       radius: (position.y + 2) / 20,
-      color: [0, 0.5, 1, 1],
+      color: colorWave,
       mods: {
         update: (deltaTime) => {
           // update: (deltaTime) => {
@@ -75,11 +75,12 @@ void main() {
   const medium = figure.add({
     name,
     make: 'collection',
+    position: [0, -2],
     elements: [
       {
         name: 'grid',
         make: 'grid',
-        bounds: [0, -height, length, height * 2],
+        bounds: [0, -length / 20 * 2.5, length, length / 20 * 5],
         line: { width: 0.03 },
         xStep: length / 20,
         yStep: length / 20,
@@ -130,7 +131,7 @@ void main() {
     // movePad,
     // recording: new Recorder(10),
     update: () => {
-      const t = figure.timeKeeper.now() / 1000;
+      const t = time.now();
       medium._particles.drawingObject.uniforms.u_time.value = [t];
       medium._h1.update(t);
       medium._h2.update(t);
@@ -138,7 +139,7 @@ void main() {
       medium._h4.update(t);
       // const newOffsets = Array(offsets.length);
       // const x = movePad.transform.t().x;
-      // medium._diaphram.setPosition(x, 0);
+      // medium._diaphragm.setPosition(x, 0);
       // medium.custom.recording.record(x, deltaTime);
       // for (let i = 0; i < xLocations.length; i += 1) {
       //   const xOffset = medium.custom.recording.getValueAtTimeAgo(xLocations[i] / medium.custom.c);

@@ -1,3 +1,8 @@
+/* globals figure, colorDisturbanceText, xAxis, yAxis, colorHighlight,
+   arrow, colorTimeText, colorFText, Fig */
+/* eslint-disable object-curly-newline, camelcase */
+
+// eslint-disable-next-line no-unused-vars
 function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
   figure.add({
     name,
@@ -11,15 +16,36 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
         yStep: A / 5,
         line: { width: 0.03 },
       },
-      xAxis('xAxis', 't', '', length, maxValue),
-      yAxis('yAxis', 'y', 'x = 0', A, false),
+      xAxis('xAxis', 't', '', length, maxValue * 0.95),
+      yAxis('yAxis', 'y', 'x = 0', A, false, colorLight),
       {
         name: 'trace',
         make: 'polyline',
         options: {
           simple: true,
           width: 0.08,
-          color: colorTimeText,
+          color: colorDisturbanceText,
+        },
+      },
+      {
+        name: 'marker',
+        make: 'rectangle',
+        options: {
+          width: 0.05,
+          color: colorHighlight,
+          height: A * 2,
+        },
+        mods: {
+          scenarios: { default: { position: [length / 2, 0] } },
+          isMovable: true,
+          touchBorder: 0.5,
+          move: {
+            bounds: {
+              translation: {
+                left: 0, right: length, bottom: 0, top: 0,
+              },
+            },
+          },
         },
       },
       // {
@@ -41,8 +67,9 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
       //     align: 'center',
       //   },
       // },
-      arrow('TArrow', 'T', [0, -1], [2, -1], colorTimeText),
-      arrow('secondsArrow', '3', [0, -1], [2, -1], colorTimeText),
+      arrow('TArrow', 'T', [0, -1], [2, -1], colorDisturbanceText),
+      arrow('secondsArrow', '3', [0, -1], [2, -1], colorDisturbanceText),
+      arrow('periodArrow', 'T', [2.35, -2.5], [5.75, -2.5], colorDisturbanceText),
       // {
       //   name: 'secondsArrow',
       //   make: 'collections.line',
@@ -76,15 +103,15 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
           0: ['f', ' ', { brac: ['lb', 't_1', 'rb'] }],
         },
         position: [4, -1],
-      }
+      },
     ],
     mods: {
       scenarios: {
         default: { position: defaultPosition, scale: 1 },
         // right: { position: [1.5, 6], scale: 1 },
-        top: { position: [4.5, 8.4], scale: 0.7 },
-        bottom: { position: [5, 3], scale: 0.6 },
-        rightSmall: { position: [2, 7], scale: 0.9 },
+        // top: { position: [4.5, 8.4], scale: 0.7 },
+        // bottom: { position: [5, 3], scale: 0.6 },
+        // rightSmall: { position: [2, 7], scale: 0.9 },
       },
     },
   });
@@ -92,13 +119,22 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
   const axis = timePlot.getElement('xAxis');
   const trace = timePlot.getElement('trace');
   timePlot.custom.update = () => {
-    const recorded = recording.getRecording(false, maxValue);
+    const recorded = recording.getRecording(false, 10);
     const points = Array(recorded.time.length);
     for (let i = 0; i < points.length; i += 1) {
-      points[i] = new Point(axis.valueToDraw(recorded.time[i]), recorded.data[i]);
+      points[i] = new Fig.Point(axis.valueToDraw(recorded.time[i]), recorded.data[i]);
     }
+    trace.pointsToDraw = -1;
     trace.custom.updatePoints({ points });
   };
+  const marker = timePlot._marker;
+  timePlot.custom.updateMarker = (p) => {
+    marker.transform.updateTranslation(p * length, 0);
+  };
+  marker.notifications.add('setTransform', () => {
+    const p = marker.getPosition('local').x / length;
+    figure.get('m1').custom.updateMarker(p);
+  });
   // const T = timePlot._widthArrow;
   // figure.fnMap.global.add('growT', () => {
   //   T.showAll();
@@ -118,19 +154,36 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
   //     .start();
   // });
   figure.fnMap.global.add('growArrow', (payload) => {
-    const [name, duration] = payload;
-    const S = figure.get(name);
+    const [n, duration] = payload;
+    const S = figure.get(n);
     S.showAll();
+    S.setEndPoints(S.custom.endPoints[0], S.custom.endPoints[1]);
     S._label.hide();
     S.animations.new()
       .length({ start: 0.5, duration })
       .dissolveIn({ element: 'label' })
       .start();
   });
-  figure.fnMap.global.add('setArrow', (name) => {
-    const S = figure.get(name);
+  figure.fnMap.global.add('setArrow', (n) => {
+    const S = figure.get(n);
     S.showAll();
     S.setEndPoints(S.custom.endPoints[0], S.custom.endPoints[1]);
+  });
+
+  figure.fnMap.global.add('growTimeTrace', () => {
+    trace.show();
+    trace.stop();
+    trace.animations.new()
+      .custom({
+        callback: (p) => {
+          trace.pointsToDraw = Math.floor(trace.drawingObject.numVertices / 6 * p) * 6;
+        },
+        duration: 2,
+      })
+      .whenFinished(() => {
+        trace.pointsToDraw = -1;
+      })
+      .start();
   });
   return timePlot;
 }

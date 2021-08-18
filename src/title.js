@@ -4,10 +4,10 @@ function addTitle(
 ) {
   const vertexShader = {
     src: `
-attribute vec2 a_position;
-attribute vec2 a_texcoord;
-uniform float u_time;
 attribute float a_offset;
+attribute vec2 a_texcoord;
+attribute vec2 a_position;
+uniform float u_time;
 uniform mat3 u_matrix;
 varying vec2 v_texcoord;
 void main() {
@@ -51,6 +51,12 @@ void main() {
     name: 'title',
     make: 'collection',
     elements: [
+      // {
+      //   make: 'line',
+      //   p1: [-20, 0],
+      //   p2: [20, 0],
+      //   width: 0.05,
+      // },
       {
         name: 'title',
         make: 'gl',
@@ -59,10 +65,15 @@ void main() {
         vertices: { data: points },
         buffers: [{ name: 'a_offset', data: offsets, size: 1, usage: 'DYNAMIC' }],
         uniforms: [{ name: 'u_time', length: 1, type: 'FLOAT' }],
-        texture: { src: './title.png', mapTo: new Fig.Rect(0, 0, length, height) },
+        texture: { src: '/src/title.png', mapTo: new Fig.Rect(0, 0, length, height) },
         color: [1, 0, 0, 1],
         transform: [['t', 0, -0.6]],
       },
+      // {
+      //   name: 'title',
+      //   make: 'text',
+      //   text: 'waves',
+      // },
       {
         name: 'envelope',
         make: 'polyline',
@@ -82,6 +93,7 @@ void main() {
         radius: 2,
         color: [1, 0, 0, 0],
         sides: 8,
+        position: [0, 0],
         mods: {
           isMovable: true,
           move: {
@@ -105,15 +117,29 @@ void main() {
     c: 2,
     recording: recorder,
     update: (deltaTime) => {
+      let yh;
+      if (title.custom.recording.getState().mode === 'manual') {
+        yh = movePad.transform.t().y;
+        title.custom.recording.record(yh, deltaTime);
+      } else {
+        yh = title.custom.recording.getValueAtTimeAgo(0) / 3;
+        movePad.transform.updateTranslation(0, yh);
+      }
+      // title._diaphragm.setPosition(x, 0);
+
       const t = time.now();
-      const y = movePad.transform.t().y;
-      title.custom.recording.record(y, deltaTime);
+      // const y = movePad.transform.t().y;
+      // title.custom.recording.record(y, deltaTime);
       title._title.drawingObject.uniforms.u_time.value = [t];
       const envelopePoints = [];
       for (let i = 0; i < xValues.length; i += 1) {
         const x = xValues[i];
-        const y1 = title.custom.recording.getValueAtTimeAgo(x / title.custom.c);
-        const y2 = title.custom.recording.getValueAtTimeAgo((x + gridStep) / title.custom.c);
+        let y1 = title.custom.recording.getValueAtTimeAgo(x / title.custom.c);
+        let y2 = title.custom.recording.getValueAtTimeAgo((x + gridStep) / title.custom.c);
+        if (title.custom.recording.getState().mode !== 'manual') {
+          y1 /= 3;
+          y2 /= 3;
+        }
         offsets[i * 6] = y1;
         offsets[i * 6 + 1] = y2;
         offsets[i * 6 + 2] = y2;
@@ -122,7 +148,7 @@ void main() {
         offsets[i * 6 + 5] = y2;
         envelopePoints.push([x, y1]);
       }
-      movePadHighlight.setPosition(0, y);
+      movePadHighlight.setPosition(0, yh);
       envelope.custom.updatePoints({ points: envelopePoints });
       title._title.drawingObject.updateBuffer('a_offset', offsets);
     },
@@ -130,19 +156,27 @@ void main() {
   figure.fnMap.global.add('outTitle', () => {
     title.animations.new().dissolveOut(0.5).start();
   });
-  title.notifications.add('getState', () => {
-    title.customState.recorder = title.custom.recording.encodeData();
+  movePad.notifications.add('setTransform', () => {
+    // unpause();
+    recorder.setManual();
+    figure.fnMap.exec('forceUpdate');
   });
-  // title.backupState = title._state;
-  // title._state = (options) => {
+  // title.notifications.add('getState', () => {
   //   title.customState.recorder = title.custom.recording.encodeData();
-  //   return title.backupState(options);
-  // };
-  title.notifications.add('setState', () => {
-    if (title.customState.recorder != null) {
-      title.custom.recording.loadEncodedData(title.customState.recorder[0], title.customState.recorder[1]);
-    }
-  });
+  // });
+  // // title.backupState = title._state;
+  // // title._state = (options) => {
+  // //   title.customState.recorder = title.custom.recording.encodeData();
+  // //   return title.backupState(options);
+  // // };
+  
+  // title.notifications.add('setState', () => {
+  //   if (title.customState.recorder != null) {
+  //     title.custom.recording.loadEncodedData(title.customState.recorder[0], title.customState.recorder[1]);
+  //   }
+  // });
+
+
   // title.backupStateSet = title.stateSet;
   // title.stateSet = () => {
   //   title.backupStateSet();

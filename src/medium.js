@@ -1,11 +1,22 @@
 /*
-globals figure, color1, color2, time, color3, color0, Recorder,
-minVelocity, maxTimeReached, unpause, Transform, range
+globals figure, colorPositionText, time, colorGText,
+colorLight, maxTimeReached, unpause, Transform, range, xAxis, yAxis,
+arrow, Fig, colorYellowText, colorDisturbanceText,
 */
+
+/* eslint-disable camelcase, object-curly-newline */
 
 function addMedium(
   stringName, length, maxValue, A, defaultPosition, yAxisTitle, ballSize, ballSpace, recorder,
 ) {
+  let t = performance.now()
+  let newT = performance.now()
+  const stamp = (message) => {
+    newT = performance.now();
+    console.log(message, Fig.round(newT - t));
+    t = newT;
+  };
+  stamp('medium 1');
   // Particle creater
   const ball = (x, index, radius, sides = 20) => ({
     name: `ball${index}`,
@@ -21,18 +32,19 @@ function addMedium(
       dimColor: colorLight,
       scenarios: {
         default: { color: colorLight, scale: [1, 1] },
-        highlight: { color: color1, scale: [1.2, 1.2] },
-      }
+        highlight: { color: colorWave, scale: [1.2, 1.2] },
+      },
     },
   });
-  const makeVertLine = (xPos) => ({
+  const makeVertLine = xPos => ({
     make: 'line',
-    p1: [xPos / maxValue * length, -A / 2],
-    p2: [xPos / maxValue * length, A / 2],
+    p1: [xPos / maxValue * length, -A],
+    p2: [xPos / maxValue * length, A],
     arrow: 'barb',
     width: 0.05,
-    color: color1,
+    color: colorYellowText,
   });
+  stamp('medium 2');
   figure.add({
     name: stringName,
     make: 'collection',
@@ -56,17 +68,18 @@ function addMedium(
       },
       xAxis('xAxis', 'x', '', length, maxValue),
       yAxis('yAxis', 'y', '', A * length / maxValue, yAxisTitle),
-      {
-        name: 'disturbanceLines',
-        make: 'collection',
-        elements: [
-          makeVertLine(2),
-          makeVertLine(4),
-          makeVertLine(6),
-          makeVertLine(8),
-          makeVertLine(10),
-        ],
-      },
+      // {
+      //   name: 'disturbanceLines',
+      //   make: 'collection',
+      //   elements: [
+      //     // makeVertLine(2),
+      //     // makeVertLine(4),
+      //     // makeVertLine(6),
+      //     // makeVertLine(8),
+      //     // makeVertLine(10),
+      //     makeVertLine(5),
+      //   ],
+      // },
       {
         name: 'balls',
         make: 'collection',
@@ -79,15 +92,18 @@ function addMedium(
         name: 'envelope2',
         make: 'polyline',
         width: 0.15,
-        color: colorPositionText,
+        color: colorYellowText,
         simple: true,
       },
       {
         name: 'envelope',
         make: 'polyline',
         width: 0.15,
-        color: colorGText,
+        color: colorDisturbanceText,
         simple: true,
+        mods: {
+          dimColor: colorLight,
+        },
       },
       {
         name: 'periodicEnvelope',
@@ -141,6 +157,27 @@ function addMedium(
           },
         },
       },
+      {
+        name: 'marker',
+        make: 'rectangle',
+        options: {
+          width: 0.05,
+          color: colorHighlight,
+          height: A * length / maxValue * 2,
+        },
+        mods: {
+          scenarios: { default: { position: [length / 2, 0] } },
+          isMovable: true,
+          touchBorder: 0.5,
+          move: {
+            bounds: {
+              translation: {
+                left: 0, right: length, bottom: 0, top: 0,
+              },
+            },
+          },
+        },
+      },
       // Arrowed line showing a wavelength of a sine wave
       {
         name: 'wavelength',
@@ -164,47 +201,37 @@ function addMedium(
         name: 'xDashLine',
         make: 'collections.line',
         width: 0.06,
-        dash: [0.2, 0.1],
-        p1: [6, -1],
-        p2: [6, -3.7],
-        color: colorPositionText,
+        // dash: [0.2, 0.1],
+        p1: [4.29, -1.8],
+        p2: [4.29, -3.7],
+        color: colorLight,
+        arrow: { start: { head: 'barb' } },
         label: {
           text: 'x\'',
-          location: 'start',
+          location: 'end',
           scale: 4,
-          font: { color: colorPositionText },
-        }
+          font: { color: colorLight },
+        },
       },
       {
         name: 'xDashLineG',
         make: 'collections.line',
         width: 0.06,
-        dash: [0.2, 0.1],
-        p1: [3, -1],
-        p2: [3, -3.7],
-        color: colorPositionText,
+        // dash: [0.2, 0.1],
+        arrow: { start: { head: 'barb' } },
+        p1: [1.69, -1.8],
+        p2: [1.69, -3.7],
+        label: {
+          text: 'x\' \u2212 4',
+          location: 'end',
+          scale: 3.8,
+          font: { color: colorLight },
+        },
+        color: colorLight,
       },
-      // {
-      //   name: 'sixArrow',
-      //   make: 'collections.line',
-      //   options: {
-      //     width: 0.05,
-      //     color: colorLight,
-      //     arrow: 'barb',
-      //     label: {
-      //       text: '6',
-      //       offset: 0.04,
-      //       location: 'bottom',
-      //       scale: 4,
-      //       font: { color: colorPositionText },
-      //     },
-      //     p1: [0, -1],
-      //     p2: [6 * maxValue / length, -1],
-      //     align: 'center',
-      //   },
-      // },
-      arrow('vArrow', '6', [0, -1], [3 / maxValue * length, -1], colorPositionText),
-      arrow('v2Arrow', '12', [0, -1], [6 / maxValue * length, -1], colorPositionText),
+      arrow('vArrow', '6', [0, -1], [3 / maxValue * length, -1], colorLight),
+      arrow('v2Arrow', '12', [0, -1], [6 / maxValue * length, -1], colorLight),
+      arrow('lambdaArrow', '', [1.2 / maxValue * length, -2.5], [6.3 / maxValue * length, -2.5], colorLight),
       {
         name: 'widthArrow',
         make: 'collections.line',
@@ -222,7 +249,7 @@ function addMedium(
         make: 'collections.line',
         options: {
           width: 0.05,
-          color: colorOne,
+          color: colorYellowText,
           arrow: { end: 'barb' },
           label: {
             text: 'v',
@@ -231,8 +258,19 @@ function addMedium(
             location: 'top',
             scale: 4,
           },
-          p1: [4.2, 3],
-          p2: [6.2, 3],
+          p1: [4.2, 4],
+          p2: [7.2, 4],
+        },
+      },
+      {
+        name: 'propogation',
+        make: 'collections.line',
+        options: {
+          width: 0.05,
+          color: colorYellowText,
+          arrow: { end: 'barb' },
+          p1: [5, 4],
+          p2: [7, 4],
         },
       },
       {
@@ -241,7 +279,7 @@ function addMedium(
         width: 0.05,
         arrow: { end: 'barb' },
         label: {
-          text: { forms: { base: { sub: ['x', '1' ] } } },
+          text: { forms: { base: { sub: ['x', '1'] } } },
           scale: 4,
           location: 'start',
         },
@@ -249,21 +287,27 @@ function addMedium(
         p1: [5, -3],
         p2: [5, -2],
       },
+      arrow('waveDirection', 'wave', [4.5, -A * length / maxValue / 5 * 2], [8.5, -A * length / maxValue / 5 * 2], colorWave, 'end', 'start', { end: 'barb' }, 3),
+      arrow('disturbanceDirection', 'disturbance', [5 / maxValue * length, -A * length / maxValue / 5 * 3], [5 / maxValue * length, A * length / maxValue / 5 * 3], colorWave, 'start', 'center', 'barb', 3),
       {
         name: 'eqn',
         make: 'equation',
-        color: colorGText,
+        color: colorDisturbanceText,
+        dimColor: colorLight,
         scale: 4,
         elements: {
-          lb: { symbol: 'bracket', side: 'left', lineWidth: 0.07, width: 0.16 },
-          rb: { symbol: 'bracket', side: 'right', lineWidth: 0.07, width: 0.16 },
-          x_1: { color: colorPositionText },
+          lb: {
+            symbol: 'bracket', side: 'left', lineWidth: 0.07, width: 0.16,
+          },
+          rb: {
+            symbol: 'bracket', side: 'right', lineWidth: 0.07, width: 0.16,
+          },
+          // x_1: { color: colorPositionText },
         },
         formDefaults: {
           alignment: { xAlign: 'center' },
         },
         forms: {
-          // 0: [{ sub: ['g', 'x'] }, { brac: ['lb', ['x_1', '_ , ', { sub: ['t', '_0'] }], 'rb'] }],
           0: ['g', { brac: ['lb', 'x_1', 'rb'] }],
         },
         position: [5, 2],
@@ -271,7 +315,7 @@ function addMedium(
       {
         name: 'eqn1',
         make: 'equation',
-        color: colorPositionText,
+        color: colorYellowText,
         scale: 4,
         elements: {
           lb: { symbol: 'bracket', side: 'left', lineWidth: 0.07, width: 0.16 },
@@ -283,7 +327,7 @@ function addMedium(
           alignment: { xAlign: 'center' },
         },
         forms: {
-          0: ['g', { brac: ['lb', ['x_1', ' ' , 'sign', ' ', 'value'], 'rb'] }],
+          0: ['g', { brac: ['lb', ['x_1', ' ', 'sign', ' ', 'value'], 'rb'] }],
         },
         position: [5, 2],
       },
@@ -297,21 +341,23 @@ function addMedium(
         length: 0.5,
         tail: 0.2,
         tailWidth: 0.2,
-        color: colorPositionText,
+        color: colorDisturbanceText,
       },
     ],
     mods: {
       scenarios: {
         default: { position: defaultPosition, scale: 1 },
-        summary: { position: [2, 8], scale: 0.8 },
+        summary: { position: [2, 6], scale: 0.85 },
         right: { position: [9.5, 6], scale: 1 },
-        top: { position: [10, 8.4], scale: 0.7 },
+        eqn: { position: [10, 8.4], scale: 0.7 },
         mathx: { position: [7.5, 8.4], scale: 0.7 },
         bottom: { position: [10, 3], scale: 0.6 },
         rightSmall: { position: [10, 7], scale: 0.9 },
+        one: { position: [7, 4], scale: 0.75 },
       },
     },
   });
+  stamp('medium 3');
   const medium = figure.getElement(stringName);
   const axis = medium.getElement('xAxis');
   // const ballSize = 0.02;
@@ -326,7 +372,14 @@ function addMedium(
     b.custom.x = x;
     b.custom.drawX = axis.valueToDraw(x);
   });
-  const highlights = xValues.map((x, i) => x % 2 === 0 && x > 0 ? i : -1).filter(i => i > -1).map(i => `ball${i}`);
+  const ballH = medium.add(ball(5 / maxValue * length, 'h', ballSize * 1.5));
+  ballH.custom.drawX = axis.valueToDraw(5);
+  ballH.scenarios.default.color = colorWave.slice();
+  // ballH.setColor(colorWave);
+  // ballH.setDimColor(colorWave);
+
+  stamp('medium 4')
+  const highlights = xValues.map((x, i) => ((x % 2 === 0) && (x > 0)) ? i : -1).filter(i => i > -1).map(i => `ball${i}`);
   balls.toFront(highlights);
   // const tracker = medium.add(ball(0, 'Tracker', ballSize * 2 ));
   // tracker.scenarios.default.color = color1;
@@ -334,72 +387,109 @@ function addMedium(
   const movePad = medium.getElement('movePad');
   const firstBall = medium.getElement('firstBall');
   const envelope = medium.getElement('envelope');
+  const envelope2 = medium.getElement('envelope2');
   const periodicEnvelope = medium.getElement('periodicEnvelope');
   const eqn = medium.getElement('eqn');
   const eqn1 = medium.getElement('eqn1');
   const wavelength = medium.getElement('wavelength');
   const velocity = medium.getElement('velocity');
   const widthArrow = medium.getElement('widthArrow');
-  const xDashLine = medium.getElement('xDashLine');
-  const xDashLineG = medium.getElement('xDashLineG');
+  // const xDashLine = medium.getElement('xDashLine');
+  // const xDashLineG = medium.getElement('xDashLineG');
+  const movePadEnv = medium.get('movePadEnv');
+  const propogation = medium.get('propogation');
   let lastEnvelope = [];
   let lastEnvelopeNumVertices = 0;
-  medium.custom = {
+  stamp('medium 5');
+  medium.customState = {
     f: 0.2,   // Current frequency of sine wave for medium
     c: 1,     // Propagation velocity of medium
+    trackingTime: -10000,
+  };
+  medium.custom = {
     A,        // Amplitude of pulse or sine wave for medium
     axis,     // Make some elements easily available
     balls,
     tracker,
     wavelength,
-    trackingTime: -10000,
     ball0: balls.getElement('ball0'),
     // recording: new Recorder(maxValue / minVelocity),
     recording: recorder,
     highlights,
+    updateEqn1: () => {
+      const sign = movePadEnv.customState.x > 0 ? '\u2212' : '+';
+      eqn1.updateElementText({
+        value: `${Math.abs(Fig.tools.math.round(movePadEnv.customState.x / length * maxValue * 2, 1)).toFixed(1)}`,
+        sign,
+        // x_1: xDashLineG.isShown || xDashLineG.opacity < 1 ? 'x\'' : 'x',
+        x_1: 'x',
+      }, 'current');
+    },
     // xValues.filter((x, i) => (x % 1 === 0) && x > 0).map(x => `ball${x}`),
     // Update function gets the position of the movePad, then records it, and
     // updates all the particles with their current displacement.
     update: (deltaTime) => {
       // Get movePad displacement
-      const y = movePad.transform.t().y;
-      firstBall.setPosition(0, y);
+      // const y = movePad.transform.t().y;
+      let y;
       // Record the displacement
-      medium.custom.recording.record(y, deltaTime);
+      if (medium.custom.recording.getState().mode === 'manual') {
+        y = movePad.transform.t().y;
+        medium.custom.recording.record(y, deltaTime);
+      } else {
+        y = medium.custom.recording.getValueAtTimeAgo(0);
+        movePad.transform.updateTranslation(0, y);
+      }
+      // console.log(y, medium.custom.recording.getState().mode)
+      firstBall.setPosition(0, y);
       // Calculate the displacement of each particle and set it
       const envelopePoints = [];
       if (balls.isShown) {
         for (let i = 0; i < xValues.length; i += 1) {
           const b = balls[`_ball${i}`];
-          const by = medium.custom.recording.getValueAtTimeAgo((b.custom.x) / medium.custom.c);
+          const by = medium.custom.recording.getValueAtTimeAgo((b.custom.x) / medium.customState.c);
           b.setPosition(b.custom.drawX, by);
-          if (envelope.isShown || periodicEnvelope.isShown) {
-            envelopePoints.push([b.custom.drawX, by]);
-          }
+          // if (Math.abs(by) > 0.003) {
+          //   b.setColor([1, 0, 0, 1]);
+          // } else {
+          //   b.setColor(colorLight)
+          // }
+          // if (envelope.isShown || periodicEnvelope.isShown) {
+          //   envelopePoints.push([b.custom.drawX, by]);
+          // }
         }
         // envelope.pointsToDraw = xValues.length * 6;
-      } else if (envelope.isShown) {
-        for (let i = 0; i < xValuesSmall.length; i += 1) {
-          envelopePoints.push([xValuesSmall[i] / maxValue * length, medium.custom.recording.getValueAtTimeAgo(xValuesSmall[i] / medium.custom.c)]);
-        }
+      }
+      if (ballH.isShown) {
+        const by = medium.custom.recording.getValueAtTimeAgo(5 / medium.customState.c);
+        ballH.setPosition(ballH.custom.drawX, by);
       }
       if (envelope.isShown) {
+        for (let i = 0; i < xValuesSmall.length; i += 1) {
+          envelopePoints.push([
+            xValuesSmall[i] / maxValue * length,
+            medium.custom.recording.getValueAtTimeAgo(xValuesSmall[i] / medium.customState.c),
+          ]);
+        }
+        // if (envelope.isShown) {
         envelope.custom.updatePoints({ points: envelopePoints });
         envelope.pointsToDraw = envelope.drawingObject.points.length / 2;
         lastEnvelope = envelopePoints;
         lastEnvelopeNumVertices = envelope.drawingObject.points.length / 2;
         if (eqn.isShown) {
-          let maxValue = envelopePoints[0].y;
+          let max = envelopePoints[0].y;
           let x = 0;
           for (let i = 0; i < envelopePoints.length; i += 1) {
-            if (envelopePoints[i].y > maxValue) {
+            if (envelopePoints[i].y > max) {
               x = envelopePoints[i].x;
-              maxValue = envelopePoints[i].y;
+              max = envelopePoints[i].y;
             }
           }
-          if (maxValue > A / 2) {
-            eqn.setPosition(x, maxValue + 0.5);
-            eqn.setOpacity(1);
+          if (max > A / 2) {
+            eqn.setPosition(x, max + 0.5);
+            if (eqn.opacity === 0) {
+              eqn.setOpacity(1);
+            }
           } else {
             eqn.setOpacity(0);
           }
@@ -413,42 +503,63 @@ function addMedium(
               minValue = envelopePoints[i].y;
             }
           }
-          const newX = x + movePadEnv.custom.x / maxValue * length;
+          const newX = x + movePadEnv.customState.x / maxValue * length;
           const minX = Math.min(Math.max(0, x), length);
-          const minNewX = Math.min(Math.max(0, newX), length);
+          const minNewX = Math.min(Math.max(0, newX / length * maxValue), length);
           if (minValue < 0) {
-            if (xDashLineG.isShown) {
-              eqn1.setPosition(
-                minX,
-                -5.3,
-              );
-            } else {
-              eqn1.setPosition(
-                minNewX,
-                minValue - 1,
-              );
+            // if (xDashLineG.isShown) {
+            //   eqn1.setPosition(
+            //     minX,
+            //     -5.3,
+            //   );
+            // } else {
+            eqn1.setPosition(
+              minNewX,
+              minValue - 1,
+            );
+            const a2 = figure.get('arrow2');
+            if (a2.isShown) {
+              a2.setPosition(eqn1._sign.getPositionInBounds('figure', 'center', 'bottom').sub(0, 0.7));
+              a2.setRotation(Math.PI / 2);
             }
-            eqn1.setOpacity(1);
+            // }
+            if (eqn1.opacity === 0) {
+              eqn1.setOpacity(1);
+            }
           } else {
             eqn1.setOpacity(0);
           }
-          if (xDashLine.isShown) {
-            xDashLine.setEndPoints([minNewX, -3.5], [minNewX, minValue]);
-            if (newX < 0 || newX > length) {
-              xDashLine.setOpacity(0);
-            } else {
-              xDashLine.setOpacity(1);
-            }
-          }
-          if (xDashLineG.isShown) {
-            xDashLineG.setEndPoints([minX, -4.6], [minX, minValue]);
-          }
+          // if (xDashLine.isShown) {
+          //   xDashLine.setEndPoints([minNewX, -3.5], [minNewX, minValue]);
+          //   if (newX < 0 || newX > length) {
+          //     xDashLine.setOpacity(0);
+          //   } else {
+          //     xDashLine.setOpacity(1);
+          //   }
+          // }
+          // if (xDashLineG.isShown) {
+          //   xDashLineG.setEndPoints([minX, -4.6], [minX, minValue]);
+          // }
         }
       }
+      if (envelope2.isShown) {
+        const envelope2Points = [];
+        for (let i = 0; i < xValuesSmall.length; i += 1) {
+          const tAgo = xValuesSmall[i] / medium.customState.c
+            - movePadEnv.customState.x / length * maxValue / medium.customState.c;
+          const yVal = medium.custom.recording.getValueAtTimeAgo(Math.max(tAgo, 0));
+          envelope2Points.push([xValuesSmall[i] / maxValue * length, yVal]);
+        }
+        // console.log(movePad)
+        // const newEnvelope = lastEnvelope.map(p => p.add(movePadEnv.custom.x, 0));
+        medium._envelope2.custom.updatePoints({ points: envelope2Points });
+      }
       if (periodicEnvelope.isShown) {
-        const threeSLength = medium.custom.c * 3;
+        const threeSLength = medium.customState.c * 3;
         const numParticles = threeSLength / ballSpace;
-        periodicEnvelope.custom.updatePoints({ points: envelopePoints.slice(numParticles, numParticles * 2) });
+        periodicEnvelope.custom.updatePoints({
+          points: envelopePoints.slice(numParticles, numParticles * 2),
+        });
         periodicEnvelope.pointsToDraw = periodicEnvelope.drawingObject.points.length / 2;
       }
 
@@ -456,24 +567,34 @@ function addMedium(
       // place it there
       if (tracker.isShown) {
         // The space between particles in seconds (from the velocity)
-        const ballSpaceTime = axis.drawToValue(ballSize * 2) / medium.custom.c;
+        // const ballSpaceTime = axis.drawToValue(ballSize * 2) / medium.customState.c;
         // Quantize the space so the tracker particle can only exist on an
         // existing particle and not between
         // const t = Math.floor(
         //   (time.now() + medium.custom.trackingTime) / ballSpaceTime,
         // ) * ballSpaceTime;
-        const t = time.now() + medium.custom.trackingTime;
+        const tt = time.now() - medium.customState.trackingTime;
         // console.log(time.now(), t)
         // If the tracker is within the axis, then position it appropriately,
         // otherwise position it way off
-        const xValue = Math.max(t * medium.custom.c, 0);
-        const x = axis.valueToDraw(xValue - 0.1);
-        if (t > 0 && axis.inAxis(xValue + 0.2)) {
+        const xValue = Math.max(tt * medium.customState.c, 0);
+        const x = axis.valueToDraw(xValue); //) * 0.94;
+        if (tt > 0.1 && axis.inAxis(xValue) && x < length) {
           // const by = medium.custom.recording.getValueAtTimeAgo(t);
           tracker.setPosition(x, -0.2);
         } else {
           tracker.setPosition(100, 0);
         }
+      }
+      if (eqn1.isShown) {
+        // const sign = movePadEnv.customState.x > 0 ? '\u2212' : '+';
+        // eqn1.updateElementText({
+        //   value: `${Math.abs(Fig.tools.math.round(movePadEnv.customState.x / length * maxValue * 2, 1)).toFixed(1)}`,
+        //   sign,
+        //   // x_1: xDashLineG.isShown || xDashLineG.opacity < 1 ? 'x\'' : 'x',
+        //   x_1: 'x',
+        // }, 'current');
+        medium.custom.updateEqn1();
       }
     },
     stop: () => {
@@ -484,12 +605,16 @@ function addMedium(
       medium.custom.stop();
       movePad.setPosition(0, 0);
       medium.custom.recording.reset(0);
+      for (let i = 0; i < xValues.length; i += 1) {
+        const b = balls[`_ball${i}`];
+        b.setPosition(b.custom.drawX, 0);
+      }
     },
-    setVelocity: (velocity) => {
-      medium.custom.c = velocity;
+    setVelocity: (v) => {
+      medium.customState.c = v;
     },
     setFrequency: (frequency) => {
-      medium.custom.f = frequency;
+      medium.customState.f = frequency;
     },
     // drawEnvelope: () => {
     //   envelope.stop();
@@ -505,9 +630,9 @@ function addMedium(
     // Find the minimum of the displayed sine curve and position the
     // wavelength arrow annotation to align with it.
     setWavelengthPosition: (deltaX = 0) => {
-      const t = time.now();
-      const x0Phase = (2 * Math.PI * medium.custom.f * t) % (2 * Math.PI);
-      const lambda = medium.custom.c / medium.custom.f;
+      // const t = time.now();
+      const x0Phase = (2 * Math.PI * medium.customState.f * time.now()) % (2 * Math.PI);
+      const lambda = medium.customState.c / medium.customState.f;
       const wavelengthDraw = axis.valueToDraw(lambda);
       const wavelengthStartPhase = Math.PI / 2;
       let deltaPhase = Math.PI * 2 - (wavelengthStartPhase - x0Phase);
@@ -525,37 +650,59 @@ function addMedium(
     },
     movePad,
   };
+  stamp('medium 6');
   medium.backupState = medium._state;
   medium._state = (options) => {
     medium.customState.recorder = medium.custom.recording.encodeData();
+    medium.customState.recorderState = medium.custom.recording.getState();
+    medium.customState.timeState = time.getState();
     return medium.backupState(options);
   };
   medium.backupStateSet = medium.stateSet;
   medium.stateSet = () => {
     medium.backupStateSet();
-    if (medium.customState.recorder != null) {
-      medium.custom.recording.loadEncodedData(medium.customState.recorder[0], medium.customState.recorder[1]);
+    if (medium.customState.recorderState != null) {
+      medium.custom.recording.setState(medium.customState.recorderState);
     }
-  }
+    if (medium.customState.timeState != null) {
+      time.setState(medium.customState.timeState);
+    }
+    if (medium.customState.recorder != null) {
+      medium.custom.recording.loadEncodedData(
+        medium.customState.recorder[0], medium.customState.recorder[1],
+      );
+    }
+  };
   figure.fnMap.global.add('showEnvelope', () => {
     envelope.show();
     envelope.stop();
-      envelope.animations.new()
-        .custom({
-          callback: (p) => {
-            envelope.pointsToDraw = Math.floor(envelope.drawingObject.numVertices / 6 * p) * 6;
-          },
-          duration: 2,
-        })
-        .start();
+    medium.custom.update(0);
+    // console.log('showEnvelope');
+    envelope.animations.new()
+      .custom({
+        callback: (p) => {
+          envelope.pointsToDraw = Math.floor(envelope.drawingObject.numVertices / 6 * p) * 6;
+          // console.log(p, envelope.pointsToDraw)
+        },
+        duration: 2,
+      })
+      .start();
   });
   figure.fnMap.global.add('copyEnvelope', () => {
-    console.log('copied')
+    // console.log('copied')
+    if (lastEnvelope.length > 0) {
+      medium._envelope2.custom.updatePoints({ points: lastEnvelope });
+      medium._envelope2.pointsToDraw = lastEnvelopeNumVertices;
+      medium._envelope2.custom.lastPoints = lastEnvelope;
+    }
+  });
+  figure.fnMap.global.add('copyEnvelopeReset', () => {
+    // console.log('copied')
     medium._envelope2.custom.updatePoints({ points: lastEnvelope });
     medium._envelope2.pointsToDraw = lastEnvelopeNumVertices;
-    movePadEnv.custom.x = 0;
+    movePadEnv.customState.x = 0;
     medium._envelope2.custom.lastPoints = lastEnvelope;
-  })
+  });
   figure.fnMap.global.add('showWavelength', () => {
     medium.custom.setWavelengthPosition(0);
     wavelength.animations.new().dissolveIn(0.5).start();
@@ -577,31 +724,18 @@ function addMedium(
     if (movePad.state.isBeingMoved && movePad.isAnimating()) {
       medium.custom.stop();
     }
+    // const y = movePad.getPosition().y;
+    //   medium.custom.recording.record(y, time.step());
     unpause();
+    medium.custom.recording.setManual();
+    figure.fnMap.exec('forceUpdate');
   });
-  const movePadEnv = medium.get('movePadEnv');
-  movePadEnv.notifications.add('setTransform', (t) => {
+  movePadEnv.notifications.add('setTransform', () => {
     if (time.isPaused()) {
       const x = movePadEnv.getPosition().x - length / 2;
-      movePadEnv.custom.x += x;
-      const envelopePoints = [];
-      for (let i = 0; i < xValuesSmall.length; i += 1) {
-        const tAgo = xValuesSmall[i] / medium.custom.c - movePadEnv.custom.x
-        const y = medium.custom.recording.getValueAtTimeAgo(Math.max(tAgo, 0));
-        envelopePoints.push([xValuesSmall[i] / maxValue * length, y]);
-      }
-      // console.log(movePad)
-      // const newEnvelope = lastEnvelope.map(p => p.add(movePadEnv.custom.x, 0));
-      medium._envelope2.custom.updatePoints({ points: envelopePoints });
+      movePadEnv.customState.x += x;
       movePadEnv.transform.updateTranslation(length / 2, 0);
-      // if (medium._envelope2.isShown) {
-      const sign = movePadEnv.custom.x > 0 ? '\u2212' : '+';
-      eqn1.updateElementText({
-        value: `${Math.abs(Fig.tools.math.round(movePadEnv.custom.x * 2, 1)).toFixed(1)}`,
-        sign: sign,
-        x_1: xDashLineG.isShown || xDashLineG.opacity < 1 ? 'x\'' : 'x',
-      }, 'current');
-      // }
+      medium.custom.updateFlag = true;
     }
   });
   // const velocity = medium._velocity;
@@ -635,6 +769,40 @@ function addMedium(
       .length({ start: 0.5, target: 3.9, duration: 1 })
       // .dissolveIn({ element: 'label' })
       .start();
+  });
+  figure.fnMap.global.add('growPropagation', () => {
+    propogation.showAll();
+    propogation.animations.new()
+      .length({ start: 0.5, target: 3, duration: 2 })
+      // .dissolveIn({ element: 'label' })
+      .start();
+  });
+  stamp('medium 7');
+
+  const marker = medium._marker;
+  medium.custom.updateMarker = (p) => {
+    const initialDisturbance = time.now() - medium.customState.trackingTime;
+    const initialDisturbanceDistance = initialDisturbance / 10 * length;
+    if (initialDisturbance < 10) {
+      marker.transform.updateTranslation(
+        Math.max(initialDisturbanceDistance - p * length, 0),
+        0,
+      );
+    } else {
+      marker.transform.updateTranslation(10 - p * length, 0);
+    }
+  };
+  marker.notifications.add('setTransform', () => {
+    const initialDisturbance = time.now() - medium.customState.trackingTime;
+    const initialDisturbanceDistance = initialDisturbance / 10 * length;
+    let p;
+    const x = marker.getPosition('local').x;
+    if (initialDisturbance < 10) {
+      p = Math.max((initialDisturbanceDistance - x) / length, 0);
+    } else {
+      p = 1 - (marker.getPosition('local').x / length);
+    }
+    figure.get('timePlot1').custom.updateMarker(p);
   });
 
   // const a6 = medium._sixArrow;

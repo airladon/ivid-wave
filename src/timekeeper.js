@@ -35,6 +35,11 @@ function TimeKeeper() {
     internalPaused = false;
   }
 
+  function setDeltaTime(deltaTime) {
+    lastTime += deltaTime;
+    time += deltaTime;
+  }
+
   // Update the current time and return the change in time from the last step
   function step(delta = null) {
     if (delta === null && internalPaused) {
@@ -58,6 +63,21 @@ function TimeKeeper() {
     }
   }
 
+  function getState() {
+    return {
+      time, timeSpeed, targetSpeed, internalPaused, paused, blurred, lastTime,
+    };
+  }
+  function setState(state) {
+    time = state.time;
+    timeSpeed = state.timeSpeed;
+    targetSpeed = state.targetSpeed;
+    internalPaused = state.internalPaused;
+    paused = state.paused;
+    blurred = state.blurred;
+    lastTime = state.lastTime;
+  }
+
   function unpauseTime() {
     if (!paused && !blurred && internalPaused) {
       internalPaused = false;
@@ -66,14 +86,14 @@ function TimeKeeper() {
   }
 
   // Automatically pause and unpause time when browser window focus changes
-  window.addEventListener('focus', () => {
-    blurred = false;
-    unpauseTime();
-  });
-  window.addEventListener('blur', () => {
-    blurred = true;
-    pauseTime();
-  });
+  // window.addEventListener('focus', () => {
+  //   blurred = false;
+  //   unpauseTime();
+  // });
+  // window.addEventListener('blur', () => {
+  //   blurred = true;
+  //   pauseTime();
+  // });
 
   function pause() { paused = true; pauseTime(); }
   function unpause() { paused = false; unpauseTime(); }
@@ -85,6 +105,6 @@ function TimeKeeper() {
   function getTimeSpeed() { return timeSpeed; }
 
   return {
-    reset, now, step, pause, unpause, isPaused, setTimeSpeed, getTimeSpeed, setGetNow,
+    reset, now, step, pause, unpause, isPaused, setTimeSpeed, getTimeSpeed, setGetNow, getState, setState, setDeltaTime,
   };
 }

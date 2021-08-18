@@ -60,10 +60,10 @@ function addDiffEquation(name) {
       v_2: { color: colorFText },
       v_3_: 'v',
       v_3: { color: colorGText },
-      c_: 'c',
-      c: { color: colorGText },
-      b_: 'b',
-      b: { color: colorFText },
+      h_: 'h',
+      h: { color: colorGText },
+      g_: 'g',
+      g: { color: colorFText },
       _2_1: { color: colorLight },
       _2_2: { color: colorLight },
       _2_3: { color: colorLight },
@@ -86,8 +86,8 @@ function addDiffEquation(name) {
       vin4: { symbol: 'vinculum', lineWidth: 0.05, color: colorTimeText },
       vin5: { symbol: 'vinculum', lineWidth: 0.05 },
       tBox1: tBox([0.5, 0.5, 0.5, 0.5]),
-      tBox2: tBox([0.5, 0.7, 0.2, 0.7]),
-      tBox3: tBox([0.1, 0.5, 0.5, 0.5]),
+      tBox2: tBox([0.5, 1.2, 0.2, 1.3]),
+      tBox3: tBox([0.1, 0.6, 0.5, 0.5]),
       tBox4: tBox([0.5, 0.5, 0.5, 0.5]),
       tBox5: tBox([0, 0.5, 0, 0.5]),
       tBox6: tBox([0.5, 0.5, 0, 0.5]),
@@ -96,10 +96,15 @@ function addDiffEquation(name) {
       plus1: { text: '  +  ', color: colorPositionText },
       plus2_: '  +  ',
       plus2: { text: '  +  ', color: colorGText },
+      box1: { symbol: 'box', lineWidth: 0.04 },
+      box2: { symbol: 'box', lineWidth: 0.04 },
+      times: ' \u00d7 ',
     },
     phrases: {
       d2ydx2_: frac([d2(1), 'y_1'], 1, ['d3', sq('x', 3)], 1, 0.02, 0.05, 0.01),
+      d2dx2_: frac([d2(1)], 1, ['d3', sq('x', 3)], 1, 0.02, 0.05, 0.01),
       d2ydt2_: frac([d2(2), 'y_2'], 2, ['d4', sq('t', 4)], 1, 0.02, 0.05, 0.01),
+      d2dt2_: frac([d2(2)], 2, ['d4', sq('t', 4)], 1, 0.02, 0.05, 0.01),
       d2ydx2: t(3, frac([d2(5), 'y_3'], 3, ['d7', sq('x_1', 7)], 1, 0.02, 0.05, 0.01), 'dxBox'),
       d2ydt2: t(1, frac([d2(6), 'y_4'], 4, ['d8', sq('t_1', 8)], 1, 0.02, 0.05, 0.01), 'dtBox'),
       vSq: t(2, sq('v_1', 10), 'vBox'),
@@ -122,7 +127,7 @@ function addDiffEquation(name) {
                     inSize: false,
                   },
                 },
-                t(4, 'y_5'), 'equals2', t(6, ['b', brac(['x_2', 'min1', 'v_2', 't_2'], 1)]), t(5, 'plus1'), t(7, ['c', brac(['x_3', 'plus2', 'v_3', 't_3'], 2)]),
+                t(4, 'y_5'), 'equals2', t(6, ['g', brac(['x_2', 'min1', 'v_2', 't_2'], 1)]), t(5, 'plus1'), t(7, ['h', brac(['x_3', 'plus2', 'v_3', 't_3'], 2)]),
               ],
             ],
             baselineSpace: 3.7,
@@ -138,11 +143,45 @@ function addDiffEquation(name) {
               scale([
                 'd2ydt2_', 'equals', 'vSq_', '  ', 'd2ydx2_',
               ], 0.8),
-              [
-                'y_5_', 'equals2', 'b_', brac(['x_2_', 'min1_', 'v_2_', 't_2_'], 4), 'plus1_', 'c_', brac(['x_3_', 'plus2_', 'v_3_', 't_3_'], 5),
+              ['',
+                // 'y_5_', 'equals2', 'b_', brac(['x_2_', 'min1_', 'v_2_', 't_2_'], 4), 'plus1_', 'c_', brac(['x_3_', 'plus2_', 'v_3_', 't_3_'], 5),
               ],
             ],
             baselineSpace: 3.7,
+            justify: 'center',
+          },
+        },
+        alignment: { xAlign: 'center' },
+      },
+      diffSolnMono1: {
+        content: {
+          lines: {
+            content: [
+              scale([
+                'd2ydt2_', 'equals', 'vSq_', '  ', 'd2ydx2_',
+              ], 0.8),
+              [
+                'y_5_', 'equals2', 'g_', brac(['x_2_', 'min1_', 'v_2_', 't_2_'], 4), 'plus1_', 'h_', brac(['x_3_', 'plus2_', 'v_3_', 't_3_'], 5),
+              ],
+            ],
+            baselineSpace: 3.7,
+            justify: 'center',
+          },
+        },
+        alignment: { xAlign: 'center' },
+      },
+      diffSolnMono2: {
+        content: {
+          lines: {
+            content: [
+              scale([
+                'd2ydt2_', 'equals', 'vSq_', '  ', 'd2ydx2_',
+              ], 0.8),
+              [
+                'y_5_', 'equals2', 'g_', brac(['x_2_', 'min1_', 'v_2_', 't_2_'], 4), 'plus1_', 'h_', brac(['x_3_', 'plus2_', 'v_3_', 't_3_'], 5),
+              ],
+            ],
+            baselineSpace: 3,
             justify: 'center',
           },
         },
@@ -183,18 +222,35 @@ function addDiffEquation(name) {
         content: ['d2ydt2_', 'equals', 'vSq_', '  ', 'd2ydx2_'],
         alignment: { xAlign: 'center' },
       },
+      diffSeparate: {
+        content: [box(scale('d2dt2_', 0.8), 'box1'), '    ', 'y_2', 'equals', 'vSq_', '    ', box(scale('d2dx2_', 0.8), 'box2'), '    ', 'y_1'],
+        alignment: { xAlign: 'center' },
+      },
       diffMonoSmall: {
         content: scale(['d2ydt2_', 'equals', 'vSq_', '  ', 'd2ydx2_'], 0.8),
+        alignment: { xAlign: 'center' },
+      },
+      vdt: {
+        content: ['velocity', 'equals', frac('distance', 1, 'time')],
+        alignment: { xAlign: 'center' },
+      },
+      dvt: {
+        content: ['distance', 'equals', 'velocity', 'times', 'time'],
+        translation: {
+          distance: { style: 'curve', direction: 'up', mag: 0.4 },
+          velocity: { style: 'curve', direction: 'down', mag: 0.4 },
+        },
         alignment: { xAlign: 'center' },
       },
     },
     mods: {
       scenarios: {
         default: { position: [12, 6], scale: 1 },
-        high: { position: [12, 9], scale: 1 },
-        summary: { position: [19, 3], scale: 0.7 },
+        diffHigh: { position: [12, 8], scale: 1 },
+        summary: { position: [19, 3], scale: 0.75 },
         props: { position: [19.5, 6], scale: 0.7 },
-        right: { position: [19.5, 10], scale: 0.7 },
+        velocity: { position: [12, 1], scale: 0.6 },
+        // right: { position: [19.5, 10], scale: 0.7 },
       },
     },
   });
@@ -202,23 +258,27 @@ function addDiffEquation(name) {
     name: 'diffExplanation',
     make: 'equation',
     color: colorLight,
-    font: { family: 'TeXGyreTermes' },
-    textFont: { family: 'TeXGyreTermes', style: 'normal' },
-    scale: 4,
+    // font: { family: 'TeXGyreTermes' },
+    // textFont: { family: 'TeXGyreTermes', style: 'normal' },
+    // font: { family: 'Open Sans' },
+    // textFont: { family: 'Open Sans', style: 'normal' },
+    font: { family: 'Open Sans', width: 1.12, midAscent: 1.1, maxAscent: 1.5, },
+    textFont: { family: 'Open Sans', style: 'normal', width: 1.12, midAscent: 1.1, maxAscent: 1.5 },
+    scale: 4.4,
     position: [12, 3],
-    formDefaults: { alignment: { xAlign: 'center' } },
+    formDefaults: { alignment: { xAlign: 'center' }, lazyLayout: true },
     elements: {
-      tBox1: tBox([0.1, 0.2, 0.1, 0.1]),
-      tBox2: tBox([0.1, 0.1, 0.1, 0.1]),
-      tBox3: tBox([0.1, 0.1, 0.1, 0.1]),
-      tBox4: tBox([0.1, 0.2, 0.1, 0.1]),
-      tBox5: tBox([0.1, 0.1, 0.1, 0.1]),
-      tBox6: tBox([0.1, 0.1, 0.1, 0.1]),
-      tBox7: tBox([0.1, 0.1, 0.1, 0.1]),
+      tBox1: tBox([0.1, 0.2, 0.3, 0.3]),
+      tBox2: tBox([0.1, 0.1, 0.2, 0.3]),
+      tBox3: tBox([0.1, 0.3, 0.3, 0.1]),
+      // tBox4: tBox([0.1, 0.2, 0.1, 0.1]),
+      // tBox5: tBox([0.1, 0.1, 0.1, 0.1]),
+      // tBox6: tBox([0.1, 0.1, 0.1, 0.1]),
+      // tBox7: tBox([0.1, 0.1, 0.1, 0.1]),
       disturbance: { color: colorDisturbanceText },
-      'disturbance curvature in time': { color: colorTimeText },
+      'shape of the disturbance in time': { color: colorTimeText },
       'proportional': { color: colorVelocityText },
-      'disturbance curvature in space': { color: colorPositionText },
+      'shape of the disturbance in space': { color: colorPositionText },
       'positive travelling wave': { color: colorFText },
       'negative travelling wave': { color: colorGText },
       superimposed: { color: colorPositionText },
@@ -228,13 +288,13 @@ function addDiffEquation(name) {
     },
     forms: {
       diff: lines([
-        ['The ', t(1, 'disturbance curvature in time'), '_ is ', t(2, 'proportional'), '_ to the'],
-        [t(3, 'disturbance curvature in space')]
+        ['The ', t(1, 'shape of the disturbance in time'), '_  is ', t(2, 'proportional')],
+        ['to the  ', t(3, 'shape of the disturbance in space')],
       ], 1.2),
-      soln: lines([
-        ['The ', t(4, 'disturbance'), '_ is equal to a ', t(6, 'positive travelling wave'), ],
-        [t(5, 'superimposed'), '_ with a ', t(7, 'negative travelling wave')],
-      ], 1.2),
+      // soln: lines([
+      //   ['The ', t(4, 'disturbance'), '_ is equal to a ', t(6, 'positive travelling wave'), ],
+      //   [t(5, 'superimposed'), '_ with a ', t(7, 'negative travelling wave')],
+      // ], 1.2),
     },
   });
 
@@ -271,7 +331,7 @@ function addDiffEquation(name) {
     scale: 4,
     color: colorLight,
     position: [11.5, 6],
-    formDefaults: { alignment: { xAlign: 'center'} },
+    formDefaults: { alignment: { xAlign: 'center'}, lazyLayout: true },
     elements: {
       equals: '  =  ',
       equals1: '  =  ',
@@ -303,7 +363,7 @@ function addDiffEquation(name) {
     align: 'mid',
     position: [8, 6],
     line: { width: 0.05 },
-    color: colorLight,
+    color: colorYellowText,
   });
   figure.add({
     name: 'arrow2',
@@ -317,16 +377,16 @@ function addDiffEquation(name) {
     align: 'mid',
     position: [15, 6],
     line: { width: 0.05 },
-    color: colorLight,
+    color: colorYellowText,
   });
   const d = description;
   const e = eqn;
-  highlightN(1, d, e, [0.1, 0.2, 0.1, 0.2], 0.1, 1.1, 1.1);
-  highlightN(2, d, e, [0.1, 0.2, 0.1, 0.2], 0.1, 1.3, 1.1);
-  highlightN(3, d, e, [0.1, 0.2, 0.1, 0.2], 0.1, 1.1, 1.1);
-  highlightN(4, d, e, [0.3, 0.1, 0.1, 0.2], 0.1, 1.3, 1.1);
-  highlightN(5, d, e, [-0.1, 0.2, -0.1, 0.2], 0.1, 1.3, 1.1);
-  highlightN(6, d, e, [0.1, 0.2, 0.1, 0.2], 0.1, 1.3, 1.1);
-  highlightN(7, d, e, [0.1, 0.2, 0.1, 0.2], 0.1, 1.3, 1.1);
+  highlightN(1, d, e, [0.1, 0.2, 0.1, 0.2], [0.1, 0.1, 0.4, 0.2], 1.1, 1.1);
+  highlightN(2, d, e, [0.1, 0.2, 0.1, 0.2], [0.1, 0.1, 0.2, 0.2], 1.3, 1.1);
+  highlightN(3, d, e, [0.1, 0.2, 0.1, 0.2], [0.1, 0.1, 0.4, 0.2], 1.1, 1.1);
+  // highlightN(4, d, e, [0.3, 0.1, 0.1, 0.2], 0.1, 1.3, 1.1);
+  // highlightN(5, d, e, [-0.1, 0.2, -0.1, 0.2], 0.1, 1.3, 1.1);
+  // highlightN(6, d, e, [0.1, 0.2, 0.1, 0.2], 0.1, 1.3, 1.1);
+  // highlightN(7, d, e, [0.1, 0.2, 0.1, 0.2], 0.1, 1.3, 1.1);
 }
 
