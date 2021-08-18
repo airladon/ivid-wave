@@ -1,3 +1,29 @@
+@font-face {
+  font-family: 'TeXGyreTermes';
+  font-style: normal;
+  font-weight: 400;
+  src: local('TeXGyreTermes'), url('./texgyretermes-regular.woff') format('woff');
+}
+@font-face {
+  font-family: 'TeXGyreTermes';
+  font-style: italic;
+  font-weight: 400;
+  src: local('TeXGyreTermes'), url('./texgyretermes-italic.woff') format('woff');
+}
+@font-face {
+  font-family: 'TeXGyreTermes';
+  font-style: normal;
+  font-weight: 700;
+  src: local('TeXGyreTermes'), url('./texgyretermes-bold.woff') format('woff');
+}
+@font-face {
+  font-family: 'TeXGyreTermes';
+  font-style: italic;
+  font-weight: 700;
+  src: local('TeXGyreTermes'), url('./texgyretermes-bolditalic.woff') format('woff');
+}
+
+
 body {
   /* max-width: 800px; */
   background: white;
