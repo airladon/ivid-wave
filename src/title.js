@@ -4,10 +4,10 @@ function addTitle(
 ) {
   const vertexShader = {
     src: `
-attribute vec2 a_position;
-attribute vec2 a_texcoord;
-uniform float u_time;
 attribute float a_offset;
+attribute vec2 a_texcoord;
+attribute vec2 a_position;
+uniform float u_time;
 uniform mat3 u_matrix;
 varying vec2 v_texcoord;
 void main() {
@@ -69,6 +69,11 @@ void main() {
         color: [1, 0, 0, 1],
         transform: [['t', 0, -0.6]],
       },
+      // {
+      //   name: 'title',
+      //   make: 'text',
+      //   text: 'waves',
+      // },
       {
         name: 'envelope',
         make: 'polyline',
