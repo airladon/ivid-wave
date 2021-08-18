@@ -1,12 +1,12 @@
 
 function addFigureElements() {
-  let t = performance.now()
-  let newT = performance.now()
-  const stamp = (message) => {
-    newT = performance.now();
-    console.log(message, Fig.round(newT - t));
-    t = newT;
-  }
+  // let t = performance.now()
+  // let newT = performance.now()
+  // const stamp = (message) => {
+  //   newT = performance.now();
+  //   console.log(message, Fig.round(newT - t));
+  //   t = newT;
+  // }
   figure.add({
     name: 'highlighter',
     make: 'collections.rectangle',
@@ -63,9 +63,9 @@ function addFigureElements() {
     //   'slow',
     // ]),
   ]);
-  stamp(1)
+  // stamp(1)
   addDefsEquation('defs');
-  stamp(2)
+  // stamp(2)
   // figure.add({
   //   name: 'waveDefinition',
   //   make: 'textLines',
@@ -91,15 +91,15 @@ function addFigureElements() {
   // const recorder = new Recorder(10, time);
   const m1 = addMedium('m1', 13, 10, 2.5, [5.5, 6], false, 0.12, 0.125, recorder);
   m1.setPosition(0.1, 0);
-  stamp('medium')
+  // stamp('medium')
   const timePlot1 = addTimePlot(
     'timePlot1', 6.5, 10.5, m1.custom.recording, 2.5 * 13 / 10, [1, 6],
   );
-  stamp('timePlot')
+  // stamp('timePlot')
   const pressurePlot = addPressureMedium('p1', 18, 2, 0.1, 0.4, recorder);
-  stamp('pressure')
+  // stamp('pressure')
   addOceanMedium('ocean', 24, 4, 0.07, 0.4);
-  stamp('ocean')
+  // stamp('ocean')
   // addSineTEquation('eqnSineT');
   // addSinXEquation('eqnSinX');
   // addSinTEquation('eqnSinT');
@@ -108,14 +108,14 @@ function addFigureElements() {
   addTravellingWaveEquation('eqnWave');
   // addMaxwellEquation('eqnMaxwell');
   // addTimeWave('eqnGenT');
-  stamp('equations')
+  // stamp('equations')
   // addTitle(2.88 * 4, 1.44 * 4, 0.1);
   addTitle(8, 4, 0.05, recorder);
   // addIntro(24, 4, 0.1);
   addExamples();
-  stamp('titles')
+  // stamp('titles')
   addWaveInterference('waveInterference', 20);
-  stamp('waveInterference');
+  // stamp('waveInterference');
   figure.showTouchBorders = () => {
     const elements = figure.elements.getAllElements();
     const colors = [

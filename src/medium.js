@@ -9,14 +9,14 @@ arrow, Fig, colorYellowText, colorDisturbanceText,
 function addMedium(
   stringName, length, maxValue, A, defaultPosition, yAxisTitle, ballSize, ballSpace, recorder,
 ) {
-  let t = performance.now()
-  let newT = performance.now()
-  const stamp = (message) => {
-    newT = performance.now();
-    console.log(message, Fig.round(newT - t));
-    t = newT;
-  };
-  stamp('medium 1');
+  // let t = performance.now()
+  // let newT = performance.now()
+  // const stamp = (message) => {
+  //   newT = performance.now();
+  //   console.log(message, Fig.round(newT - t));
+  //   t = newT;
+  // };
+  // stamp('medium 1');
   // Particle creater
   const ball = (x, index, radius, sides = 20) => ({
     name: `ball${index}`,
@@ -44,7 +44,7 @@ function addMedium(
     width: 0.05,
     color: colorYellowText,
   });
-  stamp('medium 2');
+  // stamp('medium 2');
   figure.add({
     name: stringName,
     make: 'collection',
@@ -357,7 +357,7 @@ function addMedium(
       },
     },
   });
-  stamp('medium 3');
+  // stamp('medium 3');
   const medium = figure.getElement(stringName);
   const axis = medium.getElement('xAxis');
   // const ballSize = 0.02;
@@ -378,7 +378,7 @@ function addMedium(
   // ballH.setColor(colorWave);
   // ballH.setDimColor(colorWave);
 
-  stamp('medium 4')
+  // stamp('medium 4')
   const highlights = xValues.map((x, i) => ((x % 2 === 0) && (x > 0)) ? i : -1).filter(i => i > -1).map(i => `ball${i}`);
   balls.toFront(highlights);
   // const tracker = medium.add(ball(0, 'Tracker', ballSize * 2 ));
@@ -400,7 +400,7 @@ function addMedium(
   const propogation = medium.get('propogation');
   let lastEnvelope = [];
   let lastEnvelopeNumVertices = 0;
-  stamp('medium 5');
+  // stamp('medium 5');
   medium.customState = {
     f: 0.2,   // Current frequency of sine wave for medium
     c: 1,     // Propagation velocity of medium
@@ -650,7 +650,7 @@ function addMedium(
     },
     movePad,
   };
-  stamp('medium 6');
+  // stamp('medium 6');
   medium.backupState = medium._state;
   medium._state = (options) => {
     medium.customState.recorder = medium.custom.recording.encodeData();
@@ -782,7 +782,7 @@ function addMedium(
       // .dissolveIn({ element: 'label' })
       .start();
   });
-  stamp('medium 7');
+  // stamp('medium 7');
 
   const marker = medium._marker;
   medium.custom.updateMarker = (p) => {
