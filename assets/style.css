@@ -1,31 +1,105 @@
+/*
+.########..#######..##....##.########..######.
+.##.......##.....##.###...##....##....##....##
+.##.......##.....##.####..##....##....##......
+.######...##.....##.##.##.##....##.....######.
+.##.......##.....##.##..####....##..........##
+.##.......##.....##.##...###....##....##....##
+.##........#######..##....##....##.....######.
+*/
 @font-face {
   font-family: 'TeXGyreTermes';
   font-style: normal;
   font-weight: 400;
-  src: local('TeXGyreTermes'), url('./texgyretermes-regular.woff') format('woff');
+  src: local('TeXGyreTermes'), url('./fonts/texgyretermes-regular.woff') format('woff');
 }
 @font-face {
   font-family: 'TeXGyreTermes';
   font-style: italic;
   font-weight: 400;
-  src: local('TeXGyreTermes'), url('./texgyretermes-italic.woff') format('woff');
+  src: local('TeXGyreTermes'), url('./fonts/texgyretermes-italic.woff') format('woff');
 }
 @font-face {
   font-family: 'TeXGyreTermes';
   font-style: normal;
   font-weight: 700;
-  src: local('TeXGyreTermes'), url('./texgyretermes-bold.woff') format('woff');
+  src: local('TeXGyreTermes'), url('./fonts/texgyretermes-bold.woff') format('woff');
 }
 @font-face {
   font-family: 'TeXGyreTermes';
   font-style: italic;
   font-weight: 700;
-  src: local('TeXGyreTermes'), url('./texgyretermes-bolditalic.woff') format('woff');
+  src: local('TeXGyreTermes'), url('./fonts/texgyretermes-bolditalic.woff') format('woff');
 }
 
 
+/*
+.########.####..######...##.....##.########..########....##..
+.##........##..##....##..##.....##.##.....##.##........####..
+.##........##..##........##.....##.##.....##.##..........##..
+.######....##..##...####.##.....##.########..######......##..
+.##........##..##....##..##.....##.##...##...##..........##..
+.##........##..##....##..##.....##.##....##..##..........##..
+.##.......####..######....#######..##.....##.########..######
+*/
+.wrapper {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+  margin-top: 1em;
+  /* margin-top: 2em; */
+}
+
+.wrapper_1_1, .wrapper_2_1, .wrapper_4_3, .wrapper_3_2 {
+  width: calc(100vw - 20px);
+}
+
+@media (min-aspect-ratio: 1/1) {
+  .wrapper_2_1 {
+    width: calc((100vh - 20px)/0.5);
+  }
+  .wrapper_3_2 {
+    width: calc((100vh - 20px)/0.667);
+  }
+  .wrapper_4_3 {
+    width: calc((100vh - 20px)/0.75);
+  }
+  .wrapper_1_1 {
+    width: calc((100vh - 20px));
+  }
+}
+
+.container {
+  width: 100%;
+  background-color: white;
+}
+
+.container_2_1 {
+  padding-bottom: 50%;
+}
+
+.container_3_2 {
+  padding-bottom: 66.67%;
+}
+
+.container_4_3 {
+  padding-bottom: 75%;
+}
+
+.container_1_1 {
+  padding-bottom: 100%;
+}
+
+/*
+..######..####.########.########
+.##....##..##.....##....##......
+.##........##.....##....##......
+..######...##.....##....######..
+.......##..##.....##....##......
+.##....##..##.....##....##......
+..######..####....##....########
+*/
 body {
-  /* max-width: 800px; */
   background: white;
   margin-left: auto;
   margin-right: auto;
@@ -46,25 +120,6 @@ a:visited {
 li {
   padding-bottom: 0.4em;
 }
-/* 
-#wrapper {
-  margin-left: auto;
-  margin-right: auto;
-  width: calc(100vw - 20px);
-  max-width: 100%;
-}
-
-@media (min-aspect-ratio: 1/1) {
-  #wrapper {
-    width: calc((100vh - 20px)/0.75);
-  }
-}
-
-#figureOneContainer {
-  width: 100%;
-  padding-bottom: 75%;
-  background-color: white;
-} */
 
 .title-text {
   text-align: center;
@@ -94,28 +149,6 @@ li {
   }
 }
 
-/* h1 {
-  padding-top: 20px;
-  text-align: center;
-  color: #333;
-  font-size: 3em;
-} */
-
-/* h2 {
-  padding: 10px;
-  text-align: center;
-  color: #333;
-} */
-/* h2 {
-  padding-top: 2em;
-  font-size: 1.4em;
-  font-weight: 400;
-}
-h3 {
-  padding-top: 2em;
-  font-size: 1.2em;
-  font-weight: 100;
-} */
 h1 {
   padding-top: 20px;
   font-weight: 100;
@@ -131,25 +164,6 @@ h3 {
   font-weight: 100;
 }
 
-/* .example-title {
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
-.example-description {
-  padding-left: 3em;
-  padding-right: 3em;
-  font-size: 1em;
-  color: grey;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-} */
-
-/* .sub-text{
-  font-size: 1em;
-  color: grey;
-} */
 .toggle {
   display: none;
 }
@@ -164,9 +178,6 @@ h3 {
 .wrapper {
   position: relative;
 }
-/* .text {
-  color: grey;
-} */
 
 #figureOneVideoControls {
   margin-left: auto;
@@ -180,7 +191,6 @@ h3 {
 }
 
 .instructions {
-  /* padding-top: 2em; */
   font-size: 1em;
   color: #444;
   padding-left: 20px;
@@ -191,17 +201,7 @@ h3 {
   text-align: center;
   padding-bottom: 2em;
   margin-top: 30px;
-  /* border-bottom: 1px solid lightgrey; */
 }
-
-/* .title-link {
-  display: inline-block;
-  padding: 15px;
-} */
-
-/* .examples-link {
-  padding: 15px;
-} */
 
 @media (max-width: 600px) {
   .title-link {
@@ -213,51 +213,12 @@ h3 {
   color: blue;
 }
 
-/* .see-the-code {
-  color: #333;
-  text-align: center;
-} */
-
-/* .other-examples {
-  color: #333;
-  padding-bottom: 10px;
-  font-size: 1.2em;
-  margin-top: 1.7em;
-} */
-
-/* .other-examples:not(:first-child) {
-  margin-top: 1.7em;
-} */
-/* 
-.examples {
-  max-width: 25em;
-  margin-left: auto;
-  margin-right: auto;
-  padding-top: 20px;
-  font-size: 1em;
-} */
-/* 
-.examples-title {
-  text-align: center;
-  font-size: 1.5em;
-  margin-top: 0.7em;
-} */
-
 .footer {
   margin-top: 1.7em;
   padding: 20px;
   text-align: center;
   color: #333;
-  /* margin-bottom: 30px; */
-  /* margin-top: 30px; */
 }
-/* 
-.example {
-  max-width: 2000px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 20px;
-} */
 
 .header-bar {
   background-color: #efefef;
