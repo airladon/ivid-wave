@@ -727,7 +727,12 @@ function addMedium(
     // const y = movePad.getPosition().y;
     //   medium.custom.recording.record(y, time.step());
     unpause();
+    const currentMode = medium.custom.recording.getState().mode;
     medium.custom.recording.setManual();
+    if (currentMode !== 'manual') {
+      medium.customState.trackingTime = 0;
+      time.reset();
+    }
     figure.fnMap.exec('forceUpdate');
   });
   movePadEnv.notifications.add('setTransform', () => {
