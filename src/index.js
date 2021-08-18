@@ -245,7 +245,7 @@ const softReset = () => {
   time.reset();
   pause();
   update(true);
-}
+};
 
 figure.fnMap.global.add('reset', () => reset());
 figure.fnMap.global.add('softReset', () => softReset());
@@ -304,6 +304,7 @@ figure.fnMap.global.add('pointToEqn1Sign', () => {
 resetButton.onClick = () => reset();
 freezeButton.notifications.add('onClick', () => {
   if (time.isPaused()) unpause(); else pause();
+  figure.animateNextFrame();
 });
 // freezeButton.onClick = () => {
 //   if (time.isPaused()) unpause(); else pause();
@@ -315,6 +316,7 @@ slowTimeButton.notifications.add('onClick', () => {
   } else {
     time.setTimeSpeed(1);
   }
+  figure.animateNextFrame();
 });
 
 velocityButton.notifications.add('onClick', () => {
@@ -324,6 +326,8 @@ velocityButton.notifications.add('onClick', () => {
   } else {
     m1.custom.setVelocity(1);
   }
+  update(true);
+  figure.animateNextFrame();
 });
 
 const setVelocityToggle = (on) => {
