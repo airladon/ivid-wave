@@ -33,6 +33,7 @@ async function frame(delta) {
     figure.notifications.add('afterDraw', () => resolve(), 1);
     figure.timeKeeper.frame(d);
     figure.recorder.notifications.publish('timeUpdate', [figure.recorder.getCurrentTime()]);
+    figure.elements._freezeTimeButton.setOpacity(0.0011);
     figure.animateNextFrame();
     // resolve();
   }), [delta]);

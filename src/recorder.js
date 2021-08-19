@@ -115,7 +115,7 @@ function Recorder(duration, timeKeeper) {
     const lastValue = data[state.index - 1];
     const deltaValue = (value - lastValue) / count;
     for (let i = 0; i < count; i += 1) {
-      data[state.index] = lastValue + deltaValue * (i + 1);
+      data[state.index] = Fig.tools.math.roundNum(lastValue + deltaValue * (i + 1), 2);
       incrementIndex();
     }
     if (value !== state.lastManualValue) {
