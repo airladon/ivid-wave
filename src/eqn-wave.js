@@ -46,7 +46,7 @@ function addTravellingWaveEquation(name) {
       y_c: { color: colorDisturbanceText },
       x_c: { color: colorPositionText },
       x_c1: { color: colorGreenText },
-      t_c: { color: colorTimeText },
+      t_c: { color: colorYellowText },
       g_c: { color: colorGreenText },
       v_c: { color: colorPurpleText },
       t_c1: { color: colorPurpleText },
@@ -269,7 +269,7 @@ function addTravellingWaveEquation(name) {
     elements: {
       disturbance: { color: colorDisturbanceText },
       'any position': { color: colorPositionText },
-      'any time': { color: colorTimeText },
+      'any time': { color: colorYellowText },
       'disturbance at an initial time': { color: colorGreenText },
       'shifted by': { color: colorCyanText },
       'distance the wave has propogated since the initial time': { color: colorPurpleText },
