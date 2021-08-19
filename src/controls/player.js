@@ -25,15 +25,37 @@ function addPlayer() {
 
   // Setup play/pause button
   const playPauseButton = document.querySelector('#f1_player__play_pause');
-  playPauseButton.onclick = () => recorder.togglePlayback();
+  playPauseButton.onclick = () => {
+    if (recorder.state === 'idle') {
+      document.getElementById('loader').classList.remove('hide-loader');
+    }
+    recorder.togglePlayback();
+  };
 
   // The play/pause button picture will change on 'playbackStopped' and
   // 'playbackStarted' notifications from the recorder.
   recorder.notifications.add(
-    'playbackStopped', () => playPauseButton.classList.remove('f1_playing'),
+    'playbackStopped', () => {
+      playPauseButton.classList.remove('f1_playing');
+      document.getElementById('loader').classList.add('hide-loader');
+    },
   );
   recorder.notifications.add(
-    'playbackStarted', () => playPauseButton.classList.add('f1_playing'),
+    'playbackStarted', () => {
+      playPauseButton.classList.add('f1_playing');
+      document.getElementById('loader').classList.add('hide-loader');
+    },
+  );
+  recorder.notifications.add(
+    'startingPlayback', () => {
+      playPauseButton.classList.add('f1_playing');
+      document.getElementById('loader').classList.remove('hide-loader');
+    },
+  );
+  recorder.notifications.add(
+    'startingPause', () => {
+      playPauseButton.classList.remove('f1_playing');
+    },
   );
 
   // If the user presses space bar, the play/pause will toggle
@@ -90,6 +112,7 @@ function addPlayer() {
   */
   let seekId = null;
   let lastSeekTime = 0;
+  let touchState = 'up';
   function touchHandler(x) {
     // Get circle position and convert it to percent of seek container width
     // const circleBounds = seekCircle.getBoundingClientRect();
@@ -114,10 +137,20 @@ function addPlayer() {
     // Uncomment this to update seek frames while seeking - though can be
     // performance intensive
     seekId = figure.notifications.add('beforeDraw', () => {
-      // recorder.queueSeek(lastSeekTime);
-      recorder.seek(lastSeekTime);
-      seekId = null;
+      if (recorder.state === 'playing') {
+        recorder.pausePlayback();
+      }
+      // if (recorder.getCurrentTime() === lastSeekTime) {
+      //   return;
+      // }
+      recorder.queueSeek(lastSeekTime);
     }, 1);
+
+    recorder.notifications.add('seek', () => {
+      if (touchState === 'up' && recorder.queueSeekId == null) {
+        document.getElementById('seeker').classList.add('hide-loader');
+      }
+    });
 
     // Update the time label
     setTime(time);
@@ -126,13 +159,14 @@ function addPlayer() {
 
   // We only want to track mouse or touch movements when the seek bar is being
   // touched. Use touchState flag to track this.
-  let touchState = 'up';
   function touchStartHandler(event) {
+    document.getElementById('seeker').classList.remove('hide-loader');
     touchState = 'down';
     touchHandler(event.touches[0].clientX);
   }
 
   function mouseDownHandler(event) {
+    document.getElementById('seeker').classList.remove('hide-loader');
     touchState = 'down';
     touchHandler(event.clientX);
   }
@@ -152,10 +186,13 @@ function addPlayer() {
   }
 
   function endHandler() {
-    if (touchState === 'down') {
-      recorder.seek(lastSeekTime);
-    }
+    // if (touchState === 'down') {
+    //   recorder.seek(lastSeekTime);
+    // }
     touchState = 'up';
+    if (recorder.queueSeekId == null) {
+      document.getElementById('seeker').classList.add('hide-loader');
+    }
   }
   function mouseUpHandler() { endHandler(); }
   function touchEndHandler() { endHandler(); }

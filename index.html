@@ -5,14 +5,16 @@
     <title>Introduction to Waves</title>
     <meta name='description' content='Interactive video introducing waves.'>
     <meta name='viewport' content='width=device-width,initial-scale=1'>
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Open+Sans:300">
-    <!-- <link href="http://fonts.cdnfonts.com/css/tex-gyre-termes" rel="stylesheet"> -->
     <link rel="shortcut icon" type="image/ico" href="./assets/favicon.ico?">
+
+    <link href='./assets/style.css' rel='stylesheet'>
+    <!-- <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i"> -->
+    <!-- <link href="http://fonts.cdnfonts.com/css/tex-gyre-termes" rel="stylesheet"> -->
     <link href='./src/controls/controls.css' rel='stylesheet'>
     <!-- <link href='./src/style.css' rel='stylesheet'> -->
 
-    <link href='./assets/style.css' rel='stylesheet'>
+    <!-- <link href='./assets/style.css' rel='stylesheet'> -->
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
   </head>
     <body>
@@ -20,12 +22,16 @@
         <div class="title-text">Introduction to Waves</div>
         <div class="sub-title-text">An Interactive Video</div>
       </div>
-      <div class="example">
+      <div class="video-container">
         <!-- <p class="instructions">
             
           </p> -->
           <div class="wrapper wrapper_2_1">
-            <div id="figureOneContainer" class="container container_2_1"></div>
+            <div id="figureOneContainer" class="container container_2_1">
+              <div id="initial-loader" class="loader">Loading...</div>
+              <div id="loader" class="loader hide-loader">Loading...</div>
+              <div id="seeker" class="loader hide-loader">Seeking...</div>
+            </div>
             <!-- <div id="player-side-control" class="toggle">a</div> -->
         </div>
       </div>
@@ -36,19 +42,32 @@
           Elements within the video, such as diagrams, buttons and equations, can be touched and moved. Generally, if you see the cursor (blue circle) interacting with an element on the screen, then you can too.
         </p>
         <p>
-          When you do, the video will pause, giving you time to experiment with and hopefully gain an intuition for each concept. Press play to continue, keeping in mind any changes you made will be reset.
+          When you do, the video will pause, giving you time to experiment with and explore a concept. Press play to continue, keeping in mind any changes you made will be reset.
         </p>
         <p>
           Enjoy!
         </p>
       </div>
       <div class="footer">
-        <p>
-          Source code: <a href="https://github.com/airladon/ivid-wave/">github.com/airladon/ivid-wave/</a>
-        </p>
-        <p>
-          Feedback or questions: 
-        </p>
+        <div class="contact-bar">
+          <div class="contact-bar-container">
+            <div class="contact-icon-container">
+              <a href="https://github.com/airladon/ivid-wave/">
+                <img class="contact-icon contact_icon_gh" alt="Github Repository for Video">
+              </a>
+            </div>
+            <div class="contact-icon-container">
+              <a href="https://twitter.com/robschlub/">
+                <img class="contact-icon contact_icon_tw" alt="Contact on Twitter">
+              </a>
+            </div>
+            <div class="contact-icon-container">
+              <a href="mailto:rschlub@gmail.com">
+                <img class="contact-icon contact_icon_mail" alt="Contact on Twitter">
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
       <!-- **********    Choose local or remote package     *************** -->
 
