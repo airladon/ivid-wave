@@ -225,7 +225,10 @@ void main() {
         newOffsets[i * 3 + 2] = xOffset;
       }
       if (c6.isShown) {
-        const xOffset = medium.custom.recording.getValueAtTimeAgo(7.2 / medium.customState.c) / 3;
+        let xOffset = medium.custom.recording.getValueAtTimeAgo(7.2 / medium.customState.c);
+        if (medium.custom.recording.getState().mode !== 'manual') {
+          xOffset /= 3;
+        }
         // c1.setPosition(centers[0].add(xOffset, 0));
         c6.setPosition(centers[0].add(xOffset, 0));
         // c3.setPosition(centers[2].add(xOffset, 0));
