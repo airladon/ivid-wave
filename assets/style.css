@@ -399,9 +399,10 @@ h3 {
 }
 
 #initial-loader {
-  color: #00F;
+  color: #333F;
   background-color: #fff0;
-  border: none;
+  border: solid 1px #333;
+  /* border: none; */
 }
 
 .hide-loader {
