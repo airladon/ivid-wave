@@ -1,3 +1,6 @@
+/* * {
+  outline: 1px solid #f00 !important;
+} */
 /*
 .########..#######..##....##.########..######.
 .##.......##.....##.###...##....##....##....##
@@ -380,20 +383,27 @@ h3 {
 .loader {
   z-index: 10;
   position: absolute;
-  color: #99F;
-  left: calc(50% - 1em);
-  top: 3em;
+  color: #fff;
+  width: 8vw;
+  height: 2.4vw;
+  border-radius: 1vw;
+  border: solid 1px #fff;
+  left: calc(50% - 4vw);
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  padding-left: 1em;
+  padding-right: 1em;
+  font-size: 2vw;
+  top: calc(50% - 1.2vw);
+  background-color: #000b;
 }
 
 #initial-loader {
   color: #00F;
+  background-color: #fff0;
+  border: none;
 }
 
 .hide-loader {
   display: none;
-}
-
-#seeker {
-  top: auto;
-  bottom: 2em;
 }

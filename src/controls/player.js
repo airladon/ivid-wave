@@ -46,6 +46,17 @@ function addPlayer() {
       document.getElementById('loader').classList.add('hide-loader');
     },
   );
+  recorder.notifications.add(
+    'startingPlayback', () => {
+      playPauseButton.classList.add('f1_playing');
+      document.getElementById('loader').classList.remove('hide-loader');
+    },
+  );
+  recorder.notifications.add(
+    'startingPause', () => {
+      playPauseButton.classList.remove('f1_playing');
+    },
+  );
 
   // If the user presses space bar, the play/pause will toggle
   document.addEventListener('keypress', (event) => {
@@ -101,6 +112,7 @@ function addPlayer() {
   */
   let seekId = null;
   let lastSeekTime = 0;
+  let touchState = 'up';
   function touchHandler(x) {
     // Get circle position and convert it to percent of seek container width
     // const circleBounds = seekCircle.getBoundingClientRect();
@@ -132,9 +144,11 @@ function addPlayer() {
       document.getElementById('seeker').classList.remove('hide-loader');
       // recorder.seek(lastSeekTime);
       // seekId = null;
-      recorder.notifications.add('seek', () => {
-        document.getElementById('seeker').classList.add('hide-loader');
-      }, 1);
+      if (touchState === 'up') {
+        recorder.notifications.add('seek', () => {
+          document.getElementById('seeker').classList.add('hide-loader');
+        }, 1);
+      }
     }, 1);
 
     // Update the time label
@@ -143,8 +157,7 @@ function addPlayer() {
   }
 
   // We only want to track mouse or touch movements when the seek bar is being
-  // touched. Use touchState flag to track this.
-  let touchState = 'up';
+  // touched. Use touchState flag to track this.  
   function touchStartHandler(event) {
     touchState = 'down';
     touchHandler(event.touches[0].clientX);
@@ -170,10 +183,13 @@ function addPlayer() {
   }
 
   function endHandler() {
-    if (touchState === 'down') {
-      recorder.seek(lastSeekTime);
-    }
+    // if (touchState === 'down') {
+    //   recorder.seek(lastSeekTime);
+    // }
     touchState = 'up';
+    if (recorder.queueSeekId == null) {
+      document.getElementById('seeker').classList.add('hide-loader');
+    }
   }
   function mouseUpHandler() { endHandler(); }
   function touchEndHandler() { endHandler(); }
