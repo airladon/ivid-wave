@@ -140,16 +140,17 @@ function addPlayer() {
       if (recorder.state === 'playing') {
         recorder.pausePlayback();
       }
+      // if (recorder.getCurrentTime() === lastSeekTime) {
+      //   return;
+      // }
       recorder.queueSeek(lastSeekTime);
-      document.getElementById('seeker').classList.remove('hide-loader');
-      // recorder.seek(lastSeekTime);
-      // seekId = null;
-      if (touchState === 'up') {
-        recorder.notifications.add('seek', () => {
-          document.getElementById('seeker').classList.add('hide-loader');
-        }, 1);
-      }
     }, 1);
+
+    recorder.notifications.add('seek', () => {
+      if (touchState === 'up' && recorder.queueSeekId == null) {
+        document.getElementById('seeker').classList.add('hide-loader');
+      }
+    });
 
     // Update the time label
     setTime(time);
@@ -157,13 +158,15 @@ function addPlayer() {
   }
 
   // We only want to track mouse or touch movements when the seek bar is being
-  // touched. Use touchState flag to track this.  
+  // touched. Use touchState flag to track this.
   function touchStartHandler(event) {
+    document.getElementById('seeker').classList.remove('hide-loader');
     touchState = 'down';
     touchHandler(event.touches[0].clientX);
   }
 
   function mouseDownHandler(event) {
+    document.getElementById('seeker').classList.remove('hide-loader');
     touchState = 'down';
     touchHandler(event.clientX);
   }
