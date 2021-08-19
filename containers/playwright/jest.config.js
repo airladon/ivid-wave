@@ -1,7 +1,7 @@
 module.exports = {
   preset: 'jest-playwright-preset',
   testRegex: [
-    '\\.btest\\.js',
+    '/test/.*\\.btest\\.js',
   ],
   testPathIgnorePatterns: ['/node_modules/', '\\.snap$'],
   testEnvironmentOptions: {

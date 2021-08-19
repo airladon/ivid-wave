@@ -1,12 +1,12 @@
 
 function addFigureElements() {
-  let t = performance.now()
-  let newT = performance.now()
-  const stamp = (message) => {
-    newT = performance.now();
-    console.log(message, Fig.round(newT - t));
-    t = newT;
-  }
+  // let t = performance.now()
+  // let newT = performance.now()
+  // const stamp = (message) => {
+  //   newT = performance.now();
+  //   console.log(message, Fig.round(newT - t));
+  //   t = newT;
+  // }
   figure.add({
     name: 'highlighter',
     make: 'collections.rectangle',
@@ -63,9 +63,9 @@ function addFigureElements() {
     //   'slow',
     // ]),
   ]);
-  stamp(1)
+  // stamp(1)
   addDefsEquation('defs');
-  stamp(2)
+  // stamp(2)
   // figure.add({
   //   name: 'waveDefinition',
   //   make: 'textLines',
@@ -91,15 +91,15 @@ function addFigureElements() {
   // const recorder = new Recorder(10, time);
   const m1 = addMedium('m1', 13, 10, 2.5, [5.5, 6], false, 0.12, 0.125, recorder);
   m1.setPosition(0.1, 0);
-  stamp('medium')
+  // stamp('medium')
   const timePlot1 = addTimePlot(
     'timePlot1', 6.5, 10.5, m1.custom.recording, 2.5 * 13 / 10, [1, 6],
   );
-  stamp('timePlot')
+  // stamp('timePlot')
   const pressurePlot = addPressureMedium('p1', 18, 2, 0.1, 0.4, recorder);
-  stamp('pressure')
+  // stamp('pressure')
   addOceanMedium('ocean', 24, 4, 0.07, 0.4);
-  stamp('ocean')
+  // stamp('ocean')
   // addSineTEquation('eqnSineT');
   // addSinXEquation('eqnSinX');
   // addSinTEquation('eqnSinT');
@@ -108,14 +108,14 @@ function addFigureElements() {
   addTravellingWaveEquation('eqnWave');
   // addMaxwellEquation('eqnMaxwell');
   // addTimeWave('eqnGenT');
-  stamp('equations')
+  // stamp('equations')
   // addTitle(2.88 * 4, 1.44 * 4, 0.1);
   addTitle(8, 4, 0.05, recorder);
   // addIntro(24, 4, 0.1);
   addExamples();
-  stamp('titles')
+  // stamp('titles')
   addWaveInterference('waveInterference', 20);
-  stamp('waveInterference');
+  // stamp('waveInterference');
   figure.showTouchBorders = () => {
     const elements = figure.elements.getAllElements();
     const colors = [
@@ -156,33 +156,59 @@ function addFigureElements() {
     labelButton('sinTimeSelector', [20, 1],  [{ text: 'Initial Disturbance', font: { size: 0.35 } }, 'Periodic Space']),
   ]);
 
-  figure.add({
+  const end = figure.add({
     name: 'figureOneEqn',
     make: 'equation',
-    scale: 7,
+    scale: 1,
     position: [12, 6],
     color: colorLight,
     dimColor: colorLight,
-    font: { family: 'TeXGyreTermes' },
-    textFont: { family: 'TeXGyreTermes' },
+    font: { family: 'TeXGyreTermes', size: 0.2 },
+    textFont: { family: 'TeXGyreTermes', style: 'italic', size: 0.2 },
     elements: {
-      lb1: { symbol: 'squareBracket', side: 'left', lineWidth: 0.07, width: 0.16 },
-      rb1: { symbol: 'squareBracket', side: 'right', lineWidth: 0.07, width: 0.16 },
-      s: { symbol: 'sum', lineWidth: 0.04 },
-      v: { symbol: 'vinculum', lineWidth: 0.04 },
-      ra: { symbol: 'radical', lineWidth: 0.04 },
+      lb1: { symbol: 'squareBracket', side: 'left' },
+      rb1: { symbol: 'squareBracket', side: 'right' },
+      s: { symbol: 'sum' },
+      v: { symbol: 'vinculum' },
+      v1: { symbol: 'vinculum' },
+      ra: { symbol: 'radical' },
+      int: { symbol: 'int' },
     },
     formDefaults: {
       alignment: { xAlign: 'center', yAlign: 'middle' },
       lazyLayout: true,
     },
+    phrases: {
+      figure: ['F', 'i', 'g', 'u', 'r', 'e'],
+      one: ['O', 'n', 'e_'],
+    },
     forms: {
-      0: ['f', 'i', 'g', 'u', 'r', 'e', 'o', 'n', 'e_'],
-      // 1: [{ frac: [['f', { sumOf: ['s', 'i', 'g', 'u'] }], 'v', ['e', { root: ['ra', 'o'] }, 'n', 'e_']] }],
-      2: { matrix: [[3, 3], 'lb1', ['f', 'u', 'o', 'i', 'r', 'n', 'g', 'e', 'e_'], 'rb1'] },
+      0: ['figure', ' ', 'one'],
+      1: { frac: ['figure', 'v', 'one'] },
+      2: { scale: [{ sumOf: ['s', { scale: ['one', 0.8] }, ['F', 'i', 'g'], ['u', 'r', 'e']] }, 1.3] },
+      3: [
+        { scale: [{ frac: ['u', 'v', 'F'] }, 0.7] }, { int: ['int', 'e', 'i', 'r'] }, '_  =  ', { root: { content: { sub: ['e_', 'g'] }, symbol: 'ra', root: { scale: [{ sup: ['O', 'n'] }, 0.7] } } },
+      ],
+      4: { matrix: [[3, 3], 'lb1', ['F', 'u', 'O', 'i', 'r', 'n', 'g', 'e', 'e_'], 'rb1'] },
     },
   });
+  end.setScale(8);
 
+  const link = figure.add({
+    name: 'link',
+    make: 'text',
+    text: 'github.com/airladon/FigureOne',
+    font: { family: 'Open Sans', size: 0.7 },
+    xAlign: 'center',
+    position: [12, 1],
+    color: colorPositionText,
+    mods: {
+      isTouchable: true,
+    },
+  });
+  link.onClick = () => {
+    window.open('https://github.com/airladon/FigureOne/', '_blank');
+  };
   // figure.add({
   //   name: 'textTester',
   //   make: 'equation',

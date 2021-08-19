@@ -10,11 +10,13 @@ if [ "$1" == "debug" ];
 then
   docker run -it --rm --ipc=host \
     -v $LOCAL_PROJECT_PATH/src:/src \
+    -v $LOCAL_PROJECT_PATH/test:/test \
     -v $LOCAL_PROJECT_PATH/containers/playwright/jest.config.js:/jest.config.js \
     playwright /bin/bash
 else
   docker run -it --rm --ipc=host \
     -v $LOCAL_PROJECT_PATH/src:/src \
+    -v $LOCAL_PROJECT_PATH/test:/test \
     -v $LOCAL_PROJECT_PATH/containers/playwright/jest.config.js:/jest.config.js \
     playwright /bin/bash -c "npm run http-server-quiet; npm run jest $1 $2 $3 $4 $5 $6"
 fi

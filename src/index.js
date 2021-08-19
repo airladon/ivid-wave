@@ -245,7 +245,7 @@ const softReset = () => {
   time.reset();
   pause();
   update(true);
-}
+};
 
 figure.fnMap.global.add('reset', () => reset());
 figure.fnMap.global.add('softReset', () => softReset());
@@ -304,6 +304,7 @@ figure.fnMap.global.add('pointToEqn1Sign', () => {
 resetButton.onClick = () => reset();
 freezeButton.notifications.add('onClick', () => {
   if (time.isPaused()) unpause(); else pause();
+  figure.animateNextFrame();
 });
 // freezeButton.onClick = () => {
 //   if (time.isPaused()) unpause(); else pause();
@@ -315,6 +316,7 @@ slowTimeButton.notifications.add('onClick', () => {
   } else {
     time.setTimeSpeed(1);
   }
+  figure.animateNextFrame();
 });
 
 velocityButton.notifications.add('onClick', () => {
@@ -324,6 +326,8 @@ velocityButton.notifications.add('onClick', () => {
   } else {
     m1.custom.setVelocity(1);
   }
+  update(true);
+  figure.animateNextFrame();
 });
 
 const setVelocityToggle = (on) => {
@@ -915,7 +919,7 @@ nav.loadSlides([
       m1._velocity.showAll();
       // timePlot1._secondsArrow.hide();
       m1._v2Arrow._label.hide();
-      m1.custom.setVelocity(1);
+      // m1.custom.setVelocity(1);
       velocityButton.custom.off();
       // figure.fnMap.exec('setArrow', 'timePlot1.secondsArrow');
     },
@@ -1607,30 +1611,32 @@ nav.loadSlides([
   .########.##....##.########.
   */
   {
-    time: '11:10',
+    time: '11:11.3',
     clear: true,
+    show: 'link',
     enterState: () => {
       figureOneEqn.showForm('0');
     },
     transition: [
       { out: [defs, 'ocean'] },
       { in: figureOneEqn },
-      // { goToForm: figureOneEqn, target: '1', delay: 7 },
-      { goToForm: figureOneEqn, target: '2', delay: 2 },
-    ]
+      { in: 'link', delay: 1.8 },
+      { goToForm: figureOneEqn, target: '1', delay: 0.8 },
+      { goToForm: figureOneEqn, target: '2', delay: 0.8 },
+      { goToForm: figureOneEqn, target: '3', delay: 0.8 },
+      { goToForm: figureOneEqn, target: '4', delay: 0.8 },
+      { goToForm: figureOneEqn, target: '0', delay: 0.8 },
+    ],
   },
 ]);
 
 
 // Load audio, states and events data
-// figure.recorder.loadAudioTrack(new Audio(window.location.href.replace(/\/tests.index.html|\/index.html|\/tests\/$|\/$/, '/audio-track.mp3')));
-figure.recorder.loadAudioTrack(new Audio(window.location.href.replace(/\/tests.index.html|\/src.index.html|\/src|\/docs|\/docs.index.html|\/tests\/$|\/$/, '/src/audio-track.mp3')));
-figure.recorder.loadVideoTrack(window.location.href.replace(/\/tests.index.html|\/src.index.html|\/src|\/docs|\/docs.index.html|\/tests\/$|\/$/, '/src/video-track.json'));
-// figure.recorder.loadVideoTrack(window.location.href.replace(/\/tests.index.html|\/index.html|\/tests\/$|\/$/, '/video-track.json'));
-// figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.mp3'));
-// figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
-// figure.recorder.loadAudioTrack(new Audio('http://10.0.1.95:8080/src/audio-track.mp3'));
-// figure.recorder.loadVideoTrack('http://10.0.1.95:8080/src/video-track.json');
+figure.recorder.loadAudioTrack(new Audio(window.location.href.replace(/\/index.html|\/src.index.html|\/src|\/docs|\/test.index.html|\/tests\/$|\/$/, '/src/audio-track.mp3')));
+
+figure.recorder.loadVideoTrack(window.location.href.replace(/\/index.html|\/src.index.html|\/src|\/docs|\/test.index.html|\/tests\/$|\/$/, '/src/video-track.json'));
+
+
 figure.recorder.notifications.add('stateSet', () => pause());
 figure.recorder.notifications.add('seek', () => pause())
 figure.recorder.notifications.add('playbackStopped', () => pause());
@@ -1679,10 +1685,9 @@ p1._movePad.notifications.add('onClick', () => unpause());
 
 //   console.log(isFontAvailable('Times New Roman'))
 
-  r = title.custom.recording
-  // reset();
-  update(true);
 
-  figure.recorder.notifications.add('seek', () => {
-    update(true);
-  });
+update(true);
+
+figure.recorder.notifications.add('seek', () => {
+  update(true);
+});
