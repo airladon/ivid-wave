@@ -1611,32 +1611,32 @@ nav.loadSlides([
   .########.##....##.########.
   */
   {
-    time: '11:10',
+    time: '11:11.3',
     clear: true,
+    show: 'link',
     enterState: () => {
       figureOneEqn.showForm('0');
     },
     transition: [
       { out: [defs, 'ocean'] },
       { in: figureOneEqn },
-      // { goToForm: figureOneEqn, target: '1', delay: 7 },
-      { goToForm: figureOneEqn, target: '2', delay: 2 },
-    ]
+      { in: 'link', delay: 1.8 },
+      { goToForm: figureOneEqn, target: '1', delay: 0.8 },
+      { goToForm: figureOneEqn, target: '2', delay: 0.8 },
+      { goToForm: figureOneEqn, target: '3', delay: 0.8 },
+      { goToForm: figureOneEqn, target: '4', delay: 0.8 },
+      { goToForm: figureOneEqn, target: '0', delay: 0.8 },
+    ],
   },
 ]);
 
 
 // Load audio, states and events data
-// figure.recorder.loadAudioTrack(new Audio(window.location.href.replace(/\/tests.index.html|\/index.html|\/tests\/$|\/$/, '/audio-track.mp3')));
-
 figure.recorder.loadAudioTrack(new Audio(window.location.href.replace(/\/index.html|\/src.index.html|\/src|\/docs|\/test.index.html|\/tests\/$|\/$/, '/src/audio-track.mp3')));
 
 figure.recorder.loadVideoTrack(window.location.href.replace(/\/index.html|\/src.index.html|\/src|\/docs|\/test.index.html|\/tests\/$|\/$/, '/src/video-track.json'));
-// figure.recorder.loadVideoTrack(window.location.href.replace(/\/tests.index.html|\/index.html|\/tests\/$|\/$/, '/video-track.json'));
-// figure.recorder.loadAudioTrack(new Audio('http://localhost:8080/src/audio-track.mp3'));
-// figure.recorder.loadVideoTrack('http://localhost:8080/src/video-track.json');
-// figure.recorder.loadAudioTrack(new Audio('http://10.0.1.95:8080/src/audio-track.mp3'));
-// figure.recorder.loadVideoTrack('http://10.0.1.95:8080/src/video-track.json');
+
+
 figure.recorder.notifications.add('stateSet', () => pause());
 figure.recorder.notifications.add('seek', () => pause())
 figure.recorder.notifications.add('playbackStopped', () => pause());
@@ -1685,10 +1685,9 @@ p1._movePad.notifications.add('onClick', () => unpause());
 
 //   console.log(isFontAvailable('Times New Roman'))
 
-  r = title.custom.recording
-  // reset();
-  update(true);
 
-  figure.recorder.notifications.add('seek', () => {
-    update(true);
-  });
+update(true);
+
+figure.recorder.notifications.add('seek', () => {
+  update(true);
+});
