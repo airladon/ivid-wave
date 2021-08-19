@@ -465,6 +465,10 @@ figure.fnMap.global.add('fixedSine', () => {
   update(true);
 });
 
+figure.fnMap.global.add('setVelocity1', () => {
+  m1.custom.setVelocity(1);
+});
+
 figure.fnMap.global.add('hideHighlighters', () => {
   highlighter.animations.new().dissolveOut(0.5).start();
   highlighter2.animations.new().dissolveOut(0.5).start();
@@ -925,6 +929,7 @@ nav.loadSlides([
     },
     transition: [
       { out: ['m1.balls', 'm1.ballTracker', 'timePlot1.TArrow', 'timePlot1.trace', 'm1.v2Arrow.line', 'm1.v2Arrow.arrow1', 'm1.v2Arrow.arrow2', eqnVLF, eqnDiff] },
+      { trigger: 'setVelocity1' },
       { scenario: eqnVLF, target: 'wavelength', duration: 0 },
       { goToForm: eqnVLF, target: 'wavelength', duration: 0 },
       { out: eqnVLF, duration: 0 },
