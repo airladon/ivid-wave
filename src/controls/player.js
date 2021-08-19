@@ -125,13 +125,15 @@ function addPlayer() {
     // Uncomment this to update seek frames while seeking - though can be
     // performance intensive
     seekId = figure.notifications.add('beforeDraw', () => {
+      if (recorder.state === 'playing') {
+        recorder.pausePlayback();
+      }
       recorder.queueSeek(lastSeekTime);
       document.getElementById('seeker').classList.remove('hide-loader');
       // recorder.seek(lastSeekTime);
       // seekId = null;
       recorder.notifications.add('seek', () => {
         document.getElementById('seeker').classList.add('hide-loader');
-        console.log('removing')
       }, 1);
     }, 1);
 
