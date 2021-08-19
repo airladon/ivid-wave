@@ -25,15 +25,26 @@ function addPlayer() {
 
   // Setup play/pause button
   const playPauseButton = document.querySelector('#f1_player__play_pause');
-  playPauseButton.onclick = () => recorder.togglePlayback();
+  playPauseButton.onclick = () => {
+    if (recorder.state === 'idle') {
+      document.getElementById('loader').classList.remove('hide-loader');
+    }
+    recorder.togglePlayback();
+  };
 
   // The play/pause button picture will change on 'playbackStopped' and
   // 'playbackStarted' notifications from the recorder.
   recorder.notifications.add(
-    'playbackStopped', () => playPauseButton.classList.remove('f1_playing'),
+    'playbackStopped', () => {
+      playPauseButton.classList.remove('f1_playing');
+      document.getElementById('loader').classList.add('hide-loader');
+    },
   );
   recorder.notifications.add(
-    'playbackStarted', () => playPauseButton.classList.add('f1_playing'),
+    'playbackStarted', () => {
+      playPauseButton.classList.add('f1_playing');
+      document.getElementById('loader').classList.add('hide-loader');
+    },
   );
 
   // If the user presses space bar, the play/pause will toggle
@@ -114,9 +125,14 @@ function addPlayer() {
     // Uncomment this to update seek frames while seeking - though can be
     // performance intensive
     seekId = figure.notifications.add('beforeDraw', () => {
-      // recorder.queueSeek(lastSeekTime);
-      recorder.seek(lastSeekTime);
-      seekId = null;
+      recorder.queueSeek(lastSeekTime);
+      document.getElementById('seeker').classList.remove('hide-loader');
+      // recorder.seek(lastSeekTime);
+      // seekId = null;
+      recorder.notifications.add('seek', () => {
+        document.getElementById('seeker').classList.add('hide-loader');
+        console.log('removing')
+      }, 1);
     }, 1);
 
     // Update the time label

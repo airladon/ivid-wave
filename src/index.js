@@ -73,7 +73,17 @@ const recorder = new Recorder(10, time);
 let maxTime = 0;
 let maxTimeReached = false;
 
-
+let loadNum = 0;
+const getLoader = (message = '') => {
+  loadNum += 1;
+  document.getElementById('loader').classList.remove('hide-loader');
+  return () => {
+    loadNum -= 1;
+    if (loadNum === 0) {
+      document.getElementById('loader').classList.add('hide-loader');
+    }
+  };
+};
 /*
 .########.##.......########.##.....##.########.##....##.########..######.
 .##.......##.......##.......###...###.##.......###...##....##....##....##
@@ -1639,7 +1649,7 @@ nav.loadSlides([
 // Load audio, states and events data
 figure.recorder.loadAudioTrack(new Audio(window.location.href.replace(/\/index.html|\/src.index.html|\/src|\/docs|\/test.index.html|\/tests\/$|\/$/, '/src/audio-track.mp3')));
 
-figure.recorder.loadVideoTrack(window.location.href.replace(/\/index.html|\/src.index.html|\/src|\/docs|\/test.index.html|\/tests\/$|\/$/, '/src/video-track.json'));
+figure.recorder.loadVideoTrack(window.location.href.replace(/\/index.html|\/src.index.html|\/src|\/docs|\/test.index.html|\/tests\/$|\/$/, '/src/video-track.json'), getLoader('video'));
 
 
 figure.recorder.notifications.add('stateSet', () => pause());
@@ -1696,3 +1706,6 @@ update(true);
 figure.recorder.notifications.add('seek', () => {
   update(true);
 });
+
+document.getElementById('initial-loader').classList.add('hide-loader');
+document.getElementById('loader').classList.remove('hide-loader');

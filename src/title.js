@@ -65,7 +65,11 @@ void main() {
         vertices: { data: points },
         buffers: [{ name: 'a_offset', data: offsets, size: 1, usage: 'DYNAMIC' }],
         uniforms: [{ name: 'u_time', length: 1, type: 'FLOAT' }],
-        texture: { src: './src/title.png', mapTo: new Fig.Rect(0, 0, length, height) },
+        texture: {
+          src: './src/title.png',
+          mapTo: new Fig.Rect(0, 0, length, height),
+          onLoad: getLoader('title'),
+        },
         color: [1, 0, 0, 1],
         transform: [['t', 0, -0.6]],
       },

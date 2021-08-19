@@ -376,3 +376,24 @@ h3 {
   display: table-cell;
   vertical-align: middle;
 }
+
+.loader {
+  z-index: 10;
+  position: absolute;
+  color: #99F;
+  left: calc(50% - 1em);
+  top: 3em;
+}
+
+#initial-loader {
+  color: #00F;
+}
+
+.hide-loader {
+  display: none;
+}
+
+#seeker {
+  top: auto;
+  bottom: 2em;
+}
