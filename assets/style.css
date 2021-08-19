@@ -9,27 +9,73 @@
 */
 @font-face {
   font-family: 'TeXGyreTermes';
-  font-style: normal;
-  font-weight: 400;
-  src: local('TeXGyreTermes'), url('./fonts/texgyretermes-regular.woff') format('woff');
-}
-@font-face {
-  font-family: 'TeXGyreTermes';
-  font-style: italic;
-  font-weight: 400;
-  src: local('TeXGyreTermes'), url('./fonts/texgyretermes-italic.woff') format('woff');
-}
-@font-face {
-  font-family: 'TeXGyreTermes';
+  src: url('./fonts/texgyretermes_bold/texgyretermes-bold-webfont.eot');
+  src: url('./fonts/texgyretermes_bold/texgyretermes-bold-webfont.eot?#iefix') format('embedded-opentype'),
+       url('./fonts/texgyretermes_bold/texgyretermes-bold-webfont.woff') format('woff'),
+       url('./fonts/texgyretermes_bold/texgyretermes-bold-webfont.ttf') format('truetype'),
+       url('./fonts/texgyretermes_bold/texgyretermes-bold-webfont.svg#tex_gyre_termesbold') format('svg');
   font-style: normal;
   font-weight: 700;
-  src: local('TeXGyreTermes'), url('./fonts/texgyretermes-bold.woff') format('woff');
 }
 @font-face {
   font-family: 'TeXGyreTermes';
+  src: url('./fonts/texgyretermes_bolditalic/texgyretermes-bolditalic-webfont.eot');
+  src: url('./fonts/texgyretermes_bolditalic/texgyretermes-bolditalic-webfont.eot?#iefix') format('embedded-opentype'),
+       url('./fonts/texgyretermes_bolditalic/texgyretermes-bolditalic-webfont.woff') format('woff'),
+       url('./fonts/texgyretermes_bolditalic/texgyretermes-bolditalic-webfont.ttf') format('truetype'),
+       url('./fonts/texgyretermes_bolditalic/texgyretermes-bolditalic-webfont.svg#tex_gyre_termesbold_italic') format('svg');
   font-style: italic;
   font-weight: 700;
-  src: local('TeXGyreTermes'), url('./fonts/texgyretermes-bolditalic.woff') format('woff');
+
+}
+@font-face {
+  font-family: 'TeXGyreTermes';
+  src: url('./fonts/texgyretermes_italic/texgyretermes-italic-webfont.eot');
+  src: url('./fonts/texgyretermes_italic/texgyretermes-italic-webfont.eot?#iefix') format('embedded-opentype'),
+       url('./fonts/texgyretermes_italic/texgyretermes-italic-webfont.woff') format('woff'),
+       url('./fonts/texgyretermes_italic/texgyretermes-italic-webfont.ttf') format('truetype'),
+       url('./fonts/texgyretermes_italic/texgyretermes-italic-webfont.svg#tex_gyre_termesitalic') format('svg');
+  font-style: italic;
+  font-weight: 400;
+
+}
+@font-face {
+  font-family: 'TeXGyreTermes';
+  src: url('./fonts/texgyretermes_regular/texgyretermes-regular-webfont.eot');
+  src: url('./fonts/texgyretermes_regular/texgyretermes-regular-webfont.eot?#iefix') format('embedded-opentype'),
+       url('./fonts/texgyretermes_regular/texgyretermes-regular-webfont.woff') format('woff'),
+       url('./fonts/texgyretermes_regular/texgyretermes-regular-webfont.ttf') format('truetype'),
+       url('./fonts/texgyretermes_regular/texgyretermes-regular-webfont.svg#tex_gyre_termesregular') format('svg');
+  font-style: normal;
+  font-weight: 400;
+}
+
+
+/* open-sans-300 - latin-ext_latin_greek */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: url('./fonts/opensans_regular300/open-sans-v23-latin-ext_latin_greek-300.eot'); /* IE9 Compat Modes */
+  src: local(''),
+       url('./fonts/opensans_regular300/open-sans-v23-latin-ext_latin_greek-300.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('./fonts/opensans_regular300/open-sans-v23-latin-ext_latin_greek-300.woff2') format('woff2'), /* Super Modern Browsers */
+       url('./fonts/opensans_regular300/open-sans-v23-latin-ext_latin_greek-300.woff') format('woff'), /* Modern Browsers */
+       url('./fonts/opensans_regular300/open-sans-v23-latin-ext_latin_greek-300.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('./fonts/opensans_regular300/open-sans-v23-latin-ext_latin_greek-300.svg#OpenSans') format('svg'); /* Legacy iOS */
+}
+/* open-sans-italic - latin-ext_latin_greek */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: url('./fonts/opensans_italic300/open-sans-v23-latin-ext_latin_greek-italic.eot'); /* IE9 Compat Modes */
+  src: local(''),
+       url('./fonts/opensans_italic300/open-sans-v23-latin-ext_latin_greek-italic.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('./fonts/opensans_italic300/open-sans-v23-latin-ext_latin_greek-italic.woff2') format('woff2'), /* Super Modern Browsers */
+       url('./fonts/opensans_italic300/open-sans-v23-latin-ext_latin_greek-italic.woff') format('woff'), /* Modern Browsers */
+       url('./fonts/opensans_italic300/open-sans-v23-latin-ext_latin_greek-italic.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('./fonts/opensans_italic300/open-sans-v23-latin-ext_latin_greek-italic.svg#OpenSans') format('svg'); /* Legacy iOS */
 }
 
 
@@ -248,4 +294,28 @@ h3 {
   background-color: #efefef;
   padding-left: 20px;
   padding-right: 20px;
+}
+
+.contact-bar {
+  width: 100%;
+  text-align: center;
+  /* background-color: #fff; */
+  /* background-color: var(--color-topic-background); */
+  /* border-bottom: 1px solid #ccc; */
+  /* border-bottom: 1px solid var(--color-topic-border); */
+  padding-bottom: 1em;
+  padding-top: 1em;
+}
+
+.contact-bar-container {
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contact-icon-container {
+  width: 40px;
+  height: 32px;
+  display: table-cell;
+  vertical-align: middle;
 }
