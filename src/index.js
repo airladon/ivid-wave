@@ -1140,7 +1140,7 @@ nav.loadSlides([
   { form: 'shiftedG_7', time: '6:37' },
   { form: 'final', time: '6:40' },
   {
-    time: '6:46.5',
+    time: '6:46',
     transition: { scenario: eqnWave, target: 'high' },
   },
   {
