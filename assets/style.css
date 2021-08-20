@@ -162,7 +162,7 @@
 
 @media (min-aspect-ratio: 1/1) {
   .wrapper_2_1 {
-    width: calc((100vh - 20px)/0.5);
+    width: calc((100vh - 20px)/0.55);
   }
   .wrapper_3_2 {
     width: calc((100vh - 20px)/0.667);
@@ -214,7 +214,14 @@ body {
   margin-top: 0;
   margin-bottom: 0;
   font-size: 20px;
+  user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  -webkit-touch-callout: none;
 }
+
 
 a {
   text-decoration: none;
@@ -258,7 +265,7 @@ li {
 
 .video-container {
   margin-top: 1.5em;
-  margin-bottom: 1.5em;
+  /* margin-bottom: 1.5em; */
 }
 
 
@@ -268,6 +275,12 @@ h2 {
   padding-top: 1em;
 }
 
+#player-side-control {
+  width: calc((100vw - (100vh - 20px) / 0.5) / 2);
+  height: calc((100vw - (100vh - 20px) / 0.5) / 2);
+  background-color: red;
+}
+
 .toggle {
   display: none;
 }
@@ -275,8 +288,9 @@ h2 {
   .toggle {
     display: block;
     position: absolute;
-    right: -1.5em;
-    bottom: 50%;
+    /* right: -1.5em; */
+    left: calc((100vh - 20px) / 0.5);
+    bottom: 0%;
   }
 }
 .wrapper {
@@ -290,7 +304,7 @@ h2 {
 }
 
 .in-frame {
-  transform: translate(0, -4em);
+  transform: translate(0, -3.05em);
   background-color: #fffb;
 }
 
@@ -300,6 +314,7 @@ h2 {
   padding-left: 1em;
   padding-right: 1em;
   margin-bottom: 2em;
+  user-select:
 }
 
 @media (min-width: 1200px) {
