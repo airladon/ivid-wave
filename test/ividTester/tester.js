@@ -135,7 +135,7 @@ async function tester(
 
   // Seek tests will be all state times
   const seekTests = [];
-  stateTimes.forEach((stateTime) => {
+  stateTimes.slice(0, 5).forEach((stateTime) => {
     seekTests.push([stateTime]);
   });
 
@@ -167,20 +167,20 @@ async function tester(
       });
       await sleep(50);
     });
-    test.each(playbackTests)('Play: %s',
-      async (time) => {
-        const currentTime = await getCurrentTime();
-        const deltaTime = time - currentTime;
-        let d = deltaTime;
-        if (intermittentTime > 0 && deltaTime > intermittentTime) {
-          for (let i = intermittentTime; i < deltaTime - intermittentTime; i += intermittentTime) {
-            await frame(intermittentTime);
-            d -= intermittentTime;
-          }
-        }
-        await frame(d);
-        await snap(time, threshold);
-      });
+    // test.each(playbackTests)('Play: %s',
+    //   async (time) => {
+    //     const currentTime = await getCurrentTime();
+    //     const deltaTime = time - currentTime;
+    //     let d = deltaTime;
+    //     if (intermittentTime > 0 && deltaTime > intermittentTime) {
+    //       for (let i = intermittentTime; i < deltaTime - intermittentTime; i += intermittentTime) {
+    //         await frame(intermittentTime);
+    //         d -= intermittentTime;
+    //       }
+    //     }
+    //     await frame(d);
+    //     await snap(time, threshold);
+    //   });
     test.each(seekTests)('Seek: %s',
       async (seekTime) => {
         await seek(0);
@@ -190,28 +190,28 @@ async function tester(
         const currentTime = await getCurrentTime();
         await snap(currentTime, threshold);
       });
-    test.each(fromToTests)('From To: %s %s',
-      async (fromTime, toTime) => {
-        const seekTo = async (seekTimeIn, play) => {
-          await seek(seekTimeIn);
-          await frame(0);
-          const currentTime = await getCurrentTime();
-          let index = 0;
-          while (index < stateTimes.length - 1 && stateTimes[index] < currentTime + 0.5) {
-            index += 1;
-          }
-          const nextFrameTime = stateTimes[index][0];
+    // test.each(fromToTests)('From To: %s %s',
+    //   async (fromTime, toTime) => {
+    //     const seekTo = async (seekTimeIn, play) => {
+    //       await seek(seekTimeIn);
+    //       await frame(0);
+    //       const currentTime = await getCurrentTime();
+    //       let index = 0;
+    //       while (index < stateTimes.length - 1 && stateTimes[index] < currentTime + 0.5) {
+    //         index += 1;
+    //       }
+    //       const nextFrameTime = stateTimes[index][0];
 
-          await snap(currentTime, threshold);
-          if (nextFrameTime > currentTime && play) {
-            await page.evaluate(() => figure.recorder.resumePlayback());
-            await frame(nextFrameTime - currentTime);
-            await snap(nextFrameTime, threshold);
-          }
-        };
-        await seekTo(fromTime, false);
-        await seekTo(toTime, true);
-      });
+    //       await snap(currentTime, threshold);
+    //       if (nextFrameTime > currentTime && play) {
+    //         await page.evaluate(() => figure.recorder.resumePlayback());
+    //         await frame(nextFrameTime - currentTime);
+    //         await snap(nextFrameTime, threshold);
+    //       }
+    //     };
+    //     await seekTo(fromTime, false);
+    //     await seekTo(toTime, true);
+    //   });
   });
 }
 
