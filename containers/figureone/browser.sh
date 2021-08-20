@@ -12,7 +12,6 @@ then
   -v $LOCAL_PROJECT_PATH/src:/src \
   -v $LOCAL_PROJECT_PATH/assets:/assets \
   -v $LOCAL_PROJECT_PATH/test:/test \
-  -v $LOCAL_PROJECT_PATH/docs:/docs \
   -v $LOCAL_PROJECT_PATH/index.html:/index.html \
   -v $LOCAL_PROJECT_PATH/containers/figureone/browser.sh:/browser.sh \
   -v $LOCAL_PROJECT_PATH/.dockerignore:/.dockerignore \
@@ -26,7 +25,6 @@ else
   -v $LOCAL_PROJECT_PATH/src:/src \
   -v $LOCAL_PROJECT_PATH/assets:/assets \
   -v $LOCAL_PROJECT_PATH/test:/test \
-  -v $LOCAL_PROJECT_PATH/docs:/docs \
   -v $LOCAL_PROJECT_PATH/index.html:/index.html \
   -v $LOCAL_PROJECT_PATH/containers/figureone/browser.sh:/browser.sh \
   -v $LOCAL_PROJECT_PATH/.dockerignore:/.dockerignore \
