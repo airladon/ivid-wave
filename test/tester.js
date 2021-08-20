@@ -135,7 +135,7 @@ async function tester(
 
   // Seek tests will be all state times
   const seekTests = [];
-  stateTimes.slice(0, 5).forEach((stateTime) => {
+  stateTimes.forEach((stateTime) => {
     seekTests.push([stateTime]);
   });
 
@@ -167,20 +167,20 @@ async function tester(
       });
       await sleep(50);
     });
-    // test.each(playbackTests)('Play: %s',
-    //   async (time) => {
-    //     const currentTime = await getCurrentTime();
-    //     const deltaTime = time - currentTime;
-    //     let d = deltaTime;
-    //     if (intermittentTime > 0 && deltaTime > intermittentTime) {
-    //       for (let i = intermittentTime; i < deltaTime - intermittentTime; i += intermittentTime) {
-    //         await frame(intermittentTime);
-    //         d -= intermittentTime;
-    //       }
-    //     }
-    //     await frame(d);
-    //     await snap(time, threshold);
-    //   });
+    test.each(playbackTests)('Play: %s',
+      async (time) => {
+        const currentTime = await getCurrentTime();
+        const deltaTime = time - currentTime;
+        let d = deltaTime;
+        if (intermittentTime > 0 && deltaTime > intermittentTime) {
+          for (let i = intermittentTime; i < deltaTime - intermittentTime; i += intermittentTime) {
+            await frame(intermittentTime);
+            d -= intermittentTime;
+          }
+        }
+        await frame(d);
+        await snap(time, threshold);
+      });
     test.each(seekTests)('Seek: %s',
       async (seekTime) => {
         await seek(0);

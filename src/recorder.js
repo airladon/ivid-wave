@@ -18,6 +18,7 @@ function Recorder(duration, timeKeeper) {
   let data;
   let state = {
     index: 0,
+    lastDelta: 0,
   };
   let f = 0.2;
 
@@ -50,16 +51,17 @@ function Recorder(duration, timeKeeper) {
       lastManualValue: 0,
       lastManualTime: null,
       buffered: false,
+      lastDelta: 0,
     };
   }
 
-  let lastDelta = 0;
   function setManual() {
     if (state.mode !== 'manual') {
       reset();
       state.mode = 'manual';
       state.lastManualValue = 0;
       state.lastManualTime = timeKeeper.now();
+      state.lastDelta = 0;
     }
   }
 
@@ -80,15 +82,14 @@ function Recorder(duration, timeKeeper) {
       reset();
       setManual();
     }
-    const deltaTime = deltaTimeIn + lastDelta;
+    const deltaTime = Fig.tools.math.roundNum(deltaTimeIn + state.lastDelta, 2);
     if (deltaTime < timeStep) {
-      lastDelta = deltaTime;
+      state.lastDelta = deltaTime;
       return;
     }
     // Count the number of samples that need to be added to the signal
     const count = Math.floor(deltaTime / timeStep);
-    lastDelta = deltaTime - count * timeStep;
-
+    state.lastDelta = Fig.tools.math.roundNum(deltaTime - count * timeStep, 2);
     const lastValue = data[state.index - 1];
     const deltaValue = (value - lastValue) / count;
     for (let i = 0; i < count; i += 1) {

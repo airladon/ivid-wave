@@ -342,6 +342,7 @@ figure.fnMap.global.add('fixedSine', () => {
     lastManualValue: 0,
     lastManualTime: null,
     index: m1.custom.recording.getNum(),
+    lastDelta: 0,
   });
   update(true);
 });
@@ -559,6 +560,7 @@ nav.loadSlides([
         lastManualValue: 0,
         lastManualTime: null,
         index: m1.custom.recording.getNum(),
+        lastDelta: 0,
       });
       m1.customState.trackingTime = -6.16;
       update(true);
@@ -827,6 +829,7 @@ nav.loadSlides([
         lastManualValue: 0,
         lastManualTime: null,
         index: m1.custom.recording.getNum(),
+        lastDelta: 0,
       });
       update(true);
       eqnVLF.showForm('wavelengthvt');
@@ -870,6 +873,7 @@ nav.loadSlides([
         lastManualValue: 0,
         lastManualTime: null,
         index: m1.custom.recording.getNum(),
+        lastDelta: 0,
       });
       m1._envelope.showAll();
       m1.custom.update();
@@ -1005,6 +1009,7 @@ nav.loadSlides([
         lastManualValue: 0,
         lastManualTime: null,
         index: m1.custom.recording.getNum(),
+        lastDelta: 0,
       });
       m1._movePadEnv.customState.x = 1.28;
       m1._envelope.showAll();
