@@ -15,21 +15,12 @@ of times arrays need to be copied.
 function Recorder(duration, timeKeeper) {
   const timeStep = 0.016;
   const num = duration / timeStep;
-  // let buffered = false;
-  // let index;
   let data;
-  // let lastManualValue;
-  // let lastManualTime;
-  // state = 'pulse' | 'sin' | 'manual'
-  // f
-  // startTime = Array<number> | number
-  // convert to manual
   let state = {
     index: 0,
+    lastDelta: 0,
   };
-  // let state = 'manual';
   let f = 0.2;
-  // let startTime = null;
 
   const time = Array(num);
   for (let i = 0; i < num; i += 1) {
@@ -39,7 +30,6 @@ function Recorder(duration, timeKeeper) {
   function incrementIndex() {
     state.index += 1;
     if (state.index === num * 2) {
-      // console.log('incrementing');
       data = [...data.slice(num), ...Array(num)];
       state.index = num;
       state.buffered = true;
@@ -61,21 +51,18 @@ function Recorder(duration, timeKeeper) {
       lastManualValue: 0,
       lastManualTime: null,
       buffered: false,
+      lastDelta: 0,
     };
   }
 
-  let lastDelta = 0;
   function setManual() {
     if (state.mode !== 'manual') {
       reset();
       state.mode = 'manual';
       state.lastManualValue = 0;
       state.lastManualTime = timeKeeper.now();
+      state.lastDelta = 0;
     }
-    // lastManualTime = timeKeeper.now();
-    // if (timeKeeper.now() - lastManualTime > duration) {
-    //   lastManualTime = timeKeeper.now();
-    // }
   }
 
   function setDeltaTime(delta) {
@@ -84,34 +71,25 @@ function Recorder(duration, timeKeeper) {
       state.lastManualTime += delta;
       return;
     }
-    // if (state.mode === 'sine') {
-    //   state.startTime += delta;
-    // }
-    // if (Array.isArray(state.startTime)) {
     state.startTime = state.startTime.map(st => st + delta);
-    // }
   }
   // Add a value to the recording, and the amount of time that has ellapsed
   // since the last record. If the ellapsed time is longer than `timeStep`, then
   // interpolated values will be added at each `timeStep`.
 
   function record(value, deltaTimeIn) {
-    // let deltaTimeIn = timeKeeper.step();
     if (state.mode !== 'manual') {
       reset();
       setManual();
-      // deltaTimeIn = 0;
     }
-    // state = 'manual';
-    const deltaTime = deltaTimeIn + lastDelta;
+    const deltaTime = Fig.tools.math.roundNum(deltaTimeIn + state.lastDelta, 2);
     if (deltaTime < timeStep) {
-      lastDelta = deltaTime;
+      state.lastDelta = deltaTime;
       return;
     }
     // Count the number of samples that need to be added to the signal
     const count = Math.floor(deltaTime / timeStep);
-    lastDelta = deltaTime - count * timeStep;
-
+    state.lastDelta = Fig.tools.math.roundNum(deltaTime - count * timeStep, 2);
     const lastValue = data[state.index - 1];
     const deltaValue = (value - lastValue) / count;
     for (let i = 0; i < count; i += 1) {
@@ -164,14 +142,8 @@ function Recorder(duration, timeKeeper) {
       }
       return counter;
     };
-    // let d;
-    // if (state.buffered) {
-    //   d = data.slice(index - num, index);
-    // } else {
-    //   d = data.slice(num, index);
-    // }
-    // const rounded = d.map(n => Fig.tools.math.roundNum(n, precision));
-    const rounded = data.slice(state.index - num, state.index).map(n => Fig.tools.math.roundNum(n, precision));
+    const rounded = data.slice(state.index - num, state.index)
+      .map(n => Fig.tools.math.roundNum(n, precision));
     const deltaValues = [];
     deltaValues[0] = 0;
     for (let i = 1; i < rounded.length; i += 1) {
@@ -216,8 +188,6 @@ function Recorder(duration, timeKeeper) {
     const decoded = decodeData(firstValue, dataIn, precision);
     data = [
       ...Array(state.index - num).fill(0), ...decoded.slice(), ...Array(2 * num - state.index)];
-    // state.buffered = false;
-    // state.index = num + decoded.length;
   }
 
   function getPulse(t) {
@@ -228,7 +198,6 @@ function Recorder(duration, timeKeeper) {
 
   function getPulse2(t) {
     const A = 4;
-    // const t = time.now() - startTime;
     let scaler = 4;
     let amp = 0.6;
     if (t < 2.7) {
@@ -296,14 +265,10 @@ function Recorder(duration, timeKeeper) {
       if (state.startTime.length === 0) {
         return 0;
       }
-      // const timeToGet = timeKeeper.now() - timeDelta;
       if (state.startTime[0] > timeToGet) {
         return 0;
       }
       const t = timeToGet - state.startTime[0];
-      // if (timeDelta === 0) {
-      //   console.log(t);
-      // }
       return getSine(t);
     }
     return 0;
@@ -468,11 +433,6 @@ function Recorder(duration, timeKeeper) {
     return num;
   }
 
-
-  // function getStartTime() {
-  //   return startTime;
-  // }
-
   return {
     record,
     getRecording,
@@ -490,7 +450,6 @@ function Recorder(duration, timeKeeper) {
     getState,
     setManual,
     isStationary,
-    // getStartTime,
     setDeltaTime,
     setState,
     getNum,

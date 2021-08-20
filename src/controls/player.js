@@ -218,9 +218,21 @@ function addPlayer() {
   window.addEventListener('touchmove', e => touchMoveHandler(e), supportsPassive() ? { passive: false } : false);
 
   // const sideControl = document.getElementById('player-side-control');
+  // console.log(sideControl)
   // sideControl.onclick = () => {
+  //   existingControlsElement.classList.toggle('in-frame');
+  //   console.log('ahh')
+  // };
+  // // sideControl.addEventListener('touchstart', () => {
+  // //   console.log('ahhhhhh')
+  // // });
+  // const test1 = document.querySelector('#player-side-control');
+  // // console.log(test1)
+  // test1.onclick = () => {
+  //   console.log('qwer');
   //   existingControlsElement.classList.toggle('in-frame');
   // };
 }
 
 addPlayer();
+

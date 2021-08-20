@@ -1,5 +1,9 @@
 // Inspiration: https://www.acs.psu.edu/drussell/demos/waves/wavemotion.html
 
+/* eslint-disable camelcase, object-curly-newline, max-len */
+/* globals Fig, figure, colorYellow */
+
+// eslint-disable-next-line no-unused-vars
 function addWaveInterference(
   name, length,
 ) {
@@ -24,21 +28,21 @@ function addWaveInterference(
         make: 'polyline',
         points,
         width: 0.08,
-        color: colorYellowText,
+        color: colorYellow,
       },
       {
         name: 'g',
         make: 'text',
         text: 'g',
         font: { family: 'TeXGyreTermes', size: 1.4, style: 'italic' },
-        color: colorYellowText,
+        color: colorYellow,
       },
       {
         name: 'h',
         make: 'text',
         text: 'h',
         font: { family: 'TeXGyreTermes', size: 1.4, style: 'italic' },
-        color: colorYellowText,
+        color: colorYellow,
       },
     ],
   });

@@ -1,5 +1,5 @@
 /* eslint-disable camelcase, object-curly-newline, max-len */
-/* globals colorDisturbanceText, colorPositionText, colorDisturbanceText, colorLight, colorTimeText, tBox, brac, tc, figure, highlightN, lines, frac, line, bc, colorGreenText, colorPurpleText, colorYellowText, colorCyanText, sub, under, scale, hide, box */
+/* globals colorDisturbance, colorPosition, colorDisturbance, colorLight, tBox, brac, tc, figure, highlightN, lines, frac, line, bc, colorGreen, colorPurple, colorYellow, colorCyan, sub, under, scale, hide, box */
 // eslint-disable-next-line no-unused-vars
 function addTravellingWaveEquation(name) {
   const t = (content, boxIndex) => ({
@@ -12,7 +12,7 @@ function addTravellingWaveEquation(name) {
     scale: 5,
     position: [4, 8],
     color: colorLight,
-    dimColor: colorYellowText,
+    dimColor: colorYellow,
     font: { family: 'TeXGyreTermes' },
     textFont: { family: 'TeXGyreTermes' },
     mods: {
@@ -43,18 +43,18 @@ function addTravellingWaveEquation(name) {
       g: 'g',
       v: 'v',
       t_1: 't',
-      y_c: { color: colorDisturbanceText },
-      x_c: { color: colorPositionText },
-      x_c1: { color: colorGreenText },
-      t_c: { color: colorYellowText },
-      g_c: { color: colorGreenText },
-      v_c: { color: colorPurpleText },
-      t_c1: { color: colorPurpleText },
+      y_c: { color: colorDisturbance },
+      x_c: { color: colorPosition },
+      x_c1: { color: colorGreen },
+      t_c: { color: colorYellow },
+      g_c: { color: colorGreen },
+      v_c: { color: colorPurple },
+      t_c1: { color: colorPurple },
       equals1: '  =  ',
       equals2: '  =  ',
       equals3: '  =  ',
       min: '  \u2212  ',
-      min_c: { text: '  \u2212  ', color: colorCyanText },
+      min_c: { text: '  \u2212  ', color: colorCyan },
       min1: '  \u2212  ',
       min2: '  \u2212  ',
       // xDash: 'x\'',
@@ -69,7 +69,7 @@ function addTravellingWaveEquation(name) {
       tBox5: tBox([-0.2, 0.5, -0.2, 0.5]),
       tBox6: tBox([0.2, 0.5, 0.5, 0.5]),
       shift: 'shift',
-      shift_1: { color: colorYellowText },
+      shift_1: { color: colorYellow },
       twoPi: { text: '2\u03c0', style: 'italic' },
       twoPi_1: { text: '2\u03c0', style: 'italic' },
       twoPi_2: { text: '2\u03c0', style: 'italic' },
@@ -241,21 +241,17 @@ function addTravellingWaveEquation(name) {
     if (e.name.startsWith('tBox') || e.name.endsWith('_c') || e.name.endsWith('_c1') || e.name === 'eqnWave') {
       return;
     }
-    // e.scenarios.description = { color: colorLight };
     e.scenarios.description = { color: e.color.slice() };
     e.scenarios.mono = { color: colorLight };
-    e.scenarios.highlight1 = { color: colorYellowText };
-    e.scenarios.highlight2 = { color: colorDisturbanceText };
+    e.scenarios.highlight1 = { color: colorYellow };
+    e.scenarios.highlight2 = { color: colorDisturbance };
     e.scenarios.hide = { color: [0, 0, 0, 0] };
   });
   const description = figure.add({
     name: 'eqnWaveDescription',
     make: 'equation',
     color: colorLight,
-    // textFont: { style: 'normal' },
-    // font: { family: 'TeXGyreTermes' },
-    // textFont: { family: 'TeXGyreTermes', style: 'normal' },
-    font: { family: 'Open Sans', width: 1.13, midAscent: 1.1, maxAscent: 1.5, },
+    font: { family: 'Open Sans', width: 1.13, midAscent: 1.1, maxAscent: 1.5 },
     textFont: { family: 'Open Sans', style: 'normal', width: 1.13, midAscent: 1.1, maxAscent: 1.5 },
     scale: 4,
     position: [2, 2],
@@ -267,12 +263,12 @@ function addTravellingWaveEquation(name) {
     },
     formDefaults: { lazyLayout: true },
     elements: {
-      disturbance: { color: colorDisturbanceText },
-      'any position': { color: colorPositionText },
-      'any time': { color: colorYellowText },
-      'disturbance at an initial time': { color: colorGreenText },
-      'shifted by': { color: colorCyanText },
-      'distance the wave has propogated since the initial time': { color: colorPurpleText },
+      disturbance: { color: colorDisturbance },
+      'any position': { color: colorPosition },
+      'any time': { color: colorYellow },
+      'disturbance at an initial time': { color: colorGreen },
+      'shifted by': { color: colorCyan },
+      'distance the wave has propogated since the initial time': { color: colorPurple },
       tBox1: tBox([0.5, 0.3, 0.5, 0.2]),
       tBox2: tBox([0.5, 0.1, 0.5, 0.2]),
       tBox3: tBox([0.5, 0.1, 0.2, 0.2]),
@@ -306,8 +302,6 @@ function addTravellingWaveEquation(name) {
     e.dimColor = [0, 0, 0, 0];
     d.setColor([0, 0, 0, 0]);
     e.setColor([0, 0, 0, 0]);
-    // e.scenarios = {};
-    // d.scenarios = {};
   }
   const d = description;
   const e = eqn;
@@ -342,112 +336,13 @@ function addTravellingWaveEquation(name) {
         height: 1.2,
         corner: { radius: 0.2, sides: 3 },
         position: [21, 1],
-        color: colorYellowText,
+        color: colorYellow,
       },
       mods: {
         isTouchable: true,
         touchBorder: [0.1, 0.2, 0.1, 0.4],
       },
     },
-    // {
-    //   name: 'description',
-    //   make: 'equation',
-    //   scale: 3.4,
-    //   color: colorLight,
-    //   textFont: { style: 'normal', color: colorLight },
-    //   elements: {
-    //     disturbance: { color: colorDisturbanceText },
-    //     'any position ': { color: colorPositionText },
-    //     'any time ': { color: colorTimeText },
-    //     time: { color: colorDelay },
-    //     'disturbance that happened at ': { color: colorGText },
-    //     'disturbance at ': { color: colorGText },
-    //     'delayed time ': { color: colorDelay },
-    //     h: { color: colorGText, style: 'italic' },
-    //     f: { style: 'italic' },
-    //     ago: { color: colorDelay },
-    //     sin: { color: colorGText },
-    //     stop: '.',
-    //     vin1: { symbol: 'vinculum', lineWidth: 0.05 },
-    //     vin2: { symbol: 'vinculum', lineWidth: 0.05, color: colorDelay },
-    //     x_1: { style: 'italic', color: colorPositionText },
-    //     x_2: { style: 'italic', color: colorGText },
-    //     x_3: { style: 'italic', color: colorGText },
-    //     x_t: { style: 'italic', color: colorDelay },
-    //     _0_2: { color: colorGText },
-    //     _0_3: { color: colorGText },
-    //     t_1: { style: 'italic' },
-    //     t_2: { style: 'italic' },
-    //     t_3: { style: 'italic' },
-    //     v_1: { style: 'italic', color: colorVelocityText },
-    //     plusV: { text: '+v', style: 'italic', color: colorVelocityText },
-    //     v_3: { style: 'italic', color: colorDelay },
-    //     // twoPiL: { text: '2\u03c0f', style: 'italic' },
-    //     twoPi_1: { text: '2\u03c0', style: 'italic' },
-    //     twoPi_2: { text: '2\u03c0', style: 'italic' },
-    //     w: { text: '\u03c9', style: 'italic', color: colorOmega },
-    //     lambda_1: { text: '\u03bb', style: 'italic' },
-    //     lambda_2: { text: '\u03bb', style: 'italic' },
-    //     f: { style: 'italic' },
-    //     f_2: { style: 'italic' },
-    //     'angular frequency ': { color: colorOmega },
-    //     'wave number ': { color: colorK },
-    //     k: { color: colorK, style: 'italic' },
-    //   },
-    //   position: [12, 2],
-    //   phrases: {
-    //     t0_1: sub('t_1', '_0_1'),
-    //     t0_2: sub('t_2', '_0_2'),
-    //     x0_3: sub('x_3', '_0_3'),
-    //     xOnV: frac('x_5', 1, 'v_1', 0.8, 0.02, 0.02),
-    //     xOnV1: frac('x_t', 2, 'v_3', 0.8, 0.02, 0.02),
-    //     velf: ['v_1', '_ = ', 'lambda_1', 'f'],
-    //     twoPif: ['twoPi_2', ' ', 'f_2'],
-    //     twoPiL: frac('twoPi_2', 1, 'lambda_2', 0.7),
-    //   },
-    //   formDefaults: { alignment: { xAlign: 'center' } },
-    //   forms: {
-    //     initial: 'Manually progress through each step by pressing arrows',
-    //     // 0: 'The initial disturbance is a sin function'
-    //     0: lines([
-    //       ['The ', 'disturbance', '_ at _', 'position ', 'x_1', '_ and ', 'time ', 't_3', '_ is the ', 'disturbance at time ', 't0_1'],
-    //       ['shifted by the distance the wave has propogated since'],
-    //     ], 1),
-    //     1: lines([
-    //       ['Make the ', 'disturbance at ', 't0_2', '_ a ', 'sin', '_ function.'],
-    //     ]),
-    //     '1a': lines([
-    //       ['The sin function\'s output repeats every time it\'s input is a'],
-    //       ['multiple of ', 'twoPi_1', '_. Thus the ', 'twoPiL', '_ term repeats the sin function'],
-    //       ['each ', 'lambda_1', '_ in distance.']
-    //     ], 1),
-    //     2: lines([
-    //       ['Substitute the ', 'shifted position ', 'into ', 'g', 'stop'],
-    //     ]),
-    //     3: lines([
-    //       ['Equate like terms.'],
-    //     ]),
-    //     4: lines([
-    //       ['Expand the ', 'sin', '_ function input.'],
-    //     ]),
-    //     5: lines([
-    //       ['twoPiL', '_ is commonly called the ', 'wave number ', 'k', 'stop'],
-    //     ]),
-    //     6: lines([
-    //       ['Use ', 'velf', ' ', '_ to simplify the second term.'],
-    //     ]),
-    //     7: lines([
-    //       ['twoPif', '_ is commonly called the ', 'angular frequency ', 'w'],
-    //     ]),
-    //     8: lines([
-    //       ['This equation describes a sine wave travelling with velocity ', 'plusV', 'stop'],
-    //     ]),
-    //     9: lines([
-    //       ['If the wave were travelling in the negative direction, then the sign'],
-    //       ['would switch.'],
-    //     ], 1),
-    //   }
-    // },
     {
       name: 'sinNav',
       make: 'collections.slideNavigator',
@@ -458,7 +353,7 @@ function addTravellingWaveEquation(name) {
       prevButton: { type: 'arrow', position: [-11, 0], width: 2, length: 1, color: colorLight, line: { width: 0.02 }, touchBorder: 0.5 },
       disableOpacity: 0.2,
       text: {
-        defaultAccent: { color: colorYellowText },
+        defaultAccent: { color: colorYellow },
         position: [0, 0],
         font: { size: 0.7, color: colorLight, width: 1 },
         justify: 'center',
@@ -466,20 +361,20 @@ function addTravellingWaveEquation(name) {
         yAlign: 'middle',
         lineSpace: 1.2,
         modifiers: {
-          sin: { font: { family: 'TeXGyreTermes', color: colorDisturbanceText, size: 0.8 } },
+          sin: { font: { family: 'TeXGyreTermes', color: colorDisturbance, size: 0.8 } },
           twoPi: { text: '2\u03c0', font: { family: 'TeXGyreTermes', style: 'italic', size: 0.8 } },
-          twoPiY: { text: '2\u03c0', font: { family: 'TeXGyreTermes', style: 'italic', size: 0.8, color: colorYellowText } },
+          twoPiY: { text: '2\u03c0', font: { family: 'TeXGyreTermes', style: 'italic', size: 0.8, color: colorYellow } },
           lambda: { text: '\u03bb', font: { size: 0.8, family: 'TeXGyreTermes', style: 'italic' } },
-          lambdaY: { text: '\u03bb', font: { size: 0.8, family: 'TeXGyreTermes', style: 'italic', color: colorYellowText } },
-          x: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic', color: colorYellowText } },
-          g: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic', color: colorYellowText } },
-          vt: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic', color: colorYellowText } },
-          T: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic', color: colorYellowText } },
-          lvT: { text: '\u03bb = vT', font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic', color: colorYellowText } },
+          lambdaY: { text: '\u03bb', font: { size: 0.8, family: 'TeXGyreTermes', style: 'italic', color: colorYellow } },
+          x: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic', color: colorYellow } },
+          g: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic', color: colorYellow } },
+          vt: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic', color: colorYellow } },
+          T: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic', color: colorYellow } },
+          lvT: { text: '\u03bb = vT', font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic', color: colorYellow } },
           // f: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic' } },
-          k: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic', color: colorYellowText } },
-          w: { text: '\u03c9', font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic', color: colorYellowText } },
-          // 'initial disturbance': { font: { color: colorYellowText } },
+          k: { font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic', color: colorYellow } },
+          w: { text: '\u03c9', font: { family: 'TeXGyreTermes', size: 0.8, style: 'italic', color: colorYellow } },
+          // 'initial disturbance': { font: { color: colorYellow } },
         },
       },
       slides: [
@@ -498,7 +393,7 @@ function addTravellingWaveEquation(name) {
           // enterState: hl(['y', 'lb1', 'rb1', 'x', 'comma', 't', 'equals1', 'g', 'lb2', 'rb2', 'x_1', 'min', 'v', 't_1']),
           text: ['Start with the |general description for a wave|.', { text: 'Use the |arrows| to progress through the steps', font: { size: 0.5 }, lineSpace: 1.5 }],
           steadyState: () => {
-            figure.get('sinNav')._nextButton.setColor(colorYellowText);
+            figure.get('sinNav')._nextButton.setColor(colorYellow);
             // hl(['y', 'lb1', 'rb1', 'x', 'comma', 't', 'equals1', 'g', 'lb2', 'rb2', 'x_1', 'min', 'v', 't_1'])();
           },
           leaveState: () => {

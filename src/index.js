@@ -1,5 +1,4 @@
-/* globals Fig, dd */
-
+/* globals Fig, dd, addFigureElements, TimeKeeper, Recorder */
 const figure = new Fig.Figure({
   limits: [0, 0, 24, 12],
   color: [0.3, 0.3, 0.3, 1],
@@ -18,51 +17,28 @@ const figure = new Fig.Figure({
 .##....##..##.......##.....##.##.....##.##.....##.##.......##....##
 ..######...########..#######..########..##.....##.########..######.
 */
-// Global colors used in equations.js and slides.js
+/* eslint-disable no-unused-vars */
+// Global colors
 const colorRed = [1, 0, 0, 1];
 const colorRedText = [1, 0.2, 0.2, 1];
-const colorBlue = [0, 0.5, 0.8, 1];
-const colorBlueText = [0.2, 0.7, 1, 1];
-const colorGreen = [0, 1, 0, 1];
-const colorGreenText = [0.3, 1, 0.3, 1];
-const colorYellow = [1, 1, 0, 1];
-const colorYellowText = [1, 1, 0.3, 1];
-const colorPurple = [1, 0, 1, 1];
-const colorPurpleText = [1, 0.3, 1, 1];
-const colorCyan = [0, 1, 1, 1];
-const colorCyanText = [0.3, 1, 1, 1];
+const colorBlue = [0.2, 0.7, 1, 1];
+const colorGreen = [0.3, 1, 0.3, 1];
+const colorYellow = [1, 1, 0.3, 1];
+const colorPurple = [1, 0.3, 1, 1];
+const colorCyan = [0.3, 1, 1, 1];
 const colorText = [1, 1, 0.3, 1];
-const color0 = [1, 0, 0, 1];
-const colorZero = [1, 0.3, 0.3, 1];
-const color1 = [0, 0.5, 0.8, 1];
-const colorOne = [0, 0.8, 1, 1];
 const colorLight = [0.8, 0.8, 0.8, 1];
-const colorMid = [0.6, 0.6, 0.6, 1];
 const colorDark = [0.3, 0.3, 0.3, 1];
-const color3 = [1, 0, 1, 1];
-const color4 = [0.7, 0.7, 0.7, 1];
 const colorOn = [0, 0.8, 0, 1];
 const colorOff = [0.4, 0.4, 0.4, 1];
-const colorBackground = [0, 0, 0, 1];
 const colorHighlight = colorCyan;
 const colorDisturbance = colorRed;
-const colorDisturbanceText = colorRedText;
-const colorPositionText = colorBlueText;
-const colorTimeText = colorRedText;
-const colorPosition = colorBlue;
 const colorTime = colorRedText;
-const colorDelay = colorPurpleText;
-const colorOmega = colorCyan;
-const colorK = colorCyan;
-const colorF = colorGreen;
-const colorFText = colorGreenText;
-const colorX = colorPurple;
-const colorXText = colorPurpleText;
-const colorG = colorRed;
+const colorPosition = colorBlue;
+const colorFText = colorGreen;
 const colorGText = colorRedText;
-const colorVelocity = colorCyan;
-const colorVelocityText = colorYellowText;
-const colorWave = colorYellowText;
+const colorVelocityText = colorYellow;
+const colorWave = colorYellow;
 
 
 const { Transform, Point } = Fig;
@@ -70,11 +46,9 @@ const { range, rand, randSign } = Fig.tools.math;
 const minVelocity = 0.05;
 const time = new TimeKeeper();
 const recorder = new Recorder(10, time);
-let maxTime = 0;
-let maxTimeReached = false;
 
 let loadNum = 0;
-const getLoader = (message = '') => {
+const getLoader = () => {
   loadNum += 1;
   document.getElementById('loader').classList.remove('hide-loader');
   return () => {
@@ -84,6 +58,8 @@ const getLoader = (message = '') => {
     }
   };
 };
+/* eslint-enable no-unused-vars */
+
 /*
 .########.##.......########.##.....##.########.##....##.########..######.
 .##.......##.......##.......###...###.##.......###...##....##....##....##
@@ -93,61 +69,28 @@ const getLoader = (message = '') => {
 .##.......##.......##.......##.....##.##.......##...###....##....##....##
 .########.########.########.##.....##.########.##....##....##.....######.
 */
-let t = performance.now()
 addFigureElements();
-// console.log(performance.now() - t)
-
 const m1 = figure.get('m1');
 const p1 = figure.get('p1');
 const ocean = figure.get('ocean');
-// const examples = figure.get('examples');
-// const intro = figure.get('intro');
 const timePlot1 = figure.get('timePlot1');
-// const eqnSine = figure.get('eqnSine');
 const defs = figure.get('defs');
 const arrow1 = figure.get('arrow1');
-const arrow2 = figure.get('arrow2');
-// const eqnSineT = figure.get('eqnSineT');
 const eqnWave = figure.get('eqnWave');
 const figureOneEqn = figure.get('figureOneEqn');
-// const eqnWaveDescription = figure.get('eqnWaveDescription');
-// const eqnGenT = figure.get('eqnGenT');
-// const eqnSinT = figure.get('eqnSinT');
-// const eqnSinX = figure.get('eqnSinX');
-// const sineTExplanation = figure.get('sineTExplanation');
-// const eqnSineX0 = figure.get('eqnSineX0');
 const eqnVLF = figure.get('eqnVLF');
 const eqnDiff = figure.get('eqnDiff');
 const title = figure.get('title');
 const resetButton = figure.get('resetButton');
 const pulseButton = figure.get('pulseButton');
 const pulseButton2 = figure.get('pulseButton2');
-// const pulseButton2 = figure.get('pulseButton2');
 const sineButton = figure.get('sineButton');
-// const sine2fButton = figure.get('sine2fButton');
 const freezeButton = figure.get('freezeTimeButton');
 const slowTimeButton = figure.get('slowTimeButton');
 const velocityButton = figure.get('velocityButton');
-// const timeWaveSelector = figure.get('timeWaveSelector');
-// const sinSpaceSelector = figure.get('sinSpaceSelector');
-// const sinTimeSelector = figure.get('sinTimeSelector');
 const highlighter = figure.get('highlighter');
 const highlighter2 = figure.get('highlighter2');
 const diffExplanation = figure.get('diffExplanation');
-// const velocityButton2 = figure.get('velocityButton2');
-// const freqButton1 = figure.get('freqButton1');
-// const freqButton2 = figure.get('freqButton2');
-
-/*
-.########..####..######..########.##.....##.########..########.
-.##.....##..##..##....##....##....##.....##.##.....##.##.....##
-.##.....##..##..##..........##....##.....##.##.....##.##.....##
-.##.....##..##...######.....##....##.....##.########..########.
-.##.....##..##........##....##....##.....##.##...##...##.....##
-.##.....##..##..##....##....##....##.....##.##....##..##.....##
-.########..####..######.....##.....#######..##.....##.########.
-*/
-// const { pulse, sineWave } = getDisturbances();
 
 
 /*
@@ -163,16 +106,14 @@ const diffExplanation = figure.get('diffExplanation');
 const pause = () => {
   time.pause();
   figure.elements.customState.pause = true;
-  // freezeButton.setLabel('On');
   freezeButton.custom.on();
   if (m1._envelope2.isShown) {
     figure.fnMap.global.exec('copyEnvelope');
-    // m1._envelope2.setOpacity(1);
   }
+  // eslint-disable-next-line no-use-before-define
   update(true);
 };
 const unpause = () => {
-  // freezeButton.setLabel('Off');
   figure.elements.customState.pause = false;
   freezeButton.custom.off();
   time.unpause();
@@ -188,10 +129,6 @@ figure.recorder.notifications.add('seek', () => {
 });
 // Update function for everytime we want to update the particles
 function update(override = false) {
-  if (maxTime > 0 && time.now() > maxTime) {
-    maxTimeReached = true;
-    pause();
-  }
   if (
     (
       (time.isPaused() || m1.custom.recording.isStationary())
@@ -227,17 +164,14 @@ figure.elements.stateSet = () => {
   } else {
     unpause();
   }
-}
+};
 
 const stop = () => {
   m1.custom.stop();
-  // medium2.custom.stop();
   figure.stop();
 };
 const reset = () => {
   stop();
-  // setInAnimation(false);
-  maxTimeReached = false;
   m1.customState.trackingTime = 0;
   m1.custom.reset();
   p1.custom.reset();
@@ -259,11 +193,6 @@ const softReset = () => {
 
 figure.fnMap.global.add('reset', () => reset());
 figure.fnMap.global.add('softReset', () => softReset());
-
-// const setTimeSpeed = (timeSpeed, buttonLabel) => {
-//   time.setTimeSpeed(timeSpeed);
-//   // slowTimeButton.setLabel(buttonLabel);
-// };
 
 
 // Before each draw, update the points
@@ -291,7 +220,7 @@ const pointTo = (index, element, minus, startOrLength, vertical = true) => {
   const p = element.getPosition('figure');
   let s = p._dup();
   if (typeof startOrLength === 'number') {
-    if (vertical) { s.y -= startOrLength } else { s.x -= startOrLength }
+    if (vertical) { s.y -= startOrLength; } else { s.x -= startOrLength; }
   } else {
     s = Fig.getPoint(startOrLength);
   }
@@ -316,9 +245,6 @@ freezeButton.notifications.add('onClick', () => {
   if (time.isPaused()) unpause(); else pause();
   figure.animateNextFrame();
 });
-// freezeButton.onClick = () => {
-//   if (time.isPaused()) unpause(); else pause();
-// };
 
 slowTimeButton.notifications.add('onClick', () => {
   if (slowTimeButton.customState.state) {
@@ -391,61 +317,6 @@ figure.fnMap.global.add('pulseTitle', () => {
   m1.custom.recording.pulse();
   update(true);
 });
-// sine2fButton.onClick = () => {
-//   reset();
-//   m1.customState.f = 0.4;
-//   sineWave(m1, 0);
-// };
-
-// const selector = (selector, show, hide1, hide2, surroundBorder) => {
-//   highlighter3.stop();
-//   highlighter3.showAll();
-//   highlighter3.surround(selector, surroundBorder);
-//   highlighter3.pulse({ scale: 1.04, duration: 0.3 });
-//   if (show.isShown) {
-//     return;
-//   }
-//   hide1.hide();
-//   hide2.hide();
-//   show.showAll();
-//   show._nav.goToSlide(0);
-//   show.animations.new().dissolveIn(0.3).start();
-// };
-// timeWaveSelector.onClick = () => selector(
-//   timeWaveSelector, eqnGenT, eqnSinT, eqnSinX, [0.4, 0.35, 0.6, 0.4],
-// );
-// sinSpaceSelector.onClick = () => selector(
-//   sinSpaceSelector, eqnSinX, eqnSinT, eqnGenT, [0.4, 0.35, 0.6, 0.4],
-// );
-// sinTimeSelector.onClick = () => selector(
-//   sinTimeSelector, eqnSinT, eqnSinX, eqnGenT, [0.4, 0.25, 0.6, 0.4],
-// );
-// sinSpaceSelector.onClick = () => {
-//   highlighter3.stop();
-//   highlighter3.showAll();
-//   highlighter3.surround(sinSpaceSelector, [0.4, 0.4, 0.6, 0.4]);
-//   highlighter3.pulse({ scale: 1.04, duration: 0.3 });
-//   if (eqnSinX.isShown) {
-//     return;
-//   }
-//   eqnSinT.hide();
-//   eqnGenT.hide();
-//   eqnSinX.showAll();
-//   eqnSinX._nav.goToSlide(0);
-//   eqnSinX.animations.new().dissolveIn(0.3).start();
-// }
-// sinTimeSelector.onClick = () => {
-//   eqnSinX.hide();
-//   eqnGenT.hide();
-//   eqnSinT.showAll();
-//   eqnSinT._nav.goToSlide(0);
-//   highlighter3.stop();
-//   highlighter3.showAll();
-//   highlighter3.surround(sinTimeSelector, [0.4, 0.2, 0.6, 0.4]);
-//   highlighter3.pulse({ scale: 1.04, duration: 0.3 });
-// }
-// sinSpaceSelector
-// sinTimeSelector
 
 /*
 ..######..##.......####.########..########..######.
@@ -471,6 +342,7 @@ figure.fnMap.global.add('fixedSine', () => {
     lastManualValue: 0,
     lastManualTime: null,
     index: m1.custom.recording.getNum(),
+    lastDelta: 0,
   });
   update(true);
 });
@@ -496,27 +368,11 @@ figure.addCursor({ width: 0.1, color: [0.5, 1, 1, 1], radius: 0.4 });
 .##....##.##.....##....###...
 */
 const nav = figure.addSlideNavigator({
-  nextButton: null, prevButton: null, text: null, equation: [eqnWave, eqnVLF, eqnDiff, defs]// equation: {
-  //   eqnSineT, sineTExplanation,
-  // },
+  nextButton: null, prevButton: null, text: null, equation: [eqnWave, eqnVLF, eqnDiff, defs],
 });
 time.setTimeSpeed(1);
+
 nav.loadSlides([
-  // {
-  //   scenario: ['default', 'properties'],
-  //   show: ['eqnProps', 'eqnNewton', 'arrow1', 'arrow2'],
-  //   steadyState: () => {
-  //     eqnDiff.showForm('d1Mono');
-  //   //   eqnDiff.setPosition(19.5, 6);
-  //   },
-  // },
-  // {
-  //   scenario: 'default',
-  //   steadyState: () => {
-  //     figure.get('eqnWave').showForm('highlighted');
-  //     figure.get('eqnWaveDescription').showForm('summary');
-  //   },
-  // },
   /*
   .########.####.########.##.......########
   ....##.....##.....##....##.......##......
@@ -534,7 +390,6 @@ nav.loadSlides([
     },
   },
   {
-    // time: '0:39.5',
     time: '0:33',
     show: ['title'],
     transition: [
@@ -705,6 +560,7 @@ nav.loadSlides([
         lastManualValue: 0,
         lastManualTime: null,
         index: m1.custom.recording.getNum(),
+        lastDelta: 0,
       });
       m1.customState.trackingTime = -6.16;
       update(true);
@@ -798,7 +654,9 @@ nav.loadSlides([
         { in: ['velocityButton', 'velocity'] },
         { pulse: ['velocityButton', 'velocity'], centerOn: [16, 0.5], scale: 1.3 },
       ],
-      { pulse: 'm1.ballTracker', scale: 2, delay: 5.3, yAlign: 'top', duration: 1.5 },
+      {
+        pulse: 'm1.ballTracker', scale: 2, delay: 5.3, yAlign: 'top', duration: 1.5,
+      },
     ],
   },
   {
@@ -808,7 +666,9 @@ nav.loadSlides([
     transition: [
       { out: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton', 'pulseButton2'] },
       { trigger: 'growArrow', payload: ['timePlot1._secondsArrow', 1], duration: 1.5 },
-      { trigger: 'growArrow', payload: ['m1._vArrow', 1], duration: 1.5, delay: 1.5 },
+      {
+        trigger: 'growArrow', payload: ['m1._vArrow', 1], duration: 1.5, delay: 1.5,
+      },
     ],
     steadyState: () => {
       figure.fnMap.exec('setArrow', 'm1.vArrow');
@@ -840,9 +700,10 @@ nav.loadSlides([
     },
     transition: [
       { out: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton', 'pulseButton2'] },
-      // { trigger: 'growArrow', payload: ['timePlot1._secondsArrow', 1], duration: 1.5 },
       { in: timePlot1._secondsArrow },
-      { trigger: 'growArrow', payload: ['m1._v2Arrow', 1], duration: 1.5, delay: 3 },
+      {
+        trigger: 'growArrow', payload: ['m1._v2Arrow', 1], duration: 1.5, delay: 3,
+      },
     ],
     steadyState: () => {
       figure.fnMap.exec('setArrow', 'm1.v2Arrow');
@@ -952,10 +813,10 @@ nav.loadSlides([
       ],
       { in: ['m1.lambdaArrow'], delay: 4 },
       { in: eqnVLF, delay: 1.3 },
-      { pulse: 'm1.velocity', delay: 3, yAlign: 'bottom', scale: 1.5 },
+      {
+        pulse: 'm1.velocity', delay: 3, yAlign: 'bottom', scale: 1.5,
+      },
       { in: ['timePlot1.periodArrow'], delay: 1 },
-      // { goToForm: eqnVLF, target: 'wavelengthvt' },
-      // { goToForm: eqnVLF, target: 'wavelengthLambda' },
       { goToForm: eqnVLF, target: 'lvt', delay: 0 },
     ],
     steadyState: () => {
@@ -968,6 +829,7 @@ nav.loadSlides([
         lastManualValue: 0,
         lastManualTime: null,
         index: m1.custom.recording.getNum(),
+        lastDelta: 0,
       });
       update(true);
       eqnVLF.showForm('wavelengthvt');
@@ -986,15 +848,6 @@ nav.loadSlides([
     time: '4:57',
     addReference: true,
     scenario: ['default', 'right', 'wavelength'],
-    // enterState: () => {
-    //   m1.custom.recording.setState({
-    //     mode: 'sine',
-    //     startTime: -20,
-    //     lastManualValue: 0,
-    //     lastManualTime: null,
-    //   });
-    //   update(true);
-    // },
     form: [null, null, null],
     show: ['timePlot1.periodArrow', 'm1.lambdaArrow'],
     transition: [
@@ -1020,6 +873,7 @@ nav.loadSlides([
         lastManualValue: 0,
         lastManualTime: null,
         index: m1.custom.recording.getNum(),
+        lastDelta: 0,
       });
       m1._envelope.showAll();
       m1.custom.update();
@@ -1055,12 +909,6 @@ nav.loadSlides([
     showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.envelope', 'm1.envelope2', 'm1.movePadEnv', 'm1.eqn'],
     enterState: () => {
       m1._movePadEnv.customState.x = 2.58;
-      // m1._movePadEnv.customState.x = 0;
-      // m1._envelope.showAll();
-      // m1.custom.update();
-      // figure.fnMap.global.exec('copyEnvelope');
-      // m1._envelope2.showAll();
-      // m1._movePadEnv.setPosition(0, 0);
       update(true);
       m1.custom.updateEqn1();
     },
@@ -1084,40 +932,11 @@ nav.loadSlides([
     time: '6:08',
     fromForm: ['shiftedG_0'],
     form: ['shiftedG_0'],
-    // enterStateCommon: () => {
-    //   m1._envelope.showAll();
-    //   m1.custom.update();
-    //   figure.fnMap.global.exec('copyEnvelopeReset');
-    //   reset();
-    //   m1.custom.recording.setState({
-    //     mode: 'pulse2',
-    //     startTime: [-4.7],
-    //     lastManualValue: 0,
-    //     lastManualTime: null,
-    //   });
-    //   m1._movePadEnv.customState.x = -1.28;
-    //   m1._envelope.showAll();
-    //   m1.custom.update();
-    //   figure.fnMap.global.exec('copyEnvelope');
-    //   m1._envelope2.showAll();
-    //   // m1._movePadEnv.setPosition(0, 0);
-    //   update(true);
-    //   m1.custom.updateEqn1();
-    //   setVelocityToggle(false);
-    //   setSlowTimeToggle(false);
-    // },
     enterState: () => {
       m1._movePadEnv.customState.x = -1.28;
-      // m1._movePadEnv.customState.x = 0;
-      // m1._envelope.showAll();
-      // m1.custom.update();
-      // figure.fnMap.global.exec('copyEnvelope');
-      // m1._envelope2.showAll();
-      // m1._movePadEnv.setPosition(0, 0);
       update(true);
       m1.custom.updateEqn1();
     },
-    // showCommon: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.envelope', 'm1.eqn'],
     showCommon: [],
     transition: [
       { out: ['m1.xAxis', 'm1.yAxis', 'm1.grid', 'm1.envelope', 'm1.eqn', 'm1.envelope2', 'm1.eqn1'] },
@@ -1133,14 +952,14 @@ nav.loadSlides([
     },
   },
   { form: 'shiftedG_2', time: '6:15' },
-  { form: 'shiftedG_3', time: '6:21' }, //'4:56.5' },
-  { form: 'shiftedG_4', time: '6:22.5' }, //'4:58' },
+  { form: 'shiftedG_3', time: '6:21' },
+  { form: 'shiftedG_4', time: '6:22.5' },
   { form: 'shiftedG_5', time: '6:24' },
   { form: 'shiftedG_6', time: '6:34' },
   { form: 'shiftedG_7', time: '6:37' },
   { form: 'final', time: '6:40' },
   {
-    time: '6:46.5',
+    time: '6:46',
     transition: { scenario: eqnWave, target: 'high' },
   },
   {
@@ -1190,6 +1009,7 @@ nav.loadSlides([
         lastManualValue: 0,
         lastManualTime: null,
         index: m1.custom.recording.getNum(),
+        lastDelta: 0,
       });
       m1._movePadEnv.customState.x = 1.28;
       m1._envelope.showAll();
@@ -1264,7 +1084,6 @@ nav.loadSlides([
         { out: eqnWave },
       ],
     ],
-    // steadyState: 'animateSingleWave',
   },
   {
     form: null,
@@ -1275,7 +1094,6 @@ nav.loadSlides([
       figure.get('waveInterference').customState.v = 1.1;
     },
     transition: [
-      // { out: eqnWave },
       { trigger: 'calcInterference', payload: 0 },
       [
         { in: 'waveInterference.line' },
@@ -1295,18 +1113,15 @@ nav.loadSlides([
   .########..####.##.......##......
   */
   {
-    // scenario: 'summary',
     scenarioCommon: 'default',
     scenario: ['default', 'high'],
     time: '7:57',
     fromForm: [null, null, 'diffMono', null],
     form: [null, null, 'diffMono', null],
     enterState: () => {
-      // eqnDiff.showForm('diffMono');
       eqnDiff.setScenario('default');
     },
     transition: [
-      // { out: eqnWave },
       { delay: 0.5 },
       [
         { in: 'eqnDiff.d2', delay: dd(true), duration: 0.3 },
@@ -1348,7 +1163,6 @@ nav.loadSlides([
     form: [null, null, 'diffSolnMono1', null],
     enterState: () => {
       eqnDiff.showForm('diffSolnMono1');
-      // eqnDiff.hide();
     },
     transition: [
       { in: 'eqnDiff.y_5_' },
@@ -1359,12 +1173,6 @@ nav.loadSlides([
       ],
       { in: { eqnDiff: ['g_', 'lb4', 'x_2_', 'min1_', 'v_2_', 't_2_', 'rb4'] }, delay: 1.8 },
       { in: { eqnDiff: ['h_', 'lb5', 'x_3_', 'plus2_', 'v_3_', 't_3_', 'rb5'] }, delay: 8 },
-      // { trigger: 'calcInterference', payload: 0, delay: 3 },
-      // [
-      //   { in: 'waveInterference' },
-      //   { trigger: 'animateInterference', duration: 7 },
-      // ],
-      // { out: 'waveInterference' },
     ],
   },
   {
@@ -1382,10 +1190,14 @@ nav.loadSlides([
         { in: 'waveInterference.line' },
         { trigger: 'animateInterference', duration: 8.5 },
         { in: 'waveInterference.g', delay: 2 },
-        { pulse: 'waveInterference.g', delay: 2.1, xAlign: 'left', yAlign: 'top' },
+        {
+          pulse: 'waveInterference.g', delay: 2.1, xAlign: 'left', yAlign: 'top',
+        },
         { pulse: 'eqnDiff.g_', delay: 2.1, xAlign: 0.8 },
         { in: 'waveInterference.h', delay: 4 },
-        { pulse: 'waveInterference.h', delay: 4.1, xAlign: 'right', yAlign: 'top' },
+        {
+          pulse: 'waveInterference.h', delay: 4.1, xAlign: 'right', yAlign: 'top',
+        },
         { pulse: 'eqnDiff.h_', delay: 4.1, xAlign: 0.8 },
       ],
       { out: 'waveInterference' },
@@ -1494,13 +1306,12 @@ nav.loadSlides([
     show: ['m1.xAxis', 'm1.yAxis', 'm1.balls', 'm1.movePad', 'm1.firstBall', 'resetButton', 'slowTimeButton', 'slowTimeLabel', 'freezeTimeButton', 'freezeTimeLabel', 'pulseButton', 'sineButton', 'pulseButton2', 'm1.grid'],
     transition: [
       { in: 'm1.ballh' },
-      // { in: 'm1.disturbanceDirection' },
-      { trigger: 'growArrow', payload: ['m1.disturbanceDirection', 1.5], duration: 2, delay: 0.5 },
+      {
+        trigger: 'growArrow', payload: ['m1.disturbanceDirection', 1.5], duration: 2, delay: 0.5,
+      },
       {
         trigger: 'growArrow', payload: ['m1.waveDirection', 1.5], duration: 2, delay: 0.5,
       },
-      // { pulse: 'm1.waveDirection.label', xAlign: 'left', yAlign: 'middle', delay: 1.3 },
-      // { pulse: 'm1.disturbanceDirection.label', xAlign: 'center', yAlign: 'top', delay: 2.2 },
     ],
     steadyState: () => {
       figure.fnMap.exec('setArrow', 'm1.disturbanceDirection');
@@ -1566,18 +1377,16 @@ nav.loadSlides([
     steadyState: () => {
       figure.fnMap.exec('setArrow', 'p1.disturbanceDirection');
       figure.fnMap.exec('setArrow', 'p1.waveDirection');
-    }
+    },
   },
   {
     time: '10:35',
     form: [null, null, null, 'longWave'],
-    // hide: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'],
     show: ['pulseButton', 'sineButton', 'resetButton', 'p1'],
   },
   {
     time: '10:39',
     form: [null, null, null, 'longDef'],
-    // hide: ['m1.balls', 'm1.grid', 'm1.movePad', 'm1.firstBall'],
     show: ['pulseButton', 'sineButton', 'resetButton', 'p1'],
   },
 
@@ -1647,59 +1456,20 @@ nav.loadSlides([
 
 
 // Load audio, states and events data
-figure.recorder.loadAudioTrack(new Audio(window.location.href.replace(/\/index.html|\/src.index.html|\/src|\/docs|\/test.index.html|\/tests\/$|\/$/, '/src/audio-track.mp3')));
+figure.recorder.loadAudioTrack(new Audio(window.location.href.replace(/\/index.html|\/index-test.html|\/src.index.html|\/src|\/docs|\/test.index.html|\/tests\/$|\/$/, '/src/audio-track.mp3')));
 
-figure.recorder.loadVideoTrack(window.location.href.replace(/\/index.html|\/src.index.html|\/src|\/docs|\/test.index.html|\/tests\/$|\/$/, '/src/video-track.json'), getLoader('video'));
+
+figure.recorder.loadVideoTrack(window.location.href.replace(/\/index.html|\/src.index.html|\/index-test.html|\/src|\/docs|\/test.index.html|\/tests\/$|\/$/, '/src/video-track.json'), getLoader('video'));
 
 
 figure.recorder.notifications.add('stateSet', () => pause());
-figure.recorder.notifications.add('seek', () => pause())
+figure.recorder.notifications.add('seek', () => pause());
 figure.recorder.notifications.add('playbackStopped', () => pause());
 
 // TODO - add more onClick notifications here for all touchable elements
 title._movePad.notifications.add('onClick', () => unpause());
 m1._movePad.notifications.add('onClick', () => unpause());
 p1._movePad.notifications.add('onClick', () => unpause());
-
-
-// (function (document) {
-//     var width;
-//     var body = document.body;
-  
-//     var container = document.createElement('span');
-//     container.innerHTML = Array(100).join('wi');
-//     container.style.cssText = [
-//       'position:absolute',
-//       'width:auto',
-//       'font-size:128px',
-//       'left:-99999px'
-//     ].join(' !important;');
-  
-//     var getWidth = function (fontFamily) {
-//       container.style.fontFamily = fontFamily;
-  
-//       body.appendChild(container);
-//       width = container.clientWidth;
-//       body.removeChild(container);
-  
-//       return width;
-//     };
-  
-//     // Pre compute the widths of monospace, serif & sans-serif
-//     // to improve performance.
-//     var monoWidth  = getWidth('monospace');
-//     var serifWidth = getWidth('serif');
-//     var sansWidth  = getWidth('sans-serif');
-  
-//     window.isFontAvailable = function (font) {
-//       return monoWidth !== getWidth(font + ',monospace') ||
-//         sansWidth !== getWidth(font + ',sans-serif') ||
-//         serifWidth !== getWidth(font + ',serif');
-//     };
-//   })(document);
-
-//   console.log(isFontAvailable('Times New Roman'))
-
 
 update(true);
 

@@ -1,5 +1,5 @@
 /* eslint-disable camelcase, object-curly-newline, max-len */
-/* globals colorDisturbanceText, colorDisturbanceText, colorLight, colorTimeText, figure, bc, colorVelocityText */
+/* globals colorDisturbance, colorDisturbance, colorLight, colorTime, figure, bc, colorVelocityText */
 // eslint-disable-next-line no-unused-vars
 function addVLFEquation(name) {
   const bot = (content, comment, symbol, commentSpace = 0.2, scale = 1) => ({
@@ -31,10 +31,10 @@ function addVLFEquation(name) {
       arrow1: { symbol: 'line', width: 0.04, arrow: { start: { head: 'triangle' } } },
       vin: { symbol: 'vinculum', lineWidth: 0.05 },
       v: { color: colorVelocityText },
-      T: { color: colorDisturbanceText },
+      T: { color: colorDisturbance },
       w: { color: colorLight },
       wavelength: { color: colorLight },
-      f: { color: colorTimeText },
+      f: { color: colorTime },
     },
     phrases: {
       onF: { frac: {

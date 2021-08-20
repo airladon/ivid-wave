@@ -1,17 +1,16 @@
+/* eslint-disable camelcase, object-curly-newline, max-len */
+/* globals colorBlue, figure */
+
+// eslint-disable-next-line no-unused-vars
 function addExamples() {
-  // const text = (label, size, location) => ({
-  //   text: label,
-  //   location,
-  //   font: { size },
-  // });
   const text = (name, label, size, position) => ({
     name,
     make: 'text',
     text: label,
     position,
-    font: { color: colorBlueText, size },
+    font: { color: colorBlue, size },
     xAlign: 'center',
-  })
+  });
   const s = 0.8;
   const examples = figure.add({
     name: 'examples',

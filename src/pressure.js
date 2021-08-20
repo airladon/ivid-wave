@@ -1,4 +1,6 @@
+/* globals Fig, figure, colorWave, colorLight, arrow, unpause */
 
+// eslint-disable-next-line no-unused-vars
 function addPressureMedium(
   name, length, height, particleSize, gridStep, recorder,
 ) {
@@ -23,7 +25,7 @@ void main() {
     v_col = 2.0;
   }
 }`;
-const fragmentShader = `
+  const fragmentShader = `
 precision mediump float;
 uniform vec4 u_color;
 varying float v_col;
@@ -38,7 +40,7 @@ void main() {
     gl_FragColor = u_color;
   }
   gl_FragColor.rgb *= gl_FragColor.a;
-}`
+}`;
 
   const points = [];
   const sides = 10;
@@ -46,11 +48,8 @@ void main() {
   const offsets = [];
   const xLocations = [];
   for (let x = 0; x <= length; x += gridStep) {
-    // const r = (x === 0 || Fig.tools.math.round(x) === 7.2) ? particleSize * 1.6 : particleSize;
     const r = particleSize;
     for (let y = -height / 2; y <= height / 2; y += gridStep) {
-      // const x1 = x + Fig.tools.math.rand(-gridStep / 4, gridStep / 4);
-      // const y1 = y + Fig.tools.math.rand(-gridStep / 4, gridStep / 4);
       const x1 = x;
       const y1 = y;
       for (let j = 0; j < sides; j += 1) {
@@ -63,17 +62,13 @@ void main() {
     }
   }
   const centers = [
-    // new Fig.Point(7.2, height / 2),
-    // new Fig.Point(7.2, height / 2 - gridStep),
-    // new Fig.Point(7.2, height / 2 - gridStep * 2),
-    // new Fig.Point(7.2, height / 2 - gridStep * 4),
     new Fig.Point(7.2, height / 2 - gridStep * 5),
   ];
-  const addCircle = (name, index) => {
+  const addCircle = (nameIn, index) => {
     const position = Fig.getPoint([centers[index], centers[index + 1]]);
     const radius = ((position.y + 2) * (position.y + 2)) / 25;
     return {
-      name,
+      name: nameIn,
       make: 'polygon',
       sides: 20,
       position,
@@ -88,7 +83,7 @@ void main() {
     mods: {
       scenarios: {
         default: { position: [3, 6], scale: 1 },
-        summary: { position: [2, 3], scale: 0.58 }
+        summary: { position: [2, 3], scale: 0.58 },
       },
     },
     elements: [
@@ -100,37 +95,8 @@ void main() {
         xStep: length / 20,
         yStep: length / 20,
       },
-      // {
-      //   name: 'disturbanceDirection',
-      //   make: 'collections.line',
-      //   options: {
-      //     width: 0.05,
-      //     color: colorPositionText,
-      //     arrow: 'barb',
-      //     p1: [6.4, -1.5],
-      //     p2: [8, -1.5],
-      //     align: 'center',
-      //     label: {
-      //       text: 'disturbance',
-      //       location: 'bottom',
-      //     },
-      //   },
-      // },
       arrow('waveDirection', 'wave', [12, -1.7], [16, -1.7], colorWave, 'bottom', 'start', { end: 'barb' }, 3),
       arrow('disturbanceDirection', 'disturbance', [5.2, -1.7], [9.2, -1.7], colorWave, 'bottom', 'center', 'barb', 3),
-      // {
-      //   name: 'waveDirection',
-      //   make: 'collections.line',
-      //   options: {
-      //     width: 0.05,
-      //     color: colorWave,
-      //     arrow: { end: 'barb' },
-      //     p1: [12, 1.5],
-      //     p2: [16, 1.5],
-      //     align: 'center',
-      //     label: 'wave',
-      //   },
-      // },
       {
         name: 'particles',
         make: 'gl',
@@ -138,23 +104,18 @@ void main() {
           src: vertexShader,
           vars: ['a_position', 'a_offset', 'u_matrix'],
         },
-        // vertexShader: 'simple',
-        // Build in shader with one color for all vertices
-        // fragShader: 'simple',
         fragShader: {
           src: fragmentShader,
           vars: ['u_color'],
         },
         // Define buffers and uniforms
         vertices: { data: points },
-        buffers: [{ name: 'a_offset', data: offsets, size: 1, usage: 'DYNAMIC' }],
-        // uniforms: [{ name: 'u_highlight', length: 1, type: 'FLOAT' }],
+        buffers: [{
+          name: 'a_offset', data: offsets, size: 1, usage: 'DYNAMIC',
+        }],
         // Element color and mods
         color: colorLight,
-        // position: [10, 5],
-        // mods: { state: { isChanging: true } },
       },
-      // addCircle('c1', 1),
       addCircle('c6', 6),
       {
         name: 'diaphragm',
@@ -182,15 +143,9 @@ void main() {
         },
       },
     ],
-    // transform: [['t', 5, 6]],
-    // position: [3, 6],
   });
   const movePad = medium._movePad;
-  // const waveDirection = medium._waveDirection;
-  // const disturbanceDirection = medium._disturbanceDirection;
-  // const c1 = medium.get('c1');
   const c6 = medium.get('c6');
-  // const c3 = medium.get('c3');
   medium.customState = {
     c: 2,
   };
@@ -202,7 +157,6 @@ void main() {
     recording: recorder,
     update: (deltaTime) => {
       const newOffsets = Array(offsets.length);
-      // const x = movePad.transform.t().x;
       let x;
       if (medium.custom.recording.getState().mode === 'manual') {
         x = movePad.transform.t().x;
@@ -212,7 +166,6 @@ void main() {
         movePad.transform.updateTranslation(x, 0);
       }
       medium._diaphragm.setPosition(x, 0);
-      // medium.custom.recording.record(x, deltaTime);
       for (let i = 0; i < xLocations.length; i += 1) {
         let xOffset = medium.custom.recording.getValueAtTimeAgo(
           xLocations[i] / medium.customState.c,
@@ -251,69 +204,13 @@ void main() {
       medium.custom.f = frequency;
     },
   };
-  // medium._particles.drawingObject.uniforms.u_highlight.value = [1];
   movePad.notifications.add('setTransform', () => {
-    // if (maxTimeReached) {
-    //   return;
-    // }
-    // // If the movePad has been manually moved, then stop current animations
     if (movePad.state.isBeingMoved && movePad.isAnimating()) {
       medium.custom.stop();
     }
     unpause();
     medium.custom.recording.setManual();
     figure.fnMap.exec('forceUpdate');
-    // medium.custom.update();
   });
-
-  // figure.fnMap.global.add('growPWaveDirection', () => {
-  //   waveDirection.showAll();
-  //   waveDirection.animations.new()
-  //     .length({ start: 0.5, target: 4, duration: 2 })
-  //     .start();
-  // });
-  // figure.fnMap.global.add('growPDisturbanceDirection', () => {
-  //   disturbanceDirection.showAll();
-  //   disturbanceDirection.animations.new()
-  //     .length({ start: 0.5, target: 1.6, duration: 2 })
-  //     .start();
-  // });
-  // medium.backupState = medium._state;
-  // medium._state = (options) => {
-  //   medium.customState.recorder = medium.custom.recording.encodeData();
-  //   return medium.backupState(options);
-  // };
-  // medium.backupStateSet = medium.stateSet;
-  // medium.stateSet = () => {
-  //   medium.backupStateSet();
-  //   if (medium.customState.recorder != null) {
-  //     medium.custom.recording.loadEncodedData(medium.customState.recorder[0], medium.customState.recorder[1]);
-  //   }
-  // }
-
-
-  
-  // const element = figure.add({
-  //   name,
-  //   make: 'gl',
-  //   // Define the custom shader and variables (u_matrix is the element transform
-  //   // matrix)
-  //   // vertexShader: {
-  //   //   src: vertexShader,
-  //   //   vars: ['a_position', 'a_velocity', 'u_matrix', 'u_time'],
-  //   // },
-  //   vertexShader: 'simple',
-  //   // Build in shader with one color for all vertices
-  //   fragShader: 'simple',
-  //   // Define buffers and uniforms
-  //   vertices: { data: points },
-  //   // buffers: [{ name: 'a_velocity', data: velocities }],
-  //   // uniforms: [{ name: 'u_time' }],
-  //   // Element color and mods
-  //   color: [1, 0, 1, 0.5],
-  //   // position: [10, 5],
-  //   transform: [['t', 5, 6]],
-  //   // mods: { state: { isChanging: true } },
-  // });
   return medium;
 }

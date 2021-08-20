@@ -1,5 +1,5 @@
-/* globals figure, colorDisturbanceText, xAxis, yAxis, colorHighlight,
-   arrow, colorTimeText, colorFText, Fig */
+/* globals figure, colorDisturbance, xAxis, yAxis, colorHighlight,
+   arrow, colorTime, colorFText, Fig, colorLight */
 /* eslint-disable object-curly-newline, camelcase */
 
 // eslint-disable-next-line no-unused-vars
@@ -24,7 +24,7 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
         options: {
           simple: true,
           width: 0.08,
-          color: colorDisturbanceText,
+          color: colorDisturbance,
         },
       },
       {
@@ -60,16 +60,16 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
       //       location: 'bottom',
       //       offset: 0.3,
       //       scale: 4,
-      //       color: colorTimeText,
+      //       color: colorTime,
       //     },
       //     p1: [0, -1],
       //     p2: [2, -1],
       //     align: 'center',
       //   },
       // },
-      arrow('TArrow', 'T', [0, -1], [2, -1], colorDisturbanceText),
-      arrow('secondsArrow', '3', [0, -1], [2, -1], colorDisturbanceText),
-      arrow('periodArrow', 'T', [2.35, -2.5], [5.75, -2.5], colorDisturbanceText),
+      arrow('TArrow', 'T', [0, -1], [2, -1], colorDisturbance),
+      arrow('secondsArrow', '3', [0, -1], [2, -1], colorDisturbance),
+      arrow('periodArrow', 'T', [2.35, -2.5], [5.75, -2.5], colorDisturbance),
       // {
       //   name: 'secondsArrow',
       //   make: 'collections.line',
@@ -82,7 +82,7 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
       //       location: 'bottom',
       //       offset: 0.3,
       //       scale: 4,
-      //       color: colorTimeText,
+      //       color: colorTime,
       //     },
       //     p1: [0, -1],
       //     p2: [2, -1],
@@ -97,7 +97,7 @@ function addTimePlot(name, length, maxValue, recording, A, defaultPosition) {
         elements: {
           lb: { symbol: 'bracket', side: 'left', lineWidth: 0.07, width: 0.16 },
           rb: { symbol: 'bracket', side: 'right', lineWidth: 0.07, width: 0.16 },
-          t_1: { color: colorTimeText },
+          t_1: { color: colorTime },
         },
         forms: {
           0: ['f', ' ', { brac: ['lb', 't_1', 'rb'] }],

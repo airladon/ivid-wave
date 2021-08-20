@@ -1,22 +1,15 @@
 /*
-globals figure, colorPositionText, time, colorGText,
-colorLight, maxTimeReached, unpause, Transform, range, xAxis, yAxis,
-arrow, Fig, colorYellowText, colorDisturbanceText,
+globals figure, colorPosition, time, colorGText,
+colorLight, unpause, Transform, range, xAxis, yAxis,
+arrow, Fig, colorYellow, colorDisturbance, colorWave, colorHighlight,
 */
 
 /* eslint-disable camelcase, object-curly-newline */
 
+// eslint-disable-next-line no-unused-vars
 function addMedium(
   stringName, length, maxValue, A, defaultPosition, yAxisTitle, ballSize, ballSpace, recorder,
 ) {
-  // let t = performance.now()
-  // let newT = performance.now()
-  // const stamp = (message) => {
-  //   newT = performance.now();
-  //   console.log(message, Fig.round(newT - t));
-  //   t = newT;
-  // };
-  // stamp('medium 1');
   // Particle creater
   const ball = (x, index, radius, sides = 20) => ({
     name: `ball${index}`,
@@ -36,28 +29,11 @@ function addMedium(
       },
     },
   });
-  const makeVertLine = xPos => ({
-    make: 'line',
-    p1: [xPos / maxValue * length, -A],
-    p2: [xPos / maxValue * length, A],
-    arrow: 'barb',
-    width: 0.05,
-    color: colorYellowText,
-  });
-  // stamp('medium 2');
   figure.add({
     name: stringName,
     make: 'collection',
     transform: new Transform().scale(1, 1).translate(0, 0),
     elements: [
-      // {
-      //   name: 'minorGrid',
-      //   make: 'grid',
-      //   bounds: [0, -A * length / maxValue, length, A * length / maxValue * 2],
-      //   line: { width: 0.01 },
-      //   xStep: length / 50,
-      //   yStep: length / 50,
-      // },
       {
         name: 'grid',
         make: 'grid',
@@ -68,18 +44,6 @@ function addMedium(
       },
       xAxis('xAxis', 'x', '', length, maxValue),
       yAxis('yAxis', 'y', '', A * length / maxValue, yAxisTitle),
-      // {
-      //   name: 'disturbanceLines',
-      //   make: 'collection',
-      //   elements: [
-      //     // makeVertLine(2),
-      //     // makeVertLine(4),
-      //     // makeVertLine(6),
-      //     // makeVertLine(8),
-      //     // makeVertLine(10),
-      //     makeVertLine(5),
-      //   ],
-      // },
       {
         name: 'balls',
         make: 'collection',
@@ -87,19 +51,18 @@ function addMedium(
           transform: new Transform(),
         },
       },
-      // movePad moves the first particle in the medium
       {
         name: 'envelope2',
         make: 'polyline',
         width: 0.15,
-        color: colorYellowText,
+        color: colorYellow,
         simple: true,
       },
       {
         name: 'envelope',
         make: 'polyline',
         width: 0.15,
-        color: colorDisturbanceText,
+        color: colorDisturbance,
         simple: true,
         mods: {
           dimColor: colorLight,
@@ -130,13 +93,6 @@ function addMedium(
         mods: {
           isMovable: true,
           custom: { x: 0 },
-          // move: {
-          //   bounds: {
-          //     translation: {
-          //       left: 0, right: 0, bottom: -A * length / maxValue, top: A * length / maxValue,
-          //     },
-          //   },
-          // },
         },
       },
       {
@@ -191,7 +147,7 @@ function addMedium(
             offset: 0.04,
             location: 'top',
             scale: 4,
-            font: { color: colorPositionText },
+            font: { color: colorPosition },
           },
           p1: [100, 0],
           p2: [101, 0],
@@ -249,7 +205,7 @@ function addMedium(
         make: 'collections.line',
         options: {
           width: 0.05,
-          color: colorYellowText,
+          color: colorYellow,
           arrow: { end: 'barb' },
           label: {
             text: 'v',
@@ -267,7 +223,7 @@ function addMedium(
         make: 'collections.line',
         options: {
           width: 0.05,
-          color: colorYellowText,
+          color: colorYellow,
           arrow: { end: 'barb' },
           p1: [5, 4],
           p2: [7, 4],
@@ -283,7 +239,7 @@ function addMedium(
           scale: 4,
           location: 'start',
         },
-        color: colorPositionText,
+        color: colorPosition,
         p1: [5, -3],
         p2: [5, -2],
       },
@@ -292,7 +248,7 @@ function addMedium(
       {
         name: 'eqn',
         make: 'equation',
-        color: colorDisturbanceText,
+        color: colorDisturbance,
         dimColor: colorLight,
         scale: 4,
         elements: {
@@ -302,7 +258,7 @@ function addMedium(
           rb: {
             symbol: 'bracket', side: 'right', lineWidth: 0.07, width: 0.16,
           },
-          // x_1: { color: colorPositionText },
+          // x_1: { color: colorPosition },
         },
         formDefaults: {
           alignment: { xAlign: 'center' },
@@ -315,7 +271,7 @@ function addMedium(
       {
         name: 'eqn1',
         make: 'equation',
-        color: colorYellowText,
+        color: colorYellow,
         scale: 4,
         elements: {
           lb: { symbol: 'bracket', side: 'left', lineWidth: 0.07, width: 0.16 },
@@ -341,7 +297,7 @@ function addMedium(
         length: 0.5,
         tail: 0.2,
         tailWidth: 0.2,
-        color: colorDisturbanceText,
+        color: colorDisturbance,
       },
     ],
     mods: {
@@ -375,14 +331,10 @@ function addMedium(
   const ballH = medium.add(ball(5 / maxValue * length, 'h', ballSize * 1.5));
   ballH.custom.drawX = axis.valueToDraw(5);
   ballH.scenarios.default.color = colorWave.slice();
-  // ballH.setColor(colorWave);
-  // ballH.setDimColor(colorWave);
 
-  // stamp('medium 4')
+  // eslint-disable-next-line
   const highlights = xValues.map((x, i) => ((x % 2 === 0) && (x > 0)) ? i : -1).filter(i => i > -1).map(i => `ball${i}`);
   balls.toFront(highlights);
-  // const tracker = medium.add(ball(0, 'Tracker', ballSize * 2 ));
-  // tracker.scenarios.default.color = color1;
   const tracker = medium.getElement('ballTracker');
   const movePad = medium.getElement('movePad');
   const firstBall = medium.getElement('firstBall');
@@ -394,13 +346,10 @@ function addMedium(
   const wavelength = medium.getElement('wavelength');
   const velocity = medium.getElement('velocity');
   const widthArrow = medium.getElement('widthArrow');
-  // const xDashLine = medium.getElement('xDashLine');
-  // const xDashLineG = medium.getElement('xDashLineG');
   const movePadEnv = medium.get('movePadEnv');
   const propogation = medium.get('propogation');
   let lastEnvelope = [];
   let lastEnvelopeNumVertices = 0;
-  // stamp('medium 5');
   medium.customState = {
     f: 0.2,   // Current frequency of sine wave for medium
     c: 1,     // Propagation velocity of medium
@@ -413,7 +362,6 @@ function addMedium(
     tracker,
     wavelength,
     ball0: balls.getElement('ball0'),
-    // recording: new Recorder(maxValue / minVelocity),
     recording: recorder,
     highlights,
     updateEqn1: () => {
@@ -421,11 +369,9 @@ function addMedium(
       eqn1.updateElementText({
         value: `${Math.abs(Fig.tools.math.round(movePadEnv.customState.x / length * maxValue * 2, 1)).toFixed(1)}`,
         sign,
-        // x_1: xDashLineG.isShown || xDashLineG.opacity < 1 ? 'x\'' : 'x',
         x_1: 'x',
       }, 'current');
     },
-    // xValues.filter((x, i) => (x % 1 === 0) && x > 0).map(x => `ball${x}`),
     // Update function gets the position of the movePad, then records it, and
     // updates all the particles with their current displacement.
     update: (deltaTime) => {
@@ -440,25 +386,17 @@ function addMedium(
         y = medium.custom.recording.getValueAtTimeAgo(0);
         movePad.transform.updateTranslation(0, y);
       }
-      // console.log(y, medium.custom.recording.getState().mode)
       firstBall.setPosition(0, y);
       // Calculate the displacement of each particle and set it
       const envelopePoints = [];
       if (balls.isShown) {
         for (let i = 0; i < xValues.length; i += 1) {
           const b = balls[`_ball${i}`];
-          const by = medium.custom.recording.getValueAtTimeAgo((b.custom.x) / medium.customState.c);
+          const by = medium.custom.recording.getValueAtTimeAgo(
+            Math.max(0, b.custom.x - 0.001) / medium.customState.c,
+          );
           b.setPosition(b.custom.drawX, by);
-          // if (Math.abs(by) > 0.003) {
-          //   b.setColor([1, 0, 0, 1]);
-          // } else {
-          //   b.setColor(colorLight)
-          // }
-          // if (envelope.isShown || periodicEnvelope.isShown) {
-          //   envelopePoints.push([b.custom.drawX, by]);
-          // }
         }
-        // envelope.pointsToDraw = xValues.length * 6;
       }
       if (ballH.isShown) {
         const by = medium.custom.recording.getValueAtTimeAgo(5 / medium.customState.c);
@@ -504,15 +442,8 @@ function addMedium(
             }
           }
           const newX = x + movePadEnv.customState.x / maxValue * length;
-          const minX = Math.min(Math.max(0, x), length);
           const minNewX = Math.min(Math.max(0, newX / length * maxValue), length);
           if (minValue < 0) {
-            // if (xDashLineG.isShown) {
-            //   eqn1.setPosition(
-            //     minX,
-            //     -5.3,
-            //   );
-            // } else {
             eqn1.setPosition(
               minNewX,
               minValue - 1,
@@ -529,17 +460,6 @@ function addMedium(
           } else {
             eqn1.setOpacity(0);
           }
-          // if (xDashLine.isShown) {
-          //   xDashLine.setEndPoints([minNewX, -3.5], [minNewX, minValue]);
-          //   if (newX < 0 || newX > length) {
-          //     xDashLine.setOpacity(0);
-          //   } else {
-          //     xDashLine.setOpacity(1);
-          //   }
-          // }
-          // if (xDashLineG.isShown) {
-          //   xDashLineG.setEndPoints([minX, -4.6], [minX, minValue]);
-          // }
         }
       }
       if (envelope2.isShown) {
@@ -550,8 +470,6 @@ function addMedium(
           const yVal = medium.custom.recording.getValueAtTimeAgo(Math.max(tAgo, 0));
           envelope2Points.push([xValuesSmall[i] / maxValue * length, yVal]);
         }
-        // console.log(movePad)
-        // const newEnvelope = lastEnvelope.map(p => p.add(movePadEnv.custom.x, 0));
         medium._envelope2.custom.updatePoints({ points: envelope2Points });
       }
       if (periodicEnvelope.isShown) {
@@ -566,34 +484,18 @@ function addMedium(
       // If the tracker is being used, then calculate its current position and
       // place it there
       if (tracker.isShown) {
-        // The space between particles in seconds (from the velocity)
-        // const ballSpaceTime = axis.drawToValue(ballSize * 2) / medium.customState.c;
-        // Quantize the space so the tracker particle can only exist on an
-        // existing particle and not between
-        // const t = Math.floor(
-        //   (time.now() + medium.custom.trackingTime) / ballSpaceTime,
-        // ) * ballSpaceTime;
         const tt = time.now() - medium.customState.trackingTime;
-        // console.log(time.now(), t)
         // If the tracker is within the axis, then position it appropriately,
         // otherwise position it way off
         const xValue = Math.max(tt * medium.customState.c, 0);
-        const x = axis.valueToDraw(xValue); //) * 0.94;
+        const x = axis.valueToDraw(xValue);
         if (tt > 0.1 && axis.inAxis(xValue) && x < length) {
-          // const by = medium.custom.recording.getValueAtTimeAgo(t);
           tracker.setPosition(x, -0.2);
         } else {
           tracker.setPosition(100, 0);
         }
       }
       if (eqn1.isShown) {
-        // const sign = movePadEnv.customState.x > 0 ? '\u2212' : '+';
-        // eqn1.updateElementText({
-        //   value: `${Math.abs(Fig.tools.math.round(movePadEnv.customState.x / length * maxValue * 2, 1)).toFixed(1)}`,
-        //   sign,
-        //   // x_1: xDashLineG.isShown || xDashLineG.opacity < 1 ? 'x\'' : 'x',
-        //   x_1: 'x',
-        // }, 'current');
         medium.custom.updateEqn1();
       }
     },
@@ -616,17 +518,6 @@ function addMedium(
     setFrequency: (frequency) => {
       medium.customState.f = frequency;
     },
-    // drawEnvelope: () => {
-    //   envelope.stop();
-    //   envelope.animations.new()
-    //     .custom({
-    //       callback: (p) => {
-    //         envelope.pointsToDraw = Math.floor(envelope.drawingObject.numVertices / 6 * p) * 6;
-    //       },
-    //       duration: 2,
-    //     })
-    //     .start();
-    // },
     // Find the minimum of the displayed sine curve and position the
     // wavelength arrow annotation to align with it.
     setWavelengthPosition: (deltaX = 0) => {
@@ -717,16 +608,14 @@ function addMedium(
     velocity.animations.new().dissolveOut(0.5).start();
   });
   movePad.notifications.add('setTransform', () => {
-    if (maxTimeReached) {
-      return;
-    }
     // If the movePad has been manually moved, then stop current animations
     if (movePad.state.isBeingMoved && movePad.isAnimating()) {
       medium.custom.stop();
     }
     // const y = movePad.getPosition().y;
     //   medium.custom.recording.record(y, time.step());
-    unpause();
+    // console.log('unpause')
+    // unpause();
     const currentMode = medium.custom.recording.getState().mode;
     medium.custom.recording.setManual();
     if (currentMode !== 'manual') {
@@ -801,7 +690,7 @@ function addMedium(
     const initialDisturbance = time.now() - medium.customState.trackingTime;
     const initialDisturbanceDistance = initialDisturbance / 10 * length;
     let p;
-    const x = marker.getPosition('local').x;
+    const { x } = marker.getPosition('local');
     if (initialDisturbance < 10) {
       p = Math.max((initialDisturbanceDistance - x) / length, 0);
     } else {
@@ -810,14 +699,5 @@ function addMedium(
     figure.get('timePlot1').custom.updateMarker(p);
   });
 
-  // const a6 = medium._sixArrow;
-  // figure.fnMap.global.add('grow6', () => {
-  //   a6.showAll();
-  //   a6._label.hide();
-  //   a6.animations.new()
-  //     .length({ start: 0.5, target: 3 / maxValue * length, duration: 1 })
-  //     .dissolveIn({ element: 'label' })
-  //     .start();
-  // });
   return medium;
 }
