@@ -1,6 +1,6 @@
 /*
 globals figure, colorPosition, time, colorGText,
-colorLight, maxTimeReached, unpause, Transform, range, xAxis, yAxis,
+colorLight, unpause, Transform, range, xAxis, yAxis,
 arrow, Fig, colorYellow, colorDisturbance, colorWave, colorHighlight,
 */
 
@@ -392,7 +392,9 @@ function addMedium(
       if (balls.isShown) {
         for (let i = 0; i < xValues.length; i += 1) {
           const b = balls[`_ball${i}`];
-          const by = medium.custom.recording.getValueAtTimeAgo((b.custom.x) / medium.customState.c);
+          const by = medium.custom.recording.getValueAtTimeAgo(
+            Math.max(0, b.custom.x - 0.001) / medium.customState.c,
+          );
           b.setPosition(b.custom.drawX, by);
         }
       }
@@ -606,16 +608,14 @@ function addMedium(
     velocity.animations.new().dissolveOut(0.5).start();
   });
   movePad.notifications.add('setTransform', () => {
-    if (maxTimeReached) {
-      return;
-    }
     // If the movePad has been manually moved, then stop current animations
     if (movePad.state.isBeingMoved && movePad.isAnimating()) {
       medium.custom.stop();
     }
     // const y = movePad.getPosition().y;
     //   medium.custom.recording.record(y, time.step());
-    unpause();
+    // console.log('unpause')
+    // unpause();
     const currentMode = medium.custom.recording.getState().mode;
     medium.custom.recording.setManual();
     if (currentMode !== 'manual') {

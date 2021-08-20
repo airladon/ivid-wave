@@ -18,8 +18,8 @@ const figure = new Fig.Figure({
 .##....##..##.......##.....##.##.....##.##.....##.##.......##....##
 ..######...########..#######..########..##.....##.########..######.
 */
-// Global colors used in equations.js and slides.js
 /* eslint-disable no-unused-vars */
+// Global colors
 const colorRed = [1, 0, 0, 1];
 const colorRedText = [1, 0.2, 0.2, 1];
 const colorBlue = [0.2, 0.7, 1, 1];
@@ -47,9 +47,6 @@ const { range, rand, randSign } = Fig.tools.math;
 const minVelocity = 0.05;
 const time = new TimeKeeper();
 const recorder = new Recorder(10, time);
-let maxTime = 0;
-let maxTimeReached = false;
-/* eslint-enable no-unused-vars */
 
 let loadNum = 0;
 const getLoader = () => {
@@ -62,6 +59,8 @@ const getLoader = () => {
     }
   };
 };
+/* eslint-enable no-unused-vars */
+
 /*
 .########.##.......########.##.....##.########.##....##.########..######.
 .##.......##.......##.......###...###.##.......###...##....##....##....##
@@ -131,10 +130,6 @@ figure.recorder.notifications.add('seek', () => {
 });
 // Update function for everytime we want to update the particles
 function update(override = false) {
-  if (maxTime > 0 && time.now() > maxTime) {
-    maxTimeReached = true;
-    pause();
-  }
   if (
     (
       (time.isPaused() || m1.custom.recording.isStationary())
@@ -178,7 +173,6 @@ const stop = () => {
 };
 const reset = () => {
   stop();
-  maxTimeReached = false;
   m1.customState.trackingTime = 0;
   m1.custom.reset();
   p1.custom.reset();
@@ -396,7 +390,6 @@ nav.loadSlides([
     },
   },
   {
-    // time: '0:39.5',
     time: '0:33',
     show: ['title'],
     transition: [
@@ -706,7 +699,6 @@ nav.loadSlides([
     },
     transition: [
       { out: ['m1.movePad', 'm1.firstBall', 'velocityButton', 'velocity', 'freezeTimeLabel', 'freezeTimeButton', 'slowTimeLabel', 'slowTimeButton', 'pulseButton', 'resetButton', 'sineButton', 'pulseButton2'] },
-      // { trigger: 'growArrow', payload: ['timePlot1._secondsArrow', 1], duration: 1.5 },
       { in: timePlot1._secondsArrow },
       {
         trigger: 'growArrow', payload: ['m1._v2Arrow', 1], duration: 1.5, delay: 3,
@@ -1167,7 +1159,6 @@ nav.loadSlides([
     form: [null, null, 'diffSolnMono1', null],
     enterState: () => {
       eqnDiff.showForm('diffSolnMono1');
-      // eqnDiff.hide();
     },
     transition: [
       { in: 'eqnDiff.y_5_' },
@@ -1178,12 +1169,6 @@ nav.loadSlides([
       ],
       { in: { eqnDiff: ['g_', 'lb4', 'x_2_', 'min1_', 'v_2_', 't_2_', 'rb4'] }, delay: 1.8 },
       { in: { eqnDiff: ['h_', 'lb5', 'x_3_', 'plus2_', 'v_3_', 't_3_', 'rb5'] }, delay: 8 },
-      // { trigger: 'calcInterference', payload: 0, delay: 3 },
-      // [
-      //   { in: 'waveInterference' },
-      //   { trigger: 'animateInterference', duration: 7 },
-      // ],
-      // { out: 'waveInterference' },
     ],
   },
   {
