@@ -1,5 +1,4 @@
 /* globals Fig, dd, addFigureElements, TimeKeeper, Recorder */
-
 const figure = new Fig.Figure({
   limits: [0, 0, 24, 12],
   color: [0.3, 0.3, 0.3, 1],
@@ -1452,9 +1451,10 @@ nav.loadSlides([
 
 
 // Load audio, states and events data
-figure.recorder.loadAudioTrack(new Audio(window.location.href.replace(/\/index.html|\/src.index.html|\/src|\/docs|\/test.index.html|\/tests\/$|\/$/, '/src/audio-track.mp3')));
+figure.recorder.loadAudioTrack(new Audio(window.location.href.replace(/\/index.html|\/index-test.html|\/src.index.html|\/src|\/docs|\/test.index.html|\/tests\/$|\/$/, '/src/audio-track.mp3')));
 
-figure.recorder.loadVideoTrack(window.location.href.replace(/\/index.html|\/src.index.html|\/src|\/docs|\/test.index.html|\/tests\/$|\/$/, '/src/video-track.json'), getLoader('video'));
+
+figure.recorder.loadVideoTrack(window.location.href.replace(/\/index.html|\/src.index.html|\/index-test.html|\/src|\/docs|\/test.index.html|\/tests\/$|\/$/, '/src/video-track.json'), getLoader('video'));
 
 
 figure.recorder.notifications.add('stateSet', () => pause());

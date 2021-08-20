@@ -1,10 +1,10 @@
-const { tester } = require('./ividTester/tester');
+const { tester } = require('./tester');
 
 tester({
   title: 'Wave',
   width: 1200,
-  height: 610,
-  htmlFile: `http://localhost:8080/test/index.html`,
+  height: 750,
+  htmlFile: `http://localhost:8080/index.html`,
   fromTimes: [
     0,
     14,

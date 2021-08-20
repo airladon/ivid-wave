@@ -159,7 +159,7 @@ async function tester(
     beforeAll(async () => {
       await page.setViewportSize({ width, height });
       await page.goto(htmlFile);
-      await snap(0, threshold);
+      // await snap(0, threshold);
       await page.evaluate(() => {
         figure.timeKeeper.setManualFrames();
         figure.recorder.startPlayback();
