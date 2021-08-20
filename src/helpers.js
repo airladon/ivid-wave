@@ -1,5 +1,5 @@
 /* eslint-disable camelcase, object-curly-newline, max-len */
-/* global colorLight, colorOff, colorOn, figure, colorDark, color4, Fig */
+/* global colorLight, colorOff, colorOn, figure, colorDark, colorLight, Fig */
 
 /*
 ....###....##.....##.########..######.
@@ -211,7 +211,7 @@ const label = (name, position, col, text) => ({
     font: { size: 0.36, color: col },
     xAlign: 'center',
     yAlign: 'middle',
-    color: color4,
+    color: colorLight,
   },
 });
 

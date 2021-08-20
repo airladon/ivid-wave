@@ -1,10 +1,12 @@
+/* eslint-disable camelcase, object-curly-newline, max-len */
+/* globals colorLight, figure, lines, bc, colorYellow, scale, cont */
+
+// eslint-disable-next-line no-unused-vars
 function addDefsEquation(name) {
-  const description = figure.add({
+  figure.add({
     name,
     make: 'equation',
     color: colorLight,
-    // font: { family: 'TeXGyreTermes' },
-    // textFont: { family: 'TeXGyreTermes', style: 'normal' },
     font: { family: 'Open Sans', width: 1.12, midAscent: 1.1, maxAscent: 1.5 },
     textFont: { family: 'Open Sans', style: 'normal', width: 1.12, midAscent: 1.1, maxAscent: 1.5 },
     scale: 4.7,
@@ -20,25 +22,24 @@ function addDefsEquation(name) {
       },
     },
     elements: {
-      Transverse: { color: colorYellowText },
-      Transverse_1: { color: colorYellowText },
-      Wave: { color: colorYellowText },
+      Transverse: { color: colorYellow },
+      Transverse_1: { color: colorYellow },
+      Wave: { color: colorYellow },
       propDisturb: 'propogating disturbance',
       across: 'extend or direct across',
       colon: ': ',
       adjective: { text: 'adjective', style: 'italic' },
-      long: { text: 'Longitudinal', color: colorYellowText },
-      long1: { text: 'Longitudinal', color: colorYellowText, width: 1.1 },
+      long: { text: 'Longitudinal', color: colorYellow },
+      long1: { text: 'Longitudinal', color: colorYellow, width: 1.1 },
       along: 'lengthwise or along',
-      Single: { color: colorYellowText },
-      Multiple: { color: colorYellowText },
-      'Wave Equation': { color: colorYellowText },
-      'Second Derivative: ': { color: colorYellowText },
+      Single: { color: colorYellow },
+      Multiple: { color: colorYellow },
+      'Wave Equation': { color: colorYellow },
+      'Second Derivative: ': { color: colorYellow },
     },
     forms: {
       waveDef: ['Wave', 'colon', 'propDisturb'],
       transverseWave: ['Transverse', '  ', 'Wave'],
-      // transverseDef: ['Transverse', 'colon', 'across'],
       transverseDef: lines([
         ['Transverse', '  ', 'Wave'],
         scale(['Transverse_1', '_: ', '(adjective) extended or directed across'], 0.5),
@@ -49,14 +50,6 @@ function addDefsEquation(name) {
         scale(['long1', '_: ', '(adjective) placed or running lengthwise'], 0.5),
       ], 0.8, 'center'),
       ocean: ['Transverse', '_ and ', 'long', '_ '],
-      // longWave: {
-      //   content: ['long', '  ', 'Wave'],
-      //   alignment: { yAlign: -0.4 },
-      // },
-      // longDef: {
-      //   content: ['long', 'colon', 'along'],
-      //   alignment: { yAlign: -0.4 },
-      // },
       single1: ['Single', '  ', cont('', 4), '  ', cont('', 2.2)],
       single2: ['Single', '  ', cont('travelling', 3.9), '  ', cont('', 2.1)],
       single3: ['Single', '  ', cont('travelling', 3.9), '  ', cont('wave', 2.1)],
@@ -65,16 +58,6 @@ function addDefsEquation(name) {
       waveEqn1: bc('Wave Equation', '(For one dimension)', '', 0.04, 0.04, 0.5),
       derivative1: scale(['Second Derivative: ', cont('', 5.5)], 0.7),
       derivative2: scale(['Second Derivative: ', cont('Shape or Curvature', 5.5)], 0.7),
-      // initialSpace: ['Disturbance g(x) at an initial time'],
-      // both: {
-      //   lines: {
-      //     content: [
-      //       ['Disturbance g(x) at an initial time'],
-      //       ['Disturbance h(t) at an initial position'],
-      //     ],
-      //     baselineSpace: 4,
-      //   },
-      // },
     },
   });
 }

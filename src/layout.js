@@ -1,12 +1,9 @@
+/* eslint-disable camelcase, object-curly-newline, max-len */
+/* globals figure, button, label, addDefsEquation, addMedium, recorder, colorLight, addTimePlot, addPressureMedium, toggle, addOceanMedium, addVLFEquation, addDiffEquation, addTravellingWaveEquation, addTitle, addExamples, addWaveInterference, labelButton, colorPosition */
 
+
+// eslint-disable-next-line no-unused-vars
 function addFigureElements() {
-  // let t = performance.now()
-  // let newT = performance.now()
-  // const stamp = (message) => {
-  //   newT = performance.now();
-  //   console.log(message, Fig.round(newT - t));
-  //   t = newT;
-  // }
   figure.add({
     name: 'highlighter',
     make: 'collections.rectangle',
@@ -32,90 +29,29 @@ function addFigureElements() {
     button('sineButton', [3, 0.8], 'Sine'),
     button('sine2fButton', [4.8, 0.8], 'Sine 2|f|', { f: { font: { style: 'italic' } } }),
     button('resetButton', [22.8, 0.8], 'Reset'),
-    // button('freezeTimeButton', [20.6, 0.8], 'Off'),
-    // button('slowTimeButton', [17.4, 0.8], 'Off'),
-    // button('velocityButton', [10.4, 0.8], '1v'),
     toggle('freezeTimeButton', [20.5, 1.1], 0.5, false),
     toggle('slowTimeButton', [18, 1.1], 0.5, false),
     toggle('velocityButton', [15.5, 1.1], 0.5, false),
-    // button('velocityButton2', [2, 1.04], 'Fast'),
-    // button('freqButton1', [-0.7, 1.9], 'Fast'),
-    // button('freqButton2', [-0.7, 1.04], 'Fast'),
   ]);
   figure.add([
-    label('freezeTimeLabel', [20.5, 0.4], color4, 'Freeze'),
-    label('slowTimeLabel', [18, 0.4], color4, ['Slow Motion']),
-    // label('disturbance', [0.45, 0.15], colorText, ['Disturbance:']),
-    label('velocity', [15.5, 0.4], color4, '2x Velocity'),
-    // label('frequency', [-0.7, 2.1], colorText, 'Sine Frequency'),
-    // axisLabel('x0', [-2.1, 0.77], color0, [
-    //   'x',
-    //   { text: '0', font: { size: 0.1 }, offset: [0, -0.04] },
-    // ]),
-    // axisLabel('x1', [-0.38, 0.77], color1, [
-    //   'x',
-    //   { text: '1', font: { size: 0.1 }, offset: [0, -0.04] },
-    // ]),
-    // axisLabel('vFast', [2.1, 1.77], color1, [
-    //   'fast',
-    // ]),
-    // axisLabel('vSlow', [2.1, 0.9], color1, [
-    //   'slow',
-    // ]),
+    label('freezeTimeLabel', [20.5, 0.4], colorLight, 'Freeze'),
+    label('slowTimeLabel', [18, 0.4], colorLight, ['Slow Motion']),
+    label('velocity', [15.5, 0.4], colorLight, '2x Velocity'),
   ]);
-  // stamp(1)
   addDefsEquation('defs');
-  // stamp(2)
-  // figure.add({
-  //   name: 'waveDefinition',
-  //   make: 'textLines',
-  //   font: { size: 1, color: colorLight },
-  //   xAlign: 'center',
-  //   position: [11.5, 1],
-  //   text: ['|Wave|: propogating disturbance'],
-  //   modifiers: {
-  //     Wave: { font: { color: colorGText } },
-  //   },
-  // });
-  // figure.add({
-  //   name: 'tranvserseDef',
-  //   make: 'textLines',
-  //   font: { size: 1, color: colorLight },
-  //   xAlign: 'left',
-  //   position: [12, 1],
-  //   text: ['|Transverse|: acting, lying, or being across'],
-  //   modifiers: {
-  //     Transverse: { font: { color: colorGText } },
-  //   },
-  // });
-  // const recorder = new Recorder(10, time);
   const m1 = addMedium('m1', 13, 10, 2.5, [5.5, 6], false, 0.12, 0.125, recorder);
   m1.setPosition(0.1, 0);
-  // stamp('medium')
-  const timePlot1 = addTimePlot(
+  addTimePlot(
     'timePlot1', 6.5, 10.5, m1.custom.recording, 2.5 * 13 / 10, [1, 6],
   );
-  // stamp('timePlot')
-  const pressurePlot = addPressureMedium('p1', 18, 2, 0.1, 0.4, recorder);
-  // stamp('pressure')
+  addPressureMedium('p1', 18, 2, 0.1, 0.4, recorder);
   addOceanMedium('ocean', 24, 4, 0.07, 0.4);
-  // stamp('ocean')
-  // addSineTEquation('eqnSineT');
-  // addSinXEquation('eqnSinX');
-  // addSinTEquation('eqnSinT');
   addVLFEquation('eqnVLF');
   addDiffEquation('eqnDiff');
   addTravellingWaveEquation('eqnWave');
-  // addMaxwellEquation('eqnMaxwell');
-  // addTimeWave('eqnGenT');
-  // stamp('equations')
-  // addTitle(2.88 * 4, 1.44 * 4, 0.1);
   addTitle(8, 4, 0.05, recorder);
-  // addIntro(24, 4, 0.1);
   addExamples();
-  // stamp('titles')
   addWaveInterference('waveInterference', 20);
-  // stamp('waveInterference');
   figure.showTouchBorders = () => {
     const elements = figure.elements.getAllElements();
     const colors = [
@@ -151,9 +87,9 @@ function addFigureElements() {
     }
   };
   figure.add([
-    labelButton('timeWaveSelector', [4, 1],  [{ text: 'Initial Disturbance', font: { size: 0.35 } }, 'General Time']),
+    labelButton('timeWaveSelector', [4, 1], [{ text: 'Initial Disturbance', font: { size: 0.35 } }, 'General Time']),
     labelButton('sinSpaceSelector', [12, 1], [{ text: 'Initial Disturbance', font: { size: 0.35 } }, 'Periodic Time']),
-    labelButton('sinTimeSelector', [20, 1],  [{ text: 'Initial Disturbance', font: { size: 0.35 } }, 'Periodic Space']),
+    labelButton('sinTimeSelector', [20, 1], [{ text: 'Initial Disturbance', font: { size: 0.35 } }, 'Periodic Space']),
   ]);
 
   const end = figure.add({
@@ -201,7 +137,7 @@ function addFigureElements() {
     font: { family: 'Open Sans', size: 0.7 },
     xAlign: 'center',
     position: [12, 1],
-    color: colorPositionText,
+    color: colorPosition,
     mods: {
       isTouchable: true,
     },
@@ -209,23 +145,4 @@ function addFigureElements() {
   link.onClick = () => {
     window.open('https://github.com/airladon/FigureOne/', '_blank');
   };
-  // figure.add({
-  //   name: 'textTester',
-  //   make: 'equation',
-  //   color: colorLight,
-  //   font: { family: 'Roboto' },
-  //   // textFont: { family: 'Roboto', style: 'normal' },
-  //   // font: { family: 'TeXGyreTermes' },
-  //   // textFont: { family: 'TeXGyreTermes' },
-  //   // font: { family: 'Open Sans' },
-  //   textFont: { family: 'Open Sans', style: 'normal', width: 1.12, midAscent: 1.1, maxAscent: 1.5 },
-  //   position: [1, 4],
-  //   scale: 4,
-  //   elements: {
-  //     box: { symbol: 'box', lineWidth: 0.008, color: [1, 0, 0, 1] },
-  //   },
-  //   forms: {
-  //     0: { box: [['function repeats every time it\'s input is a multiple of '], 'box'] },
-  //   },
-  // });
 }

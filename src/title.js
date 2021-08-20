@@ -1,4 +1,5 @@
-
+/* globals Fig, figure, getLoader, colorLight, time */
+// eslint-disable-next-line no-unused-vars
 function addTitle(
   length, height, gridStep, recorder,
 ) {
@@ -21,22 +22,9 @@ void main() {
 }`,
     vars: ['a_position', 'a_texcoord', 'u_matrix', 'a_offset', 'u_time'],
   };
-  const fragShader = {
-    src: `
-precision mediump float;
-uniform vec4 u_color;
-uniform sampler2D u_texture;
-varying vec2 v_texcoord;
-void main() {
-  gl_FragColor = texture2D(u_texture, v_texcoord) * u_color.a;
-}`,
-    vars: ['u_color', 'u_texture'],
-  };
   const points = [];
   const offsets = [];
-  const xLocations = [];
   const y = height;
-  const offset = [];
   for (let x = 0; x < length; x += gridStep) {
     points.push(x, 0);
     points.push(x + gridStep, y);
@@ -51,19 +39,15 @@ void main() {
     name: 'title',
     make: 'collection',
     elements: [
-      // {
-      //   make: 'line',
-      //   p1: [-20, 0],
-      //   p2: [20, 0],
-      //   width: 0.05,
-      // },
       {
         name: 'title',
         make: 'gl',
         vertexShader,
         fragShader: 'withTexture',
         vertices: { data: points },
-        buffers: [{ name: 'a_offset', data: offsets, size: 1, usage: 'DYNAMIC' }],
+        buffers: [{
+          name: 'a_offset', data: offsets, size: 1, usage: 'DYNAMIC',
+        }],
         uniforms: [{ name: 'u_time', length: 1, type: 'FLOAT' }],
         texture: {
           src: './src/title.png',
@@ -156,37 +140,13 @@ void main() {
       envelope.custom.updatePoints({ points: envelopePoints });
       title._title.drawingObject.updateBuffer('a_offset', offsets);
     },
-  }
+  };
   figure.fnMap.global.add('outTitle', () => {
     title.animations.new().dissolveOut(0.5).start();
   });
   movePad.notifications.add('setTransform', () => {
-    // unpause();
     recorder.setManual();
     figure.fnMap.exec('forceUpdate');
   });
-  // title.notifications.add('getState', () => {
-  //   title.customState.recorder = title.custom.recording.encodeData();
-  // });
-  // // title.backupState = title._state;
-  // // title._state = (options) => {
-  // //   title.customState.recorder = title.custom.recording.encodeData();
-  // //   return title.backupState(options);
-  // // };
-  
-  // title.notifications.add('setState', () => {
-  //   if (title.customState.recorder != null) {
-  //     title.custom.recording.loadEncodedData(title.customState.recorder[0], title.customState.recorder[1]);
-  //   }
-  // });
-
-
-  // title.backupStateSet = title.stateSet;
-  // title.stateSet = () => {
-  //   title.backupStateSet();
-  //   if (title.customState.recorder != null) {
-  //     title.custom.recording.loadEncodedData(title.customState.recorder[0], title.customState.recorder[1]);
-  //   }
-  // }
   return title;
 }

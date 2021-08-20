@@ -1,3 +1,5 @@
+/* globals figure */
+
 /**
 This function keeps track of time.
 
@@ -105,6 +107,17 @@ function TimeKeeper() {
   function getTimeSpeed() { return timeSpeed; }
 
   return {
-    reset, now, step, pause, unpause, isPaused, setTimeSpeed, getTimeSpeed, setGetNow, getState, setState, setDeltaTime,
+    reset,
+    now,
+    step,
+    pause,
+    unpause,
+    isPaused,
+    setTimeSpeed,
+    getTimeSpeed,
+    setGetNow,
+    getState,
+    setState,
+    setDeltaTime,
   };
 }

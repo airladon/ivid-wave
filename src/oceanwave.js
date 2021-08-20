@@ -1,5 +1,7 @@
 // Inspiration: https://www.acs.psu.edu/drussell/demos/waves/wavemotion.html
+/* globals Fig, figure, colorWave, colorLight, time */
 
+// eslint-disable-next-line no-unused-vars
 function addOceanMedium(
   name, length, height, particleSize, gridStep,
 ) {
@@ -35,11 +37,11 @@ void main() {
       }
     }
   }
-  const addCircle = (name, index) => {
+  const addCircle = (nameIn, index) => {
     const position = Fig.getPoint([centers[index], centers[index + 1]]);
     const radius = ((position.y + 2) * (position.y + 2)) / 40;
     return {
-      name,
+      name: nameIn,
       make: 'polygon',
       sides: 30,
       position,
@@ -48,10 +50,10 @@ void main() {
       color: colorWave,
     };
   };
-  const addHighlight = (name, index) => {
+  const addHighlight = (nameIn, index) => {
     const position = Fig.getPoint([centers[index], centers[index + 1]]);
     return {
-      name,
+      name: nameIn,
       make: 'polygon',
       sides: 20,
       position,
@@ -59,23 +61,20 @@ void main() {
       color: colorWave,
       mods: {
         update: (deltaTime) => {
-          // update: (deltaTime) => {
-            const r = ((position.y + 2) * (position.y + 2)) / 40;
-            const f = 0.2;
-            const c = 1.0;
-            const theta = -2.0 * 3.1415926 * f * (deltaTime - position.x / c);
-            const x = position.x + r * Math.cos(theta);
-            const y = position.y + r * Math.sin(theta);
-            figure.get(`ocean.${name}`).setPosition(x, y);
-          // }
-        }
-      }
+          const r = ((position.y + 2) * (position.y + 2)) / 40;
+          const f = 0.2;
+          const c = 1.0;
+          const theta = -2.0 * 3.1415926 * f * (deltaTime - position.x / c);
+          const x = position.x + r * Math.cos(theta);
+          const y = position.y + r * Math.sin(theta);
+          figure.get(`ocean.${nameIn}`).setPosition(x, y);
+        },
+      },
     };
   };
   const medium = figure.add({
     name,
     make: 'collection',
-    position: [0, -2],
     elements: [
       {
         name: 'grid',
@@ -92,44 +91,26 @@ void main() {
       {
         name: 'particles',
         make: 'gl',
-        // Define the custom shader and variables (u_matrix is the element transform
-        // matrix)
         vertexShader: {
           src: vertexShader,
           vars: ['a_position', 'u_matrix', 'u_time', 'a_center'],
         },
-        // vertexShader: 'simple',
-        // Build in shader with one color for all vertices
         fragShader: 'simple',
-        // fragShader: {
-        //   src: fragmentShader,
-        //   vars: ['u_color'],
-        // },
-        // Define buffers and uniforms
-        buffers: [{ name: 'a_center', data: centers, size: 2, usage: 'STATIC' }],
+        buffers: [{
+          name: 'a_center', data: centers, size: 2, usage: 'STATIC',
+        }],
         vertices: { data: points },
-        // buffers: [{ name: 'a_offset', data: offsets, size: 1, usage: 'DYNAMIC' }],
         uniforms: [{ name: 'u_time', length: 1, type: 'FLOAT' }],
-        // Element color and mods
         color: colorLight,
-        // position: [10, 5],
-        // mods: { state: { isChanging: true } },
       },
       addHighlight('h1', 20100),
       addHighlight('h2', 20250),
       addHighlight('h3', 20400),
       addHighlight('h4', 25050),
     ],
-    // transform: [['t', 5, 6]],
     position: [0, 6],
   });
-  // const movePad = medium._movePad;
   medium.custom = {
-    // c: 2,
-    // A: 0.5,
-    // f: 0.2,
-    // movePad,
-    // recording: new Recorder(10),
     update: () => {
       const t = time.now();
       medium._particles.drawingObject.uniforms.u_time.value = [t];
@@ -137,67 +118,10 @@ void main() {
       medium._h2.update(t);
       medium._h3.update(t);
       medium._h4.update(t);
-      // const newOffsets = Array(offsets.length);
-      // const x = movePad.transform.t().x;
-      // medium._diaphragm.setPosition(x, 0);
-      // medium.custom.recording.record(x, deltaTime);
-      // for (let i = 0; i < xLocations.length; i += 1) {
-      //   const xOffset = medium.custom.recording.getValueAtTimeAgo(xLocations[i] / medium.custom.c);
-      //   newOffsets[i * 3] = xOffset;
-      //   newOffsets[i * 3 + 1] = xOffset;
-      //   newOffsets[i * 3 + 2] = xOffset;
-      // }
-      // medium._particles.drawingObject.updateBuffer('a_offset', newOffsets);
     },
     stop: () => {
       medium.stop();
-      // movePad.animations.cancel('_noStop_disturb_');
-    },
-    reset: () => {
-      // medium.custom.stop();
-      // movePad.setPosition(0, 0);
-      // medium.custom.recording.reset(0);
-    },
-    setVelocity: (velocity) => {
-      // medium.custom.c = velocity;
-    },
-    setFrequency: (frequency) => {
-      // medium.custom.f = frequency;
     },
   };
-  // medium._particles.drawingObject.uniforms.u_highlight.value = [1];
-  // movePad.notifications.add('setTransform', () => {
-  //   // if (maxTimeReached) {
-  //   //   return;
-  //   // }
-  //   // // If the movePad has been manually moved, then stop current animations
-  //   if (movePad.state.isBeingMoved && movePad.isAnimating()) {
-  //     medium.custom.stop();
-  //   }
-  //   unpause();
-  //   // medium.custom.update();
-  // });
-  // const element = figure.add({
-  //   name,
-  //   make: 'gl',
-  //   // Define the custom shader and variables (u_matrix is the element transform
-  //   // matrix)
-  //   // vertexShader: {
-  //   //   src: vertexShader,
-  //   //   vars: ['a_position', 'a_velocity', 'u_matrix', 'u_time'],
-  //   // },
-  //   vertexShader: 'simple',
-  //   // Build in shader with one color for all vertices
-  //   fragShader: 'simple',
-  //   // Define buffers and uniforms
-  //   vertices: { data: points },
-  //   // buffers: [{ name: 'a_velocity', data: velocities }],
-  //   // uniforms: [{ name: 'u_time' }],
-  //   // Element color and mods
-  //   color: [1, 0, 1, 0.5],
-  //   // position: [10, 5],
-  //   transform: [['t', 5, 6]],
-  //   // mods: { state: { isChanging: true } },
-  // });
   return medium;
 }
