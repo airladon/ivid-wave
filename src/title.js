@@ -146,7 +146,9 @@ void main() {
   });
   movePad.notifications.add('setTransform', () => {
     recorder.setManual();
-    figure.fnMap.exec('forceUpdate');
+    const yh = movePad.transform.t().y;
+    title.custom.recording.record(yh, time.step());
+    figure.animateNextFrame();
   });
   return title;
 }

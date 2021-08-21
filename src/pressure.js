@@ -1,4 +1,4 @@
-/* globals Fig, figure, colorWave, colorLight, arrow, unpause */
+/* globals Fig, figure, colorWave, colorLight, arrow, unpause, time */
 
 // eslint-disable-next-line no-unused-vars
 function addPressureMedium(
@@ -210,7 +210,9 @@ void main() {
     }
     unpause();
     medium.custom.recording.setManual();
-    figure.fnMap.exec('forceUpdate');
+    medium.custom.recording.record(movePad.transform.t().x, time.step());
+    figure.animateNextFrame();
+    // figure.fnMap.exec('forceUpdate');
   });
   return medium;
 }

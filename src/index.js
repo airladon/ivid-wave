@@ -138,8 +138,8 @@ function update(override = false) {
   ) {
     return;
   }
-
   m1.custom.updateFlag = false;
+  figure.animateNextFrame();
   const deltaTime = time.step();
   if (ocean.isShown) {
     ocean.custom.update(deltaTime);
@@ -151,7 +151,7 @@ function update(override = false) {
   if (m1.isShown) { m1.custom.update(deltaTime); }
   if (timePlot1.isShown) { timePlot1.custom.update(); }
 }
-figure.fnMap.global.add('forceUpdate', () => update(true));
+// figure.fnMap.global.add('forceUpdate', () => { update(true) });
 
 figure.fnMap.global.add('pause', () => pause());
 figure.fnMap.global.add('unpause', () => unpause());
@@ -1476,6 +1476,7 @@ update(true);
 figure.recorder.notifications.add('seek', () => {
   update(true);
 });
+pause();
 
 document.getElementById('initial-loader').classList.add('hide-loader');
 document.getElementById('loader').classList.remove('hide-loader');

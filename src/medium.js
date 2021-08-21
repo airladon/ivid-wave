@@ -622,7 +622,9 @@ function addMedium(
       medium.customState.trackingTime = 0;
       time.reset();
     }
-    figure.fnMap.exec('forceUpdate');
+    medium.custom.recording.record(movePad.transform.t().y, time.step());
+    figure.animateNextFrame();
+    // figure.fnMap.exec('forceUpdate');
   });
   movePadEnv.notifications.add('setTransform', () => {
     if (time.isPaused()) {
