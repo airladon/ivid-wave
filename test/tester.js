@@ -58,6 +58,20 @@ async function snap(time, threshold) {
   });
 }
 
+function copyDir(src, dest) {
+    fs.mkdirSync(dest, { recursive: true });
+    let entries = fs.readdirSync(src, { withFileTypes: true });
+
+    for (let entry of entries) {
+        let srcPath = path.join(src, entry.name);
+        let destPath = path.join(dest, entry.name);
+
+        entry.isDirectory() ?
+            copyDirSync(srcPath, destPath) :
+            fs.copyFileSync(srcPath, destPath);
+    }
+}
+
 /**
  * Tests
  * 1) Playback tests: snapshot at each state time during playback
@@ -131,7 +145,7 @@ async function tester(
   }
 
   // Playback tests will snapshot at state times (so seek can then be compared)
-  const playbackTests = stateTimes.map(t => [t]);
+  const playbackTests = stateTimes.map(t => [t]).slice(110, 120);
 
   // Seek tests will be all state times
   const seekTests = [];
@@ -151,7 +165,8 @@ async function tester(
   // file doesn't cause an error
   // fs.copyFileSync(videoTrack, `${testPath}/video-track.json`);
 
-
+  const diff = Path.resolve(__dirname, '__image_snapshots__', '__diff_output__');
+  
   jest.setTimeout(120000);
   // eslint-disable-next-line jest/valid-title
   describe(title, () => {
@@ -166,30 +181,49 @@ async function tester(
         document.getElementById('f1_player__play_pause').style.visibility = 'hidden';
       });
       await sleep(50);
+      console.log(Path.resolve(__dirname, '__image_snapshots__', '__diff_output__')
     });
-    test.each(playbackTests)('Play: %s',
-      async (time) => {
-        const currentTime = await getCurrentTime();
-        const deltaTime = time - currentTime;
-        let d = deltaTime;
-        if (intermittentTime > 0 && deltaTime > intermittentTime) {
-          for (let i = intermittentTime; i < deltaTime - intermittentTime; i += intermittentTime) {
-            await frame(intermittentTime);
-            d -= intermittentTime;
-          }
+    describe('playback tests', () => {
+      let specificDiff;
+      beforeAll(() => {
+        if (fs.existsSync(diff)) {
+          fs.rmdirSync(diff, { recursive: true });
         }
-        await frame(d);
-        await snap(time, threshold);
+        specificDiff = Path.resolve(__dirname, '__image_snapshots__', '__playback_diff__');
+        if (fs.existsSync(spedificDiff) {
+          fs.rmdirSync(spedificDiff, { recursive: true });
+        }
       });
-    test.each(seekTests)('Seek: %s',
-      async (seekTime) => {
-        await seek(0);
-        await frame(0);
-        await seek(seekTime);
-        await frame(0);
-        const currentTime = await getCurrentTime();
-        await snap(currentTime, threshold);
+      test.each(playbackTests)('Play: %s',
+        async (time) => {
+          const currentTime = await getCurrentTime();
+          const deltaTime = time - currentTime;
+          let d = deltaTime;
+          if (intermittentTime > 0 && deltaTime > intermittentTime) {
+            for (let i = intermittentTime; i < deltaTime - intermittentTime; i += intermittentTime) {
+              await frame(intermittentTime);
+              d -= intermittentTime;
+            }
+          }
+          await frame(d);
+          await snap(time, threshold);
+        });
+      afterAll(() => {
+        if (fs.existsSync(diff)) {
+          copyDir(diff, specificDiff);
+          fs.rmdirSync(diff, { recursive: true });
+        }
       });
+    });
+    // test.each(seekTests)('Seek: %s',
+    //   async (seekTime) => {
+    //     await seek(0);
+    //     await frame(0);
+    //     await seek(seekTime);
+    //     await frame(0);
+    //     const currentTime = await getCurrentTime();
+    //     await snap(currentTime, threshold);
+    //   });
     // test.each(fromToTests)('From To: %s %s',
     //   async (fromTime, toTime) => {
     //     const seekTo = async (seekTimeIn, play) => {
