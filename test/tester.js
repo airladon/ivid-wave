@@ -50,26 +50,53 @@ async function getCurrentTime() {
   return currentTime;
 }
 
-async function snap(time, threshold) {
+function rmDir(dir) {
+  if (fs.existsSync(dir)) {
+    fs.rmdirSync(dir, { recursive: true });
+  }
+}
+
+function createDir(dir) {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+  }
+}
+
+async function snap(time, threshold, nameMod = '') {
   const image = await page.screenshot({ timeout: 300000 });
-  return expect(image).toMatchImageSnapshot({
-    customSnapshotIdentifier: `${zeroPad(Math.round(time * 10000), 7)}`,
-    failureThreshold: threshold,
-  });
+  try {
+    expect(image).toMatchImageSnapshot({
+      customSnapshotIdentifier: `${zeroPad(Math.round(time * 10000), 7)}`,
+      failureThreshold: threshold,
+    });
+  } catch (e) {
+    if (!fs.existsSync(Path.join(__dirname, '__image_snapshots__', '__failing__'))) {
+      fs.mkdirSync(Path.join(__dirname, '__image_snapshots__', '__failing__'));
+    }
+    fs.writeFileSync(Path.join(__dirname, '__image_snapshots__', '__failing__', `${zeroPad(Math.round(time * 10000), 7)}-snap${nameMod}.png`), image, () => {});
+    if (nameMod !== '') {
+      fs.copyFileSync(
+        Path.join(__dirname, '__image_snapshots__', '__diff_output__', `${zeroPad(Math.round(time * 10000), 7)}-diff.png`),
+        Path.join(__dirname, '__image_snapshots__', '__failing__', `${zeroPad(Math.round(time * 10000), 7)}-diff${nameMod}.png`),
+      );
+    }
+    throw e;
+  }
 }
 
 function copyDir(src, dest) {
-    fs.mkdirSync(dest, { recursive: true });
-    let entries = fs.readdirSync(src, { withFileTypes: true });
-
-    for (let entry of entries) {
-        let srcPath = path.join(src, entry.name);
-        let destPath = path.join(dest, entry.name);
-
-        entry.isDirectory() ?
-            copyDirSync(srcPath, destPath) :
-            fs.copyFileSync(srcPath, destPath);
-    }
+  if (!fs.existsSync(src)) {
+    return;
+  }
+  fs.mkdirSync(dest, { recursive: true });
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+  // console.log(entries);
+  for (let i = 0; i < entries.length; i += 1) {
+    const srcPath = Path.join(src, entries[i].name);
+    const destPath = Path.join(dest, entries[i].name);
+    fs.copyFileSync(srcPath, destPath);
+    // console.log(srcPath, destPath);
+  }
 }
 
 /**
@@ -145,13 +172,21 @@ async function tester(
   }
 
   // Playback tests will snapshot at state times (so seek can then be compared)
-  const playbackTests = stateTimes.map(t => [t]).slice(110, 120);
+  const playbackTests = stateTimes.map(t => [t]);
 
   // Seek tests will be all state times
   const seekTests = [];
   stateTimes.forEach((stateTime) => {
     seekTests.push([stateTime]);
   });
+
+  // Backwards seek tests
+  const backwardsSeekTests = [];
+  stateTimes.forEach((stateTime) => {
+    backwardsSeekTests.push([stateTime]);
+  });
+  backwardsSeekTests.reverse();
+
 
   // FromToTests are all combinations of fromTimes and toTimes
   const fromToTests = [];
@@ -166,7 +201,8 @@ async function tester(
   // fs.copyFileSync(videoTrack, `${testPath}/video-track.json`);
 
   const diff = Path.resolve(__dirname, '__image_snapshots__', '__diff_output__');
-  
+  const failing = Path.resolve(__dirname, '__image_snapshots__', '__failing__');
+
   jest.setTimeout(120000);
   // eslint-disable-next-line jest/valid-title
   describe(title, () => {
@@ -181,18 +217,14 @@ async function tester(
         document.getElementById('f1_player__play_pause').style.visibility = 'hidden';
       });
       await sleep(50);
-      console.log(Path.resolve(__dirname, '__image_snapshots__', '__diff_output__')
     });
     describe('playback tests', () => {
       let specificDiff;
       beforeAll(() => {
-        if (fs.existsSync(diff)) {
-          fs.rmdirSync(diff, { recursive: true });
-        }
+        rmDir(diff);
+        rmDir(failing);
         specificDiff = Path.resolve(__dirname, '__image_snapshots__', '__playback_diff__');
-        if (fs.existsSync(spedificDiff) {
-          fs.rmdirSync(spedificDiff, { recursive: true });
-        }
+        rmDir(specificDiff);
       });
       test.each(playbackTests)('Play: %s',
         async (time) => {
@@ -200,7 +232,11 @@ async function tester(
           const deltaTime = time - currentTime;
           let d = deltaTime;
           if (intermittentTime > 0 && deltaTime > intermittentTime) {
-            for (let i = intermittentTime; i < deltaTime - intermittentTime; i += intermittentTime) {
+            for (
+              let i = intermittentTime;
+              i < deltaTime - intermittentTime;
+              i += intermittentTime
+            ) {
               await frame(intermittentTime);
               d -= intermittentTime;
             }
@@ -209,43 +245,159 @@ async function tester(
           await snap(time, threshold);
         });
       afterAll(() => {
-        if (fs.existsSync(diff)) {
-          copyDir(diff, specificDiff);
-          fs.rmdirSync(diff, { recursive: true });
-        }
+        copyDir(diff, specificDiff);
+        copyDir(failing, Path.join(specificDiff, '__failing__'));
+        rmDir(diff);
+        rmDir(failing);
       });
     });
-    // test.each(seekTests)('Seek: %s',
-    //   async (seekTime) => {
-    //     await seek(0);
-    //     await frame(0);
-    //     await seek(seekTime);
-    //     await frame(0);
-    //     const currentTime = await getCurrentTime();
-    //     await snap(currentTime, threshold);
-    //   });
-    // test.each(fromToTests)('From To: %s %s',
-    //   async (fromTime, toTime) => {
-    //     const seekTo = async (seekTimeIn, play) => {
-    //       await seek(seekTimeIn);
-    //       await frame(0);
-    //       const currentTime = await getCurrentTime();
-    //       let index = 0;
-    //       while (index < stateTimes.length - 1 && stateTimes[index] < currentTime + 0.5) {
-    //         index += 1;
-    //       }
-    //       const nextFrameTime = stateTimes[index][0];
+    describe('seek tests', () => {
+      let specificDiff;
+      beforeAll(() => {
+        rmDir(diff);
+        rmDir(failing);
+        specificDiff = Path.resolve(__dirname, '__image_snapshots__', '__seek_diff__');
+        rmDir(specificDiff);
+      });
+      test.each(seekTests)('Seek: %s',
+        async (seekTime) => {
+          await seek(0);
+          await frame(0);
+          await seek(seekTime);
+          await frame(0);
+          const currentTime = await getCurrentTime();
+          await snap(currentTime, threshold);
+        });
+      afterAll(() => {
+        copyDir(diff, specificDiff);
+        copyDir(failing, Path.join(specificDiff, '__failing__'));
+        rmDir(diff);
+        rmDir(failing);
+      });
+    });
+    describe('load seek tests', () => {
+      let specificDiff;
+      beforeAll(() => {
+        rmDir(diff);
+        rmDir(failing);
+        specificDiff = Path.resolve(__dirname, '__image_snapshots__', '__loadseek_diff__');
+        rmDir(specificDiff);
+      });
+      test.each(seekTests)('Seek: %s',
+        async (seekTime) => {
+          await page.goto(htmlFile);
+          // await snap(0, threshold);
+          await page.evaluate(() => {
+            figure.timeKeeper.setManualFrames();
+            figure.recorder.startPlayback();
+            document.getElementById('f1_player__play_pause').style.visibility = 'hidden';
+          });
+          // await sleep(250);
+          await seek(0);
+          await frame(0);
+          await seek(seekTime);
+          await frame(0);
+          const currentTime = await getCurrentTime();
+          const error = [];
+          try {
+            await snap(currentTime, threshold);
+          } catch (e) {
+            error.push(e);
+          }
 
-    //       await snap(currentTime, threshold);
-    //       if (nextFrameTime > currentTime && play) {
-    //         await page.evaluate(() => figure.recorder.resumePlayback());
-    //         await frame(nextFrameTime - currentTime);
-    //         await snap(nextFrameTime, threshold);
-    //       }
-    //     };
-    //     await seekTo(fromTime, false);
-    //     await seekTo(toTime, true);
-    //   });
+          let index = 0;
+          while (
+            index < stateTimes.length - 1
+            && stateTimes[index] < currentTime + 0.5
+          ) {
+            index += 1;
+          }
+          await page.evaluate(() => figure.recorder.resumePlayback());
+          const deltaTime = 1;
+          let d = deltaTime;
+          if (intermittentTime > 0 && deltaTime > intermittentTime) {
+            for (
+              let i = intermittentTime;
+              i < deltaTime - intermittentTime;
+              i += intermittentTime
+            ) {
+              await frame(intermittentTime);
+              d -= intermittentTime;
+            }
+          }
+          await frame(d);
+          try {
+            await snap(currentTime + 1, threshold, `-play_from_${currentTime}_1`);
+          } catch (e) {
+            error.push(e);
+          }
+        });
+      afterAll(() => {
+        copyDir(diff, specificDiff);
+        copyDir(failing, Path.join(specificDiff, '__failing__'));
+        rmDir(diff);
+        rmDir(failing);
+      });
+    });
+    describe('backward tests', () => {
+      let specificDiff;
+      beforeAll(() => {
+        rmDir(diff);
+        rmDir(failing);
+        specificDiff = Path.resolve(__dirname, '__image_snapshots__', '__backseek_diff__');
+        rmDir(specificDiff);
+      });
+      test.each(backwardsSeekTests)('Seek: %s',
+        async (seekTime) => {
+          await seek(seekTime);
+          await frame(0);
+          const currentTime = await getCurrentTime();
+          await snap(currentTime, threshold);
+        });
+      afterAll(() => {
+        copyDir(diff, specificDiff);
+        copyDir(failing, Path.join(specificDiff, '__failing__'));
+        rmDir(diff);
+        rmDir(failing);
+      });
+    });
+    describe('from to seek tests', () => {
+      let specificDiff;
+      beforeAll(() => {
+        rmDir(diff);
+        rmDir(failing);
+        specificDiff = Path.resolve(__dirname, '__image_snapshots__', '__loadseek_diff__');
+        rmDir(specificDiff);
+      });
+      test.each(fromToTests)('From To: %s %s',
+        async (fromTime, toTime) => {
+          const seekTo = async (seekTimeIn, play) => {
+            await seek(seekTimeIn);
+            await frame(0);
+            const currentTime = await getCurrentTime();
+            let index = 0;
+            while (index < stateTimes.length - 1 && stateTimes[index] < currentTime + 0.5) {
+              index += 1;
+            }
+            const nextFrameTime = stateTimes[index][0];
+
+            await snap(currentTime, threshold);
+            if (nextFrameTime > currentTime && play) {
+              await page.evaluate(() => figure.recorder.resumePlayback());
+              await frame(nextFrameTime - currentTime);
+              await snap(nextFrameTime, threshold);
+            }
+          };
+          await seekTo(fromTime, false);
+          await seekTo(toTime, true);
+        });
+      afterAll(() => {
+        copyDir(diff, specificDiff);
+        copyDir(failing, Path.join(specificDiff, '__failing__'));
+        rmDir(diff);
+        rmDir(failing);
+      });
+    });
   });
 }
 
