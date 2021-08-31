@@ -56,8 +56,8 @@ function addDefsEquation(name) {
       multi: ['Multiple', ' ', cont('wave', 2), 's'],
       waveEqn: 'Wave Equation',
       waveEqn1: bc('Wave Equation', '(For one dimension)', '', 0.04, 0.04, 0.5),
-      derivative1: scale(['Second Derivative: ', cont('', 5.5)], 0.7),
-      derivative2: scale(['Second Derivative: ', cont('Shape or Curvature', 5.5)], 0.7),
+      derivative1: scale(['Second Derivative: ', cont('', 5.9)], 0.7),
+      derivative2: scale(['Second Derivative: ', cont('Shape or Curvature', 5.9)], 0.7),
     },
   });
 }
