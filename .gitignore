@@ -7,3 +7,9 @@ scratch
 /figureone.worker.js
 /figureone.worker.js.map
 vs.code-workspace
+test/__image_snapshots__/__playback_diff__
+test/__image_snapshots__/__seek_diff__
+test/__image_snapshots__/__backseek_diff__
+test/__image_snapshots__/__loadseek_diff__
+test/__image_snapshots__/__diff_output__
+test/__image_snapshots__/__failing__

@@ -251,6 +251,8 @@ function addMedium(
         color: colorDisturbance,
         dimColor: colorLight,
         scale: 4,
+        font: { family: 'TeXGyreTermes' },
+        textFont: { family: 'TeXGyreTermes' },
         elements: {
           lb: {
             symbol: 'bracket', side: 'left', lineWidth: 0.07, width: 0.16,
@@ -273,6 +275,8 @@ function addMedium(
         make: 'equation',
         color: colorYellow,
         scale: 4,
+        font: { family: 'TeXGyreTermes' },
+        textFont: { family: 'TeXGyreTermes' },
         elements: {
           lb: { symbol: 'bracket', side: 'left', lineWidth: 0.07, width: 0.16 },
           rb: { symbol: 'bracket', side: 'right', lineWidth: 0.07, width: 0.16 },

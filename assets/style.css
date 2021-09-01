@@ -441,6 +441,13 @@ h2 {
   font-size: 2vw;
   top: calc(50% - 1.2vw);
   background-color: #000b;
+  display:table
+}
+
+.loader-text {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
 }
 
 #initial-loader {

@@ -390,7 +390,7 @@ nav.loadSlides([
     },
   },
   {
-    time: '0:33',
+    time: '0:32.5',
     show: ['title'],
     transition: [
       { out: ['title.movePad', 'title.movePadHighlight', 'title.envelope'] },
