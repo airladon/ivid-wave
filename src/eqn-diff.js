@@ -20,6 +20,8 @@ function addDiffEquation(name) {
     position: [4, 8],
     color: colorLight,
     dimColor: colorYellow,
+    font: { family: 'TeXGyreTermes' },
+    textFont: { family: 'TeXGyreTermes' },
     elements: {
       lb4: { symbol: 'bracket', side: 'left', lineWidth: 0.07, width: 0.16 },
       rb4: { symbol: 'bracket', side: 'right', lineWidth: 0.07, width: 0.16 },
