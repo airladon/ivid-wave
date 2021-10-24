@@ -492,7 +492,7 @@ nav.loadSlides([
     showCommon: ['m1.grid', 'm1.firstBall', 'm1.movePad', 'm1.balls', 'resetButton', 'freezeTimeButton', 'freezeTimeLabel', 'slowTimeButton', 'slowTimeLabel', 'pulseButton', 'sineButton'],
     transition: [
       { trigger: 'growPropagation' },
-      { out: 'm1.propogation', delay: 3 },
+      { out: 'm1.propagation', delay: 3 },
     ],
   },
   {
