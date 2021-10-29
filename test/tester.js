@@ -366,7 +366,7 @@ async function tester(
       beforeAll(() => {
         rmDir(diff);
         rmDir(failing);
-        specificDiff = Path.resolve(__dirname, '__image_snapshots__', '__loadseek_diff__');
+        specificDiff = Path.resolve(__dirname, '__image_snapshots__', '__fromtoseek_diff__');
         rmDir(specificDiff);
       });
       test.each(fromToTests)('From To: %s %s',
