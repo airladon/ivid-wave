@@ -275,129 +275,129 @@ async function tester(
         rmDir(failing);
       });
     });
-    // describe('load seek tests', () => {
-    //   let specificDiff;
-    //   beforeAll(() => {
-    //     rmDir(diff);
-    //     rmDir(failing);
-    //     specificDiff = Path.resolve(__dirname, '__image_snapshots__', '__loadseek_diff__');
-    //     rmDir(specificDiff);
-    //   });
-    //   test.each(seekTests)('Seek: %s',
-    //     async (seekTime) => {
-    //       await page.goto(htmlFile);
-    //       // await snap(0, threshold);
-    //       await page.evaluate(() => {
-    //         figure.timeKeeper.setManualFrames();
-    //         figure.recorder.startPlayback();
-    //         document.getElementById('f1_player__play_pause').style.visibility = 'hidden';
-    //       });
-    //       // await sleep(250);
-    //       await seek(0);
-    //       await frame(0);
-    //       await seek(seekTime);
-    //       await frame(0);
-    //       const currentTime = await getCurrentTime();
-    //       const error = [];
-    //       try {
-    //         await snap(currentTime, threshold);
-    //       } catch (e) {
-    //         error.push(e);
-    //       }
+    describe('load seek tests', () => {
+      let specificDiff;
+      beforeAll(() => {
+        rmDir(diff);
+        rmDir(failing);
+        specificDiff = Path.resolve(__dirname, '__image_snapshots__', '__loadseek_diff__');
+        rmDir(specificDiff);
+      });
+      test.each(seekTests)('Seek: %s',
+        async (seekTime) => {
+          await page.goto(htmlFile);
+          // await snap(0, threshold);
+          await page.evaluate(() => {
+            figure.timeKeeper.setManualFrames();
+            figure.recorder.startPlayback();
+            document.getElementById('f1_player__play_pause').style.visibility = 'hidden';
+          });
+          // await sleep(250);
+          await seek(0);
+          await frame(0);
+          await seek(seekTime);
+          await frame(0);
+          const currentTime = await getCurrentTime();
+          const error = [];
+          try {
+            await snap(currentTime, threshold);
+          } catch (e) {
+            error.push(e);
+          }
 
-    //       let index = 0;
-    //       while (
-    //         index < stateTimes.length - 1
-    //         && stateTimes[index] < currentTime + 0.5
-    //       ) {
-    //         index += 1;
-    //       }
-    //       await page.evaluate(() => figure.recorder.resumePlayback());
-    //       const deltaTime = 1;
-    //       let d = deltaTime;
-    //       if (intermittentTime > 0 && deltaTime > intermittentTime) {
-    //         for (
-    //           let i = intermittentTime;
-    //           i < deltaTime - intermittentTime;
-    //           i += intermittentTime
-    //         ) {
-    //           await frame(intermittentTime);
-    //           d -= intermittentTime;
-    //         }
-    //       }
-    //       await frame(d);
-    //       try {
-    //         await snap(currentTime + 1, threshold, `-play_from_${currentTime}_1`);
-    //       } catch (e) {
-    //         error.push(e);
-    //       }
-    //     });
-    //   afterAll(() => {
-    //     copyDir(diff, specificDiff);
-    //     copyDir(failing, Path.join(specificDiff, '__failing__'));
-    //     rmDir(diff);
-    //     rmDir(failing);
-    //   });
-    // });
-    // describe('backward tests', () => {
-    //   let specificDiff;
-    //   beforeAll(() => {
-    //     rmDir(diff);
-    //     rmDir(failing);
-    //     specificDiff = Path.resolve(__dirname, '__image_snapshots__', '__backseek_diff__');
-    //     rmDir(specificDiff);
-    //   });
-    //   test.each(backwardsSeekTests)('Seek: %s',
-    //     async (seekTime) => {
-    //       await seek(seekTime);
-    //       await frame(0);
-    //       const currentTime = await getCurrentTime();
-    //       await snap(currentTime, threshold);
-    //     });
-    //   afterAll(() => {
-    //     copyDir(diff, specificDiff);
-    //     copyDir(failing, Path.join(specificDiff, '__failing__'));
-    //     rmDir(diff);
-    //     rmDir(failing);
-    //   });
-    // });
-    // describe('from to seek tests', () => {
-    //   let specificDiff;
-    //   beforeAll(() => {
-    //     rmDir(diff);
-    //     rmDir(failing);
-    //     specificDiff = Path.resolve(__dirname, '__image_snapshots__', '__loadseek_diff__');
-    //     rmDir(specificDiff);
-    //   });
-    //   test.each(fromToTests)('From To: %s %s',
-    //     async (fromTime, toTime) => {
-    //       const seekTo = async (seekTimeIn, play) => {
-    //         await seek(seekTimeIn);
-    //         await frame(0);
-    //         const currentTime = await getCurrentTime();
-    //         let index = 0;
-    //         while (index < stateTimes.length - 1 && stateTimes[index] < currentTime + 0.5) {
-    //           index += 1;
-    //         }
-    //         const nextFrameTime = stateTimes[index][0];
+          let index = 0;
+          while (
+            index < stateTimes.length - 1
+            && stateTimes[index] < currentTime + 0.5
+          ) {
+            index += 1;
+          }
+          await page.evaluate(() => figure.recorder.resumePlayback());
+          const deltaTime = 1;
+          let d = deltaTime;
+          if (intermittentTime > 0 && deltaTime > intermittentTime) {
+            for (
+              let i = intermittentTime;
+              i < deltaTime - intermittentTime;
+              i += intermittentTime
+            ) {
+              await frame(intermittentTime);
+              d -= intermittentTime;
+            }
+          }
+          await frame(d);
+          try {
+            await snap(currentTime + 1, threshold, `-play_from_${currentTime}_1`);
+          } catch (e) {
+            error.push(e);
+          }
+        });
+      afterAll(() => {
+        copyDir(diff, specificDiff);
+        copyDir(failing, Path.join(specificDiff, '__failing__'));
+        rmDir(diff);
+        rmDir(failing);
+      });
+    });
+    describe('backward tests', () => {
+      let specificDiff;
+      beforeAll(() => {
+        rmDir(diff);
+        rmDir(failing);
+        specificDiff = Path.resolve(__dirname, '__image_snapshots__', '__backseek_diff__');
+        rmDir(specificDiff);
+      });
+      test.each(backwardsSeekTests)('Seek: %s',
+        async (seekTime) => {
+          await seek(seekTime);
+          await frame(0);
+          const currentTime = await getCurrentTime();
+          await snap(currentTime, threshold);
+        });
+      afterAll(() => {
+        copyDir(diff, specificDiff);
+        copyDir(failing, Path.join(specificDiff, '__failing__'));
+        rmDir(diff);
+        rmDir(failing);
+      });
+    });
+    describe('from to seek tests', () => {
+      let specificDiff;
+      beforeAll(() => {
+        rmDir(diff);
+        rmDir(failing);
+        specificDiff = Path.resolve(__dirname, '__image_snapshots__', '__fromtoseek_diff__');
+        rmDir(specificDiff);
+      });
+      test.each(fromToTests)('From To: %s %s',
+        async (fromTime, toTime) => {
+          const seekTo = async (seekTimeIn, play) => {
+            await seek(seekTimeIn);
+            await frame(0);
+            const currentTime = await getCurrentTime();
+            let index = 0;
+            while (index < stateTimes.length - 1 && stateTimes[index] < currentTime + 0.5) {
+              index += 1;
+            }
+            const nextFrameTime = stateTimes[index][0];
 
-    //         await snap(currentTime, threshold);
-    //         if (nextFrameTime > currentTime && play) {
-    //           await page.evaluate(() => figure.recorder.resumePlayback());
-    //           await frame(nextFrameTime - currentTime);
-    //           await snap(nextFrameTime, threshold);
-    //         }
-    //       };
-    //       await seekTo(fromTime, false);
-    //       await seekTo(toTime, true);
-    //     });
-    //   afterAll(() => {
-    //     copyDir(diff, specificDiff);
-    //     copyDir(failing, Path.join(specificDiff, '__failing__'));
-    //     rmDir(diff);
-    //     rmDir(failing);
-    //   });
-    // });
+            await snap(currentTime, threshold);
+            if (nextFrameTime > currentTime && play) {
+              await page.evaluate(() => figure.recorder.resumePlayback());
+              await frame(nextFrameTime - currentTime);
+              await snap(nextFrameTime, threshold);
+            }
+          };
+          await seekTo(fromTime, false);
+          await seekTo(toTime, true);
+        });
+      afterAll(() => {
+        copyDir(diff, specificDiff);
+        copyDir(failing, Path.join(specificDiff, '__failing__'));
+        rmDir(diff);
+        rmDir(failing);
+      });
+    });
   });
 }
 
