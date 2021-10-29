@@ -219,7 +219,7 @@ function addMedium(
         },
       },
       {
-        name: 'propogation',
+        name: 'propagation',
         make: 'collections.line',
         options: {
           width: 0.05,
@@ -351,7 +351,7 @@ function addMedium(
   const velocity = medium.getElement('velocity');
   const widthArrow = medium.getElement('widthArrow');
   const movePadEnv = medium.get('movePadEnv');
-  const propogation = medium.get('propogation');
+  const propagation = medium.get('propagation');
   let lastEnvelope = [];
   let lastEnvelopeNumVertices = 0;
   medium.customState = {
@@ -671,8 +671,8 @@ function addMedium(
       .start();
   });
   figure.fnMap.global.add('growPropagation', () => {
-    propogation.showAll();
-    propogation.animations.new()
+    propagation.showAll();
+    propagation.animations.new()
       .length({ start: 0.5, target: 3, duration: 2 })
       // .dissolveIn({ element: 'label' })
       .start();

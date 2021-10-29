@@ -25,7 +25,7 @@ function addDefsEquation(name) {
       Transverse: { color: colorYellow },
       Transverse_1: { color: colorYellow },
       Wave: { color: colorYellow },
-      propDisturb: 'propogating disturbance',
+      propDisturb: 'propagating disturbance',
       across: 'extend or direct across',
       colon: ': ',
       adjective: { text: 'adjective', style: 'italic' },
